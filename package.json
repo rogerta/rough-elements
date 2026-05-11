@@ -1,0 +1,45 @@
+{
+  "name": "rough-elements",
+  "description": "Collection of hand-drawn sketchy web components",
+  "version": "3.0.0",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/rough-elements.umd.cjs",
+  "module": "./dist/rough-elements.js",
+  "exports": {
+    ".": {
+      "import": "./dist/rough-elements.js",
+      "require": "./dist/rough-elements.umd.cjs"
+    }
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && tsc",
+    "preview": "vite preview"
+  },
+  "keywords": [
+    "webcomponent",
+    "web component",
+    "rough",
+    "sketchy",
+    "hand-drawn",
+    "hand drawn",
+    "wireframe"
+  ],
+  "author": "Roger Tawa <roger@tawacentral.net>",
+  "originalAuthor": "Preet Shihn <preetshihn@gmail.com>",
+  "contributors": [
+    "Preet Shihn <preetshihn@gmail.com>"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@rogerta/roughjs": "^5.0.8",
+    "lit": "^3.3.2"
+  },
+  "devDependencies": {
+    "typescript": "~6.0.3",
+    "vite": "^8.0.11"
+  }
+}
