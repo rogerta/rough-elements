@@ -58,34 +58,36 @@ export class ReBase extends LitElement {
     return [html`<svg></svg>`]
   }
 
-  static styles = [css`
-    :host {
-      /* Make sure the browser will not draw any visible border even when
-       * the border width is other than zero.
-       */
-      border-color: transparent;
-      border-style: solid;
+  static styles = [
+    css`
+      :host {
+        /* Make sure the browser will not draw any visible border even when
+        * the border width is other than zero.
+        */
+        border-color: transparent;
+        border-style: solid;
+        border-width: 0;
 
-      /* Needed so that the svg's absolute position works. */
-      position: relative;
+        /* Needed so that the svg's absolute position works. */
+        position: relative;
 
-      /* It's important that the element box sizing be border-box so that the
-      * rough border is re-drawn when the element's border width changes.
-      * Otherwise the resize observer would not get called. */
-      box-sizing: border-box;
-    }
+        /* It's important that the element box sizing be border-box so that the
+        * rough border is re-drawn when the element's border width changes.
+        * Otherwise the resize observer would not get called. */
+        box-sizing: border-box;
+      }
 
-    /* The svg element is positioned to covers the padding box of the host
-     * element. Overflow is visible so the rough border (SVG sub-elements) will
-     * can placed in the host's border box, which is outside the padding box.
-     */
-    svg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      overflow: visible;
-    }
-  `]
+      /* The svg element is positioned to covers the padding box of the host
+      * element. Overflow is visible so the rough border (SVG sub-elements) will
+      * can placed in the host's border box, which is outside the padding box.
+      */
+      svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+      }
+    `]
 }

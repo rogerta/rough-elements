@@ -13,11 +13,11 @@ export class Element extends ReBase {
 
   static styles = ReBase.styles.concat([
     css`
-    :host {
-      display: inline-block;
-      padding: 1em;
-      border-width: 0.5rem;
-    }
+      :host {
+        display: inline-block;
+        padding: 1em;
+        border-width: 0.5rem;
+      }
     `
   ])
 }
