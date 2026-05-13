@@ -52,7 +52,7 @@ export class ReElement extends LitElement {
   }
 
   renderRoughSvg() {
-    return html`<svg xmlns="http://www.w3.org/2000/svg" id="rough"></svg>`
+    return html`<svg xmlns="http://www.w3.org/2000/svg" id="rough" part="rough"></svg>`
   }
 
   // This method is meant to be overidden by derived classes to handle
