@@ -36,7 +36,7 @@ export class Element extends ReBase {
       :host {
         display: inline-block;
         --border-width: 0.5rem;
-        --neg-border: calc(-1 * var(--border-width));
+        --img-border: calc(-0.5 * var(--border-width));
         border-width: var(--border-width);
       }
       slot {
@@ -50,9 +50,9 @@ export class Element extends ReBase {
       }
       slot[part=image] {
         position: relative; /* So image is above rough svg */
-        margin-top: var(--neg-border);
-        margin-left: var(--neg-border);
-        margin-right: var(--neg-border);
+        margin-top: var(--img-border);
+        margin-left: var(--img-border);
+        margin-right: var(--img-border);
       }
       ::slotted(img) {
         display: block;

@@ -10,6 +10,13 @@ export type Config = NonNullable<Parameters<typeof rough.generator>[0]>
 export type Options = NonNullable<Config['options']>
 export type ResolvedOptions = Required<Options>
 
+// Some useful info that needs to be documented:
+//
+// --border-width CSS prop sets the width of the rough border.
+// --border-color CSS prop sets the colour of the rough border.
+// --background-color CSS prop sets the colour of the rough background.
+// --background-stroke-width CSS prop sets the width of the stroke used to
+//    paint the pattern background.
 export class ReBase extends LitElement {
   @query('svg', true) private svg_?: SVGSVGElement;
 
@@ -38,34 +45,38 @@ export class ReBase extends LitElement {
       for (let entry of entries) {
         const { width, height } = this.svg_.getBoundingClientRect()
         const cstyles = getComputedStyle(entry.target)
-        const bwidth = parseFloat(cstyles.borderWidth)
-        const halfbwidth = bwidth / 2
-        const bcolour = cstyles.getPropertyValue('--re-fill')
+        const borderWidth = parseFloat(cstyles.borderWidth)
+        const halfBorderWidth = borderWidth / 2
+        const bgColour = cstyles.getPropertyValue('--background-color')
         const roughElements: SVGElement[] = []
 
-        if (bcolour) {
+        if (bgColour) {
           const options = Object.assign({
-            maxRandomnessOffset: halfbwidth,
-            fill: bcolour,
+            maxRandomnessOffset: halfBorderWidth,
+            fill: bgColour,
             fillStyle: 'hachure',
-            fillWeight: 16,  // Should match --re-fill-width below.
+            fillWeight: 16,  // Should match --background-stroke-width below.
             hachureGap: 17,
             hachureAngle: -60,
           }, this.options_)
-          roughElements.push(this.rough_.rectangle(
-              -halfbwidth, -halfbwidth,
-              width + bwidth, height + bwidth,
-              options))
+          const el = this.rough_.rectangle(
+              -halfBorderWidth, -halfBorderWidth,
+              width + borderWidth, height + borderWidth,
+              options)
+          el.classList.add('background')
+          roughElements.push(el)
         }
 
-        if (bwidth > 0) {
+        if (borderWidth > 0) {
           const options = Object.assign({
-            maxRandomnessOffset: halfbwidth,
+            maxRandomnessOffset: halfBorderWidth,
           }, this.options_)
-          roughElements.push(this.rough_.rectangle(
-              -halfbwidth, -halfbwidth,
-              width + bwidth, height + bwidth,
-              options))
+          const el = this.rough_.rectangle(
+              -halfBorderWidth, -halfBorderWidth,
+              width + borderWidth, height + borderWidth,
+              options)
+          el.classList.add('border')
+          roughElements.push(el)
         }
 
         this.svg_.replaceChildren(...roughElements)
@@ -82,10 +93,13 @@ export class ReBase extends LitElement {
     css`
       :host {
         /* Make sure the browser will not draw any visible border even when
-        * the border width is other than zero. */
+         * the border width is other than zero by setting it to solid transpent.
+         * This is done so that the border-width CSS property can be used to
+         * control the rough border width.  Without this trick, the computed
+         * border width will always be zero regardless how it is specified in
+         * CSS. */
         border-color: transparent;
         border-style: solid;
-        border-width: 0;
 
         /* Needed so that the svg's absolute position works. */
         position: relative;
@@ -96,7 +110,7 @@ export class ReBase extends LitElement {
         box-sizing: border-box;
 
         /* Should match fillWeight above */
-        --re-fill-width: 16;
+        --background-stroke-width: 16;
       }
 
       /* The svg element is positioned to covers the padding box of the host
@@ -114,9 +128,9 @@ export class ReBase extends LitElement {
 
       /* Styling for the outline of shapes.  Anything that affects the stroke
        * of an SVG element can be used here.  Fill is always 'none'. */
-      #rough .outline {
+      #rough .border .outline {
         fill: none;
-        stroke: var(--re-stroke, currentcolor);
+        stroke: var(--border-color, currentcolor);
         stroke-dasharray: var(--re-stroke-dasharray, inherit);
         stroke-dashoffset: var(--re-stroke-dashoffset, inherit);
         stroke-linecap: var(--re-stroke-linecap, inherit);
@@ -128,25 +142,25 @@ export class ReBase extends LitElement {
 
       /* Styling for the solid fill of shapes.  Anything that affects the fill
        * of an SVG element can be used here.  Stroke is always 'none'. */
-      #rough .solid-fill {
+      #rough .background .solid-fill {
         stroke: none;
-        fill: var(--re-fill, inherit);
+        fill: var(--background-color, inherit);
         fill-opacity: var(--re-fill-opacity, inherit);
         fill-rule: var(--re-fill-rule, inherit);
       }
 
       /* Styling for the pattern fill of shapes.  Anything that affects the
        * stroke of an SVG element can be used here.  Fill is always 'none'. */
-      #rough .pattern-fill {
+      #rough .background .pattern-fill {
         fill: none;
-        stroke: var(--re-fill, inherit);
+        stroke: var(--background-color, inherit);
         stroke-dasharray: var(--re-fill-dasharray, inherit);
         stroke-dashoffset: var(--re-fill-dashoffset, inherit);
         stroke-linecap: var(--re-fill-linecap, inherit);
         stroke-linejoin: var(--re-fill-linejoin, inherit);
         stroke-miterlimit: var(--re-fill-miterlimit, inherit);
         stroke-opacity: var(--re-fill-opacity, inherit);
-        stroke-width: var(--re-fill-width, inherit);
+        stroke-width: var(--background-stroke-width, inherit);
       }
     `]
 }
