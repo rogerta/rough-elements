@@ -1,10 +1,11 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
 
-import { ReBase } from './re-base.js'
+import { ReBorderMixin } from './re-border-mixin.js'
+import { ReElement } from './re-element.js'
 
 @customElement('re-card')
-export class Element extends ReBase {
+export class Element extends ReBorderMixin(ReElement) {
   @query('slot[part=header') slotHeader!: HTMLSlotElement
   @query('slot[part=body') slotBody!: HTMLSlotElement
   @query('slot[part=footer') slotFooter!: HTMLSlotElement
@@ -31,7 +32,8 @@ export class Element extends ReBase {
     })
   }
 
-  static styles = ReBase.styles.concat([
+  static styles = [
+    ...super.styles,
     css`
       :host {
         display: inline-block;
@@ -58,7 +60,7 @@ export class Element extends ReBase {
         width: 100%;
       }
     `
-  ])
+  ]
 }
 
 declare global {
