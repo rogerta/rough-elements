@@ -1,7 +1,5 @@
-import { css, html } from 'lit'
+import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-
-import { ReElement } from './re-element.js'
 
 import './re-icon.js'
 
@@ -10,7 +8,7 @@ import './re-icon.js'
 // --color CSS prop sets the color of the icon.
 // --re-primary-color CSS prop sets the hover color.
 @customElement('re-icon-button')
-export class Element extends ReElement {
+export class Element extends LitElement {
   @property() name = ''
   @property() href = ''
   @property() target = ''
@@ -19,7 +17,6 @@ export class Element extends ReElement {
 
   override render() {
     return [
-      super.renderRoughSvg(),
       html`
         <button>
           <re-icon part="icon" name="${this.name}"></re-icon>
@@ -29,18 +26,20 @@ export class Element extends ReElement {
   }
 
   static styles = [
-    ...super.styles,
     css`
       :host {
         display: inline-block;
         color: var(--color, inherit);
+        border: none;
       }
       :host([disabled]) {
         opacity: 0.5;
       }
       button {
         border: none;
-        border-width: 0;
+        padding: 0;
+        margin: 0;
+        height: min-content;
         background: transparent;
         color: inherit;
       }
@@ -52,17 +51,23 @@ export class Element extends ReElement {
         color: inherit;
         transition: all 0.2s ease;
       }
-      re-icon:active {
+      :host(:not([disabled])) re-icon:active {
         transform: scale(0.9);
       }
       @media (hover: hover) {
         :host(:hover:not([disabled])) {
-          color: var(--re-primary-color) !important;
-          xbackground: var(--icon-button-hover-background, rgb(0 0 0 / 0.1));
+          color: var(--re-primary-color);
+
+          & re-icon::part(rough) {
+            filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
+          }
         }
         :host(:hover:active:not([disabled])) {
-          color: var(--re-primary-color) !important;
-          xbackground: var(--icon-button-active-background, rgb(0 0 0 / 0.05));
+          color: var(--re-primary-color);
+
+          & re-icon::part(rough) {
+            filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
+          }
         }
       }
     `,
