@@ -9,18 +9,18 @@ import { getIcon, getViewBox } from './re-iconset.js'
 
 @customElement('re-icon')
 export class Element extends ReElement {
-  @property({reflect: true}) icon = ''
+  @property({reflect: true}) name = ''
 
   static styles = [css`
     :host {
       display: inline-block;
       width: var(--size, 1.5rem);
       height: var(--size, 1.5rem);
+      color: var(--color, inherit);
+    }
+    .icon {
       stroke: none;
       fill: currentcolor;
-    }
-    :host([hidden]) {
-      display: none;
     }
   `]
 
@@ -31,23 +31,25 @@ export class Element extends ReElement {
   override onResized(
       _width: number,
       _height: number,
-      cstyles: CSSStyleDeclaration): SVGElement[] {
-    const d = getIcon(this.icon)
+      _cstyles: CSSStyleDeclaration): SVGElement[] {
+    const d = getIcon(this.name)
     if (!d) {
       return []
     }
 
-    this.svg.setAttribute('viewBox', getViewBox(this.icon))
+    this.svg.setAttribute('viewBox', getViewBox(this.name))
 
     // NOTE: maxRandomnessOffset was chosen to make the icons look hand drawn.
     // This is pretty subjective though.
     const options = Object.assign({
       stroke: 'none',
-      fill: cstyles.color,
+      fill: 'inherit',
       fillStyle: 'solid',
       maxRandomnessOffset: this.svg.viewBox.baseVal.width / 50,
     }, this.options)
-    return [this.rough.path(d, options)]
+    const icon = this.rough.path(d, options)
+    icon.classList.add('icon')
+    return [icon]
   }
 }
 

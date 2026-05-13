@@ -71,9 +71,12 @@ export const Mixin =
       const roughElements = super.onResized(width, height, cstyles)
 
       if (bgColour) {
+        // NOTE: `fill` is set to 'inherit' so that the colour can dynamically
+        // change based on the CSS property.  If `fill` were set to `bgColour`
+        // instead, it would override any CSS value.
         const options = Object.assign({
           maxRandomnessOffset: halfBorderWidth,
-          fill: bgColour,
+          fill: 'inherit',
           fillStyle: 'hachure',
           fillWeight: 16,  // Should match --background-stroke-width below.
           hachureGap: 17,

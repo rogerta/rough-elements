@@ -6,7 +6,12 @@
     <title>rough-elements</title>
     <script type="module" src="/src/re-card.ts"></script>
     <script type="module" src="/src/re-icon.ts"></script>
+    <script type="module" src="/src/re-icon-button.ts"></script>
     <style>
+      html {
+        --re-primary-color: rgb(0 0 238);
+      }
+
       .demo {
         display: flex;
         flex-direction: column;
@@ -32,26 +37,44 @@
       }
       #card2 {
         --border-color: blue;
+        --border-width: 1rem;
       }
       #card3 {
         max-width: 512px;
       }
+
       #icon1 {
-        color: brown;
+        --color: brown;
         background-color: rgb(from currentcolor R G B / 0.1);
       }
       #icon2 {
+        color: green;
+        --size: 64px;
+      }
+
+      #iconbutton1 {
+        --color: brown;
+      }
+      #iconbutton2 {
         --size: 64px;
       }
     </style>
   </head>
   <body>
     <div class="demo">
+      <h1>re-icon-button</h1>
+      <re-icon-button id="iconbutton1" name="back"></re-icon-button>
+      <re-icon-button id="iconbutton2" name="check"></re-icon-button>
+      <re-icon-button id="iconbutton3" name="close"></re-icon-button>
+      <re-icon-button id="iconbutton4" name="warning"></re-icon-button>
+    </div>
+
+    <div class="demo">
       <h1>re-icon</h1>
-      <re-icon id="icon1" icon="back"></re-icon>
-      <re-icon id="icon2" icon="check"></re-icon>
-      <re-icon id="icon3" icon="close"></re-icon>
-      <re-icon id="icon4" icon="warning"></re-icon>
+      <re-icon id="icon1" name="back"></re-icon>
+      <re-icon id="icon2" name="check"></re-icon>
+      <re-icon id="icon3" name="close"></re-icon>
+      <re-icon id="icon4" name="warning"></re-icon>
     </div>
 
     <div class="demo">
