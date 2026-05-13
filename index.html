@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>rough-elements</title>
     <script type="module" src="/src/re-alert.ts"></script>
+    <script type="module" src="/src/re-badge.ts"></script>
     <script type="module" src="/src/re-card.ts"></script>
     <script type="module" src="/src/re-icon.ts"></script>
     <script type="module" src="/src/re-icon-button.ts"></script>
@@ -16,7 +17,7 @@
       html {
         --re-primary-color: rgb(0 0 238);
         --re-success-color: rgb(0, 200, 0);
-        --re-newtral-color: rgb(80 80 80);
+        --re-neutral-color: rgb(64 64 64);
         --re-warning-color: rgb(200 100 0);
         --re-danger-color: rgb(238 0 0);
       }
@@ -74,6 +75,15 @@
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-badge</h1>
+      <re-badge id="badge1" variant="primary">primary</re-badge>
+      <re-badge id="badge2" variant="success">success</re-badge>
+      <re-badge id="badge3" variant="neutral">neutral</re-badge>
+      <re-badge id="badge4" variant="warning">warning</re-badge>
+      <re-badge id="badge5" variant="danger">danger</re-badge>
+    </div>
+
     <div class="demo">
       <h1>re-alert</h1>
       <re-alert id="alert1" open closable variant="primary">This is a primary alert.</re-alert>

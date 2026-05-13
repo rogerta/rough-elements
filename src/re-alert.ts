@@ -1,14 +1,15 @@
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin } from './re-border-and-background-mixin.js'
+import { Mixin as BgMixin } from './re-background-mixin.js'
+import { Mixin as BorderMixin } from './re-border-mixin.js'
 import type { VARIANTS } from './re-common.js'
 import { ReElement } from './re-element.js'
 import './re-icon.js'
 import './re-icon-button.js'
 
 @customElement('re-alert')
-export class Element extends Mixin(ReElement) {
+export class Element extends BgMixin(BorderMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) open = false
   @property({ type: Boolean, reflect: true }) closable = false
   @property({ reflect: true }) variant: VARIANTS = 'primary'

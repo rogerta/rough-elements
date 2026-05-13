@@ -1,11 +1,12 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
 
-import { Mixin } from './re-border-and-background-mixin.js'
+import { Mixin as BgMixin } from './re-background-mixin.js'
+import { Mixin as BorderMixin } from './re-border-mixin.js'
 import { ReElement } from './re-element.js'
 
 @customElement('re-card')
-export class Element extends Mixin(ReElement) {
+export class Element extends BgMixin(BorderMixin(ReElement)) {
   @query('slot[part=header', true) slotHeader!: HTMLSlotElement
   @query('slot[part=body', true) slotBody!: HTMLSlotElement
   @query('slot[part=footer', true) slotFooter!: HTMLSlotElement
