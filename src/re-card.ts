@@ -49,7 +49,6 @@ export class Element extends ReBase {
         padding: 1rem;
       }
       slot[part=image] {
-        position: relative; /* So image is above rough svg */
         margin-top: var(--img-border);
         margin-left: var(--img-border);
         margin-right: var(--img-border);
