@@ -46,7 +46,7 @@ export class Element extends Mixin(ReElement) {
         display: none;
       }
       slot:not([part=image]) {
-        padding: 1rem;
+        padding: 0.5rem 1rem;
       }
       slot[part=image] {
         margin-top: var(--img-border);
