@@ -37,9 +37,7 @@ export class Element extends Mixin(ReElement) {
     css`
       :host {
         display: inline-block;
-        --border-width: 0.5rem;
         --img-border: calc(-0.5 * var(--border-width));
-        border-width: var(--border-width);
       }
       slot {
         display: block;

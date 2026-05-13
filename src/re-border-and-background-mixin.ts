@@ -18,6 +18,11 @@ export const Mixin =
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,
       css`
+        :host {
+          --border-width: 0.5rem;
+          border-width: var(--border-width);
+        }
+
         /* Styling for the outline of shapes.  Anything that affects the stroke
         * of an SVG element can be used here.  Fill is always 'none'. */
         #rough .border .outline {

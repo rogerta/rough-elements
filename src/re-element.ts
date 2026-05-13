@@ -15,8 +15,6 @@ export type ResolvedOptions = Required<Options>
 // Some useful info that needs to be documented:
 //
 // --rough-z-index CSS prop sets the ordering of the rough elements.
-// --border-width CSS prop sets the width of the rough border.
-// --border-color CSS prop sets the colour of the rough border.
 export class ReElement extends LitElement {
   @query('svg#rough', true) private svg_?: SVGSVGElement;
 
