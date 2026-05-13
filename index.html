@@ -4,12 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>rough-elements</title>
+    <script type="module" src="/src/re-alert.ts"></script>
     <script type="module" src="/src/re-card.ts"></script>
     <script type="module" src="/src/re-icon.ts"></script>
     <script type="module" src="/src/re-icon-button.ts"></script>
     <style>
+      /* Themes
+       *
+       * Properties that useful for theming will accumulate here.
+       */
       html {
         --re-primary-color: rgb(0 0 238);
+        --re-success-color: rgb(0, 200, 0);
+        --re-newtral-color: rgb(80 80 80);
+        --re-warning-color: rgb(200 100 0);
+        --re-danger-color: rgb(238 0 0);
       }
 
       .demo {
@@ -58,15 +67,29 @@
       #iconbutton2 {
         --size: 64px;
       }
+
+      #alert1 {
+        width: 100%;
+      }
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-alert</h1>
+      <re-alert id="alert1" open closable variant="primary">This is a primary alert.</re-alert>
+      <re-alert id="alert2" open variant="success">This is a success alert.</re-alert>
+      <re-alert id="alert3" open variant="neutral">This is a neutral alert.</re-alert>
+      <re-alert id="alert4" open variant="warning">This is a warning alert.</re-alert>
+      <re-alert id="alert5" open variant="danger">This is a danger alert.</re-alert>
+    </div>
+
     <div class="demo">
       <h1>re-icon-button</h1>
       <re-icon-button id="iconbutton1" name="back"></re-icon-button>
       <re-icon-button id="iconbutton2" name="check"></re-icon-button>
       <re-icon-button id="iconbutton3" name="close"></re-icon-button>
       <re-icon-button id="iconbutton4" name="warning"></re-icon-button>
+      <re-icon-button id="iconbutton5" name="warning" disabled></re-icon-button>
     </div>
 
     <div class="demo">
