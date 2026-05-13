@@ -2,11 +2,10 @@ import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { Mixin } from './re-border-and-background-mixin.js'
+import type { VARIANTS } from './re-common.js'
 import { ReElement } from './re-element.js'
 import './re-icon.js'
 import './re-icon-button.js'
-
-export type VARIANTS = 'primary' | 'success' | 'neutral' | 'warning' | 'danger'
 
 @customElement('re-alert')
 export class Element extends Mixin(ReElement) {
@@ -141,6 +140,9 @@ export class Element extends Mixin(ReElement) {
         }
       }
       :host([variant=neutral]) {
+        --background-color:
+            rgb(from var(--re-neutral-color)
+                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
         & re-icon {
           color: var(--re-neutral-color);
         }
