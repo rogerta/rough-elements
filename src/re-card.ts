@@ -1,15 +1,15 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, query } from 'lit/decorators.js'
 
-import { ReBorderMixin } from './re-border-mixin.js'
+import { Mixin } from './re-border-and-background-mixin.js'
 import { ReElement } from './re-element.js'
 
 @customElement('re-card')
-export class Element extends ReBorderMixin(ReElement) {
-  @query('slot[part=header') slotHeader!: HTMLSlotElement
-  @query('slot[part=body') slotBody!: HTMLSlotElement
-  @query('slot[part=footer') slotFooter!: HTMLSlotElement
-  @query('slot[part=image') slotImage!: HTMLSlotElement
+export class Element extends Mixin(ReElement) {
+  @query('slot[part=header', true) slotHeader!: HTMLSlotElement
+  @query('slot[part=body', true) slotBody!: HTMLSlotElement
+  @query('slot[part=footer', true) slotFooter!: HTMLSlotElement
+  @query('slot[part=image', true) slotImage!: HTMLSlotElement
 
   override render() {
     return [

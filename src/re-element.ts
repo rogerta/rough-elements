@@ -18,15 +18,16 @@ export type ResolvedOptions = Required<Options>
 // --border-width CSS prop sets the width of the rough border.
 // --border-color CSS prop sets the colour of the rough border.
 export class ReElement extends LitElement {
-  @query('svg', true) private svg_?: SVGSVGElement;
+  @query('svg#rough', true) private svg_?: SVGSVGElement;
 
+  private observer_?: ResizeObserver
   private rough_?: RoughSVG
   private options_: Options = { seed: rough.newSeed() }
 
   get svg() { return this.svg_! }
   get rough(): RoughSVG {
-    if (!this.rough_ && this.svg_) {
-      this.rough_ = rough.svg(this.svg_)
+    if (!this.rough_) {
+      this.rough_ = rough.svg(this.svg_!)
     }
     return this.rough_!
   }
@@ -34,13 +35,36 @@ export class ReElement extends LitElement {
   get options(): Options { return this.options_}
 
   override firstUpdated(_: PropertyValues) {
+    if (!this.svg_) {
+      throw new Error('No rough svg')
+    }
     if (!this.rough) {
       throw new Error('Error creating roughness')
     }
+
+    this.observer_ = new ResizeObserver(entries => {
+      for (let entry of entries) {
+        const { width, height } = this.svg?.getBoundingClientRect()
+        const cstyles = getComputedStyle(entry.target)
+        const roughElements = this.onResized(width, height, cstyles)
+        this.svg.replaceChildren(...roughElements)
+      }
+    })
+    this.observer_.observe(this, {box: 'border-box'})
   }
 
   renderRoughSvg() {
     return html`<svg id="rough"></svg>`
+  }
+
+  // This method is meant to be overidden by derived classes to handle
+  // reizes of the element.  Any returned SVG elements will replace the
+  // current elements inside the SVG.
+  onResized(
+      _width: number,
+      _height: number,
+      _cstyles: CSSStyleDeclaration): SVGElement[] {
+    return []
   }
 
   static styles = [
@@ -70,7 +94,8 @@ export class ReElement extends LitElement {
       /* The svg element is positioned to covers the padding box of the host
        * element. Overflow is visible so the rough border (SVG sub-elements)
        * will can placed in the host's border box, which is outside the
-       * padding box. */
+       * padding box.  BY default, the svg is placed underneath the other
+       * child elements using z-index. */
       #rough {
         position: absolute;
         top: 0;

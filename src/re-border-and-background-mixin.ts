@@ -1,4 +1,4 @@
-import { css, type PropertyValues } from 'lit'
+import { css } from 'lit'
 
 import type { ReElement } from './re-element'
 
@@ -12,7 +12,7 @@ type Constructor<T = {}> = new (...args: any[]) => T
 // --background-color CSS prop sets the colour of the rough background.
 // --background-stroke-width CSS prop sets the width of the stroke used to
 //    paint the pattern background.
-export const ReBorderMixin =
+export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
     static styles = [
@@ -56,52 +56,45 @@ export const ReBorderMixin =
         }
       `]
 
-    private observer_?: ResizeObserver
+    override onResized(
+        width: number,
+        height: number,
+        cstyles: CSSStyleDeclaration): SVGElement[] {
+      const borderWidth = parseFloat(cstyles.borderWidth)
+      const halfBorderWidth = borderWidth / 2
+      const bgColour = cstyles.getPropertyValue('--background-color')
+      const roughElements = super.onResized(width, height, cstyles)
 
-    override firstUpdated(props: PropertyValues){
-      super.firstUpdated(props)
-      this.observer_ = new ResizeObserver(entries => {
-        for (let entry of entries) {
-          const { width, height } = this.svg?.getBoundingClientRect()
-          const cstyles = getComputedStyle(entry.target)
-          const borderWidth = parseFloat(cstyles.borderWidth)
-          const halfBorderWidth = borderWidth / 2
-          const bgColour = cstyles.getPropertyValue('--background-color')
-          const roughElements: SVGElement[] = []
+      if (bgColour) {
+        const options = Object.assign({
+          maxRandomnessOffset: halfBorderWidth,
+          fill: bgColour,
+          fillStyle: 'hachure',
+          fillWeight: 16,  // Should match --background-stroke-width below.
+          hachureGap: 17,
+          hachureAngle: -60,
+        }, this.options)
+        const el = this.rough.rectangle(
+            -halfBorderWidth, -halfBorderWidth,
+            width + borderWidth, height + borderWidth,
+            options)
+        el.classList.add('background')
+        roughElements.push(el)
+      }
 
-          if (bgColour) {
-            const options = Object.assign({
-              maxRandomnessOffset: halfBorderWidth,
-              fill: bgColour,
-              fillStyle: 'hachure',
-              fillWeight: 16,  // Should match --background-stroke-width below.
-              hachureGap: 17,
-              hachureAngle: -60,
-            }, this.options)
-            const el = this.rough.rectangle(
-                -halfBorderWidth, -halfBorderWidth,
-                width + borderWidth, height + borderWidth,
-                options)
-            el.classList.add('background')
-            roughElements.push(el)
-          }
+      if (borderWidth > 0) {
+        const options = Object.assign({
+          maxRandomnessOffset: halfBorderWidth,
+        }, this.options)
+        const el = this.rough.rectangle(
+            -halfBorderWidth, -halfBorderWidth,
+            width + borderWidth, height + borderWidth,
+            options)
+        el.classList.add('border')
+        roughElements.push(el)
+      }
 
-          if (borderWidth > 0) {
-            const options = Object.assign({
-              maxRandomnessOffset: halfBorderWidth,
-            }, this.options)
-            const el = this.rough.rectangle(
-                -halfBorderWidth, -halfBorderWidth,
-                width + borderWidth, height + borderWidth,
-                options)
-            el.classList.add('border')
-            roughElements.push(el)
-          }
-
-          this.svg.replaceChildren(...roughElements)
-        }
-      })
-      this.observer_.observe(this, {box: 'border-box'})
+      return roughElements
     }
   }
   return MixinClass as T;
