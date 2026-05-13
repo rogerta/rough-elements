@@ -78,9 +78,9 @@ export const Mixin =
           maxRandomnessOffset: halfBorderWidth,
           fill: 'inherit',
           fillStyle: 'hachure',
-          fillWeight: 16,  // Should match --background-stroke-width below.
-          hachureGap: 17,
-          hachureAngle: -60,
+          fillWeight: 6,
+          hachureGap: 15,
+          hachureAngle: -75,
         }, this.options)
         const el = this.rough.rectangle(
             -halfBorderWidth, -halfBorderWidth,
