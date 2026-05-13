@@ -15,23 +15,67 @@ export class Element extends Mixin(ReElement) {
   @property({ reflect: true }) variant: VARIANTS = 'primary'
   @property({ type: Number }) duration = Infinity
 
+  durationTimer_ = 0
+
   show() {
     this.open = true
   }
 
   hide() {
     this.open = false
+
+    if (this.parentElement?.id === 'reToastStack') {
+      this.remove()
+    }
   }
 
   toast() {
+    const stack = this.createToastStackIfNeeded_()
+    this.remove()
 
+    // Make sure the toast can be dismissed.
+    if (!this.closable && !Number.isFinite(this.duration)) {
+      this.duration = 3000
+    }
+
+    stack.append(this)
+    this.show()
   }
 
-  onClose_() {
+  private createToastStackIfNeeded_() {
+    let stack = this.ownerDocument.getElementById('reToastStack')
+    if (!stack) {
+      stack = this.ownerDocument.createElement('div')
+      stack.id = 'reToastStack'
+      stack.style = `
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        left: auto;
+        bottom: auto;
+        max-width: 100%;
+        z-index: 10;
+      `
+      this.ownerDocument.body.append(stack)
+    }
+    return stack
+  }
+
+  private onClose_() {
     this.hide()
   }
 
-  protected override updated(_props: PropertyValues) {
+  protected override updated(props: PropertyValues) {
+    if (props.has('duration')) {
+      if (this.durationTimer_) {
+        clearTimeout(this.durationTimer_)
+      }
+      if (Number.isFinite(this.duration))
+      this.durationTimer_ = setTimeout(() => {
+        this.hide()
+        this.durationTimer_ = 0
+      }, this.duration)
+    }
   }
 
   override render() {
@@ -72,7 +116,7 @@ export class Element extends Mixin(ReElement) {
         display: none;
         flex-direction: row;
         justify-content: space-between;
-        align-items: stretch;
+        align-items: center;
         padding: 0.25rem 0.5rem;
         gap: 0.5rem;
       }
@@ -81,13 +125,17 @@ export class Element extends Mixin(ReElement) {
       }
 
       :host([variant=primary]) {
-        --background-color: rgb(from var(--re-primary-color) R G B / 0.1);
+        --background-color:
+            rgb(from var(--re-primary-color)
+                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
         & re-icon {
           color: var(--re-primary-color);
         }
       }
       :host([variant=success]) {
-        --background-color: rgb(from var(--re-success-color) R G B / 0.1);
+        --background-color:
+            rgb(from var(--re-success-color)
+                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
         & re-icon {
           color: var(--re-success-color);
         }
@@ -98,13 +146,17 @@ export class Element extends Mixin(ReElement) {
         }
       }
       :host([variant=warning]) {
-        --background-color: rgb(from var(--re-warning-color) R G B / 0.1);
+        --background-color:
+            rgb(from var(--re-warning-color)
+                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
         & re-icon {
           color: var(--re-warning-color);
         }
       }
       :host([variant=danger]) {
-        --background-color: rgb(from var(--re-danger-color) R G B / 0.1);
+        --background-color:
+            rgb(from var(--re-danger-color)
+                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
         & re-icon {
           color: var(--re-danger-color);
         }
