@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>rough-elements</title>
     <script type="module" src="/src/re-card.ts"></script>
+    <script type="module" src="/src/re-icon.ts"></script>
     <style>
       .demo {
         display: flex;
@@ -35,9 +36,24 @@
       #card3 {
         max-width: 512px;
       }
+      #icon1 {
+        color: brown;
+        background-color: rgb(from currentcolor R G B / 0.1);
+      }
+      #icon2 {
+        --size: 64px;
+      }
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-icon</h1>
+      <re-icon id="icon1" icon="back"></re-icon>
+      <re-icon id="icon2" icon="check"></re-icon>
+      <re-icon id="icon3" icon="close"></re-icon>
+      <re-icon id="icon4" icon="warning"></re-icon>
+    </div>
+
     <div class="demo">
       <h1>re-card</h1>
       <re-card id="card1">
