@@ -9,7 +9,7 @@ import './re-icon.js'
 import './re-icon-button.js'
 
 @customElement('re-alert')
-export class Element extends BgMixin(BorderMixin(ReElement)) {
+export class Element extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) open = false
   @property({ type: Boolean, reflect: true }) closable = false
   @property({ reflect: true }) variant: VARIANTS = 'primary'

@@ -6,7 +6,7 @@ import { Mixin as BorderMixin } from './re-border-mixin.js'
 import { ReElement } from './re-element.js'
 
 @customElement('re-card')
-export class Element extends BgMixin(BorderMixin(ReElement)) {
+export class Element extends BorderMixin(BgMixin(ReElement)) {
   @query('slot[part=header', true) slotHeader!: HTMLSlotElement
   @query('slot[part=body', true) slotBody!: HTMLSlotElement
   @query('slot[part=footer', true) slotFooter!: HTMLSlotElement
