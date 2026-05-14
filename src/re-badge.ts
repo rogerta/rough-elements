@@ -21,8 +21,8 @@ export class Element extends Mixin(ReElement) {
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
     this.hachureAngle = -89
-    this.hachureWeight = 6
-    this.hachureGap = 6
+    this.hachureWeight = 3
+    this.hachureGap = 10
   }
 
   override updated(_props: PropertyValues) {
@@ -35,7 +35,7 @@ export class Element extends Mixin(ReElement) {
         display: inline-block;
         --border-width: 0;
         font-size: 0.75rem;
-        padding: 0 0.25rem;
+        padding: 0 0.125rem;
       }
       slot {
         color: white;
