@@ -1,8 +1,15 @@
 import { css } from 'lit'
 
 import type { ReElement } from './re-element'
+import { property } from 'lit/decorators.js'
 
 type Constructor<T = {}> = new (...args: any[]) => T
+
+export declare class MixinInterface {
+  hachureWeight: number
+  hachureGap: number
+  hachureAngle: number
+}
 
 // Some useful info that needs to be documented:
 //
@@ -14,6 +21,10 @@ type Constructor<T = {}> = new (...args: any[]) => T
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
+    @property({}) hachureWeight = 6
+    @property({}) hachureGap = 15
+    @property({}) hachureAngle = -75
+
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,
       css`
@@ -56,11 +67,12 @@ export const Mixin =
         // instead, it would override any CSS value.
         const options = Object.assign({
           maxRandomnessOffset: halfBorderWidth,
+          stroke: 'none',
           fill: 'inherit',
           fillStyle: 'hachure',
-          fillWeight: 6,
-          hachureGap: 15,
-          hachureAngle: -75,
+          fillWeight: this.hachureWeight,
+          hachureGap: this.hachureGap,
+          hachureAngle: this.hachureAngle,
         }, this.options)
         const el = this.rough.rectangle(
             -halfBorderWidth, -halfBorderWidth,
@@ -73,5 +85,5 @@ export const Mixin =
       return roughElements
     }
   }
-  return MixinClass as T;
+  return MixinClass as Constructor<MixinInterface> & T;
 }
