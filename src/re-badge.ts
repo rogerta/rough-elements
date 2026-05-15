@@ -34,6 +34,8 @@ export class Element extends Mixin(ReElement) {
         --border-width: 0;
         font-size: 0.75rem;
         padding: 0 0.125rem;
+        color: var(--color, ButtonText);
+        --background-color: transparent;
       }
       slot {
         color: white;
