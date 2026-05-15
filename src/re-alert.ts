@@ -125,44 +125,39 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       }
 
       :host([variant=primary]) {
-        --background-color:
-            rgb(from var(--re-primary-color)
-                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
+        --alart-bg-color: var(--re-primary-color);
         & re-icon {
           color: var(--re-primary-color);
         }
       }
       :host([variant=success]) {
-        --background-color:
-            rgb(from var(--re-success-color)
-                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
+        --alart-bg-color: var(--re-success-color);
         & re-icon {
           color: var(--re-success-color);
         }
       }
       :host([variant=neutral]) {
-        --background-color:
-            rgb(from var(--re-neutral-color)
-                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
+        --alart-bg-color: var(--re-neutral-color);
         & re-icon {
           color: var(--re-neutral-color);
         }
       }
       :host([variant=warning]) {
-        --background-color:
-            rgb(from var(--re-warning-color)
-                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
+        --alart-bg-color: var(--re-warning-color);
         & re-icon {
           color: var(--re-warning-color);
         }
       }
       :host([variant=danger]) {
-        --background-color:
-            rgb(from var(--re-danger-color)
-                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
+        --alart-bg-color: var(--re-danger-color);
         & re-icon {
           color: var(--re-danger-color);
         }
+      }
+      :host {
+        --background-color:
+            rgb(from var(--alart-bg-color)
+                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
       }
 
       re-icon, re-icon-button {
