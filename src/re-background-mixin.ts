@@ -2,10 +2,12 @@ import { css } from 'lit'
 
 import type { ReElement } from './re-element'
 import { property } from 'lit/decorators.js'
+import type { FILLSTYLE } from './re-common'
 
 type Constructor<T = {}> = new (...args: any[]) => T
 
 export declare class MixinInterface {
+  fillStyle: FILLSTYLE
   hachureWeight: number
   hachureGap: number
   hachureAngle: number
@@ -21,6 +23,7 @@ export declare class MixinInterface {
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
+    @property({}) fillStyle: FILLSTYLE = 'hachure'
     @property({}) hachureWeight = 6
     @property({}) hachureGap = 15
     @property({}) hachureAngle = -75
@@ -69,7 +72,7 @@ export const Mixin =
           maxRandomnessOffset: halfBorderWidth,
           stroke: 'none',
           fill: 'inherit',
-          fillStyle: 'hachure',
+          fillStyle: this.fillStyle,
           fillWeight: this.hachureWeight,
           hachureGap: this.hachureGap,
           hachureAngle: this.hachureAngle,

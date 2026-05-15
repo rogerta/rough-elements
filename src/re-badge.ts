@@ -20,9 +20,7 @@ export class Element extends Mixin(ReElement) {
 
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
-    this.hachureAngle = -89
-    this.hachureWeight = 3
-    this.hachureGap = 10
+    this.fillStyle = 'solid'
   }
 
   override updated(_props: PropertyValues) {
