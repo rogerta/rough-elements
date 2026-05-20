@@ -48,6 +48,13 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
 
     this.borderStyle = isTextButton ? 'none' : (this.circle ? 'circle' : 'rectangle')
     this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
+
+    ;['prefix', 'suffix'].forEach(part => {
+      const slot =
+          this.renderRoot.querySelector<HTMLSlotElement>(`slot[part=${part}]`)!
+      const hasChildren = slot.assignedNodes().length > 0
+      slot.classList.toggle('hidden', !hasChildren)
+    })
   }
 
   override render() {
@@ -105,13 +112,22 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       }
 
       slot {
-        display: contents;
+        display: block;
       }
       slot.hidden {
         display: none;
       }
+      slot[name="prefix"] {
+        margin-right: 0.25rem;
+      }
+      slot[name="suffix"] {
+        margin-left: 0.25rem;
+      }
 
       button {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         border: none;
         padding: 0;
         margin: 0;
@@ -120,7 +136,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         color: inherit;
       }
       :host(:not([circle])) {
-        padding: 0.5rem 1rem;
+        padding: 0.25rem 0.5rem;
       }
       /* Removes the focus ring only for mouse/touch interactions */
       button:focus {

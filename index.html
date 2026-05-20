@@ -85,8 +85,22 @@
       <re-button id="button4" variant="warning">Warning</re-button>
       <re-button id="button5" disabled variant="danger">Danger</re-button>
 
-      <re-button id="button6" circle><re-icon name="back"></re-icon></re-button>
+      <re-button id="button6" circle><re-icon name="arrow-back"></re-icon></re-button>
       <re-button id="button7" variant="text">Text</re-button>
+
+      <re-button id="button8">
+        <re-icon name="arrow-back" slot="prefix"></re-icon>
+        Prefix
+      </re-button>
+      <re-button id="button9">
+        <re-icon name="keyboard-arrow-down" slot="suffix"></re-icon>
+        Suffix
+      </re-button>
+      <re-button id="button9">
+        <re-icon name="arrow-back" slot="prefix"></re-icon>
+        <re-icon name="arrow-forward" slot="suffix"></re-icon>
+        Both
+      </re-button>
     </div>
 
     <div class="demo">
@@ -110,13 +124,13 @@
         This is a danger alert. This is a danger alert. This is a danger alert.
         This is a danger alert. This is a danger alert. This is a danger alert.
         This is a danger alert. This is a danger alert. This is a danger alert.
-        <re-icon-button name="back"></re-icon-button>
+        <re-icon-button name="arrow-back"></re-icon-button>
       </re-alert>
     </div>
 
     <div class="demo">
       <h1>re-icon-button</h1>
-      <re-icon-button id="iconbutton1" name="back"></re-icon-button>
+      <re-icon-button id="iconbutton1" name="arrow-back"></re-icon-button>
       <re-icon-button id="iconbutton2" name="check"></re-icon-button>
       <re-icon-button id="iconbutton3" name="close"></re-icon-button>
       <re-icon-button id="iconbutton4" name="warning"></re-icon-button>
@@ -125,7 +139,7 @@
 
     <div class="demo">
       <h1>re-icon</h1>
-      <re-icon id="icon1" name="back"></re-icon>
+      <re-icon id="icon1" name="arrow-back"></re-icon>
       <re-icon id="icon2" name="check"></re-icon>
       <re-icon id="icon3" name="close"></re-icon>
       <re-icon id="icon4" name="warning"></re-icon>
