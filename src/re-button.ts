@@ -53,9 +53,9 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
         <button>
-          <slot name="prefix" part="prefix"></slot>
+          <slot class="hidden" name="prefix" part="prefix"></slot>
           <slot part="label"></slot>
-          <slot name="suffix" part="suffix"></slot>
+          <slot class="hidden" name="suffix" part="suffix"></slot>
         </button>
       `,
     ]
@@ -102,13 +102,23 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         --button-text-shadow-color: white;
       }
 
+      slot {
+        display: contents;
+      }
+      slot.hidden {
+        display: none;
+      }
+
       button {
         border: none;
-        padding: 0.5rem 1rem;
+        padding: 0;
         margin: 0;
         height: min-content;
         background: transparent;
         color: inherit;
+      }
+      :host(:not([circle])) {
+        padding: 0.5rem 1rem;
       }
       /* Removes the focus ring only for mouse/touch interactions */
       button:focus {
