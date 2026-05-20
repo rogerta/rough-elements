@@ -51,7 +51,7 @@ export class Element extends LitElement {
         color: inherit;
         transition: all 0.2s ease;
       }
-      :host(:not([disabled])) re-icon:active {
+      :host(:not([disabled])) :active {
         transform: scale(0.9);
       }
       @media (hover: hover) {
