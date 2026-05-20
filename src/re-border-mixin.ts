@@ -1,8 +1,14 @@
 import { css } from 'lit'
+import { property } from 'lit/decorators.js'
 
-import type { ReElement } from './re-element'
+import type { ReElement } from './re-element.js'
+import type { BORDERSTYLE } from './re-common.js'
 
 type Constructor<T = {}> = new (...args: any[]) => T
+
+export declare class MixinInterface {
+    borderStyle: BORDERSTYLE
+}
 
 // Some useful info that needs to be documented:
 //
@@ -14,6 +20,8 @@ type Constructor<T = {}> = new (...args: any[]) => T
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
+    @property({}) borderStyle: BORDERSTYLE = 'rectangle'
+
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,
       css`
@@ -41,24 +49,35 @@ export const Mixin =
         width: number,
         height: number,
         cstyles: CSSStyleDeclaration): SVGElement[] {
+      const roughElements = super.onResized(width, height, cstyles)
       const borderWidth = parseFloat(cstyles.borderWidth)
       const halfBorderWidth = borderWidth / 2
-      const roughElements = super.onResized(width, height, cstyles)
 
       if (borderWidth > 0) {
         const options = Object.assign({
           maxRandomnessOffset: halfBorderWidth,
         }, this.options)
-        const el = this.rough.rectangle(
-            -halfBorderWidth, -halfBorderWidth,
-            width + borderWidth, height + borderWidth,
-            options)
-        el.classList.add('border')
-        roughElements.push(el)
+
+        let el = undefined
+        if (this.borderStyle === 'rectangle') {
+          el = this.rough.rectangle(
+              -halfBorderWidth, -halfBorderWidth,
+              width + borderWidth, height + borderWidth,
+              options)
+        } else {
+          el = this.rough.ellipse(
+              (width) / 2, (height) / 2,
+              width + borderWidth, height + borderWidth,
+              options)
+        }
+        if (el) {
+          el.classList.add('border')
+          roughElements.push(el)
+        }
       }
 
       return roughElements
     }
   }
-  return MixinClass as T;
+  return MixinClass as Constructor<MixinInterface> & T;
 }

@@ -71,12 +71,15 @@ export const Mixin =
         const options = Object.assign({
           maxRandomnessOffset: halfBorderWidth,
           stroke: 'none',
-          fill: 'inherit',
           fillStyle: this.fillStyle,
           fillWeight: this.hachureWeight,
           hachureGap: this.hachureGap,
           hachureAngle: this.hachureAngle,
         }, this.options)
+        if (this.fillStyle !== 'none') {
+          options.fill = 'inherit'
+        }
+
         const el = this.rough.rectangle(
             -halfBorderWidth, -halfBorderWidth,
             width + borderWidth, height + borderWidth,
