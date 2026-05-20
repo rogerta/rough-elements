@@ -15,11 +15,37 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   @property() href = ''
   @property() target = ''
   @property() download = ''
+  @property({ type: Boolean, reflect: true }) circle = false
   @property({ type: Boolean, reflect: true }) disabled = false
 
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
     this.fillStyle = 'solid'
+    const button = this.renderRoot.querySelector('button')
+    button?.addEventListener('keydown', this)
+    button?.addEventListener('keyup', this)
+    button?.addEventListener('blur', this)
+  }
+
+  handleEvent(e: Event) {
+    switch (e.type) {
+      case 'keydown':
+        this.classList.add('is-active')
+        break
+      case 'keyup':
+      case 'blur':
+        this.classList.remove('is-active')
+        break
+      default:
+        break
+    }
+  }
+
+  protected override updated(props: PropertyValues) {
+    if (props.has('circle') && this.circle) {
+      this.borderStyle = this.circle ? 'circle' : 'rectangle'
+      this.fillStyle = 'none'
+    }
   }
 
   override render() {
@@ -43,6 +69,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         color: var(--color, ButtonText);
         --border-color: ButtonBorder;
         --background-color: ButtonFace;
+        --button-text-shadow-color: black;
         font-size: 0.8rem;
         user-select: none;
       }
@@ -52,22 +79,27 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       :host([variant=primary]) {
         color: white;
         --background-color: var(--re-primary-color);
+        --button-text-shadow-color: white;
       }
       :host([variant=success]) {
         color: white;
         --background-color: var(--re-success-color);
+        --button-text-shadow-color: white;
       }
       :host([variant=neutral]) {
         color: white;
         --background-color: var(--re-neutral-color);
+        --button-text-shadow-color: white;
       }
       :host([variant=warning]) {
         color: white;
         --background-color: var(--re-warning-color);
+        --button-text-shadow-color: white;
       }
       :host([variant=danger]) {
         color: white;
         --background-color: var(--re-danger-color);
+        --button-text-shadow-color: white;
       }
 
       button {
@@ -91,16 +123,19 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         color: inherit;
         transition: all 0.2s ease;
       }
-      :host(:not([disabled]):active) #rough {
+      :host(:not([disabled]):active) #rough,
+      :host(:not([disabled]).is-active) #rough {
         transform: scale(0.95);
       }
 
       @media (hover: hover) {
         :host(:hover:not([disabled])) button {
-          text-shadow: 0 0 4px white;
+          text-shadow: 0 0 3px var(--button-text-shadow-color);
+          filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
         }
         :host(:hover:active:not([disabled])) button {
-          text-shadow: 0 0 4px white;
+          text-shadow: 0 0 3px var(--button-text-shadow-color);
+          filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
         }
       }
     `,
