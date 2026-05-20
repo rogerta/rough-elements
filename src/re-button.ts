@@ -81,6 +81,10 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         --button-text-shadow-color: black;
         font-size: 0.8rem;
         user-select: none;
+        cursor: pointer;
+      }
+      :host * {
+        cursor: pointer;
       }
       :host([disabled]) {
         opacity: 0.5;

@@ -31,6 +31,11 @@ export class Element extends LitElement {
         display: inline-block;
         color: var(--color, inherit);
         border: none;
+        user-select: none;
+        cursor: pointer;
+      }
+      :host * {
+        cursor: pointer;
       }
       :host([disabled]) {
         opacity: 0.5;

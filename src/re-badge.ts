@@ -36,6 +36,10 @@ export class Element extends Mixin(ReElement) {
         padding: 0 0.125rem;
         color: var(--color, ButtonText);
         --background-color: transparent;
+        cursor: default;
+      }
+      :host * {
+        cursor: default;
       }
       slot {
         color: white;
