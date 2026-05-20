@@ -44,6 +44,13 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   }
 
   protected override updated(props: PropertyValues) {
+    // Do this before the circle check.
+    if (props.has('variant') && this.variant == 'text') {
+      this.borderStyle = 'none'
+      this.fillStyle = 'none'
+    }
+
+    // Do this after the variant check.
     if (props.has('circle') && this.circle) {
       this.borderStyle = this.circle ? 'circle' : 'rectangle'
       this.fillStyle = 'none'
