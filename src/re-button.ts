@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { Mixin as BgMixin } from './re-background-mixin.js'
 import { Mixin as BorderMixin } from './re-border-mixin.js'
+import type { VARIANTS } from './re-common.js'
 import { ReElement } from './re-element.js'
 
 // Some useful info that needs to be documented:
@@ -17,6 +18,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   @property() download = ''
   @property({ type: Boolean, reflect: true }) circle = false
   @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ reflect: true }) variant: VARIANTS | 'text' = 'primary'
 
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
@@ -52,7 +54,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-        <button>
+        <button name="${this.name}">
           <slot class="hidden" name="prefix" part="prefix"></slot>
           <slot part="label"></slot>
           <slot class="hidden" name="suffix" part="suffix"></slot>
