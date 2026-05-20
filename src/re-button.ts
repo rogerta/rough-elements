@@ -18,7 +18,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   @property() download = ''
   @property({ type: Boolean, reflect: true }) circle = false
   @property({ type: Boolean, reflect: true }) disabled = false
-  @property({ reflect: true }) variant: VARIANTS | 'text' = 'primary'
+  @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
 
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
@@ -44,16 +44,18 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   }
 
   protected override updated(props: PropertyValues) {
+    const isTextButton = this.variant === 'text'
+
     // Do this before the circle check.
-    if (props.has('variant') && this.variant == 'text') {
-      this.borderStyle = 'none'
-      this.fillStyle = 'none'
+    if (props.has('variant')) {
+      this.borderStyle = isTextButton ? 'none' : 'rectangle'
+      this.fillStyle = isTextButton ? 'none' : 'solid'
     }
 
     // Do this after the variant check.
-    if (props.has('circle') && this.circle) {
+    if (!isTextButton && props.has('circle')) {
       this.borderStyle = this.circle ? 'circle' : 'rectangle'
-      this.fillStyle = 'none'
+      this.fillStyle = this.circle ? 'none' : 'solid'
     }
   }
 
