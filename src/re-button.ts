@@ -43,20 +43,11 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
     }
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(_: PropertyValues) {
     const isTextButton = this.variant === 'text'
 
-    // Do this before the circle check.
-    if (props.has('variant')) {
-      this.borderStyle = isTextButton ? 'none' : 'rectangle'
-      this.fillStyle = isTextButton ? 'none' : 'solid'
-    }
-
-    // Do this after the variant check.
-    if (!isTextButton && props.has('circle')) {
-      this.borderStyle = this.circle ? 'circle' : 'rectangle'
-      this.fillStyle = this.circle ? 'none' : 'solid'
-    }
+    this.borderStyle = isTextButton ? 'none' : (this.circle ? 'circle' : 'rectangle')
+    this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
   }
 
   override render() {

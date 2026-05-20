@@ -64,7 +64,7 @@ export const Mixin =
               -halfBorderWidth, -halfBorderWidth,
               width + borderWidth, height + borderWidth,
               options)
-        } else {
+        } else if (this.borderStyle === 'circle') {
           el = this.rough.ellipse(
               (width) / 2, (height) / 2,
               width + borderWidth, height + borderWidth,
