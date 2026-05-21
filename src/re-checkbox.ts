@@ -18,7 +18,7 @@ export class Element extends ButtonElement {
       ...super.styles,
       css`
         :host(:not([disabled]):focus-within) ::slotted([slot=prefix]) {
-          --color: blue;
+          --color: var(--re-primary-color);
         }
       `
     ]
