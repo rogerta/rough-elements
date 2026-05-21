@@ -17,7 +17,6 @@ export class Element extends ReElement {
       width: var(--size, 1.5rem);
       height: var(--size, 1.5rem);
       color: var(--color, inherit);
-      stroke-width: var(--re-stroke-width, inherit);
     }
     .icon {
       stroke: none;
