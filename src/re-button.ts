@@ -31,10 +31,20 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
 
   handleEvent(e: Event) {
     switch (e.type) {
-      case 'keydown':
-        this.classList.add('is-active')
+      case 'keydown': {
+        const ke = e as KeyboardEvent
+        if (ke.key === ' ') {
+          this.classList.add('is-active')
+        }
         break
-      case 'keyup':
+      }
+      case 'keyup': {
+        const ke = e as KeyboardEvent
+        if (ke.key === ' ') {
+          this.classList.remove('is-active')
+        }
+        break
+      }
       case 'blur':
         this.classList.remove('is-active')
         break
@@ -46,7 +56,8 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   protected override updated(_: PropertyValues) {
     const isTextButton = this.variant === 'text'
 
-    this.borderStyle = isTextButton ? 'none' : (this.circle ? 'circle' : 'rectangle')
+    this.borderStyle = isTextButton ? 'none'
+        : (this.circle ? 'circle' : 'rectangle')
     this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
 
     ;['prefix', 'suffix'].forEach(part => {
@@ -61,7 +72,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-        <button name="${this.name}">
+        <button name="${this.name}" ?disabled="${this.disabled}">
           <slot class="hidden" name="prefix" part="prefix"></slot>
           <slot part="label"></slot>
           <slot class="hidden" name="suffix" part="suffix"></slot>
@@ -78,7 +89,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         color: var(--color, ButtonText);
         --border-color: ButtonBorder;
         --background-color: ButtonFace;
-        --button-text-shadow-color: black;
+        --button-text-shadow-color: rgb(from black R G B / 0.1);
         font-size: 0.8rem;
         user-select: none;
         cursor: pointer;
