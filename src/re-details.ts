@@ -9,6 +9,7 @@ import './re-icon.js'
 @customElement('re-details')
 export class Element extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) open = false
 
   static styles = [
     ...super.styles,
@@ -16,15 +17,15 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       :host {
         display: block;
         padding: 0.5rem;
+        interpolate-size: allow-keywords;
       }
       summary::marker {
         content: '';
       }
       slot {
-        xdisplay: inline-block;
+        display: block;
       }
-      summary,
-      slot[name="summary"] {
+      summary {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -38,6 +39,28 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       details[open] slot[name=marker]::slotted(re-icon) {
         rotate: 90deg;
       }
+      ::details-content {
+        transition: height 0.2s ease,
+            opacity 0.2s ease,
+            margin-top 0.2s ease,
+            content-visibility 0.2s ease allow-discrete;
+        height: 0;
+        opacity: 0;
+        overflow: clip;
+      }
+      [open]::details-content {
+        margin-top: 0.5rem;
+        height: auto;
+        opacity: 1;
+      }
+      :host([disabled]) {
+        & slot[name=marker] re-icon {
+          opacity: 0;
+        }
+        & details {
+          pointer-events: none;
+        }
+      }
     `
   ]
 
@@ -45,12 +68,12 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-      <details>
+      <details ?open="${this.open}">
         <summary>
           <slot name="summary" part="summary"></slot>
           <slot name="marker" part="marker"><re-icon name="keyboard-arrow-right"></re-icon></slot>
         </summary>
-        <slot part="contents"></slot>
+        <slot part="content"></slot>
       </details>`
     ]
   }

@@ -79,6 +79,13 @@
       re-details {
         width: 100%;
       }
+      re-details::part(summary) {
+          font-family: monospace;
+      }
+      re-details::part(content) {
+          background-color: ButtonFace;
+          padding: 0.5rem 1rem;
+      }
       #details2 re-icon {
           rotate: none;
       }
@@ -95,13 +102,19 @@
       <re-details id="details2">
         <span slot="summary">Summary 2</span>
         <re-icon name="check" slot="marker"></re-icon>
-        Details 2
+        Details 2</br>
+        Details 2</br>
+        Details 2</br>
+        Details 2</br>
+        Details 2</br>
+        Details 2</br>
+        Details 2</br>
       </re-details>
 
-      <re-details id="details3" disabled>
+      <re-details id="details3" disabled open>
         <span slot="summary">Disabled 3</span>
-        Details 3
       </re-details>
+      <re-button id="details3Button"">Toggle enable</re-button>
     </div>
 
     <div class="demo">
@@ -200,11 +213,17 @@
       </re-card>
     </div>
     <script type="module">
-      const el = document.querySelector('#alert5 re-icon-button')
+      let el = document.querySelector('#alert5 re-icon-button')
       el.addEventListener('click', e => {
         const alert = el.parentElement
         alert.toast()
       }, { once: true})
+
+      el = document.querySelector('#details3Button')
+      el.addEventListener('click', e => {
+        const details = document.querySelector('#details3')
+        details.disabled = !details.disabled
+      })
     </script>
   </body>
 </html>
