@@ -75,14 +75,32 @@
       #alert1 {
         width: 100%;
       }
+
+      re-details {
+        width: 100%;
+      }
+      #details2 re-icon {
+          rotate: none;
+      }
     </style>
   </head>
   <body>
     <div class="demo">
       <h1>re-details</h1>
       <re-details id="details1">
-        <summary>Summary</summary>
-        Details
+        <span slot="summary">Summary 1</span>
+        Details 1
+      </re-details>
+
+      <re-details id="details2">
+        <span slot="summary">Summary 2</span>
+        <re-icon name="check" slot="marker"></re-icon>
+        Details 2
+      </re-details>
+
+      <re-details id="details3" disabled>
+        <span slot="summary">Disabled 3</span>
+        Details 3
       </re-details>
     </div>
 
