@@ -1,7 +1,7 @@
 // Copyright 2026 ChildFIRST Authors
 // Use of this source code is governed by the license in the LICENSE file.
 
-import { css } from 'lit'
+import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { ReElement } from './re-element.js'
@@ -17,12 +17,17 @@ export class Element extends ReElement {
       width: var(--size, 1.5rem);
       height: var(--size, 1.5rem);
       color: var(--color, inherit);
+      stroke-width: var(--re-stroke-width, inherit);
     }
     .icon {
       stroke: none;
       fill: currentcolor;
     }
   `]
+
+  protected override updated(_: PropertyValues) {
+    this.requestRoughRender()
+  }
 
   override render() {
     return super.renderRoughSvg()

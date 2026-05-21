@@ -16,7 +16,7 @@ export type ResolvedOptions = Required<Options>
 //
 // --rough-z-index CSS prop sets the ordering of the rough elements.
 export class ReElement extends LitElement {
-  @query('svg#rough', true) private svg_?: SVGSVGElement;
+  @query('svg#rough', true) private svg_?: SVGSVGElement
 
   private observer_?: ResizeObserver
   private rough_?: RoughSVG
@@ -41,11 +41,8 @@ export class ReElement extends LitElement {
     }
 
     this.observer_ = new ResizeObserver(entries => {
-      for (let entry of entries) {
-        const { width, height } = this.svg?.getBoundingClientRect()
-        const cstyles = getComputedStyle(entry.target)
-        const roughElements = this.onResized(width, height, cstyles)
-        this.svg.replaceChildren(...roughElements)
+      for (let _ of entries) {
+        this.requestRoughRender()
       }
     })
     this.observer_.observe(this, {box: 'border-box'})
@@ -63,6 +60,17 @@ export class ReElement extends LitElement {
       _height: number,
       _cstyles: CSSStyleDeclaration): SVGElement[] {
     return []
+  }
+
+  requestRoughRender() {
+    if (!this.svg_) {
+      throw new Error('No rough svg')
+    }
+
+    const { width, height } = this.svg.getBoundingClientRect()
+    const cstyles = getComputedStyle(this)
+    const roughElements = this.onResized(width, height, cstyles)
+    this.svg.replaceChildren(...roughElements)
   }
 
   static styles = [
