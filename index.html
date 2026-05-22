@@ -76,8 +76,11 @@
         width: 100%;
       }
 
-      re-details {
+      re-details:not(#details1) {
         width: 100%;
+      }
+      #details1 {
+        min-width: 150px;
       }
       re-details::part(summary) {
           font-family: monospace;
@@ -94,27 +97,28 @@
   <body>
     <div class="demo">
       <h1>re-details</h1>
-      <re-details id="details1">
+      <re-details id="details1" open>
         <span slot="summary">Summary 1</span>
-        Details 1
+        <div>Details 1</div>
+        <re-button>Add text</re-button>
       </re-details>
 
       <re-details id="details2">
         <span slot="summary">Summary 2</span>
         <re-icon name="check" slot="marker"></re-icon>
-        Details 2</br>
-        Details 2</br>
-        Details 2</br>
-        Details 2</br>
-        Details 2</br>
-        Details 2</br>
-        Details 2</br>
+        Details 2<br/>
+        Details 2<br/>
+        Details 2<br/>
+        Details 2<br/>
+        Details 2<br/>
+        Details 2<br/>
+        Details 2<br/>
       </re-details>
 
       <re-details id="details3" disabled open>
         <span slot="summary">Disabled 3</span>
       </re-details>
-      <re-button id="details3Button"">Toggle enable</re-button>
+      <re-button id="details3Button">Toggle enable</re-button>
     </div>
 
     <div class="demo">
@@ -213,16 +217,24 @@
       </re-card>
     </div>
     <script type="module">
-      let el = document.querySelector('#alert5 re-icon-button')
-      el.addEventListener('click', e => {
-        const alert = el.parentElement
+      document.querySelector('#alert5 re-icon-button')
+          .addEventListener('click', e => {
+        const alert = e.target.parentElement
         alert.toast()
       }, { once: true})
 
-      el = document.querySelector('#details3Button')
-      el.addEventListener('click', e => {
+      document.querySelector('#details3Button')
+          .addEventListener('click', e => {
         const details = document.querySelector('#details3')
         details.disabled = !details.disabled
+      })
+
+      document.querySelector('#details1 re-button')
+          .addEventListener('click', e => {
+        const details = document.querySelector('#details1')
+        const div = details.ownerDocument.createElement('div')
+        div.innerText = 'More text'
+        details.append(div)
       })
     </script>
   </body>

@@ -76,6 +76,9 @@ export class ReElement extends LitElement {
   static styles = [
     css`
       :host {
+        /* Make sure that z-index on #rough applies only within component */
+        isolation: isolate;
+
         /* Make sure the browser will not draw any visible border even when
          * the border width is other than zero by setting it to solid transpent.
          * This is done so that the border-width CSS property can be used to
