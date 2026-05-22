@@ -10,6 +10,7 @@
     <script type="module" src="/src/re-checkbox.ts"></script>
     <script type="module" src="/src/re-card.ts"></script>
     <script type="module" src="/src/re-details.ts"></script>
+    <script type="module" src="/src/re-dialog.ts"></script>
     <script type="module" src="/src/re-icon.ts"></script>
     <script type="module" src="/src/re-icon-button.ts"></script>
     <style>
@@ -31,6 +32,10 @@
         align-items: start;
         justify-content: start;
         gap: 1rem;
+      }
+      .demo > h1 {
+        margin-top: 2rem;
+        margin-bottom: 0;
       }
       re-card::part(header), re-card::part(footer) {
         font-weight: bold;
@@ -92,15 +97,50 @@
       #details2 re-icon {
           rotate: none;
       }
+
+      #dialog2 {
+        & [slot=title] {
+          color: red;
+          font-weight: bold;
+        }
+        & .body {
+          font-style: italic;
+          color: rgb(0 0 0 / 0.5);
+        }
+      }
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-dialog</h1>
+        <re-dialog id="dialog1">
+          <span slot="title">Simple</span>
+          This dialog body needs to be long to make it a more
+          realistic example.
+        </re-dialog>
+
+        <re-dialog id="dialog2">
+          <span slot="title">Fancy Dialog</span>
+          <re-icon-button slot="actions" name="check"></re-icon-button>
+          <re-icon-button slot="actions" name="dangerous"></re-icon-button>
+          <div class="body">
+            This dialog body needs to be long to make it a more
+            realistic example.
+          </div>
+          <re-button slot="footer">Previous</re-button>
+          <re-button variant="primary" slot="footer">Next</re-button>
+        </re-dialog>
+
+        <re-button id="dialog1Button">Open simple dialog</re-button>
+        <re-button id="dialog2Button">Open fancy dialog</re-button>
+    </div>
+
     <div class="demo">
       <h1>re-details</h1>
       <re-details id="details1" open>
         <span slot="summary">Summary 1</span>
         <div>Details 1</div>
-        <re-button>Add text</re-button>
+        <re-button variant="primary">Add text</re-button>
       </re-details>
 
       <re-details id="details2">
@@ -235,6 +275,18 @@
         const div = details.ownerDocument.createElement('div')
         div.innerText = 'More text'
         details.append(div)
+      })
+
+      document.querySelector('#dialog1Button')
+          .addEventListener('click', e => {
+        const dialog = document.querySelector('#dialog1')
+        dialog.showModal()
+      })
+
+      document.querySelector('#dialog2Button')
+          .addEventListener('click', e => {
+        const dialog = document.querySelector('#dialog2')
+        dialog.showModal()
       })
     </script>
   </body>
