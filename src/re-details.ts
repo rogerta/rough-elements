@@ -1,4 +1,4 @@
-import { css, html, type PropertyValues } from 'lit'
+import { css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { Mixin as BgMixin } from './re-background-mixin.js'
