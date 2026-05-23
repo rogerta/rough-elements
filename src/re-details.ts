@@ -71,7 +71,8 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       <details ?open="${this.open}">
         <summary>
           <slot name="summary" part="summary"></slot>
-          <slot name="marker" part="marker"><re-icon name="keyboard-arrow-right"></re-icon></slot>
+          <slot name="marker" part="marker"
+              ><re-icon name="keyboard-arrow-right"></re-icon></slot>
         </summary>
         <slot part="content"></slot>
       </details>`
