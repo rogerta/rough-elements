@@ -1,10 +1,11 @@
-import { css, html, type PropertyValues } from 'lit'
+import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { Mixin as BgMixin } from './re-background-mixin.js'
 import { Mixin as BorderMixin } from './re-border-mixin.js'
 import type { VARIANTS } from './re-common.js'
 import { ReElement } from './re-element.js'
+import './re-icon.js'
 
 // Some useful info that needs to be documented:
 //
@@ -16,6 +17,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   @property() href = ''
   @property() target = ''
   @property() download = ''
+  @property({ type: Boolean }) caret = false
   @property({ type: Boolean, reflect: true }) circle = false
   @property({ type: Boolean, reflect: true }) disabled = false
   @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
@@ -75,7 +77,10 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         <button name="${this.name}" ?disabled="${this.disabled}">
           <slot class="hidden" name="prefix" part="prefix"></slot>
           <slot part="label"></slot>
-          <slot class="hidden" name="suffix" part="suffix"></slot>
+          <slot class="hidden" name="suffix" part="suffix">
+          </slot>
+          ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
+              : nothing }
         </button>
       `,
     ]
