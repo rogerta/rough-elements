@@ -22,6 +22,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         width: 0;
         height: 0;
         border: none;
+        interpolate-size: allow-keywords;
       }
       dialog {
         box-sizing: border-box;
@@ -29,7 +30,6 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         padding: 0;
         outline: none;
         background-color: transparent;
-        max-height: 95vh;
       }
 
       re-card {
@@ -66,6 +66,44 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       #actions {
         gap: 0.5rem;
       }
+
+      :host(.top.drawer) {
+        & dialog:open {
+          transform: translateY(0);
+        }
+        & dialog {
+          margin: calc(-1 * var(--border-width));
+          --dialog-width: calc(100% + 2 * var(--border-width));
+          top: 0;
+          left: 0;
+          right: 0;
+          max-width: var(--dialog-width);
+          width: var(--dialog-width);
+          transform: translateY(-100%);
+          transition: transform 0.2s ease,
+              overlay 0.2s ease allow-discrete,
+              display 0.2s ease allow-discrete;
+        }
+
+        & dialog re-card {
+          display: block;
+        }
+      }
+
+      :host(top-right) dialog {
+      }
+
+      :host(top-bottom) dialog {
+      }
+
+      :host(top-left) dialog {
+      }
+
+      @starting-style {
+        :host(.top.drawer) dialog:open {
+          transform: translateY(-100%);
+        }
+      }
   `]
 
   showModal() {
@@ -85,7 +123,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <dialog part="dialog">
+        <dialog part="dialog" closeby="any">
           <re-card>
             <header part="header">
               <slot name="title"></slot>

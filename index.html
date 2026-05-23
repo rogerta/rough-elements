@@ -131,8 +131,15 @@
           <re-button variant="primary" slot="footer">Next</re-button>
         </re-dialog>
 
+        <re-dialog id="dialogTop" class="top drawer">
+          <span slot="title">Top</span>
+          This dialog body needs to be long to make it a more
+          realistic example.
+        </re-dialog>
+
         <re-button id="dialog1Button">Open simple dialog</re-button>
         <re-button id="dialog2Button">Open fancy dialog</re-button>
+        <re-button id="dialogTopButton">Open top drawer</re-button>
     </div>
 
     <div class="demo">
@@ -286,6 +293,12 @@
       document.querySelector('#dialog2Button')
           .addEventListener('click', e => {
         const dialog = document.querySelector('#dialog2')
+        dialog.showModal()
+      })
+
+      document.querySelector('#dialogTopButton')
+          .addEventListener('click', e => {
+        const dialog = document.querySelector('#dialogTop')
         dialog.showModal()
       })
     </script>
