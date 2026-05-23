@@ -34,7 +34,7 @@ export const Mixin =
         * of an SVG element can be used here.  Fill is always 'none'. */
         #rough .border .outline {
           fill: none;
-          stroke: var(--border-color, currentcolor);
+          stroke: var(--border-color, rgb(from currentcolor R G B / 0.5));
           stroke-dasharray: var(--re-stroke-dasharray, inherit);
           stroke-dashoffset: var(--re-stroke-dashoffset, inherit);
           stroke-linecap: var(--re-stroke-linecap, inherit);
