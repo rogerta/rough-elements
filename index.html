@@ -11,6 +11,7 @@
     <script type="module" src="/src/re-card.ts"></script>
     <script type="module" src="/src/re-details.ts"></script>
     <script type="module" src="/src/re-dialog.ts"></script>
+    <script type="module" src="/src/re-divider.ts"></script>
     <script type="module" src="/src/re-icon.ts"></script>
     <script type="module" src="/src/re-icon-button.ts"></script>
     <style>
@@ -112,9 +113,35 @@
       #dialogRight::part(dialog) {
         max-width: 15rem;
       }
+
+      #dividerDemo {
+        height: 20rem;
+
+        & div {
+          position: relative;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+          gap: 1rem;
+        }
+      }
     </style>
   </head>
   <body>
+    <div class="demo" id="dividerDemo">
+      <h1>re-divider</h1>
+      <re-divider></re-divider>
+      <re-divider style="--thickness: 10px;"></re-divider>
+      <re-divider style="--thickness: 15px;"></re-divider>
+
+      <div>
+        <re-divider vertical></re-divider>
+        <re-divider vertical style="--thickness: 10px;"></re-divider>
+        <re-divider vertical style="--thickness: 15px;"></re-divider>
+      </div>
+    </div>
+
     <div class="demo">
       <h1>re-dialog</h1>
         <re-dialog id="dialog1">
@@ -236,6 +263,8 @@
         <re-icon name="arrow-forward" slot="suffix"></re-icon>
         Both
       </re-button>
+
+      <re-button id="button10" caret>Caret</re-button>
     </div>
 
     <div class="demo">
