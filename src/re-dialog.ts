@@ -67,41 +67,97 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
         gap: 0.5rem;
       }
 
-      :host(.top.drawer) {
+      :host(.top) {
         & dialog:open {
           transform: translateY(0);
         }
         & dialog {
-          margin: calc(-1 * var(--border-width));
           --dialog-width: calc(100% + 2 * var(--border-width));
           top: 0;
           left: 0;
           right: 0;
+          bottom: auto;
           max-width: var(--dialog-width);
           width: var(--dialog-width);
           transform: translateY(-100%);
-          transition: transform 0.2s ease,
-              overlay 0.2s ease allow-discrete,
-              display 0.2s ease allow-discrete;
+        }
+      }
+
+      :host(.right) {
+        & dialog:open {
+          transform: translateX(0);
+        }
+        & dialog {
+          --dialog-height: calc(100% + 2 * var(--border-width));
+          top: 0;
+          bottom: 0;
+          right: 0;
+          left: auto;
+          max-height: var(--dialog-height);
+          height: var(--dialog-height);
+          transform: translateX(100%);
+        }
+      }
+
+      :host(.bottom) {
+        & dialog:open {
+          transform: translateY(0);
+        }
+        & dialog {
+          --dialog-width: calc(100% + 2 * var(--border-width));
+          top: auto;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          max-width: var(--dialog-width);
+          width: var(--dialog-width);
+          transform: translateY(100%);
+        }
+      }
+
+      :host(.left) {
+        & dialog:open {
+          transform: translateX(0);
+        }
+        & dialog {
+          --dialog-height: calc(100% + 2 * var(--border-width));
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: auto;
+          max-height: var(--dialog-height);
+          height: var(--dialog-height);
+          transform: translateX(-100%);
+        }
+      }
+
+      :host(.drawer) {
+        & dialog {
+          margin: calc(-1 * var(--border-width));
+          transition: transform 0.5s ease,
+              overlay 0.5s ease allow-discrete,
+              display 0.5s ease allow-discrete;
         }
 
         & dialog re-card {
           display: block;
+          width: 100%;
+          height: 100%;
         }
       }
 
-      :host(top-right) dialog {
-      }
-
-      :host(top-bottom) dialog {
-      }
-
-      :host(top-left) dialog {
-      }
-
       @starting-style {
-        :host(.top.drawer) dialog:open {
+        :host(.top) dialog:open {
           transform: translateY(-100%);
+        }
+        :host(.right) dialog:open {
+          transform: translateX(100%);
+        }
+        :host(.bottom) dialog:open {
+          transform: translateY(100%);
+        }
+        :host(.left) dialog:open {
+          transform: translateX(-100%);
         }
       }
   `]
@@ -123,8 +179,8 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <dialog part="dialog" closeby="any">
-          <re-card>
+        <dialog part="dialog" closedby="any">
+          <re-card fillStyle="solid">
             <header part="header">
               <slot name="title"></slot>
               <div id="actions">
