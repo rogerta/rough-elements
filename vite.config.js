@@ -4,7 +4,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   build: {
     lib: {
-      entry: resolve(import.meta.dirname, 'src/rough.ts'),
+      entry: resolve(import.meta.dirname, 'src/rough-elements.ts'),
       name: 'rough',
       fileName: 'rough',
     },
