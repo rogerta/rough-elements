@@ -32,7 +32,7 @@ export class Element extends ReElement {
     return super.renderRoughSvg()
   }
 
-  override onResized(
+  protected override onResized(
       _width: number,
       _height: number,
       _cstyles: CSSStyleDeclaration): SVGElement[] {

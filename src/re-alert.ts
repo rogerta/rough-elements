@@ -15,7 +15,7 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
   @property({ reflect: true }) variant: VARIANTS = 'primary'
   @property({ type: Number }) duration = Infinity
 
-  durationTimer_ = 0
+  private durationTimer_ = 0
 
   show() {
     this.open = true

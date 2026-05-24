@@ -22,15 +22,15 @@ export class ReElement extends LitElement {
   private rough_?: RoughSVG
   private options_: Options = { seed: rough.newSeed() }
 
-  get svg() { return this.svg_! }
-  get rough(): RoughSVG {
+  protected get svg() { return this.svg_! }
+  protected get rough(): RoughSVG {
     if (!this.rough_) {
       this.rough_ = rough.svg(this.svg_!)
     }
     return this.rough_!
   }
 
-  get options(): Options { return this.options_}
+  protected get options(): Options { return this.options_}
 
   override firstUpdated(_: PropertyValues) {
     if (!this.svg_) {
@@ -48,21 +48,21 @@ export class ReElement extends LitElement {
     this.observer_.observe(this, {box: 'border-box'})
   }
 
-  renderRoughSvg() {
+  protected renderRoughSvg() {
     return html`<svg xmlns="http://www.w3.org/2000/svg" id="rough" part="rough"></svg>`
   }
 
   // This method is meant to be overidden by derived classes to handle
   // reizes of the element.  Any returned SVG elements will replace the
   // current elements inside the SVG.
-  onResized(
+  protected onResized(
       _width: number,
       _height: number,
       _cstyles: CSSStyleDeclaration): SVGElement[] {
     return []
   }
 
-  requestRoughRender() {
+  protected requestRoughRender() {
     if (!this.svg_) {
       throw new Error('No rough svg')
     }

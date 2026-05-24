@@ -7,10 +7,10 @@ import { ReElement } from './re-element.js'
 
 @customElement('re-card')
 export class Element extends BorderMixin(BgMixin(ReElement)) {
-  @query('slot[part=header', true) slotHeader!: HTMLSlotElement
-  @query('slot[part=body', true) slotBody!: HTMLSlotElement
-  @query('slot[part=footer', true) slotFooter!: HTMLSlotElement
-  @query('slot[part=image', true) slotImage!: HTMLSlotElement
+  @query('slot[part=header') protected slotHeader!: HTMLSlotElement
+  @query('slot[part=body') protected slotBody!: HTMLSlotElement
+  @query('slot[part=footer') protected slotFooter!: HTMLSlotElement
+  @query('slot[part=image') protected slotImage!: HTMLSlotElement
 
   override render() {
     return [

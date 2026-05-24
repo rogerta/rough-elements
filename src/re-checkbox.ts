@@ -12,7 +12,7 @@ export class Element extends ButtonElement {
   @property({ type: Boolean, reflect: true }) checked = false
   @property({ type: Boolean, reflect: true }) indeterminate = false
 
-  caret_?: IconElement
+  private caret_?: IconElement
 
     static styles = [
       ...super.styles,

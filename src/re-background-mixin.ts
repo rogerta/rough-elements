@@ -53,7 +53,7 @@ export const Mixin =
         }
       `]
 
-    override onResized(
+    protected override onResized(
         width: number,
         height: number,
         cstyles: CSSStyleDeclaration): SVGElement[] {
