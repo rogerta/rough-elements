@@ -1,4 +1,5 @@
 import slotPlugin from './tools/cem-plugin-slot.js'
+import partPlugin from './tools/cem-plugin-part.js'
 
 export default {
   globs: ['src/**/*.ts'],
@@ -7,5 +8,5 @@ export default {
   litelement: true,
   fast: false,
   stencil: false,
-  plugins: [slotPlugin()]
-};
+  plugins: [slotPlugin(), partPlugin()]
+}

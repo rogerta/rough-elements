@@ -2,7 +2,7 @@ import { Parser } from "htmlparser2"
 
 export default function myPlugin() {
   return {
-    name: 'wc-slot',
+    name: 'wc-csspart',
 
     analyzePhase({ts, node, moduleDoc, context}) {
       const filename = node.getSourceFile()?.fileName
@@ -11,11 +11,11 @@ export default function myPlugin() {
         case ts.SyntaxKind.ClassDeclaration:
           // A class declaration is expectde happen before an html
           // template string.
-          const key = `${filename}:${node.name?.getText()}:slots`
-          context.lastClassSlotsKey = key
+          const key = `${filename}:${node.name?.getText()}:parts`
+          context.lastClassPartsKey = key
           break
         case ts.SyntaxKind.TaggedTemplateExpression:
-          if (!context.lastClassSlotsKey) {
+          if (!context.lastClassPartsKey) {
             console.log(`${filename}: have html'' but no class?`)
             break
           }
@@ -25,10 +25,10 @@ export default function myPlugin() {
             break
           }
 
-          // All the slots declared in the component accumulate here while
+          // All the parts declared in the component accumulate here while
           // parsing.  Once the parsing is complete, the slots are transferred
           // to the context.
-          let slots = []
+          let parts = []
           let comments = []
 
           const template = node.template?.getText().slice(1, -1)
@@ -36,17 +36,15 @@ export default function myPlugin() {
           if (!template) {
             break
           }
-
           const parser = new Parser({
             onopentag(tagName, attributes) {
-              if (tagName === 'slot') {
-                // If the slot is un-named, use a blank string in its place.
-                const name = attributes.name ?? ''
-                slots.push({name, comments})
+              if (attributes.part) {
+                const name = attributes.part
+                parts.push({name, comments})
               }
 
               // Always clear the comments.  We are only looking for
-              // comments that come right before the <slot>.
+              // comments that come right before the part.
               comments = []
             },
             oncomment(text) {
@@ -56,15 +54,15 @@ export default function myPlugin() {
           parser.write(template)
           parser.end()
 
-          // Add the slots to the context.  At module link time, each class
-          // will update it's module document with the correct slot info.
-          if (slots.length > 0) {
-            const contextSlotsRef = context[context.lastClassSlotsKey] || []
-            slots.forEach(value => {
+          // Add the parts to the context.  At module link time, each class
+          // will update it's module document with the correct part info.
+          if (parts.length > 0) {
+            const contextPartsRef = context[context.lastClassPartsKey] || []
+            parts.forEach(value => {
               const description =
                   value.comments?.reduce((acc, c) => acc += c, '').trim()
-              contextSlotsRef.push({name: value.name, description})
-              context[context.lastClassSlotsKey] = contextSlotsRef
+              contextPartsRef.push({name: value.name, description})
+              context[context.lastClassPartsKey] = contextPartsRef
             })
           }
           break
@@ -72,13 +70,15 @@ export default function myPlugin() {
     },
 
     moduleLinkPhase({moduleDoc, context}) {
+      // For each class declaration in the module, update it's part info
+      // as needed.
       moduleDoc.declarations
           .filter(decl => decl.kind === 'class')
           .map(decl => {
-            const key = `${moduleDoc.path}:${decl.name}:slots`
+            const key = `${moduleDoc.path}:${decl.name}:parts`
             if (context[key]) {
-              decl.slots = decl.slots || []
-              decl.slots = decl.slots.concat(context[key])
+              decl.cssParts = decl.cssParts || []
+              decl.cssParts = decl.cssParts.concat(context[key])
             }
           })
     },
