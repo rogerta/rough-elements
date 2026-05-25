@@ -1,6 +1,3 @@
-// Copyright 2026 ChildFIRST Authors
-// Use of this source code is governed by the license in the LICENSE file.
-
 // See https://fonts.google.com/icons
 
 const icons = new Map<string, string>()

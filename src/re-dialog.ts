@@ -1,6 +1,3 @@
-// Copyright 2026 ChildFIRST Authors
-// Use of this source code is governed by the license in the LICENSE file.
-
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
