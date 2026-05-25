@@ -5,7 +5,7 @@
     "useDefineForClassFields": false,
     "module": "esnext",
     "lib": ["ES2023", "DOM"],
-    "types": ["vite/client"],
+    "types": ["astro/client", "vite/client"],
     "skipLibCheck": true,
 
     /* Bundler mode */

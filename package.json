@@ -15,6 +15,10 @@
     }
   },
   "scripts": {
+    "cem": "cem analyze --dev",
+    "docs:start": "astro dev",
+    "docs:build": "astro build",
+    "docs:preview": "astro preview",
     "dev": "vite",
     "build": "vite build && tsc",
     "preview": "vite preview"
@@ -39,8 +43,12 @@
     "lit": "3.3.2"
   },
   "devDependencies": {
+    "@astrojs/starlight": "^0.39.2",
+    "@custom-elements-manifest/analyzer": "^0.11.0",
+    "astro": "^6.3.7",
     "typescript": "6.0.3",
     "vite": "8.0.11",
     "web-component-analyzer": "^2.0.0"
-  }
+  },
+  "customElements": "custom-elements.json"
 }

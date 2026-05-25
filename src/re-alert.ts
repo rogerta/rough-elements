@@ -8,11 +8,34 @@ import { ReElement } from './re-element.js'
 import './re-icon.js'
 import './re-icon-button.js'
 
+/**
+ * Alerts display important messages.  They can appear inline or as toast
+ * notifications.
+ */
 @customElement('re-alert')
 export class Element extends BorderMixin(BgMixin(ReElement)) {
+  /**
+   * Opens the alert if set to true, closes if set to false.
+   */
   @property({ type: Boolean, reflect: true }) open = false
+
+  /**
+   * If true the alert will contain an uicon button at the top right allowing
+   * the user to close the alert.  If false, the alert will close itself after
+   * after 3 seconds.
+   */
   @property({ type: Boolean, reflect: true }) closable = false
+
+  /**
+   * Specifies the alert variant to use.  Different variants show different
+   * icons and use a different colour for the background.
+   */
   @property({ reflect: true }) variant: VARIANTS = 'primary'
+
+  /**
+   * The amount of time the alert will be displayed before it closes itself.
+   * By default an alert will be displayed until programmatically closed.
+   */
   @property({ type: Number }) duration = Infinity
 
   private durationTimer_ = 0
