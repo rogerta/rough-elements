@@ -9,9 +9,16 @@ export default function myPlugin() {
 
       switch (node.kind) {
         case ts.SyntaxKind.ClassDeclaration:
-          // console.log(`rogerta ${filename}: ${node.name?.getText()}`)
+          //  console.log(`rogerta ${filename}: ${node.name?.getText()}`)
+           const key = `${filename}:${node.name?.getText()}:slots`
+          context.lastClassSlotsKey = key
           break
         case ts.SyntaxKind.TaggedTemplateExpression:
+          if (!context.lastClassSlotsKey) {
+            console.log(`rogerta ${filename}: have html'' but no class?`)
+            break
+          }
+
           let comments = []
           let slots = []
 
@@ -19,12 +26,10 @@ export default function myPlugin() {
             const template =
                 node.template?.getText().slice(1, -1)
                     .replaceAll('\n', ' ') ?? '<no-template>'
-            //console.log(`rogerta ${filename}: template==>${template.replaceAll('\n', ' ')}<==`)
-
             const parser = new Parser({
               onopentag(tagName, attributes) {
                 if (tagName === 'slot') {
-                  const name = attributes.name ?? '[default]'
+                  const name = attributes.name ?? ''
                   slots.push({name, comments})
                 }
 
@@ -39,10 +44,14 @@ export default function myPlugin() {
             parser.write(template)
             parser.end()
 
+            // Add the slots to the current class declaration.
             if (slots.length > 0) {
+              const contextSlotsRef = context[context.lastClassSlotsKey] || []
               slots.forEach(value => {
-                console.log(`rogerta ${filename}: Found slot named ${value.name}:`)
-                value.comments?.forEach( c => console.log(`rogerta ${filename}:     ${c}`))
+                const description =
+                    value.comments?.reduce((acc, c) => acc += c, '').trim()
+                contextSlotsRef.push({name: value.name, description})
+                context[context.lastClassSlotsKey] = contextSlotsRef
               })
             }
           }
@@ -50,9 +59,22 @@ export default function myPlugin() {
       }
     },
 
+    moduleLinkPhase({moduleDoc, context}) {
+      const keys = moduleDoc.declarations
+          .filter(decl => decl.kind === 'class')
+          .map(decl => {
+            const key = `${moduleDoc.path}:${decl.name}:slots`
+            // console.log(`rogerta context[${key}] orig slots = ${decl.slots}`)
+            // console.log(`rogerta context[${key}] = ${JSON.stringify(context[key])}`)
+            if (context[key]) {
+              decl.slots = decl.slots || []
+              decl.slots = decl.slots.concat(context[key])
+            }
+          })
+    },
+
     initialize({ts, customElementsManifest, context}) {},
     collectPhase({ts, node, context}){},
-    moduleLinkPhase({moduleDoc, context}){},
     packageLinkPhase({customElementsManifest, context}){},
   }
 }

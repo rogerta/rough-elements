@@ -11,15 +11,58 @@ import './re-icon.js'
 //
 // --color CSS prop sets the color of the icon.
 // --re-primary-color CSS prop sets the hover color.
+/**
+ * The Button element is an interactive element activated by a user with a
+ * mouse, keyboard, finger, voice command, or other assistive technology.
+ * Once activated, it then performs an action, such as submitting a form or
+ * opening a dialog.
+ *
+ * A Button's style can change using CSS variables.
+ */
 @customElement('re-button')
 export class Element extends BorderMixin(BgMixin(ReElement)) {
+  /**
+   * Name used when this button is part of a form submission.
+   */
   @property() name = ''
+
+  /**
+   * When not empty, the button will act like an <a> element with the
+   * specified value of href.
+   */
   @property() href = ''
+
+  /**
+   * If href is not empty, specifies the target window to open the link.
+   */
   @property() target = ''
+
+  /**
+   * If href is not empty, the browser will download the linked file to a
+   * file named by this property.
+   */
   @property() download = ''
+
+  /**
+   * If true, a caret <re-icon> will be suffixed to this button.  This is
+   * used to indicate that the button will open some kind of submenu.
+   */
   @property({ type: Boolean }) caret = false
+
+  /**
+   * If true the button will render with a round border instead of a rectangular
+   * one.  Usually the default slot is filled with a single <re-icon>.
+   */
   @property({ type: Boolean, reflect: true }) circle = false
+
+  /**
+   * If true the button is disabled and does not respond to user actions.
+   */
   @property({ type: Boolean, reflect: true }) disabled = false
+
+  /**
+   * A theme variant for the button, mostly affectings its colours.
+   */
   @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
 
   override firstUpdated(props: PropertyValues) {
@@ -75,11 +118,11 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
         <button name="${this.name}" ?disabled="${this.disabled}">
-          <!-- An element to prefix the button text. -->
+          <!-- The element that prefixes the button text. -->
           <slot class="hidden" name="prefix" part="prefix"></slot>
           <!-- The button's main body, usually just some text. -->
           <slot part="label"></slot>
-          <!-- An element to suffix the button text. -->
+          <!-- The element that suffixes the button text. -->
           <slot class="hidden" name="suffix" part="suffix"></slot>
           ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
               : nothing }
