@@ -23,9 +23,6 @@ export class Element extends Mixin(ReElement) {
     this.fillStyle = 'solid'
   }
 
-  override updated(_props: PropertyValues) {
-  }
-
   static styles = [
     ...super.styles,
     css`
