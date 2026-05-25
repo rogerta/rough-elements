@@ -1,5 +1,5 @@
 import slotPlugin from '@rogerta/cem-plugin-litelement-slots'
-import partPlugin from './tools/cem-plugin-part.js'
+import partPlugin from '@rogerta/cem-plugin-litelement-parts'
 
 export default {
   globs: ['src/**/*.ts'],
