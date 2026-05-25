@@ -105,7 +105,10 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`<re-icon part="icon" name="${this.renderIconName_()}"></re-icon>`,
-      html`<div part="message"><slot></slot></div>`,
+      html`<div part="message">
+        <!-- The main body of the alert. -->
+        <slot></slot>
+      </div>`,
       this.renderButton_(),
     ]
   }
