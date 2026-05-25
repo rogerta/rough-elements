@@ -75,11 +75,11 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
         <button name="${this.name}" ?disabled="${this.disabled}">
-          <-- An element to prefix the button text. -->
+          <!-- An element to prefix the button text. -->
           <slot class="hidden" name="prefix" part="prefix"></slot>
-          <-- The button's main body, usually just some text. -->
+          <!-- The button's main body, usually just some text. -->
           <slot part="label"></slot>
-          <-- An element to suffix the button text. -->
+          <!-- An element to suffix the button text. -->
           <slot class="hidden" name="suffix" part="suffix"></slot>
           ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
               : nothing }

@@ -5,9 +5,6 @@ export default function myPlugin() {
     name: 'wc-slot',
 
     analyzePhase({ts, node, moduleDoc, context}) {
-      // if(context.dev) {
-      // }
-
       const filename = node.getSourceFile()?.fileName
 
       switch (node.kind) {
@@ -15,24 +12,39 @@ export default function myPlugin() {
           // console.log(`rogerta ${filename}: ${node.name?.getText()}`)
           break
         case ts.SyntaxKind.TaggedTemplateExpression:
+          let comments = []
+          let slots = []
+
           if (node.tag?.getText() === 'html') {
-            const template = node.template?.getText().slice(1, -1).replaceAll('\n', ' ') ?? '<no-template>'
+            const template =
+                node.template?.getText().slice(1, -1)
+                    .replaceAll('\n', ' ') ?? '<no-template>'
             //console.log(`rogerta ${filename}: template==>${template.replaceAll('\n', ' ')}<==`)
+
             const parser = new Parser({
-              onopentag(name, attributes) {
-                // console.log(`rogerta ${filename}: opentag name=${name}`)
-                if (name !== 'slot') {
-                  return
+              onopentag(tagName, attributes) {
+                if (tagName === 'slot') {
+                  const name = attributes.name ?? '[default]'
+                  slots.push({name, comments})
                 }
 
-                console.log(`rogerta ${filename}: found slot name=${attributes.name}`)
+                // Always clear the comments.  We are only looking for
+                // comments that come right before the <slot>.
+                comments = []
               },
               oncomment(text) {
-                // console.log(`rogerta ${filename}: oncomment=${text}`)
+                comments.push(text)
               }
             })
             parser.write(template)
             parser.end()
+
+            if (slots.length > 0) {
+              slots.forEach(value => {
+                console.log(`rogerta ${filename}: Found slot named ${value.name}:`)
+                value.comments?.forEach( c => console.log(`rogerta ${filename}:     ${c}`))
+              })
+            }
           }
           break
       }
