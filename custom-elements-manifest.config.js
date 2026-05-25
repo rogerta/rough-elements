@@ -1,4 +1,4 @@
-import slotPlugin from './tools/cem-plugin-slot.js'
+import slotPlugin from '@rogerta/cem-plugin-litelement-slots'
 import partPlugin from './tools/cem-plugin-part.js'
 
 export default {
