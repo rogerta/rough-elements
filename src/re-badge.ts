@@ -6,7 +6,7 @@ import type { VARIANTS } from './re-common.js'
 import { ReElement } from './re-element.js'
 
 @customElement('re-badge')
-export class Element extends Mixin(ReElement) {
+export class BadgeElement extends Mixin(ReElement) {
   @property({ reflect: true }) variant: VARIANTS = 'primary'
 
   override render() {
@@ -62,6 +62,6 @@ export class Element extends Mixin(ReElement) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-badge': Element
+    're-badge': BadgeElement
   }
 }

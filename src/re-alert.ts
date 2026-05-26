@@ -13,7 +13,7 @@ import './re-icon-button.js'
  * notifications.
  */
 @customElement('re-alert')
-export class Element extends BorderMixin(BgMixin(ReElement)) {
+export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
   /**
    * Opens the alert if set to true, closes if set to false.
    */
@@ -199,6 +199,6 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-alert': Element
+    're-alert': AlertElement
   }
 }

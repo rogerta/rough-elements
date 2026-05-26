@@ -6,7 +6,7 @@ import { Mixin as BorderMixin } from './re-border-mixin.js'
 import { ReElement } from './re-element.js'
 
 @customElement('re-card')
-export class Element extends BorderMixin(BgMixin(ReElement)) {
+export class CardElement extends BorderMixin(BgMixin(ReElement)) {
   override render() {
     return [
       super.renderRoughSvg(),
@@ -59,6 +59,6 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-card': Element
+    're-card': CardElement
   }
 }

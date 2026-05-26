@@ -1,11 +1,11 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Element as ButtonElement } from './re-button.js'
-import { Element as IconElement } from './re-icon.js'
+import { ButtonElement } from './re-button.js'
+import { IconElement } from './re-icon.js'
 
 @customElement('re-checkbox')
-export class Element extends ButtonElement {
+export class CheckboxElement extends ButtonElement {
   @property({ type: Boolean, reflect: true }) checked = false
   @property({ type: Boolean, reflect: true }) indeterminate = false
 
@@ -57,6 +57,6 @@ export class Element extends ButtonElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-checkbox': Element
+    're-checkbox': CheckboxElement
   }
 }

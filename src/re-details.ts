@@ -7,7 +7,7 @@ import { ReElement } from './re-element.js'
 import './re-icon.js'
 
 @customElement('re-details')
-export class Element extends BorderMixin(BgMixin(ReElement)) {
+export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) disabled = false
   @property({ type: Boolean, reflect: true }) open = false
 
@@ -82,6 +82,6 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-details': Element
+    're-details': DetailsElement
   }
 }

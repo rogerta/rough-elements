@@ -5,7 +5,7 @@ import { ReElement } from './re-element.js'
 import { getIcon, getViewBox } from './re-iconset.js'
 
 @customElement('re-icon')
-export class Element extends ReElement {
+export class IconElement extends ReElement {
   @property({reflect: true}) name = ''
 
   static styles = [css`
@@ -56,6 +56,6 @@ export class Element extends ReElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-icon': Element
+    're-icon': IconElement
   }
 }

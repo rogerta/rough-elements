@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { ReElement } from './re-element.js'
 
 @customElement('re-divider')
-export class Element extends ReElement {
+export class DividerElement extends ReElement {
   @property({ type: Boolean, reflect: true }) vertical = false
 
   static styles = [css`
@@ -46,6 +46,6 @@ export class Element extends ReElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-divider': Element
+    're-divider': DividerElement
   }
 }

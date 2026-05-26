@@ -8,7 +8,7 @@ import { ReElement } from './re-element.js'
 import  './re-icon-button.js'
 
 @customElement('re-dialog')
-export class Element extends BorderMixin(BgMixin(ReElement)) {
+export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
   @property({reflect: true}) name = ''
 
   static styles = [
@@ -205,6 +205,6 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-dialog': Element
+    're-dialog': DialogElement
   }
 }

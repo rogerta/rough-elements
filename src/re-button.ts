@@ -20,7 +20,7 @@ import './re-icon.js'
  * A Button's style can change using CSS variables.
  */
 @customElement('re-button')
-export class Element extends BorderMixin(BgMixin(ReElement)) {
+export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
   /**
    * Name used when this button is part of a form submission.
    */
@@ -237,6 +237,6 @@ export class Element extends BorderMixin(BgMixin(ReElement)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-button': Element
+    're-button': ButtonElement
   }
 }

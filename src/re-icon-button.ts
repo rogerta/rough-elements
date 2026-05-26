@@ -8,7 +8,7 @@ import './re-icon.js'
 // --color CSS prop sets the color of the icon.
 // --re-primary-color CSS prop sets the hover color.
 @customElement('re-icon-button')
-export class Element extends LitElement {
+export class IconButtonElement extends LitElement {
   @property() name = ''
   @property() href = ''
   @property() target = ''
@@ -81,6 +81,6 @@ export class Element extends LitElement {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-icon-button': Element
+    're-icon-button': IconButtonElement
   }
 }
