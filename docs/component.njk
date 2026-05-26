@@ -1,0 +1,27 @@
+---
+pagination:
+  data: components
+  size: 1
+  alias: c
+permalink: "component/{{ c.tagName | slugify }}/"
+---
+<!doctype html>
+<html>
+<head>
+<title>Rough Elements</title>
+</head>
+<body>
+<h1>{{c.tagName}}</h1>
+<h2>Slots</h2>
+  <table>
+    <tr><th>Name</th><th>Description</th></tr>
+    {% for slot in c.slots %}
+    <tr><td>{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
+    {% endfor %}
+  </table>
+<h2>Properties</h2>
+<h2>Events</h2>
+<h2>Methods</h2>
+<h2>Parts</h2>
+</body>
+</html>
