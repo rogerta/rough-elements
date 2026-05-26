@@ -25,5 +25,6 @@ dist-ssr
 
 # Documentation generation.
 custom-elements.json
-.astro/
+_data
+_site
 

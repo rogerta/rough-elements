@@ -10,7 +10,7 @@ async function main() {
           m.declarations.filter(d => d.kind === 'class' && d.customElement))
 
   await mkdir('./docs/_data', { recursive: true })
-  await writeFile('./docs/_data/web-components.json', JSON.stringify(classes, null, 2))
+  await writeFile('./docs/_data/components.json', JSON.stringify(classes, null, 2))
 }
 
 await main()

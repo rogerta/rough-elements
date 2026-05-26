@@ -16,9 +16,7 @@
   },
   "scripts": {
     "cem": "cem analyze --dev",
-    "docs:start": "astro dev",
-    "docs:build": "astro build",
-    "docs:preview": "astro preview",
+    "cem2wc": "node ./tools/cem2wc.js",
     "dev": "vite",
     "build": "vite build && tsc",
     "preview": "vite preview"
@@ -43,6 +41,7 @@
     "lit": "3.3.2"
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.1.5",
     "@astrojs/starlight": "^0.39.2",
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@rogerta/cem-plugin-litelement-parts": "^1.0.0",
