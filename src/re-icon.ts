@@ -8,18 +8,21 @@ import { getIcon, getViewBox } from './re-iconset.js'
 export class IconElement extends ReElement {
   @property({reflect: true}) name = ''
 
-  static styles = [css`
-    :host {
-      display: inline-block;
-      width: var(--size, 1.5rem);
-      height: var(--size, 1.5rem);
-      color: var(--color, inherit);
-    }
-    .icon {
-      stroke: none;
-      fill: currentcolor;
-    }
-  `]
+  static styles = [
+    ...super.styles,
+    css`
+      :host {
+        display: inline-block;
+        width: var(--size, 1.5rem);
+        height: var(--size, 1.5rem);
+        color: var(--color, inherit);
+      }
+      .icon {
+        stroke: none;
+        fill: currentcolor;
+      }
+    `
+  ]
 
   protected override updated(_: PropertyValues) {
     this.requestRoughRender()
