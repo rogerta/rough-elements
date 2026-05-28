@@ -183,10 +183,15 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         display: none;
       }
       slot[name="prefix"] {
+        margin-left: -0.25rem;
         margin-right: 0.25rem;
       }
       slot[name="suffix"] {
         margin-left: 0.25rem;
+        margin-right: -0.25rem;
+      }
+      re-icon[name=keyboard-arrow-down] {
+        margin-right: -0.25rem;
       }
 
       button {
