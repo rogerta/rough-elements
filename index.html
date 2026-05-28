@@ -14,6 +14,8 @@
     <script type="module" src="/src/re-divider.ts"></script>
     <script type="module" src="/src/re-icon.ts"></script>
     <script type="module" src="/src/re-icon-button.ts"></script>
+    <script type="module" src="/src/re-menu.ts"></script>
+    <script type="module" src="/src/re-menu-item.ts"></script>
     <style>
       /* Themes
        *
@@ -115,10 +117,13 @@
       }
 
       #dividerDemo {
+        position: relative;
+        width: 50%;
         height: 20rem;
 
         & div {
           position: relative;
+          height: 20rem;
           display: flex;
           flex-direction: row;
           align-items: center;
@@ -126,9 +131,40 @@
           gap: 1rem;
         }
       }
+
+      re-menu {
+        xwidth: 50%;
+      }
+
+      re-menu-item [slot=suffix] {
+        font-size: 0.75rem;
+        font-family: monospace;
+      }
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-menu</h1>
+      <re-menu>
+        <re-menu-item>
+          <re-icon slot="prefix" name="check"></re-icon>
+          Menu item 1
+        </re-menu-item>
+        <re-menu-item>
+          Menu item 2
+          <re-icon slot="suffix" name="close"></re-icon>
+        </re-menu-item>
+        <re-menu-item>
+          Menu item 3
+          <div slot="suffix" >Ctrl+P</div>
+        </re-menu-item>
+        <re-divider></re-divider>
+        <re-menu-item>
+          Menu item 4
+        </re-menu-item>
+      </re-menu>
+    </div>
+
     <div class="demo" id="dividerDemo">
       <h1>re-divider</h1>
       <re-divider></re-divider>
