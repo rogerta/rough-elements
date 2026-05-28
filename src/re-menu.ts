@@ -19,7 +19,8 @@ export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
         padding: 0.25rem 0;
       }
       ::slotted(re-divider) {
-        --color: red;
+        --color: rgb(from black R G B / 0.5);
+        margin: 0.5rem 0;
       }
     `
   ]

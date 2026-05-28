@@ -12,15 +12,17 @@ export class DividerElement extends ReElement {
     css`
       :host {
         display: block;
-        color: var(--color, inherit);
+        stroke: var(--color, black);
         --thickness: 4px;
         width: 100%;
         height: var(--thickness);
+        margin: 0.5rem 0;
       }
       :host([vertical]) {
         display: inline-block;
         width: var(--thickness);
         height: 100%;
+        margin: 0 0.5rem;
       }
     `
   ]
@@ -37,6 +39,7 @@ export class DividerElement extends ReElement {
     const thickness = Number.parseFloat(cstyles.getPropertyValue('--thickness'))
 
     const options = Object.assign({
+       stroke: 'inherit',
     }, this.options)
 
     // The default randomness is 2 and stroke width is 1px.  This means lines

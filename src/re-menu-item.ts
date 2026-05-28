@@ -28,6 +28,7 @@ export class MenuItemElement extends LitElement {
         display: inline-block;
         flex: 1 1;
         margin-left: 0.25rem;
+        margin-right: 1rem;
       }
       @media (hover: hover) {
         :host(:not([disabled]):hover) {
