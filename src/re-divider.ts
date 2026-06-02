@@ -12,7 +12,7 @@ export class DividerElement extends ReElement {
     css`
       :host {
         display: block;
-        stroke: var(--color, black);
+        stroke: var(--color, rgb(from black R G B / 0.5));
         --thickness: 4px;
         width: 100%;
         height: var(--thickness);
