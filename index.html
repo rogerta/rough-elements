@@ -12,6 +12,7 @@
     <script type="module" src="/src/re-details.ts"></script>
     <script type="module" src="/src/re-dialog.ts"></script>
     <script type="module" src="/src/re-divider.ts"></script>
+    <script type="module" src="/src/re-dropdown.ts"></script>
     <script type="module" src="/src/re-icon.ts"></script>
     <script type="module" src="/src/re-icon-button.ts"></script>
     <script type="module" src="/src/re-menu.ts"></script>
@@ -139,6 +140,29 @@
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-dropdown</h1>
+      <re-dropdown>
+        <span slot="label">Dropdown</span>
+        <re-menu-item slot="menuitems">
+          <re-icon slot="prefix" name="check"></re-icon>
+          Menu item 1
+        </re-menu-item>
+        <re-menu-item slot="menuitems">
+          Menu item 2
+          <re-icon slot="suffix" name="close"></re-icon>
+        </re-menu-item>
+        <re-menu-item slot="menuitems">
+          Menu item 3
+          <div slot="suffix" >Ctrl+P</div>
+        </re-menu-item>
+        <re-divider slot="menuitems"></re-divider>
+        <re-menu-item slot="menuitems">
+          Menu item 4
+        </re-menu-item>
+      </re-dropdown>
+    </div>
+
     <div class="demo">
       <h1>re-menu</h1>
       <re-menu>
