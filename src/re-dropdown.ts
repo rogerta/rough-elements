@@ -15,7 +15,7 @@ export class DropdownElement extends LitElement {
       display: inline-block;
     }
     re-menu {
-      margin: calc(0.25rem + var(--border-width));
+      /* Where to position the menu dropvoer relative to the trigger */
       position-area: block-end span-inline-end;
       position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
     }
@@ -40,7 +40,7 @@ export class DropdownElement extends LitElement {
         <slot name="label"></slot>
       </re-button>
       <!-- The <re-menu> used as the popover panel. -->
-      <re-menu popover .enableDegging=true part="panel">
+      <re-menu popover part="panel">
         <!-- Holds the slots of this menu. -->
         <slot name="menuitems"></slot>
       </re-menu>
