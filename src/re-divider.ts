@@ -17,6 +17,8 @@ export class DividerElement extends ReElement {
         width: 100%;
         height: var(--thickness);
         margin: 0.5rem 0;
+        flex-grow: 0;
+        flex-shrink: 0;
       }
       :host([vertical]) {
         display: inline-block;
