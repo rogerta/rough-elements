@@ -53,6 +53,10 @@ export const Mixin =
       const borderWidth = parseFloat(cstyles.borderWidth)
       const halfBorderWidth = borderWidth / 2
 
+      if (this.enableDegging) {
+        console.log(`onResize: bw=${borderWidth} w=${width} h=${height}`)
+      }
+
       if (borderWidth > 0) {
         const options = Object.assign({
           maxRandomnessOffset: halfBorderWidth,

@@ -30,6 +30,8 @@ export class ReElement extends LitElement {
     return this.rough_!
   }
 
+  enableDegging = false
+
   protected get options(): Options { return this.options_}
 
   override firstUpdated(_: PropertyValues) {
