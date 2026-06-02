@@ -13,7 +13,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
     port: 9519,
-    allowedHosts: ['photoace.tawacentral.net'],
+    allowedHosts: ['titanium.tailb25bc6.ts.net'],
   },
 })
 
