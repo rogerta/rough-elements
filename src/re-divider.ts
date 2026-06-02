@@ -35,7 +35,6 @@ export class DividerElement extends ReElement {
       width: number,
       height: number,
       cstyles: CSSStyleDeclaration): SVGElement[] {
-    console.log(`re-divider w=${width} h=${height}`)
     const thickness = Number.parseFloat(cstyles.getPropertyValue('--thickness'))
 
     const options = Object.assign({
