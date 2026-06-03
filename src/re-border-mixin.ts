@@ -53,7 +53,7 @@ export const Mixin =
       const borderWidth = parseFloat(cstyles.borderWidth)
       const halfBorderWidth = borderWidth / 2
 
-      if (this.enableDegging) {
+      if (this.enableDebugging) {
         console.log(`onResize: bw=${borderWidth} w=${width} h=${height}`)
       }
 

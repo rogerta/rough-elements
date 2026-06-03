@@ -1,5 +1,5 @@
 import { LitElement, css, html, type PropertyValues } from 'lit'
-import { query } from 'lit/decorators.js'
+import { property, query } from 'lit/decorators.js'
 
 import rough from '@rogerta/roughjs'
 
@@ -18,6 +18,8 @@ export type ResolvedOptions = Required<Options>
 export class ReElement extends LitElement {
   @query('svg#rough', true) private svg_?: SVGSVGElement
 
+  @property({}) enableDebugging?: string
+
   private observer_?: ResizeObserver
   private rough_?: RoughSVG
   private options_: Options = { seed: rough.newSeed() }
@@ -29,8 +31,6 @@ export class ReElement extends LitElement {
     }
     return this.rough_!
   }
-
-  enableDegging = false
 
   protected get options(): Options { return this.options_}
 
