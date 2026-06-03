@@ -162,9 +162,8 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         display: inline-block;
         color: var(--color, ButtonText);
         --border-color: ButtonBorder;
-        --background-color: ButtonFace;
+        --background-color: canvas; /*ButtonFace;*/
         --button-text-shadow-color: rgb(from black R G B / 0.1);
-        font-size: 0.8rem;
         user-select: none;
         cursor: pointer;
       }
@@ -228,6 +227,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         height: min-content;
         background: transparent;
         color: inherit;
+        -webkit-tap-highlight-color: transparent;
       }
       :host(:not([circle])) {
         padding: 0.25rem 0.5rem;
