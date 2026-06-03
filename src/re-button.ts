@@ -47,7 +47,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
    * If true, a caret <re-icon> will be suffixed to this button.  This is
    * used to indicate that the button will open some kind of submenu.
    */
-  @property({ type: Boolean }) caret = false
+  @property({ type: Boolean, reflect: true }) caret = false
 
   /**
    * If true the button will render with a round border instead of a rectangular
@@ -128,13 +128,6 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
     this.borderStyle = isTextButton ? 'none'
         : (this.circle ? 'circle' : 'rectangle')
     this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
-
-    ;['prefix', 'suffix'].forEach(part => {
-      const slot =
-          this.renderRoot.querySelector<HTMLSlotElement>(`slot[part=${part}]`)!
-      const hasChildren = slot.assignedNodes().length > 0
-      slot.classList.toggle('hidden', !hasChildren)
-    })
   }
 
   override render() {
@@ -143,11 +136,11 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
       html`
         <button name="${this.name}" ?disabled="${this.disabled}">
           <!-- The element that prefixes the button text. -->
-          <slot class="hidden" name="prefix" part="prefix"></slot>
+          <slot name="prefix" part="prefix"></slot>
           <!-- The button's main body, usually just some text. -->
           <slot part="label"></slot>
           <!-- The element that suffixes the button text. -->
-          <slot class="hidden" name="suffix" part="suffix"></slot>
+          <slot name="suffix" part="suffix"></slot>
           ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
               : nothing }
         </button>
@@ -199,24 +192,19 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         --button-text-shadow-color: white;
       }
 
-      slot {
-        display: block;
-      }
-      slot.hidden {
-        display: none;
-      }
-      slot[name="prefix"] {
+      slot[name=prefix]::slotted(*) {
         margin-left: -0.25rem;
-        margin-right: 0.25rem;
       }
-      slot[name="suffix"] {
-        margin-left: 0.25rem;
+      :host(:not([caret])) slot[name=suffix]::slotted(*) {
         margin-right: -0.25rem;
       }
       re-icon[name=keyboard-arrow-down] {
         margin-right: -0.25rem;
       }
 
+      /* NOTE: an important side effect of setting the button display to flex is
+       * that the browser does not add extra width and/or height due to
+       * template whitespace nodes or descender gaps for inline-block. */
       button {
         display: flex;
         flex-direction: row;
@@ -228,6 +216,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         background: transparent;
         color: inherit;
         -webkit-tap-highlight-color: transparent;
+        transition: transform 0.2s ease;
       }
       :host(:not([circle])) {
         padding: 0.25rem 0.5rem;
@@ -243,11 +232,17 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
 
       #rough {
         color: inherit;
-        transition: all 0.2s ease;
+        transition: transform 0.2s ease;
       }
+
+      /* Button press animation */
       :host(:not([disabled]):active) #rough,
       :host(:not([disabled]).is-active) #rough {
         transform: scale(0.95);
+      }
+      :host([variant=text]:not([disabled]):active) button,
+      :host([variant=text]:not([disabled]).is-active) button {
+        transform: scale(0.9);
       }
 
       @media (hover: hover) {

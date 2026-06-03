@@ -18,9 +18,7 @@ export class IconButtonElement extends LitElement {
   override render() {
     return [
       html`
-        <button>
-          <re-icon part="icon" name="${this.name}"></re-icon>
-        </button>
+        <button><re-icon part="icon" name="${this.name}"></re-icon></button>
       `,
     ]
   }
@@ -40,7 +38,14 @@ export class IconButtonElement extends LitElement {
       :host([disabled]) {
         opacity: 0.5;
       }
+
+      /* NOTE: the button display is set to flex so that the browser does not
+       * add extra width and/or height due to template whitespace nodes or
+       * descender gaps for inline-block. */
       button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border: none;
         padding: 0;
         margin: 0;
@@ -52,6 +57,7 @@ export class IconButtonElement extends LitElement {
       button:focus:not(:focus-visible) {
         outline: none;
       }
+
       re-icon {
         color: inherit;
         transition: all 0.2s ease;
