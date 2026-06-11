@@ -15,6 +15,30 @@ export class IconButtonElement extends LitElement {
   @property() download = ''
   @property({ type: Boolean, reflect: true }) disabled = false
 
+  /**
+   * Sets this button to be a trigger for a popover element once the button
+   * finishes it's update cycle (that is, it's `updateComplete` promise
+   * resolves).
+   *
+   * `setPopoverTarget` is needed to allow targets from different shawdow root
+   * boundaries to be used.
+   *
+   * @param target The popover target element.  This element is expected to
+   *    have the `popover` attribute.  It's anchor will be set this button.
+   */
+  setPopoverTarget(target: HTMLElement | null) {
+    this.updateComplete.then(() => {
+      const button = this.renderRoot.querySelector('button')
+      if (button) {
+        // Note: These properties need to be set via javascript and not in the
+        // CSS.  However I'm not exactly sure why.
+        button.style.setProperty('anchor-name', '--re-button-trigger')
+        button.style.setProperty('position-anchor', '--re-button-trigger')
+        button.popoverTargetElement = target
+      }
+    })
+  }
+
   override render() {
     return [
       html`
