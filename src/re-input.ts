@@ -129,6 +129,7 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
         <slot class="hidden" name="suffix" part="suffix">
           ${this.type === 'password'
               ? html`<re-icon-button name="${this.renderPasswordIconName_()}"
+                    ?disabled="${this.disabled}"
                     @click="${this.onVisibility_}"></re-icon-button>`
               : nothing }
         </slot>
