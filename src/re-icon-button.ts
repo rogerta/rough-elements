@@ -18,7 +18,8 @@ export class IconButtonElement extends LitElement {
   override render() {
     return [
       html`
-        <button><re-icon part="icon" name="${this.name}"></re-icon></button>
+        <button ?disabled="${this.disabled}"><re-icon
+            part="icon" name="${this.name}"></re-icon></button>
       `,
     ]
   }
