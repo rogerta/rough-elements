@@ -142,9 +142,10 @@ export class MenuItemElement extends LitElement {
         const target = e.target as HTMLElement
 
         // If the clicked element is not in either the shadow or light DOMs
-        // of this element, ignore it.  It is likely to be the submenu item.
+        // of this element, ignore it.  It is likely to be a submenu item.
+        const root = target.getRootNode()
         const parent = target.parentNode
-        if ((parent !== this.renderRoot) && (parent !== this)) {
+        if ((root !== this.renderRoot) && (parent !== this)) {
           break
         }
 
