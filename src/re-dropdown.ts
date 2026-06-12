@@ -20,7 +20,7 @@ export class DropdownElement extends LitElement {
     re-menu {
       /* Where to position the menu dropvoer relative to the trigger */
       position-anchor: --menu-anchor;
-      position-area: block-end;
+      position-area: bottom span-right;
       position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
     }
   `]

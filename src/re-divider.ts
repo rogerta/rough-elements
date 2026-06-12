@@ -14,6 +14,8 @@ export class DividerElement extends ReElement {
         display: block;
         stroke: var(--color, rgb(from black R G B / 0.5));
         --thickness: 4px;
+        border-width: 0;
+        box-sizing: content-box;
         width: 100%;
         height: var(--thickness);
         margin: 0.5rem 0;

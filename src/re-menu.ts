@@ -52,7 +52,6 @@ export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
       }
       :host(:not([popover])),
       :host([popover]:popover-open) {
-        margin: var(--border-width); /* Visually nicer */
         display: inline-flex;
         overflow: visible;  /* Needed so that menu border is visible */
       }
