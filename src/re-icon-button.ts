@@ -30,10 +30,6 @@ export class IconButtonElement extends LitElement {
     this.updateComplete.then(() => {
       const button = this.renderRoot.querySelector('button')
       if (button) {
-        // Note: These properties need to be set via javascript and not in the
-        // CSS.  However I'm not exactly sure why.
-        button.style.setProperty('anchor-name', '--re-button-trigger')
-        button.style.setProperty('position-anchor', '--re-button-trigger')
         button.popoverTargetElement = target
       }
     })
@@ -42,8 +38,9 @@ export class IconButtonElement extends LitElement {
   override render() {
     return [
       html`
-        <button ?disabled="${this.disabled}"><re-icon
-            part="icon" name="${this.name}"></re-icon></button>
+        <button ?disabled="${this.disabled}" part="button">
+          <re-icon part="icon" name="${this.name}"></re-icon>
+        </button>
       `,
     ]
   }

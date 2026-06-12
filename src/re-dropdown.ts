@@ -14,9 +14,13 @@ export class DropdownElement extends LitElement {
     :host {
       display: inline-block;
     }
+    re-button[part="trigger"]::part(button) {
+      anchor-name: --menu-anchor;
+    }
     re-menu {
       /* Where to position the menu dropvoer relative to the trigger */
-      position-area: block-end span-inline-end;
+      position-anchor: --menu-anchor;
+      position-area: block-end;
       position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
     }
   `]

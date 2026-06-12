@@ -89,10 +89,6 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
     this.updateComplete.then(() => {
       const button = this.renderRoot.querySelector('button')
       if (button) {
-        // Note: These properties need to be set via javascript and not in the
-        // CSS.  However I'm not exactly sure why.
-        button.style.setProperty('anchor-name', '--re-button-trigger')
-        button.style.setProperty('position-anchor', '--re-button-trigger')
         button.popoverTargetElement = target
       }
     })
@@ -134,7 +130,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-        <button name="${this.name}" ?disabled="${this.disabled}">
+        <button name="${this.name}" ?disabled="${this.disabled}" part="button">
           <!-- The element that prefixes the button text. -->
           <slot name="prefix" part="prefix"></slot>
           <!-- The button's main body, usually just some text. -->
