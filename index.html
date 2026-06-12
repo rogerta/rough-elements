@@ -195,34 +195,42 @@
 
     <div class="demo">
       <h1>re-menu</h1>
-      <re-menu>
-        <re-menu-item>
+      <re-menu id="menu1">
+        <re-menu-item id="item0">
+          Menu item no hover highlight
+        </re-menu-item>
+        <re-menu-item id="item1">
           <re-icon slot="prefix" name="check"></re-icon>
           <span>Menu item 1</span>
         </re-menu-item>
-        <re-menu-item>
+        <re-menu-item id="item2">
           <span>Menu item 2</span>
           <re-icon slot="suffix" name="close"></re-icon>
         </re-menu-item>
-        <re-menu-item>
+        <re-menu-item id="item3">
           <span>Menu item 3</span>
           <div slot="suffix" >Ctrl+P</div>
         </re-menu-item>
         <re-divider></re-divider>
-        <re-menu-item>
+        <re-menu-item id="item4">
           <span>Menu item 4</span>
-          <re-menu popover slot="submenu">
-            <re-menu-item>
+          <re-menu id="menu2" popover slot="submenu">
+            <re-menu-item id="item41">
               <re-icon slot="prefix" name="check"></re-icon>
               <span>Menu item 1</span>
             </re-menu-item>
-            <re-menu-item>
+            <re-menu-item id="item42">
               <span>Menu item 2</span>
               <re-icon slot="suffix" name="close"></re-icon>
             </re-menu-item>
-            <re-menu-item>
+            <re-menu-item id="item43">
               <span>Menu item 3</span>
               <div slot="suffix" >Ctrl+P</div>
+              <re-menu id="menu3" popover slot="submenu">
+                <re-menu-item id="item431">
+                  <span>Menu item 1</span>
+                </re-menu-item>
+              </re-menu>
             </re-menu-item>
           </re-menu>
         </re-menu-item>
@@ -431,6 +439,8 @@
       </re-card>
     </div>
     <script type="module">
+      import { getIdOfMenuitem } from '/src/re-menu-item.ts'
+
       document.querySelector('#alert5 re-icon-button')
           .addEventListener('click', e => {
         const alert = e.target.parentElement
@@ -492,6 +502,11 @@
         document.querySelectorAll('re-input').forEach(input => {
           input.disabled = !input.disabled
         })
+      })
+
+      document.querySelector('#menu1')
+          .addEventListener('click', e => {
+        console.log(`clicked menu item ${getIdOfMenuitem(e)}`)
       })
     </script>
   </body>
