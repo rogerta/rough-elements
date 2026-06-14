@@ -1,5 +1,5 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 
 import './re-button.js'
 import './re-menu.js'
@@ -10,9 +10,15 @@ import './re-menu.js'
  */
 @customElement('re-dropdown')
 export class DropdownElement extends LitElement {
+   /**
+    * If true the button is disabled and does not respond to user actions.
+    */
+   @property({ type: Boolean, reflect: true }) disabled = false
+
   static styles = [css`
     :host {
       display: inline-block;
+      font: caption;  /* Use the system menu font. */
     }
     re-button[part="trigger"]::part(button) {
       anchor-name: --menu-anchor;
@@ -38,17 +44,21 @@ export class DropdownElement extends LitElement {
   override render() {
     return html`
       <!-- The button that triggers opening the panel. -->
-      <re-button part="trigger" caret>
+      <re-button part="trigger" caret ?disabled="${this.disabled}">
         <!-- The slot used as the label for the trigger button.
              Usually this is some short text. -->
-        <slot name="label"></slot>
+        <slot name="label">${this.renderLabelDefault_()}</slot>
       </re-button>
       <!-- The <re-menu> used as the popover panel. -->
       <re-menu popover part="panel">
         <!-- Holds the slots of this menu. -->
-        <slot name="menuitems"></slot>
+        <slot></slot>
       </re-menu>
     `
+  }
+
+  renderLabelDefault_(): Node[] {
+    return []
   }
 }
 

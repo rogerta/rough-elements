@@ -10,6 +10,20 @@ export type Config = NonNullable<Parameters<typeof rough.generator>[0]>
 export type Options = NonNullable<Config['options']>
 export type ResolvedOptions = Required<Options>
 
+/**
+ * Fires a custom event with the given type and detail.
+ *
+ * @param el An element to fire the event.
+ * @param type The event's type.
+ * @param detail Extra info.
+ */
+export function fire(el: EventTarget, type: string, detail?: any) {
+  el.dispatchEvent(new CustomEvent(type, {
+    detail,
+    composed: true,
+  }))
+}
+
 // The baseclass for all rough elements.
 //
 // Some useful info that needs to be documented:
