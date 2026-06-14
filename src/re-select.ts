@@ -65,9 +65,11 @@ export class SelectElement extends DropdownElement {
         if (item) {
           this.unselectAllItems_()
           item.selected = !item.selected
-          this.value = item.id
-          this.labelNodes_ = item.getLabelNodes()
-          fire(this, 'change')
+          if (this.value !== item.id) {
+            this.value = item.id
+            this.labelNodes_ = item.getLabelNodes()
+            fire(this, 'change')
+          }
         }
         break
       }

@@ -15,6 +15,11 @@ export class ItemElement extends LitElement {
    */
   @property({ type: Boolean, reflect: true }) selected = false
 
+  /**
+   * If true the button is disabled and does not respond to user actions.
+   */
+  @property({ type: Boolean, reflect: true }) disabled = false
+
   static styles = [
     css`
       :host {
@@ -29,6 +34,10 @@ export class ItemElement extends LitElement {
       }
       :host([selected]) {
         background: rgb(from var(--re-primary-color) R G B / 0.1);
+      }
+      :host([disabled]) {
+        opacity: 0.5;
+        cursor: default;
       }
 
       slot[name=prefix]::slotted(*),
@@ -48,11 +57,11 @@ export class ItemElement extends LitElement {
       }
 
       @media (hover: hover) {
-        :host(:hover) {
+        :host(:hover:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
           filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
         }
-        :host(:hover:active) {
+        :host(:hover:active:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
           filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
         }
@@ -64,7 +73,7 @@ export class ItemElement extends LitElement {
    * Gets the Nodes that make up this item.  This is useful for determining the
    * label of a selected item in a `<re-select>` element, for example.
    *
-   * @returns An array of Nodes that can be ued
+   * @returns An array of Nodes that can be used to determine the label.
    */
   getLabelNodes() {
     let nodes1: Node[] = []
@@ -91,7 +100,7 @@ export class ItemElement extends LitElement {
     return nodes
   }
 
-  override render() {
+  override render(): unknown {
     return html`
       <!-- Slot used to hold the item prefix.  Often this is an <re-icon>. -->
       <slot name="prefix"><re-icon></re-icon></slot>
@@ -116,10 +125,11 @@ declare global {
 
 /**
  * Given an Event (usually a `click` event), returns the ID of the closest
- * element to the event's target that matches the given selector.  This
- * function is helpful since clicking the prefix/suffix/body part of the item
- * could cause the target of the event to be that part, complicating item
- * detection.
+ * <re-item> that is not disabled.  This function is helpful since clicking
+ * the prefix/suffix/body part of the item could cause the target of the event
+ * to be that part, complicating item detection.
+ *
+ * Note that web components that derive from <re-item> are also detected.
  *
  * The intended use of this function is as follows:
  *
@@ -132,8 +142,8 @@ declare global {
  * ```
  * ```js
  * document.querySelector('re-menu').addEventListener('click', e => {
- *   const id = getIdOfItem(e)
- *   switch (id) {
+ *   const item = getItemFromEvent(e)
+ *   switch (item?.id) {
  *     case 'item1':
  *        ...
  *        break
@@ -147,17 +157,16 @@ declare global {
  * })
  * ```
  *
- * @param e An event.  This is usually a click event on an item that is
+ * @param e An event.  This is usually a click event on an element that is
  *    located inside an `<re-menu>` or `<re-select>` element.
- * @param selector The selector to match.  By default, this is `re-item`.
  *
- * @returns The item or undefined if something other than a menu item
- *    is clicked.
+ * @returns The <re-item>, or null if something other than an <re-item> was
+ *    clicked.
  */
-export function getItemFromEvent<T extends ItemElement>(
-    e: Event, selector='re-item') {
-  if (e.target instanceof HTMLElement) {
-    return e.target.closest<T>(selector)
+export function getItemFromEvent(e: Event) {
+  let target = e.target instanceof HTMLElement ? e.target : null
+  while (target && !(target instanceof ItemElement)) {
+    target = target.parentElement
   }
-  return undefined
+  return target && target.getAttribute('disabled') === null ? target : null
 }

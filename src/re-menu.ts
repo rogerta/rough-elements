@@ -4,6 +4,7 @@ import { customElement } from 'lit/decorators.js'
 import { Mixin as BgMixin } from './re-background-mixin.js'
 import { Mixin as BorderMixin } from './re-border-mixin.js'
 import { ReElement } from './re-element.js'
+import { getItemFromEvent } from './re-item.js'
 
 /**
  * Shows a menu as typically seen in a dropdown or context menu.  Usually
@@ -20,11 +21,11 @@ import { ReElement } from './re-element.js'
  * </re-menu>
  * ```
  * ```js
- * import { getIdOfMenuitem } from 'rough-elements/re-menu-item.ts'
+ * import { getItemFromEvent } from 'rough-elements/re-item.ts'
  *
  * onMenuClicked_(e: Event) {
- *   const id = getIdOfMenuitem(e)
- *   switch (id) {
+ *   const item = getItemFromEvent(e, 're-menu-item')
+ *   switch (item?.id) {
  *     case 'item1':
  *        ...
  *        break
@@ -61,7 +62,9 @@ export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
   handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
-        if (this.matches(':popover-open')) {
+        // Only close the menu if the user clicked on an <re-menu-item>.
+        if (this.matches(':popover-open') &&
+            getItemFromEvent(e)) {
           this.hidePopover()
         }
         break
