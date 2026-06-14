@@ -213,6 +213,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         color: inherit;
         -webkit-tap-highlight-color: transparent;
         transition: transform 0.2s ease;
+        font: caption;  /* Use the system menu font. */
       }
       :host(:not([circle])) {
         padding: 0.25rem 0.5rem;
