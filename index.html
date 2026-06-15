@@ -586,13 +586,13 @@
       const progress = document.querySelector('re-progress')
       progress.min = MIN
       progress.max = MAX
-      progress.value = MIN
+      //progress.value = MIN
       document.querySelector('#toggleProgress')
           .addEventListener('click', e => {
         if (handle === 0) {
           e.target.innerText = 'Stop'
           handle = setInterval(() => {
-            progress.value += inc
+            progress.value = (progress.value ?? MIN) + inc
             if (progress.value < MIN || progress.value > MAX) {
               inc *= -1
             }

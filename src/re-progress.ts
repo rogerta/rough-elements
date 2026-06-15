@@ -10,13 +10,14 @@ export class CardElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) showValue = false
   @property({ type: Number }) min = 0
   @property({ type: Number }) max = 1
-  @property({ type: Number }) value = 0
+  @property({ type: Number }) value?: number
 
   constructor() {
     super()
     this.hachureGap = 7
     this.hachureAngle = -15
     this.fillStyle = 'zigzag'
+    this.fillFraction = 0
   }
 
   override render() {
@@ -29,7 +30,7 @@ export class CardElement extends BorderMixin(BgMixin(ReElement)) {
   }
 
   renderValue_() {
-    return this.showValue ? this.value.toFixed(1) : ''
+    return this.showValue && this.value ? this.value.toFixed(1) : ''
   }
 
   override updated(props: PropertyValues) {
@@ -47,14 +48,17 @@ export class CardElement extends BorderMixin(BgMixin(ReElement)) {
       }
     }
 
-    if (this.value < this.min) {
-      this.value = this.min
-    } else if (this.value > this.max) {
-      this.value = this.max
+    if (this.value !== undefined) {
+      if (this.value < this.min) {
+        this.value = this.min
+      } else if (this.value > this.max) {
+        this.value = this.max
+      }
     }
 
     if(props.has('value')) {
-      this.fillFraction = (this.value - this.min) / (this.max - this.min)
+      const value = this.value ?? this.min
+      this.fillFraction = (value - this.min) / (this.max - this.min)
       const label = this.renderRoot.querySelector('div')
       if (label) {
         if (this.fillFraction < 0.5) {
