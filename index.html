@@ -488,6 +488,12 @@
         alert.toast()
       }, { once: true})
 
+      document.querySelectorAll('re-details').forEach(details => {
+        details.addEventListener('toggle', e => {
+          console.log('Details toggled, open=' + e.target.open)
+        })
+      })
+
       document.querySelector('#details3Button')
           .addEventListener('click', e => {
         const details = document.querySelector('#details3')

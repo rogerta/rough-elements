@@ -1,9 +1,9 @@
-import { css, html } from 'lit'
+import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { Mixin as BgMixin } from './re-background-mixin.js'
 import { Mixin as BorderMixin } from './re-border-mixin.js'
-import { ReElement } from './re-element.js'
+import { fire, ReElement } from './re-element.js'
 import './re-icon.js'
 
 @customElement('re-details')
@@ -64,11 +64,23 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
     `
   ]
 
+  protected updated(props: PropertyValues) {
+    super.updated(props)
+    if (props.has('open')) {
+      fire(this, 'toggle', {open: this.open})
+    }
+  }
+
+  private onToggle_(e: ToggleEvent) {
+    const target = e.target as HTMLDetailsElement
+    this.open = target?.open ?? false
+  }
+
   protected render() {
     return [
       this.renderRoughSvg(),
       html`
-      <details ?open="${this.open}">
+      <details ?open="${this.open}" @toggle="${this.onToggle_}">
         <summary>
           <slot name="summary" part="summary"></slot>
           <slot name="marker" part="marker"
