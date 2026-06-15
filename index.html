@@ -19,6 +19,7 @@
     <script type="module" src="/src/re-item.ts"></script>
     <script type="module" src="/src/re-menu.ts"></script>
     <script type="module" src="/src/re-menu-item.ts"></script>
+    <script type="module" src="/src/re-progress.ts"></script>
     <script type="module" src="/src/re-select.ts"></script>
     <style>
       /* Themes
@@ -140,9 +141,19 @@
         font-size: 0.75rem;
         font-family: monospace;
       }
+
+      re-progress {
+        width: 80%;
+      }
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-progress</h1>
+      <re-progress showValue="true"></re-progress>
+      <re-button id="toggleProgress">Start</re-button>
+    </div>
+
     <div class="demo">
       <h1>re-select</h1>
       <re-select value="item1">
@@ -482,6 +493,11 @@
     <script type="module">
       import { getItemFromEvent } from '/src/re-item.ts'
 
+      let handle = 0
+      const MIN = 10
+      const MAX = 400
+      let inc = (MAX - MIN) * 0.0125
+
       document.querySelector('#alert5 re-icon-button')
           .addEventListener('click', e => {
         const alert = e.target.parentElement
@@ -565,6 +581,27 @@
       document.querySelector('re-select')
           .addEventListener('change', e => {
         console.log(`clicked option ${e.target.value}`)
+      })
+
+      const progress = document.querySelector('re-progress')
+      progress.min = MIN
+      progress.max = MAX
+      progress.value = MIN
+      document.querySelector('#toggleProgress')
+          .addEventListener('click', e => {
+        if (handle === 0) {
+          e.target.innerText = 'Stop'
+          handle = setInterval(() => {
+            progress.value += inc
+            if (progress.value < MIN || progress.value > MAX) {
+              inc *= -1
+            }
+          }, 50)
+        } else {
+          e.target.innerText = 'Start'
+          clearInterval(handle)
+          handle = 0
+        }
       })
     </script>
   </body>

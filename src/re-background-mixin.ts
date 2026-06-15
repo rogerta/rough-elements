@@ -8,6 +8,7 @@ type Constructor<T = {}> = new (...args: any[]) => T
 
 export declare class MixinInterface {
   fillStyle: FILLSTYLE
+  fillFraction: number
   hachureWeight: number
   hachureGap: number
   hachureAngle: number
@@ -25,6 +26,7 @@ export const Mixin =
     @property({}) hachureWeight = 6
     @property({}) hachureGap = 15
     @property({}) hachureAngle = -75
+    @property({}) fillFraction = 1
 
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,
@@ -66,6 +68,7 @@ export const Mixin =
         // NOTE: `fill` is set to 'inherit' so that the colour can dynamically
         // change based on the CSS property.  If `fill` were set to `bgColour`
         // instead, it would override any CSS value.
+
         const options = Object.assign({
           maxRandomnessOffset: halfBorderWidth,
           stroke: 'none',
@@ -78,9 +81,13 @@ export const Mixin =
           options.fill = 'inherit'
         }
 
+        // NOTE: the fraction is used for implementing a "progress" effect.
+        // See <re-progress>.
+        const finalWidth = this.fillFraction * (width + borderWidth)
+
         const el = this.rough.rectangle(
             -halfBorderWidth, -halfBorderWidth,
-            width + borderWidth, height + borderWidth,
+            finalWidth, height + borderWidth,
             options)
         el.classList.add('background')
         roughElements.push(el)
