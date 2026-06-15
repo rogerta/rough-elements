@@ -21,11 +21,13 @@ export class CheckboxElement extends ButtonElement {
     ]
 
   override firstUpdated(props: PropertyValues) {
+    super.firstUpdated(props)
+
     this.variant = 'text'
     this.fillStyle = 'none'
     this.borderStyle = 'none'
 
-    // Add a caret suffix.
+    // Insert a prefix to the button by adding an icon to the light DOM.
     this.caret_ = this.ownerDocument.createElement('re-icon')
     if (this.caret_) {
       this.caret_.name = 'checkbox-outline-blank'
@@ -42,7 +44,6 @@ export class CheckboxElement extends ButtonElement {
       this.checked = !this.checked
       this.indeterminate = false
     })
-    super.firstUpdated(props)
   }
 
   protected override updated(props: PropertyValues) {

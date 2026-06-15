@@ -21,6 +21,7 @@
     <script type="module" src="/src/re-menu-item.ts"></script>
     <script type="module" src="/src/re-progress.ts"></script>
     <script type="module" src="/src/re-select.ts"></script>
+    <script type="module" src="/src/re-radio.ts"></script>
     <style>
       /* Themes
        *
@@ -148,6 +149,16 @@
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-radio</h1>
+      <re-radio name="group1" id="radio1" checked>Group 1</re-radio>
+      <re-radio name="group1" id="radio2">Group 1</re-radio>
+      <re-radio name="group1" id="radio3" disabled checked>Group 1</re-radio>
+
+      <re-radio name="group2" id="radio2">Group 2</re-radio>
+      <re-radio name="group2" id="radio4" checked disabled>Group 2</re-radio>
+    </div>
+
     <div class="demo">
       <h1>re-progress</h1>
       <re-progress showValue="true"></re-progress>
@@ -386,7 +397,7 @@
       <re-checkbox id="checkbox2" checked>Checked</re-checkbox>
       <re-checkbox id="checkbox3" indeterminate>Indeterminate</re-checkbox>
       <re-checkbox id="checkbox4" disabled>Disabled</re-checkbox>
-      <re-checkbox id="checkbox4" checked disabled>Checked Disabled</re-checkbox>
+      <re-checkbox id="checkbox5" checked disabled>Checked Disabled</re-checkbox>
     </div>
 
     <div class="demo">
