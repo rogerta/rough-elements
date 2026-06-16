@@ -71,8 +71,9 @@ export class CardElement extends BorderMixin(BgMixin(ReElement)) {
           label.style.color = 'white'
         }
       }
-      this.requestRoughRender()
     }
+
+    this.requestRoughRender()
   }
 
   static styles = [
