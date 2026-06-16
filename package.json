@@ -37,7 +37,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "@rogerta/roughjs": "5.1.0",
+    "@rogerta/roughjs": "5.2.0",
     "lit": "3.3.2"
   },
   "devDependencies": {
