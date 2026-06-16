@@ -1,7 +1,7 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ReElement } from './re-element.js'
+import { fire, ReElement } from './re-element.js'
 
 // Use CSS style "writing-mode" to make this range vertical.
 @customElement('re-range')
@@ -70,6 +70,71 @@ export class RangeElement extends ReElement {
     `
   ]
 
+  handleEvent(e: Event) {
+    switch (e.type) {
+      case 'pointerdown': {
+        const pe = e as PointerEvent
+        this.setPointerCapture(pe.pointerId)
+        break
+      }
+      case 'pointermove': {
+        const pe = e as PointerEvent
+        if (this.hasPointerCapture(pe.pointerId)) {
+          const bounds = this.getBoundingClientRect()
+          const fraction = pe.offsetX / (bounds.width)
+          this.value = this.snap_(fraction * (this.max - this.min) + this.min)
+        }
+        break
+      }
+      case 'pointerup': {
+        const pe = e as PointerEvent
+        this.releasePointerCapture(pe.pointerId)
+
+        const bounds = this.getBoundingClientRect()
+        const fraction = pe.offsetX / (bounds.width)
+        this.value = this.snap_(fraction * (this.max - this.min) + this.min)
+        this.updateComplete.then(() => fire(this, 'change'))
+        break
+      }
+      case 'keydown': {
+        const ke = e as KeyboardEvent
+
+        // Prevent the default otherwise the page may scroll.
+        ke.preventDefault()
+
+        switch (ke.key) {
+          case 'ArrowDown':
+          case 'ArrowLeft':
+            this.value -= this.step
+            break
+          case 'ArrowUp':
+          case 'ArrowRight':
+            this.value += this.step
+            break
+        }
+        break
+      }
+      case 'keyup': {
+        fire(this, 'change')
+        break
+      }
+    }
+  }
+
+  private snap_(value: number) {
+    return Math.round(value / this.step) * this.step
+
+  }
+
+  override firstUpdated(props: PropertyValues) {
+    super.firstUpdated(props)
+    this.addEventListener('pointerdown', this)
+    this.addEventListener('pointermove', this)
+    this.addEventListener('pointerup', this)
+    this.addEventListener('keydown', this)
+    this.addEventListener('keyup', this)
+  }
+
   override updated(props: PropertyValues) {
     super.updated(props)
 
@@ -86,6 +151,7 @@ export class RangeElement extends ReElement {
     }
 
     if (this.value !== undefined) {
+      this.value = this.snap_(this.value)
       if (this.value < this.min) {
         this.value = this.min
       } else if (this.value > this.max) {
@@ -94,6 +160,7 @@ export class RangeElement extends ReElement {
     }
 
     if(props.has('value')) {
+      fire(this, 'input')
     }
 
     this.requestRoughRender()

@@ -152,7 +152,7 @@
   <body>
     <div class="demo">
       <h1>re-range</h1>
-      <re-range></re-range>
+      <re-range id="range1" step="10"></re-range>
     </div>
 
     <div class="demo">
@@ -620,6 +620,16 @@
           handle = 0
         }
       })
+
+      document.querySelector('#range1')
+          .addEventListener('input', e => {
+        console.log(`range inputed value=${e.target.value}`)
+      })
+      document.querySelector('#range1')
+          .addEventListener('change', e => {
+        console.log(`range changed value=${e.target.value}`)
+      })
+
     </script>
   </body>
 </html>
