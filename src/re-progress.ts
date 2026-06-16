@@ -6,7 +6,7 @@ import { Mixin as BorderMixin } from './re-border-mixin.js'
 import { ReElement } from './re-element.js'
 
 @customElement('re-progress')
-export class CardElement extends BorderMixin(BgMixin(ReElement)) {
+export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) showValue = false
   @property({ type: Number }) min = 0
   @property({ type: Number }) max = 1
@@ -98,6 +98,6 @@ export class CardElement extends BorderMixin(BgMixin(ReElement)) {
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-progress': CardElement
+    're-progress': ProgressElement
   }
 }
