@@ -186,7 +186,7 @@ export class RangeElement extends ReElement {
     const position = (this.value - this.min) / (this.max - this.min) * width
     options.fill = 'inherit'
     options.fillStyle = 'solid'
-    roughElements.push(this.rough.circle(position, half, half, options))
+    roughElements.push(this.rough.circle(position, half, height, options))
 
     return roughElements
   }
