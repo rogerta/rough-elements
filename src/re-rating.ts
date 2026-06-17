@@ -1,12 +1,12 @@
-import { css, html, type PropertyValues } from 'lit'
+import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { fire, ReElement } from './re-element.js'
+import { fire } from './re-element.js'
 import './re-icon.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 @customElement('re-rating')
-export class RatingElement extends ReElement {
+export class RatingElement extends LitElement {
   @property({ type: Number }) max = 1
   @property({ type: Number }) value: number = 0
 
@@ -16,7 +16,6 @@ export class RatingElement extends ReElement {
   @property({ type: Boolean, reflect: true }) readonly = false
 
   static styles = [
-    ...super.styles,
     css`
       :host, div {
         display: inline-flex;
