@@ -49,7 +49,7 @@ export class DividerElement extends ReElement {
     // are up to 5px in "thickness".  Draw a new line for each 5px, but overlap
     // them a little.
     const lines = []
-    for (let i = 2; i < thickness; i += 4) {
+    for (let i = 2; i < thickness; i += 3) {
       options.seed = (options.seed ?? 0) + 1
       lines.push(this.vertical
           ? this.rough.line(i, 0, i, height, options)

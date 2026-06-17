@@ -151,25 +151,36 @@
         width: 80%;
       }
 
-      re-tab-group re-item::part(body) {
-        margin: 0;
-      }
-      re-tab-group re-item::part(prefix),
-      re-tab-group re-item::part(suffix) {
-        --size: 0;
+      [name=tabgroup2]::part(indicator) {
+        --thickness: 10px;
       }
     </style>
   </head>
   <body>
     <div class="demo">
       <h1>re-tab-group</h1>
-      <re-tab-group>
-        <re-item>A</re-item>
-        <re-item>BBBBBBBBBB</re-item>
+      <re-tab-group name="tabgroup1">
+        <re-item><re-icon slot="prefix" name="check"></re-icon>A</re-item>
+        <re-item>
+          <re-icon slot="prefix" name="check"></re-icon>
+          BBBBBBBBBB
+          <re-icon slot="suffix" name="close"></re-icon>
+        </re-item>
         <re-item>CCC</re-item>
         <re-item>DDDDD</re-item>
         <re-item disabled>EE</re-item>
         <re-item>FFFFFFFFF</re-item>
+      </re-tab-group>
+
+      <re-tab-group name="tabgroup2">
+        <re-item><re-icon slot="prefix" name="check"></re-icon>A</re-item>
+        <re-item>
+          <re-icon slot="prefix" name="check"></re-icon>
+          BBBBBBBBBB
+          <re-icon slot="suffix" name="close"></re-icon>
+        </re-item>
+        <re-item>CCC</re-item>
+        <re-item>DDDDD</re-item>
       </re-tab-group>
     </div>
 

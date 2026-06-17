@@ -59,8 +59,7 @@ export class ItemElement extends LitElement {
       slot[part=body] {
         display: inline-block;
         flex: 1 1;
-        margin-left: 0.25rem;
-        margin-right: 1rem;
+        margin: 0;
       }
       .hidden {
         display: none;
