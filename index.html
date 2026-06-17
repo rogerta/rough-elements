@@ -23,6 +23,7 @@
     <script type="module" src="/src/re-select.ts"></script>
     <script type="module" src="/src/re-radio.ts"></script>
     <script type="module" src="/src/re-range.ts"></script>
+    <script type="module" src="/src/re-rating.ts"></script>
     <script type="module" src="/src/re-spinner.ts"></script>
     <style>
       /* Themes
@@ -151,6 +152,12 @@
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-rating</h1>
+      <re-rating id="rating1"></re-rating>
+      <re-rating readonly value="2"></re-rating>
+    </div>
+
     <div class="demo">
       <h1>re-spinner</h1>
       <re-spinner id="spinner1"></re-spinner>
@@ -509,8 +516,8 @@
         <img slot="image" src="https://images.unsplash.com/photo-1559209172-0ff8f6d49ff7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"/>
         <div slot="header">Header</div>
         The svg element is positioned to covers the padding box of the host
-        element. Overflow is visible so the rough border (SVG sub-elements) will
-        can placed in the host's border box, which is outside the padding box.
+        element. Overflow is visible so the rough border (SVG sub-elements) can
+        be placed in the host's border box, which is outside the padding box.
         <div slot="footer">Footer</div>
       </re-card>
     </div>

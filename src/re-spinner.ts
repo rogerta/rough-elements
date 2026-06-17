@@ -1,4 +1,4 @@
-import { css, html, type PropertyValues } from 'lit'
+import { css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { ReElement } from './re-element.js'
