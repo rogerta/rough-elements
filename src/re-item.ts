@@ -20,6 +20,16 @@ export class ItemElement extends LitElement {
    */
   @property({ type: Boolean, reflect: true }) disabled = false
 
+  constructor() {
+    super()
+    this.addEventListener('click', e => {
+      if (this.disabled) {
+        e.stopImmediatePropagation()
+        e.stopPropagation()
+      }
+    })
+  }
+
   static styles = [
     css`
       :host {
@@ -103,7 +113,7 @@ export class ItemElement extends LitElement {
   override render(): unknown {
     return html`
       <!-- Slot used to hold the item prefix.  Often this is an <re-icon>. -->
-      <slot name="prefix"><re-icon></re-icon></slot>
+      <slot name="prefix"><re-icon part="prefix"></re-icon></slot>
       <!-- The main body of the item. As a slot, any nodes in the light DOM
            not explicitly assigned to another slot are assigned to this slot.
            As a part, the slot can be styled as needed.  Note the slot by
@@ -112,7 +122,7 @@ export class ItemElement extends LitElement {
       <slot part="body"></slot>
       <!-- For menu items, this is often used to show the keyboard shortcut
            that also triggers the same action as the menu item. -->
-      <slot name="suffix"><re-icon></re-icon> </slot>
+      <slot name="suffix"><re-icon part="suffix"></re-icon> </slot>
     `
   }
 }

@@ -25,6 +25,7 @@
     <script type="module" src="/src/re-range.ts"></script>
     <script type="module" src="/src/re-rating.ts"></script>
     <script type="module" src="/src/re-spinner.ts"></script>
+    <script type="module" src="/src/re-tab-group.ts"></script>
     <style>
       /* Themes
        *
@@ -149,9 +150,29 @@
       re-progress {
         width: 80%;
       }
+
+      re-tab-group re-item::part(body) {
+        margin: 0;
+      }
+      re-tab-group re-item::part(prefix),
+      re-tab-group re-item::part(suffix) {
+        --size: 0;
+      }
     </style>
   </head>
   <body>
+    <div class="demo">
+      <h1>re-tab-group</h1>
+      <re-tab-group>
+        <re-item>A</re-item>
+        <re-item>BBBBBBBBBB</re-item>
+        <re-item>CCC</re-item>
+        <re-item>DDDDD</re-item>
+        <re-item disabled>EE</re-item>
+        <re-item>FFFFFFFFF</re-item>
+      </re-tab-group>
+    </div>
+
     <div class="demo">
       <h1>re-rating</h1>
       <re-rating id="rating1"></re-rating>
@@ -524,6 +545,10 @@
     <script type="module">
       import { getItemFromEvent } from '/src/re-item.ts'
 
+      export function sleep(tmo) {
+        return new Promise(resolve => setTimeout(resolve, tmo))
+      }
+
       let handle = 0
       const MIN = 10
       const MAX = 400
@@ -643,7 +668,6 @@
           .addEventListener('change', e => {
         console.log(`range changed value=${e.target.value}`)
       })
-
     </script>
   </body>
 </html>
