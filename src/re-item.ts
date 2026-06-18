@@ -33,7 +33,6 @@ export class ItemElement extends LitElement {
   static styles = [
     css`
       :host {
-        font: caption;  /* Use the system menu font. */
         display: inline-flex;
         flex-direction: row;
         align-items: center;
