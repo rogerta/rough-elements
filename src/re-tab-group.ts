@@ -2,7 +2,7 @@ import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-divider.js'
-import type { ItemElement } from './re-item.js'
+import { getItemFromEvent, type ItemElement } from './re-item.js'
 import type { IconElement } from './re-icon.js'
 
 @customElement('re-tab-group')
@@ -30,10 +30,14 @@ export class TabGroupElement extends LitElement {
   ]
 
   onClick_(e: Event) {
-    const target = e.target as HTMLElement
+    const item = getItemFromEvent(e)
+    if (!item) {
+      return
+    }
+
     const slot = this.renderRoot.querySelector('slot')
     const tabs = slot?.assignedElements()
-    const index = tabs?.findIndex(t => t === target.closest('re-item')) ?? -1
+    const index = tabs?.findIndex(t => t === item) ?? -1
     if (index !== -1) {
       this.selected = index + 1
     }
@@ -41,7 +45,7 @@ export class TabGroupElement extends LitElement {
 
   protected override firstUpdated(_: PropertyValues) {
     if (!this.name) {
-      console.error('Tab groups should be named')
+      console.error('Tab groups must be named')
     }
 
     // Configure all the <re-item>s to work best as tabs.
