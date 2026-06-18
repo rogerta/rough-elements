@@ -4,6 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>rough-elements</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+
     <script type="module" src="/src/re-alert.ts"></script>
     <script type="module" src="/src/re-badge.ts"></script>
     <script type="module" src="/src/re-button.ts"></script>
@@ -19,6 +24,7 @@
     <script type="module" src="/src/re-item.ts"></script>
     <script type="module" src="/src/re-menu.ts"></script>
     <script type="module" src="/src/re-menu-item.ts"></script>
+    <script type="module" src="/src/re-panel-group.ts"></script>
     <script type="module" src="/src/re-progress.ts"></script>
     <script type="module" src="/src/re-select.ts"></script>
     <script type="module" src="/src/re-radio.ts"></script>
@@ -37,6 +43,28 @@
         --re-neutral-color: rgb(64 64 64);
         --re-warning-color: rgb(238 119 0);
         --re-danger-color: rgb(238 0 0);
+      }
+
+      .kalam-light {
+        font-family: "Kalam", cursive;
+        font-weight: 300;
+        font-style: normal;
+      }
+
+      .kalam-regular {
+        font-family: "Kalam", cursive;
+        font-weight: 400;
+        font-style: normal;
+      }
+
+      .kalam-bold {
+        font-family: "Kalam", cursive;
+        font-weight: 700;
+        font-style: normal;
+      }
+
+      re-button, re-dropdown, re-item, re-progress {
+        --font: inherit;
       }
 
       .demo {
@@ -151,28 +179,50 @@
         width: 80%;
       }
 
-      [name=tabgroup2]::part(indicator) {
+      [name=group2]::part(indicator) {
         --thickness: 10px;
+      }
+
+      .panel {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 400px;
+        height: 300px;
+      }
+
+      .hidden {
+        display: none;
       }
     </style>
   </head>
-  <body>
+  <body class="kalam-regular">
     <div class="demo">
       <h1>re-tab-group</h1>
-      <re-tab-group name="tabgroup1">
-        <re-item><re-icon slot="prefix" name="check"></re-icon>A</re-item>
-        <re-item>
-          <re-icon slot="prefix" name="check"></re-icon>
-          BBBBBBBBBB
-          <re-icon slot="suffix" name="close"></re-icon>
+      <re-tab-group name="group1" selected="tab1">
+        <re-item id="tab1">
+          <re-icon slot="prefix" name="dangerous"></re-icon>
+          A
         </re-item>
-        <re-item>CCC</re-item>
-        <re-item>DDDDD</re-item>
-        <re-item disabled>EE</re-item>
-        <re-item>FFFFFFFFF</re-item>
+        <re-item id="tab2">
+          <re-icon slot="prefix" name="info"></re-icon>
+          Second
+        </re-item>
+        <re-item id="tab3">Third</re-item>
+        <re-item id="tab4">Fourth</re-item>
+        <re-item id="tab5" disabled>Fifth</re-item>
+        <re-item id="tab6">Sixth</re-item>
       </re-tab-group>
+      <re-panel-group name="group1" selected="tab1">
+        <div data-id="tab1" class="panel">Panel 1</div>
+        <div data-id="tab2" class="panel">Panel 2</div>
+        <div data-id="tab3" class="panel">Panel 3</div>
+        <div data-id="tab4" class="panel">Panel 4</div>
+        <div data-id="tab5" class="panel">Panel 5</div>
+        <div data-id="tab6" class="panel">Panel 6</div>
+      </re-panel-group>
 
-      <re-tab-group name="tabgroup2">
+      <re-tab-group name="group2">
         <re-item><re-icon slot="prefix" name="check"></re-icon>A</re-item>
         <re-item>
           <re-icon slot="prefix" name="check"></re-icon>

@@ -8,7 +8,7 @@ import type { IconElement } from './re-icon.js'
 @customElement('re-tab-group')
 export class TabGroupElement extends LitElement {
   @property({}) name = ''
-  @property({ type: Number, state: true }) selected = 1
+  @property({}) selected = ''
 
   static styles = [
     css`
@@ -35,12 +35,7 @@ export class TabGroupElement extends LitElement {
       return
     }
 
-    const slot = this.renderRoot.querySelector('slot')
-    const tabs = slot?.assignedElements()
-    const index = tabs?.findIndex(t => t === item) ?? -1
-    if (index !== -1) {
-      this.selected = index + 1
-    }
+    this.selected = item.id
   }
 
   protected override firstUpdated(_: PropertyValues) {
@@ -71,10 +66,34 @@ export class TabGroupElement extends LitElement {
     })
   }
 
-  protected override updated(_: PropertyValues) {
+  protected override updated(props: PropertyValues) {
+    let selectedIndex = -1
+
+    if (props.has('selected')) {
+      // Find the index of the selected tab so that the grid column can be
+      // set correctly on the <re-divider>.
+      const slot = this.renderRoot.querySelector('slot')
+      const tabs = slot?.assignedElements()
+      const index = tabs?.findIndex(t => t.id === this.selected) ?? -1
+      if (index !== -1) {
+        this.selected = tabs![index].id
+        selectedIndex = index + 1
+      }
+
+      // If a valid tab is selected, notify the associated panel group.
+      if (this.selected) {
+        const root = this.getRootNode()
+        if (root instanceof ShadowRoot || root instanceof Document) {
+          root.querySelectorAll('re-panel-group').forEach(panel => {
+            panel.selected = this.selected
+          })
+        }
+      }
+    }
+
     const divider = this.renderRoot.querySelector('re-divider')
     if (divider) {
-      divider.style.setProperty('grid-column', this.selected.toString())
+      divider.style.setProperty('grid-column', selectedIndex.toString())
     }
   }
 
