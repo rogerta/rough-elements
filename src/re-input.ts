@@ -28,9 +28,9 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
   @property() type: 'date' | 'datetime-local' | 'email' | 'number' |
       'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
-  @property() autocapitalize = ''
-  @property({ type: Boolean }) autocomplete = false
-  @property({ type: Boolean }) autofocus = false
+  @property({ reflect: true }) autocapitalize = ''
+  @property({ type: Boolean, reflect: true }) autocomplete = false
+  @property({ type: Boolean, reflect: true }) autofocus = false
   @property({ type: Boolean, reflect: true }) disabled = false
   @property() form = ''
   @property() list = ''
@@ -81,7 +81,9 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
     return input?.valueAsDate
   }
 
-  protected override updated(_: PropertyValues) {
+  protected override updated(props: PropertyValues) {
+    super.updated(props)
+
     ;['prefix', 'suffix'].forEach(part => {
       const slot =
           this.renderRoot.querySelector<HTMLSlotElement>(`slot[part=${part}]`)!
