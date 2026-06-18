@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
     <script type="module" src="/src/re-alert.ts"></script>
     <script type="module" src="/src/re-badge.ts"></script>
@@ -32,6 +33,7 @@
     <script type="module" src="/src/re-rating.ts"></script>
     <script type="module" src="/src/re-spinner.ts"></script>
     <script type="module" src="/src/re-tab-group.ts"></script>
+    <script type="module" src="/src/re-textarea.ts"></script>
     <style>
       /* Themes
        *
@@ -50,17 +52,33 @@
         font-weight: 300;
         font-style: normal;
       }
-
       .kalam-regular {
         font-family: "Kalam", cursive;
         font-weight: 400;
         font-style: normal;
       }
-
       .kalam-bold {
         font-family: "Kalam", cursive;
         font-weight: 700;
         font-style: normal;
+      }
+
+      /* Can 100-900 for weight.  Create a new class for each */
+      .noto-serif-400 {
+        font-family: "Noto Serif", serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings:
+          "wdth" 100;
+      }
+      .noto-sans-400 {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings:
+          "wdth" 100;
       }
 
       re-button, re-dropdown, re-item, re-progress {
@@ -196,7 +214,13 @@
       }
     </style>
   </head>
-  <body class="kalam-regular">
+  <body class="noto-sans-400">
+    <div class="demo">
+      <h1>re-textarea</h1>
+      <re-textarea>Some text</re-textarea>
+      <textarea>read text area</textarea>
+    </div>
+
     <div class="demo">
       <h1>re-tab-group</h1>
       <re-tab-group name="group1" selected="tab1">
@@ -223,14 +247,14 @@
       </re-panel-group>
 
       <re-tab-group name="group2">
-        <re-item><re-icon slot="prefix" name="check"></re-icon>A</re-item>
-        <re-item>
+        <re-item id="g21"><re-icon slot="prefix" name="check"></re-icon>A</re-item>
+        <re-item id="g22">
           <re-icon slot="prefix" name="check"></re-icon>
           BBBBBBBBBB
           <re-icon slot="suffix" name="close"></re-icon>
         </re-item>
-        <re-item>CCC</re-item>
-        <re-item>DDDDD</re-item>
+        <re-item id="g23">CCC</re-item>
+        <re-item id="g24">DDDDD</re-item>
       </re-tab-group>
     </div>
 
