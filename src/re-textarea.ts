@@ -119,7 +119,7 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
         color: var(--color, ButtonText);
         --border-color: ButtonBorder;
         --background-color: canvas;
-        xpadding: 0.25rem 0.5rem;
+        padding: 0.25rem 0 0.25rem 0.5rem;
       }
       :host([disabled]) {
         opacity: 0.5;
