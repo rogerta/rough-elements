@@ -18,7 +18,10 @@ export class DropdownElement extends LitElement {
   static styles = [css`
     :host {
       display: inline-block;
-      font: caption;  /* Use the system menu font. */
+    }
+    re-button {
+      --font: inherit;
+      --text-transform: none;
     }
     re-button[part="trigger"]::part(button) {
       anchor-name: --menu-anchor;

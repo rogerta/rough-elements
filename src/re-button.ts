@@ -150,11 +150,13 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
       :host {
         display: inline-block;
         color: var(--color, ButtonText);
+        user-select: none;
+        cursor: pointer;
         --border-color: ButtonBorder;
         --background-color: canvas; /*ButtonFace;*/
         --button-text-shadow-color: rgb(from black R G B / 0.1);
-        user-select: none;
-        cursor: pointer;
+        --font: caption;  /* Use the system menu font. */
+        --text-transform: uppercase;
       }
       :host * {
         cursor: pointer;
@@ -213,7 +215,8 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         color: inherit;
         -webkit-tap-highlight-color: transparent;
         transition: transform 0.2s ease;
-        font: caption;  /* Use the system menu font. */
+        font: var(--font);
+        text-transform: var(--text-transform);
       }
       :host(:not([circle])) {
         padding: 0.25rem 0.5rem;
