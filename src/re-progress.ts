@@ -80,14 +80,16 @@ export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
     ...super.styles,
     css`
       :host {
-        display: inline-block;
+        display: inline-flex;
+        align-items: center;
         --background-color: rgb(from var(--re-primary-color) R G B / 0.5);
         --background-stroke-width: 4px;
         font: caption;
       }
       div {
         margin: 0;
-        height: 1rem;
+        height: 0.5rem;
+        font-size: 0.5rem;
         width: fit-content;
         text-align: center;
         font-weight: bold;
