@@ -48,7 +48,12 @@ export class TabGroupElement extends LitElement {
     const tabs = slot?.assignedElements()
     tabs?.forEach(t => {
       if (t.tagName !== 'RE-ITEM') {
-        console.error('An tab in a tab group is not an <re-item>')
+        console.error(`An tab in tab group "${this.name}" is not an <re-item>`)
+        return
+      }
+
+      if (!t.id) {
+        console.error(`An tab in tab group "${this.name}" does not have an id`)
         return
       }
 
