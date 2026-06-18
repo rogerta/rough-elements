@@ -27,11 +27,13 @@ export class RangeElement extends ReElement {
     ...super.styles,
     css`
       :host {
+        position: relative;
         display: inline-block;
         border-width: 0;
         box-sizing: content-box;
         width: 10rem;
         height: 24px;
+        --knob-fraction: 0.66;
         stroke: var(--color, rgb(from black R G B / 0.5));
         fill: var(--color, rgb(from var(--re-primary-color) R G B / 1));
         outline: none;
@@ -183,10 +185,19 @@ export class RangeElement extends ReElement {
     const half = height / 2
     roughElements.push(this.rough.line(0, half, width, half, options))
 
+    let fraction =
+        Number.parseFloat(cstyles.getPropertyValue('--knob-fraction'))
+    if (Number.isNaN(fraction)) {
+      fraction = 2 / 3
+    } else {
+      fraction = Math.min(Math.max(fraction, 0), 1)
+    }
+
+    const diameter = height * fraction
     const position = (this.value - this.min) / (this.max - this.min) * width
     options.fill = 'inherit'
     options.fillStyle = 'solid'
-    roughElements.push(this.rough.circle(position, half, height, options))
+    roughElements.push(this.rough.circle(position, half, diameter, options))
 
     return roughElements
   }
