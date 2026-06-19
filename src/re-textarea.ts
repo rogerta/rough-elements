@@ -1,11 +1,10 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-import { live } from 'lit/directives/live.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
 import { Mixin as BgMixin } from './re-background-mixin.js'
 import { Mixin as BorderMixin } from './re-border-mixin.js'
-import { ReElement } from './re-element.js'
+import { fire, ReElement } from './re-element.js'
 import './re-icon-button.js'
 
 // Some useful info that needs to be documented:
@@ -40,9 +39,20 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
   @property() placeholder = ''
   @property({ type: Boolean, reflect: true }) readonly = false
   @property({ type: Number }) rows = 2
-  @property() value = ''
 
   @property({state: true}) showPassword_ = false
+
+  get value() {
+    const textarea = this.renderRoot.querySelector('textarea')
+    return textarea?.value ?? ''
+  }
+
+  set value(text: string) {
+    const textarea = this.renderRoot.querySelector('textarea')
+    if (textarea) {
+      textarea.value = text
+    }
+  }
 
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
@@ -51,21 +61,36 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
     textarea?.addEventListener('blur', this)
     textarea?.addEventListener('change', this)
     textarea?.addEventListener('input', this)
+    this.setInitialValueFromSlot_()
   }
 
   handleEvent(e: Event) {
     switch (e.type) {
       case 'blur':
-        this.classList.remove('is-active')
+        fire(this, 'change')
         break
       case 'change':
       case 'input': {
-        const input = e.target as HTMLTextAreaElement
-        this.value = input.value
+        const ta = e.target as HTMLTextAreaElement
+        this.value = ta.value
         break
       }
       default:
         break
+    }
+  }
+
+  private setInitialValueFromSlot_() {
+    const slot =
+        this.renderRoot.querySelector<HTMLSlotElement>('#hiddenslot slot')
+    const nodes = slot?.assignedNodes()
+    if (nodes) {
+      const text = nodes.reduce(
+          (acc, node) => acc + (node.textContent?.trim() ?? ''), '')
+      const ta = this.renderRoot.querySelector('textarea')
+      if (ta) {
+        ta.value = text
+      }
     }
   }
 
@@ -93,19 +118,13 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
             minlength="${ifDefined(this.minlength)}"
             placeholder="${ifDefined(this.placeholder)}"
             ?readonly="${this.readonly}"
-            .value="${live(this.value)}"
-            @change="${this.onInputChanged_}"
-            @input="${this.onInputChanged_}"
             ></textarea>
 
         <!-- The element that suffixes the input control. -->
         <slot name="suffix" part="suffix"></slot>
+        <div id="hiddenslot"><slot></slot></div>
       `,
     ]
-  }
-
-  onInputChanged_(e: Event) {
-
   }
 
   static styles = [
@@ -124,14 +143,17 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
       :host([disabled]) {
         opacity: 0.5;
       }
+      :host(:not([disabled]):focus-within) {
+        --re-stroke-width: 2px;
+      }
 
-      slot[name="prefix"] {
+      slot[name="prefix"]::slotted(*) {
         margin-left: -0.25rem;
         margin-right: 0.25rem;
       }
-      slot[name="suffix"] {
+      slot[name="suffix"]::slotted(*) {
         margin-left: 0.25rem;
-        margin-right: -0.25rem;
+        margin-right: 0.25rem;
       }
 
       textarea {
@@ -147,8 +169,8 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
         outline: none;
       }
 
-      :host(:not([disabled]):focus-within) {
-        --re-stroke-width: 2px;
+      #hiddenslot {
+        display: none;
       }
 
       #rough {

@@ -50,16 +50,12 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
     super.firstUpdated(props)
     this.fillStyle = 'solid'
     const input = this.renderRoot.querySelector('input')
-    input?.addEventListener('blur', this)
     input?.addEventListener('change', this)
     input?.addEventListener('input', this)
   }
 
   handleEvent(e: Event) {
     switch (e.type) {
-      case 'blur':
-        this.classList.remove('is-active')
-        break
       case 'change':
       case 'input': {
         const input = e.target as HTMLInputElement
@@ -175,11 +171,11 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
       slot.hidden {
         display: none;
       }
-      slot[name="prefix"] {
+      slot[name="prefix"]::slotted(*) {
         margin-left: -0.25rem;
         margin-right: 0.25rem;
       }
-      slot[name="suffix"] {
+      slot[name="suffix"]::slotted(*) {
         margin-left: 0.25rem;
         margin-right: -0.25rem;
       }

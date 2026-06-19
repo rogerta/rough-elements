@@ -194,8 +194,19 @@
   <body class="noto-sans-400">
     <div class="demo">
       <h1>re-textarea</h1>
-      <re-textarea>Some text</re-textarea>
-      <textarea>read text area</textarea>
+      <re-textarea id="ta1">
+        <re-icon slot="prefix" name="dangerous"></re-icon>
+        Some text
+      </re-textarea>
+      <re-textarea disabled>
+        Some text
+        <re-icon slot="suffix" name="dangerous"></re-icon>
+      </re-textarea>
+      <re-textarea readonly>
+        <re-icon slot="prefix" name="dangerous"></re-icon>
+        Some text
+        <re-icon slot="suffix" name="dangerous"></re-icon>
+      </re-textarea>
     </div>
 
     <div class="demo">
@@ -295,9 +306,16 @@
 
     <div class="demo">
       <h1>re-input</h1>
-      <re-input placeholder="date" type="date"></re-input>
-      <re-input placeholder="datetime-local" type="datetime-local"></re-input>
-      <re-input placeholder="email" type="email"></re-input>
+      <re-input placeholder="date" type="date">
+        <re-icon slot="prefix" name="check"></re-icon>
+        <re-icon slot="suffix" name="check"></re-icon>
+      </re-input>
+      <re-input placeholder="datetime-local" type="datetime-local">
+        <re-icon slot="prefix" name="check"></re-icon>
+      </re-input>
+      <re-input placeholder="email" type="email">
+        <re-icon slot="suffix" name="check"></re-icon>
+      </re-input>
       <re-input placeholder="number" type="number"></re-input>
       <re-input placeholder="password" type="password"></re-input>
       <re-input placeholder="search" type="search"></re-input>
@@ -729,6 +747,15 @@
       document.querySelector('#range1')
           .addEventListener('change', e => {
         console.log(`range changed value=${e.target.value}`)
+      })
+
+      document.querySelector('#ta1')
+          .addEventListener('input', e => {
+        console.log(`textarea inputed value=${e.target.value}`)
+      })
+      document.querySelector('#ta1')
+          .addEventListener('change', e => {
+        console.log(`textarea changed value=${e.target.value}`)
       })
     </script>
   </body>
