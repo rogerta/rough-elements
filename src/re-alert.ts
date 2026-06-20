@@ -105,10 +105,10 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`<re-icon part="icon" name="${this.renderIconName_()}"></re-icon>`,
-      html`<div part="message">
+      html`
         <!-- The main body of the alert. -->
-        <slot></slot>
-      </div>`,
+        <slot part="message"></slot>
+      `,
       this.renderButton_(),
     ]
   }
@@ -153,31 +153,31 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
       :host([variant=primary]) {
         --alart-bg-color: var(--re-primary-color);
         & re-icon {
-          color: var(--re-primary-color);
+          --color: var(--re-primary-color);
         }
       }
       :host([variant=success]) {
         --alart-bg-color: var(--re-success-color);
         & re-icon {
-          color: var(--re-success-color);
+          --color: var(--re-success-color);
         }
       }
       :host([variant=neutral]) {
         --alart-bg-color: var(--re-neutral-color);
         & re-icon {
-          color: var(--re-neutral-color);
+          --color: var(--re-neutral-color);
         }
       }
       :host([variant=warning]) {
         --alart-bg-color: var(--re-warning-color);
         & re-icon {
-          color: var(--re-warning-color);
+          --color: var(--re-warning-color);
         }
       }
       :host([variant=danger]) {
         --alart-bg-color: var(--re-danger-color);
         & re-icon {
-          color: var(--re-danger-color);
+          --color: var(--re-danger-color);
         }
       }
       :host {
@@ -190,7 +190,8 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
         flex-grow: 0;
         flex-shrink: 0;
       }
-      div {
+      slot {
+        display: block;
         flex-grow: 1;
       }
     `
