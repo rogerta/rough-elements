@@ -71,7 +71,8 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
   handleEvent(e: Event) {
     switch (e.type) {
       case 'blur':
-        fire(this, 'change')
+        // TODO: fire only if the textarea was changed.
+        fire(this, 'change', {bubbles: true})
         break
       case 'change':
       case 'input': {
