@@ -81,20 +81,6 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
     return input?.valueAsDate
   }
 
-  protected override updated(props: PropertyValues) {
-    super.updated(props)
-
-    ;['prefix', 'suffix'].forEach(part => {
-      const slot =
-          this.renderRoot.querySelector<HTMLSlotElement>(`slot[part=${part}]`)!
-      const hasChildren = slot.assignedNodes({flatten: true}).length > 0
-      if (this.enableDebugging) {
-        console.log(`type=${this.type} part=${part} hc=${hasChildren}`)
-      }
-      slot.classList.toggle('hidden', !hasChildren)
-    })
-  }
-
   override render() {
     if (this.enableDebugging) {
       console.log(`render type=${this.type}`)
@@ -103,7 +89,7 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
         <!-- The element that prefixes the input control. -->
-        <slot class="hidden" name="prefix" part="prefix"></slot>
+        <slot name="prefix"></slot>
 
         <!-- The input control. -->
         <input part="input" type="${this.renderInputType_()}"
@@ -129,7 +115,7 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
                and are composed by default. -->
 
         <!-- The element that suffixes the input control. -->
-        <slot class="hidden" name="suffix" part="suffix">
+        <slot name="suffix">
           ${this.type === 'password'
               ? html`<re-icon-button name="${this.renderPasswordIconName_()}"
                     ?disabled="${this.disabled}"
@@ -174,9 +160,6 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
         opacity: 0.5;
       }
 
-      slot.hidden {
-        display: none;
-      }
       slot[name="prefix"]::slotted(*) {
         margin-left: -0.25rem;
         margin-right: 0.25rem;
