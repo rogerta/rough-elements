@@ -10,6 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
+    <link href="/themes/light.css" rel="stylesheet">
     <script type="module" src="/src/rough-elements.ts"></script>
     <style>
       /* Themes
@@ -56,6 +57,17 @@
         font-style: normal;
         font-variation-settings:
           "wdth" 100;
+      }
+
+      body {
+        color: var(--color, black);
+        background: repeating-linear-gradient(
+          -45deg,
+          #eeeeee,
+          #eeeeee 20px,
+          #ffffff 20px,
+          #ffffff 40px
+        );
       }
 
       .demo {
@@ -210,10 +222,16 @@
         align-items: center;
       }
 
+      #rating2 {
+        --re-rating-color: blue;
+      }
+      #rating3 {
+        --re-rating-color: green;
+      }
+
       #spinner2 {
         --size: 3rem;
       }
-
       #spinner3 {
         --size: 6rem;
         --track-width: 16px;
@@ -232,7 +250,7 @@
       }
     </style>
   </head>
-  <body class="noto-sans-400">
+  <body class="noto-sans-400 xhb-pencil bic-muted">
     <div class="demo">
       <h1>re-textarea</h1>
       <re-textarea id="ta1">
@@ -292,7 +310,8 @@
       <div id="rating1container">
         <re-rating id="rating1"></re-rating><span id="rating1label"></span>
       </div>
-      <re-rating readonly value="2"></re-rating>
+      <re-rating  id="rating2" readonly value="2"></re-rating>
+      <re-rating  id="rating3" readonly value="3"></re-rating>
     </div>
 
     <div class="demo">
