@@ -104,8 +104,8 @@ export class MenuItemElement extends ItemElement {
     return [
       super.render(),
       html`
-        <re-icon-button class="hidden" name="keyboard-arrow-right"
-            ></re-icon-button>
+        <re-icon-button part="submenu-icon" class="hidden"
+            name="keyboard-arrow-right"></re-icon-button>
         <slot name="submenu"></slot>
       `
     ]

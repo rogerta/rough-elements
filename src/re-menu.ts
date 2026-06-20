@@ -82,7 +82,7 @@ export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
       html`
         <!-- The main body of the menu. The panel is onle column of
           -- children representing the menu item choices. -->
-        <slot part="panel"></slot>
+        <slot></slot>
       `,
     ]
   }

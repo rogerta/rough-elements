@@ -135,12 +135,30 @@
       re-details::part(summary) {
           font-family: monospace;
       }
-      re-details::part(content) {
-          background-color: ButtonFace;
-          padding: 0.5rem 1rem;
-      }
-      #details2 re-icon {
+      re-details {
+        & re-icon {
           rotate: none;
+        }
+
+        & div {
+          background-color: ButtonFace;
+        }
+      }
+
+      #checkbox1 {
+        --color: brown;
+      }
+      #checkbox1::part(prefix) {
+        --color: purple;
+      }
+      #checkbox1[checked]::part(prefix) {
+        --color: pink;
+      }
+      #checkbox1 re-icon {
+        transition: transform 0.75s ease;
+      }
+      #checkbox1[checked] re-icon {
+        transform: rotate(1turn);
       }
 
       #dialog2 {
@@ -185,6 +203,20 @@
 
       [name=group2]::part(indicator) {
         --thickness: 10px;
+      }
+
+      #rating1container {
+        display: flex;
+        align-items: center;
+      }
+
+      #spinner2 {
+        --size: 3rem;
+      }
+
+      #spinner3 {
+        --size: 6rem;
+        --track-width: 16px;
       }
 
       .panel {
@@ -257,14 +289,17 @@
 
     <div class="demo">
       <h1>re-rating</h1>
-      <re-rating id="rating1"></re-rating>
+      <div id="rating1container">
+        <re-rating id="rating1"></re-rating><span id="rating1label"></span>
+      </div>
       <re-rating readonly value="2"></re-rating>
     </div>
 
     <div class="demo">
       <h1>re-spinner</h1>
       <re-spinner id="spinner1"></re-spinner>
-      <re-spinner style="--size: 3rem"></re-spinner>
+      <re-spinner id="spinner2"></re-spinner>
+      <re-spinner id="spinner3"></re-spinner>
     </div>
 
     <div class="demo">
@@ -445,6 +480,12 @@
 
     <div class="demo">
       <h1>re-dialog</h1>
+        <re-dialog id="dialog0" closedby="none">
+          <span slot="title">Manual close</span>
+          This dialog body needs to be long to make it a more
+          realistic example.
+        </re-dialog>
+
         <re-dialog id="dialog1">
           <span slot="title">Simple</span>
           This dialog body needs to be long to make it a more
@@ -461,6 +502,12 @@
           </div>
           <re-button slot="footer">Previous</re-button>
           <re-button variant="primary" slot="footer">Next</re-button>
+        </re-dialog>
+
+        <re-dialog id="dialog3" closedby="none">
+          <span slot="title">Can't close</span>
+          This dialog body needs to be long to make it a more
+          realistic example.
         </re-dialog>
 
         <re-dialog id="dialogTop" class="top drawer">
@@ -487,8 +534,10 @@
           realistic example.
         </re-dialog>
 
+        <re-button id="dialog0Button">Open manual dialog</re-button>
         <re-button id="dialog1Button">Open simple dialog</re-button>
         <re-button id="dialog2Button">Open fancy dialog</re-button>
+        <re-button id="dialog3Button">Can't close dialog</re-button>
         <re-button id="dialogTopButton">Open top drawer</re-button>
         <re-button id="dialogRightButton">Open right drawer</re-button>
         <re-button id="dialogBottomButton">Open bottom drawer</re-button>
@@ -499,20 +548,24 @@
       <h1>re-details</h1>
       <re-details id="details1" open>
         <span slot="summary">Summary 1</span>
-        <div>Details 1</div>
-        <re-button variant="primary">Add text</re-button>
+        <div>
+          Details 1
+          <re-button variant="primary">Add text</re-button>
+        </div>
       </re-details>
 
       <re-details id="details2">
         <span slot="summary">Summary 2</span>
         <re-icon name="check" slot="marker"></re-icon>
-        Details 2<br/>
-        Details 2<br/>
-        Details 2<br/>
-        Details 2<br/>
-        Details 2<br/>
-        Details 2<br/>
-        Details 2<br/>
+        <div>
+          Details 2<br/>
+          Details 2<br/>
+          Details 2<br/>
+          Details 2<br/>
+          Details 2<br/>
+          Details 2<br/>
+          Details 2<br/>
+        </div>
       </re-details>
 
       <re-details id="details3" disabled open>
@@ -653,6 +706,12 @@
       const MAX = 400
       let inc = (MAX - MIN) * 0.0125
 
+      document.querySelectorAll('re-details').forEach(button => {
+        button.addEventListener('click', e => {
+          console.log(`clicked inside details, maybe summary ${e.target.id}`)
+        })
+      })
+
       document.querySelectorAll('re-dialog').forEach(button => {
         button.addEventListener('close', e => {
           console.log(`dialog closed ${e.target.id}`)
@@ -706,11 +765,32 @@
 
       document.querySelectorAll('re-rating').forEach(rating => {
         rating.addEventListener('input', e => {
-          console.log(`inputed rating ${e.target.value}`)
+          console.log(`inputed rating ${e.detail}`)
         })
         rating.addEventListener('change', e => {
           console.log(`changed rating ${e.target.value}`)
         })
+      })
+      document.querySelector('#rating1')
+          .addEventListener('input', e => {
+        const label = document.querySelector('#rating1label')
+        const value = e.detail
+        label.textContent = value === 1 ? 'Bad' :
+                            value === 2 ? 'Poor' :
+                            value === 3 ? 'OK' :
+                            value === 4 ? 'Good' :
+                            'Great'
+      })
+      document.querySelector('#rating1')
+          .addEventListener('pointerleave', e => {
+        const label = document.querySelector('#rating1label')
+        const value = e.target.value
+        label.textContent = value === 0 ? '' :
+                            value === 1 ? 'Bad' :
+                            value === 2 ? 'Poor' :
+                            value === 3 ? 'OK' :
+                            value === 4 ? 'Good' :
+                            'Great'
       })
 
       document.querySelectorAll('re-tab-group').forEach(group => {
@@ -739,10 +819,16 @@
 
       document.querySelector('#details1 re-button')
           .addEventListener('click', e => {
-        const details = document.querySelector('#details1')
+        const details = document.querySelector('#details1 div')
         const div = details.ownerDocument.createElement('div')
         div.innerText = 'More text'
         details.append(div)
+      })
+
+      document.querySelector('#dialog0Button')
+          .addEventListener('click', e => {
+        const dialog = document.querySelector('#dialog0')
+        dialog.showModal()
       })
 
       document.querySelector('#dialog1Button')
@@ -755,6 +841,16 @@
           .addEventListener('click', e => {
         const dialog = document.querySelector('#dialog2')
         dialog.showModal()
+      })
+
+      document.querySelector('#dialog3Button')
+          .addEventListener('click', e => {
+        const dialog = document.querySelector('#dialog3')
+        dialog.showModal()
+      })
+      document.querySelector('#dialog3')
+          .addEventListener('cancel', e => {
+        e.preventDefault()
       })
 
       document.querySelector('#dialogTopButton')

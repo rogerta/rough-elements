@@ -4,6 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { fire } from './internal/re-element.js'
 import './re-icon.js'
 import { classMap } from 'lit/directives/class-map.js'
+import { IconElement } from './re-icon.js'
 
 @customElement('re-rating')
 export class RatingElement extends LitElement {
@@ -61,11 +62,21 @@ export class RatingElement extends LitElement {
     this.updateComplete.then(() => fire(this, 'change', {bubbles: true}))
   }
 
-  protected override updated(props: PropertyValues) {
-    super.updated(props)
-    if (props.has('value')) {
-      fire(this, 'input', {bubbles: true, composed: true})
+  onPointerMove_(e: Event) {
+    if (!(e.target instanceof IconElement)) {
+      return
     }
+
+    const value = e.target.dataset.value
+    if (!value) {
+      return
+    }
+
+    fire(this, 'input', {
+      bubbles: true,
+      composed: true,
+      detail: Number.parseInt(value)
+    })
   }
 
   override render() {
@@ -76,7 +87,7 @@ export class RatingElement extends LitElement {
     const classes5 = {selected: this.value > 4 }
 
     return html`
-      <div @click="${this.onClick_}">
+      <div @click="${this.onClick_}" @pointermove="${this.onPointerMove_}">
         <re-icon class="${classMap(classes1)}" data-value="1" name="star-rate"></re-icon>
         <div>
           <re-icon class="${classMap(classes2)}" data-value="2" name="star-rate"></re-icon>

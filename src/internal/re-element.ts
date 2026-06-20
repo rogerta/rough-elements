@@ -17,12 +17,15 @@ export type ResolvedOptions = Required<Options>
  * @param target An element to fire the event.
  * @param type The event's type.
  * @param options CustomEvent initialazation options.
+ *
+ * @return False if event is cancelable, and at least one of the event handlers
+ *    which received event called Event.preventDefault(). Otherwise true.
  */
 export function fire<T>(
     target: EventTarget,
     type: string,
     options: CustomEventInit<T>={}) {
-  target.dispatchEvent(new CustomEvent(type, options))
+  return target.dispatchEvent(new CustomEvent(type, options))
 }
 
 // The baseclass for all rough elements.

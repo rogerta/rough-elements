@@ -22,9 +22,6 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
       summary::marker {
         content: '';
       }
-      slot {
-        display: block;
-      }
       summary {
         display: flex;
         flex-direction: row;
@@ -64,7 +61,7 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
     `
   ]
 
-  protected updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues) {
     super.updated(props)
     if (props.has('open')) {
       fire(this, 'toggle', {detail: this.open})
@@ -80,11 +77,10 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-      <details ?open="${this.open}" @toggle="${this.onToggle_}">
-        <summary>
-          <slot name="summary" part="summary"></slot>
-          <slot name="marker" part="marker"
-              ><re-icon name="keyboard-arrow-right"></re-icon></slot>
+      <details ?open="${this.open}" @toggle="${this.onToggle_}" part="details">
+        <summary part="summary">
+          <slot name="summary"></slot>
+          <slot name="marker"><re-icon name="keyboard-arrow-right"></re-icon></slot>
         </summary>
         <slot part="content"></slot>
       </details>`

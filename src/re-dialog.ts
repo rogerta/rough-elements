@@ -4,12 +4,15 @@ import { customElement, property } from 'lit/decorators.js'
 import { Mixin as BgMixin } from './internal/re-background-mixin.js'
 import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
 import  './re-button.js'
-import { ReElement } from './internal/re-element.js'
+import { fire, ReElement } from './internal/re-element.js'
 import  './re-icon-button.js'
+import { ifDefined } from 'lit/directives/if-defined.js'
 
 @customElement('re-dialog')
 export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
   @property({reflect: true}) name = ''
+
+  @property({}) closedBy? = 'any'
 
   static styles = [
     ...super.styles,
@@ -30,6 +33,7 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
       }
 
       re-card {
+        padding: 1rem;
         --background-color: white;
       }
 
@@ -41,26 +45,23 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
         font-size: 1.25rem;
       }
 
-      slot[part=body] {
-        display: block;
-        margin: 1rem 0;
-      }
-
       footer {
         display: flex;
         flex-direction: row;
         justify-content: end;
         align-items: center;
         gap: 0.25rem;
+        margin-top: 1rem;
       }
 
-      header, #actions {
+      header, [part=actions] {
         display: flex;
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 1rem;
       }
-      #actions {
+      [part=actions] {
         gap: 0.5rem;
       }
 
@@ -163,6 +164,16 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
     this.renderRoot.querySelector('dialog')?.showModal()
   }
 
+  private onDialogClose_() {
+    fire(this, 'close')
+  }
+
+  private onDialogCancel_(e: Event) {
+    if (!fire(this, 'cancel', { cancelable: true })) {
+      e.preventDefault()
+    }
+  }
+
   private onClose_() {
     this.renderRoot.querySelector('dialog')?.requestClose()
   }
@@ -176,11 +187,12 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <dialog part="dialog" closedby="any">
-          <re-card fillStyle="solid">
+        <dialog part="dialog" closedby="${ifDefined(this.closedBy)}"
+            @close="${this.onDialogClose_}" @cancel="${this.onDialogCancel_}">
+          <re-card part="card" fillStyle="solid">
             <header part="header">
               <slot name="title"></slot>
-              <div id="actions">
+              <div part="actions" id="actions">
                 <slot name="actions">
                   <re-icon-button name="close" @click="${this.onClose_}"
                       ></re-icon-button>
@@ -188,14 +200,9 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
               </div>
             </header>
 
-            <slot part="body"></slot>
+            <slot></slot>
 
-            <footer part="footer">
-              <slot name="footer">
-                <re-button variant="primary" @click="${this.onClose_}"
-                    >Close</re-button>
-              </slot>
-            </footer>
+            <footer part="footer"><slot name="footer"></slot></footer>
           </re-card>
         </dialog>
       `
