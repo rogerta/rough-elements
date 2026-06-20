@@ -1,4 +1,4 @@
-import { css, html, type PropertyValues } from 'lit'
+import { css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { Mixin } from './internal/re-background-mixin.js'
@@ -9,6 +9,11 @@ import { ReElement } from './internal/re-element.js'
 export class BadgeElement extends Mixin(ReElement) {
   @property({ reflect: true }) variant: VARIANTS = 'primary'
 
+  constructor() {
+    super()
+    this.fillStyle = 'solid'
+  }
+
   override render() {
     return [
       super.renderRoughSvg(),
@@ -16,11 +21,6 @@ export class BadgeElement extends Mixin(ReElement) {
         <slot part="body"></slot>
       `,
     ]
-  }
-
-  override firstUpdated(props: PropertyValues) {
-    super.firstUpdated(props)
-    this.fillStyle = 'solid'
   }
 
   static styles = [

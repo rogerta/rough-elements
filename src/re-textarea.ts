@@ -54,9 +54,13 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
     }
   }
 
+  constructor() {
+    super()
+    this.fillStyle = 'solid'
+  }
+
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
-    this.fillStyle = 'solid'
     const textarea = this.renderRoot.querySelector('textarea')
     textarea?.addEventListener('blur', this)
     textarea?.addEventListener('change', this)

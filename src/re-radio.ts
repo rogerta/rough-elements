@@ -11,27 +11,30 @@ export class RadioElement extends ButtonElement {
 
   private prefix_?: IconElement
 
-    static styles = [
-      ...super.styles,
-      css`
-        :host {
-          --font: inherit;
-        }
-        :host(:not([disabled]):focus-within) ::slotted([slot=prefix]) {
-          --color: var(--re-primary-color);
-        }
-        button {
-          --text-transform: none;
-        }
-      `
-    ]
+  static styles = [
+    ...super.styles,
+    css`
+      :host {
+        --font: inherit;
+      }
+      :host(:not([disabled]):focus-within) ::slotted([slot=prefix]) {
+        --color: var(--re-primary-color);
+      }
+      button {
+        --text-transform: none;
+      }
+    `
+  ]
 
-  override firstUpdated(props: PropertyValues) {
-    super.firstUpdated(props)
-
+  constructor() {
+    super()
     this.variant = 'text'
     this.fillStyle = 'none'
     this.borderStyle = 'none'
+  }
+
+  override firstUpdated(props: PropertyValues) {
+    super.firstUpdated(props)
 
     // Insert a prefix to the button by adding an icon to the light DOM.
     this.prefix_ = this.ownerDocument.createElement('re-icon')

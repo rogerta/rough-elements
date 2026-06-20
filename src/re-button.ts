@@ -65,9 +65,13 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
    */
   @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
 
+  constructor() {
+    super()
+    this.fillStyle = 'solid'
+  }
+
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
-    this.fillStyle = 'solid'
     const button = this.renderRoot.querySelector('button')
     button?.addEventListener('keydown', this)
     button?.addEventListener('keyup', this)
@@ -118,9 +122,10 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
     }
   }
 
-  protected override updated(_: PropertyValues) {
-    const isTextButton = this.variant === 'text'
+  protected override updated(props: PropertyValues) {
+    super.updated(props)
 
+    const isTextButton = this.variant === 'text'
     this.borderStyle = isTextButton ? 'none'
         : (this.circle ? 'circle' : 'rectangle')
     this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'

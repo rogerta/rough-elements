@@ -77,7 +77,7 @@ export class SelectElement extends DropdownElement {
     }
   }
 
-  renderLabelDefault_() {
+  protected override renderLabelDefault_() {
     return this.labelNodes_
   }
 }

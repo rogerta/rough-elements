@@ -46,9 +46,13 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
 
   @property({state: true}) showPassword_ = false
 
+  constructor() {
+    super()
+    this.fillStyle = 'solid'
+  }
+
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
-    this.fillStyle = 'solid'
     const input = this.renderRoot.querySelector('input')
     input?.addEventListener('change', this)
     input?.addEventListener('input', this)

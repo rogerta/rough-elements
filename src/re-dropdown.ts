@@ -60,7 +60,7 @@ export class DropdownElement extends LitElement {
     `
   }
 
-  renderLabelDefault_(): Node[] {
+  protected renderLabelDefault_(): Node[] {
     return []
   }
 }
