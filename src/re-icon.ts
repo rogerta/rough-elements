@@ -15,11 +15,10 @@ export class IconElement extends ReElement {
         display: inline-block;
         width: var(--size, 1.5rem);
         height: var(--size, 1.5rem);
-        color: var(--color, inherit);
       }
       .icon {
         stroke: none;
-        fill: currentcolor;
+        fill: var(--color, inherit);
       }
     `
   ]
