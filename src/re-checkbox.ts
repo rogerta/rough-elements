@@ -15,9 +15,6 @@ export class CheckboxElement extends ButtonElement {
   static styles = [
     ...super.styles,
     css`
-      :host {
-        --font: inherit;
-      }
       :host(:not([disabled]):focus-within) ::slotted([slot=prefix]) {
         --color: var(--re-primary-color);
       }

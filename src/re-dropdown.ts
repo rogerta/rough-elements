@@ -20,7 +20,6 @@ export class DropdownElement extends LitElement {
       display: inline-block;
     }
     re-button {
-      --font: inherit;
       --text-transform: none;
     }
     re-button[part="trigger"]::part(button) {

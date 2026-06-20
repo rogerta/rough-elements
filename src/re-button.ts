@@ -160,7 +160,6 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         --border-color: ButtonBorder;
         --background-color: canvas; /*ButtonFace;*/
         --button-text-shadow-color: rgb(from black R G B / 0.1);
-        --font: caption;  /* Use the system menu font. */
       }
       :host(:not([variant=text])) {
         --text-transform: uppercase;
@@ -222,7 +221,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         color: inherit;
         -webkit-tap-highlight-color: transparent;
         transition: transform 0.2s ease;
-        font: var(--font);
+        font-family: var(--re-input-font-family);
         text-transform: var(--text-transform);
       }
       :host(:not([circle])) {

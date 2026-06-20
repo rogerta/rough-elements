@@ -1,7 +1,8 @@
 import { LitElement, css, html, type PropertyValues } from 'lit'
 import { property, query } from 'lit/decorators.js'
-
 import rough from '@rogerta/roughjs'
+
+import { STYLES } from './re-common.js'
 
 export type Point = [number, number]
 export type RoughCanvas = ReturnType<typeof rough.canvas>
@@ -90,6 +91,7 @@ export class ReElement extends LitElement {
   }
 
   static styles = [
+    STYLES,
     css`
       :host {
         /* Make sure that z-index on #rough applies only within component */

@@ -168,6 +168,7 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
         --border-color: ButtonBorder;
         --background-color: canvas;
         padding: 0.25rem 0.5rem;
+        font-family: var(--re-input-font-family);
       }
       :host([disabled]) {
         opacity: 0.5;
@@ -192,6 +193,7 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
         height: min-content;
         background: transparent;
         color: inherit;
+        font-family: var(--re-input-font-family);
       }
       /* Removes the focus ring only for mouse/touch interactions */
       input:focus {
