@@ -10,13 +10,13 @@ export class CheckboxElement extends ButtonElement {
   @property({ type: Boolean, reflect: true }) checked = false
   @property({ type: Boolean, reflect: true }) indeterminate = false
 
-  private caret_?: IconElement
+  private prefix_?: IconElement
 
   static styles = [
     ...super.styles,
     css`
-      :host(:not([disabled]):focus-within) ::slotted([slot=prefix]) {
-        --color: var(--re-primary-color);
+      :host(:not([disabled]):focus-within) button {
+        font-weight: bold;
       }
       button {
         --text-transform: none;
@@ -35,11 +35,11 @@ export class CheckboxElement extends ButtonElement {
     super.firstUpdated(props)
 
     // Insert a prefix to the button by adding an icon to the light DOM.
-    this.caret_ = this.ownerDocument.createElement('re-icon')
-    if (this.caret_) {
-      this.caret_.name = 'checkbox-outline-blank'
-      this.caret_.slot = 'prefix'
-      this.append(this.caret_)
+    this.prefix_ = this.ownerDocument.createElement('re-icon')
+    if (this.prefix_) {
+      this.prefix_.name = 'checkbox-outline-blank'
+      this.prefix_.slot = 'prefix'
+      this.append(this.prefix_)
     }
 
     this.renderRoot.addEventListener('click', e => {
@@ -62,8 +62,8 @@ export class CheckboxElement extends ButtonElement {
 
   protected override updated(props: PropertyValues) {
     super.updated(props)
-    if (this.caret_) {
-      this.caret_.name = this.checked ? 'checkbox'
+    if (this.prefix_) {
+      this.prefix_.name = this.checked ? 'checkbox'
           : (this.indeterminate ? 'checkbox-indeterminate'
               : 'checkbox-outline-blank')
     }
