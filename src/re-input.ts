@@ -151,8 +151,6 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
         justify-content: start;
         align-items: center;
         color: var(--color, ButtonText);
-        --border-color: ButtonBorder;
-        --background-color: canvas;
         padding: 0.25rem 0.5rem;
         font-family: var(--re-input-font-family);
       }
@@ -174,7 +172,7 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
         padding: 0;
         margin: 0;
         height: min-content;
-        background: transparent;
+        background-color: var(--re-input-background-color, ButtonFace);
         color: inherit;
         font-family: var(--re-input-font-family);
       }

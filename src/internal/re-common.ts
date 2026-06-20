@@ -22,5 +22,7 @@ export const STYLES = css`
     --re-input-font-family: var(--re-font-sans-family);
     --re-help-font-family: var(--re-font-sans-family);
     --re-label-font-family: var(--re-font-sans-family);
+
+    --re-input-background-color: var(--background-color, ButtonFace);
   }
 `

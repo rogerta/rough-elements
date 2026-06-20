@@ -141,8 +141,6 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
         justify-content: start;
         align-items: center;
         color: var(--color, ButtonText);
-        --border-color: ButtonBorder;
-        --background-color: canvas;
         padding: 0.25rem 0 0.25rem 0.5rem;
       }
       :host([disabled]) {
@@ -166,7 +164,7 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
         padding: 0;
         margin: 0;
         height: min-content;
-        background: transparent;
+        background-color: var(--re-input-background-color, ButtonFace);
         color: inherit;
       }
       /* Removes the focus ring only for mouse/touch interactions */

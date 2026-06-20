@@ -157,7 +157,6 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         color: var(--color, ButtonText);
         user-select: none;
         cursor: pointer;
-        --border-color: ButtonBorder;
         --background-color: canvas; /*ButtonFace;*/
         --button-text-shadow-color: rgb(from black R G B / 0.1);
       }
@@ -217,7 +216,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         padding: 0;
         margin: 0;
         height: min-content;
-        background: transparent;
+        background-color: var(--background-color, ButtonFace);
         color: inherit;
         -webkit-tap-highlight-color: transparent;
         transition: transform 0.2s ease;

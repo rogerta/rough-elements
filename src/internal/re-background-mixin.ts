@@ -22,7 +22,7 @@ export declare class MixinInterface {
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
-    @property({}) fillStyle: FILLSTYLE = 'hachure'
+    @property({}) fillStyle: FILLSTYLE = 'none'
     @property({}) hachureWeight = 6
     @property({}) hachureGap = 15
     @property({}) hachureAngle = -75
@@ -59,10 +59,14 @@ export const Mixin =
         width: number,
         height: number,
         cstyles: CSSStyleDeclaration): SVGElement[] {
+      const roughElements = super.onResized(width, height, cstyles)
+      if (this.fillStyle === 'none') {
+        return roughElements
+      }
+
       const borderWidth = parseFloat(cstyles.borderWidth)
       const halfBorderWidth = borderWidth / 2
       const bgColour = cstyles.getPropertyValue('--background-color')
-      const roughElements = super.onResized(width, height, cstyles)
 
       if (bgColour) {
         // NOTE: `fill` is set to 'inherit' so that the colour can dynamically
@@ -72,14 +76,12 @@ export const Mixin =
         const options = Object.assign({
           maxRandomnessOffset: halfBorderWidth,
           stroke: 'none',
+          fill: 'inherit',
           fillStyle: this.fillStyle,
           fillWeight: this.hachureWeight,
           hachureGap: this.hachureGap,
           hachureAngle: this.hachureAngle,
         }, this.options)
-        if (this.fillStyle !== 'none') {
-          options.fill = 'inherit'
-        }
 
         // NOTE: the fraction is used for implementing a "progress" effect.
         // See <re-progress>.
