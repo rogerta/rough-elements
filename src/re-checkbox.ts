@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { ButtonElement } from './re-button.js'
 import { IconElement } from './re-icon.js'
+import { fire } from './re-element.js'
 
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonElement {
@@ -49,6 +50,13 @@ export class CheckboxElement extends ButtonElement {
 
       this.checked = !this.checked
       this.indeterminate = false
+
+      // TODO: from the outside these events should be fired after the click
+      // event, but it seems they are fired first.  Need to investigate.
+      this.updateComplete.then(() => {
+        fire(this, 'input', {bubbles: true, composed: true})
+        fire(this, 'change', {bubbles: true})
+      })
     })
   }
 

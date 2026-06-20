@@ -211,27 +211,27 @@
 
     <div class="demo">
       <h1>re-tab-group</h1>
-      <re-tab-group name="group1" selected="tab1">
-        <re-item id="tab1">
+      <re-tab-group name="group1" selected="tab11">
+        <re-item id="tab11">
           <re-icon slot="prefix" name="dangerous"></re-icon>
           First
         </re-item>
-        <re-item id="tab2">
+        <re-item id="tab12">
           <re-icon slot="prefix" name="info"></re-icon>
           Second
         </re-item>
-        <re-item id="tab3">Third</re-item>
-        <re-item id="tab4">Fourth</re-item>
-        <re-item id="tab5" disabled>Fifth</re-item>
-        <re-item id="tab6">Sixth</re-item>
+        <re-item id="tab13">Third</re-item>
+        <re-item id="tab14">Fourth</re-item>
+        <re-item id="tab15" disabled>Fifth</re-item>
+        <re-item id="tab16">Sixth</re-item>
       </re-tab-group>
-      <re-panel-group name="group2" selected="tab1">
-        <div data-id="tab1" class="panel">Panel 1</div>
-        <div data-id="tab2" class="panel">Panel 2</div>
-        <div data-id="tab3" class="panel">Panel 3</div>
-        <div data-id="tab4" class="panel">Panel 4</div>
-        <div data-id="tab5" class="panel">Panel 5</div>
-        <div data-id="tab6" class="panel">Panel 6</div>
+      <re-panel-group name="group1" selected="tab11">
+        <div data-id="tab11" class="panel">Panel 1</div>
+        <div data-id="tab12" class="panel">Panel 2</div>
+        <div data-id="tab13" class="panel">Panel 3</div>
+        <div data-id="tab14" class="panel">Panel 4</div>
+        <div data-id="tab15" class="panel">Panel 5</div>
+        <div data-id="tab16" class="panel">Panel 6</div>
       </re-panel-group>
 
       <re-tab-group name="group2">
@@ -265,12 +265,12 @@
 
     <div class="demo">
       <h1>re-radio</h1>
-      <re-radio name="group1" id="radio1" checked>Group 1</re-radio>
-      <re-radio name="group1" id="radio2">Group 1</re-radio>
-      <re-radio name="group1" id="radio3" disabled checked>Group 1</re-radio>
+      <re-radio name="group1" id="radio11" checked>Group 1</re-radio>
+      <re-radio name="group1" id="radio12">Group 1</re-radio>
+      <re-radio name="group1" id="radio13" disabled checked>Group 1</re-radio>
 
-      <re-radio name="group2" id="radio2">Group 2</re-radio>
-      <re-radio name="group2" id="radio4" checked disabled>Group 2</re-radio>
+      <re-radio name="group2" id="radio21">Group 2</re-radio>
+      <re-radio name="group2" id="radio22" checked disabled>Group 2</re-radio>
     </div>
 
     <div class="demo">
@@ -306,23 +306,23 @@
 
     <div class="demo">
       <h1>re-input</h1>
-      <re-input placeholder="date" type="date">
+      <re-input id="i1" placeholder="date" type="date">
         <re-icon slot="prefix" name="check"></re-icon>
         <re-icon slot="suffix" name="check"></re-icon>
       </re-input>
-      <re-input placeholder="datetime-local" type="datetime-local">
+      <re-input id="i2" placeholder="datetime-local" type="datetime-local">
         <re-icon slot="prefix" name="check"></re-icon>
       </re-input>
-      <re-input placeholder="email" type="email">
+      <re-input id="i3" placeholder="email" type="email">
         <re-icon slot="suffix" name="check"></re-icon>
       </re-input>
-      <re-input placeholder="number" type="number"></re-input>
-      <re-input placeholder="password" type="password"></re-input>
-      <re-input placeholder="search" type="search"></re-input>
-      <re-input placeholder="tel" type="tel"></re-input>
-      <re-input placeholder="text" type="text"></re-input>
-      <re-input placeholder="time" type="time"></re-input>
-      <re-input placeholder="url" type="url"></re-input>
+      <re-input id="i4" placeholder="number" type="number"></re-input>
+      <re-input id="i5" placeholder="password" type="password"></re-input>
+      <re-input id="i6" placeholder="search" type="search"></re-input>
+      <re-input id="i7" placeholder="tel" type="tel"></re-input>
+      <re-input id="i8" placeholder="text" type="text"></re-input>
+      <re-input id="i9" placeholder="time" type="time"></re-input>
+      <re-input id="i10" placeholder="url" type="url"></re-input>
       <re-button id="toggleInputs" variant="danger">Toggle enable</re-button>
     </div>
 
@@ -634,6 +634,72 @@
       const MAX = 400
       let inc = (MAX - MIN) * 0.0125
 
+      document.querySelectorAll('re-dialog').forEach(button => {
+        button.addEventListener('close', e => {
+          console.log(`dialog closed ${e.target.id}`)
+        })
+        button.addEventListener('cancel', e => {
+          console.log(`dialog canceled ${e.target.id}`)
+        })
+      })
+
+      document.querySelectorAll('re-icon-button').forEach(button => {
+        button.addEventListener('click', e => {
+          console.log(`clicked icon button ${e.target.id}`)
+        })
+      })
+
+      document.querySelectorAll('re-button').forEach(button => {
+        button.addEventListener('click', e => {
+          console.log(`clicked button ${e.target.id}`)
+        })
+      })
+
+      document.querySelectorAll('re-checkbox').forEach(button => {
+        button.addEventListener('click', e => {
+          console.log(`clicked checkbox ${e.target.id}`)
+        })
+        button.addEventListener('input', e => {
+          console.log(`inputed checkbox ${e.target.id}`)
+        })
+        button.addEventListener('change', e => {
+          console.log(`changed checkbox ${e.target.id}`)
+        })
+      })
+
+      document.querySelectorAll('re-input').forEach(button => {
+        button.addEventListener('input', e => {
+          console.log(`inputed input ${e.target.id}`)
+        })
+        button.addEventListener('change', e => {
+          console.log(`changed input ${e.target.id}`)
+        })
+      })
+
+      document.querySelectorAll('re-radio').forEach(button => {
+        button.addEventListener('input', e => {
+          console.log(`inputed radio ${e.target.id}`)
+        })
+        button.addEventListener('change', e => {
+          console.log(`changed radio ${e.target.id}`)
+        })
+      })
+
+      document.querySelectorAll('re-rating').forEach(rating => {
+        rating.addEventListener('input', e => {
+          console.log(`inputed rating ${e.target.value}`)
+        })
+        rating.addEventListener('change', e => {
+          console.log(`changed rating ${e.target.value}`)
+        })
+      })
+
+      document.querySelectorAll('re-tab-group').forEach(group => {
+        group.addEventListener('change', e => {
+          console.log(`changed tab group ${e.target.selected}`)
+        })
+      })
+
       document.querySelector('#alert5 re-icon-button')
           .addEventListener('click', e => {
         const alert = e.target.parentElement
@@ -714,10 +780,15 @@
         console.log(`clicked menu item ${getItemFromEvent(e)?.id}`)
       })
 
-      document.querySelector('re-select')
-          .addEventListener('change', e => {
-        console.log(`clicked option ${e.target.value}`)
+      document.querySelectorAll('re-select').forEach(select => {
+        select.addEventListener('change', e => {
+          console.log(`changed re-select ${e.target.value}`)
+        })
+        select.addEventListener('click', e => {
+          console.log(`clicked re-select ${e.currentTarget.value}`)
+        })
       })
+
 
       const progress = document.querySelector('re-progress')
       progress.min = MIN

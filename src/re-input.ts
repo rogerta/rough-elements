@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 
 import { Mixin as BgMixin } from './re-background-mixin.js'
 import { Mixin as BorderMixin } from './re-border-mixin.js'
-import { ReElement } from './re-element.js'
+import { fire, ReElement } from './re-element.js'
 import './re-icon-button.js'
 
 // Some useful info that needs to be documented:
@@ -120,8 +120,9 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
             step="${ifDefined(this.step)}"
             .value="${live(this.value)}"
             @change="${this.onInputChanged_}"
-            @input="${this.onInputChanged_}"
             />
+          <!-- No need to catch and re-fire input events since they bubble
+               and are composed by default. -->
 
         <!-- The element that suffixes the input control. -->
         <slot class="hidden" name="suffix" part="suffix">
@@ -148,7 +149,7 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
   }
 
   onInputChanged_(e: Event) {
-
+    fire(this, 'change')
   }
 
   static styles = [

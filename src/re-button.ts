@@ -156,6 +156,8 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         --background-color: canvas; /*ButtonFace;*/
         --button-text-shadow-color: rgb(from black R G B / 0.1);
         --font: caption;  /* Use the system menu font. */
+      }
+      :host(:not([variant=text])) {
         --text-transform: uppercase;
       }
       :host * {

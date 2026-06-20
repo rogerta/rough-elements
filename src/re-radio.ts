@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { ButtonElement } from './re-button.js'
 import { IconElement } from './re-icon.js'
+import { fire } from './re-element.js'
 
 @customElement('re-radio')
 export class RadioElement extends ButtonElement {
@@ -48,6 +49,7 @@ export class RadioElement extends ButtonElement {
 
       this.uncheckOtherRadio_()
       this.checked = true
+      fire(this, 'change', {bubbles: true})
     })
 
     if (this.checked) {

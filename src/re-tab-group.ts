@@ -4,6 +4,8 @@ import { customElement, property } from 'lit/decorators.js'
 import './re-divider.js'
 import { getItemFromEvent, type ItemElement } from './re-item.js'
 import type { IconElement } from './re-icon.js'
+import type { PanelGroupElement } from './re-panel-group.js'
+import { fire } from './re-element.js'
 
 @customElement('re-tab-group')
 export class TabGroupElement extends LitElement {
@@ -36,6 +38,7 @@ export class TabGroupElement extends LitElement {
     }
 
     this.selected = item.id
+    fire(this, 'change', {bubbles: true})
   }
 
   protected override firstUpdated(_: PropertyValues) {
@@ -89,7 +92,8 @@ export class TabGroupElement extends LitElement {
       if (this.selected) {
         const root = this.getRootNode()
         if (root instanceof ShadowRoot || root instanceof Document) {
-          root.querySelectorAll('re-panel-group').forEach(panel => {
+          root.querySelectorAll<PanelGroupElement>(
+              `re-panel-group[name=${this.name}]`).forEach(panel => {
             panel.selected = this.selected
           })
         }

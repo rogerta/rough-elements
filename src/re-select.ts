@@ -68,7 +68,8 @@ export class SelectElement extends DropdownElement {
           if (this.value !== item.id) {
             this.value = item.id
             this.labelNodes_ = item.getLabelNodes()
-            fire(this, 'change')
+            this.updateComplete.then(
+                () => fire(this, 'change', {bubbles: true}))
           }
         }
         break

@@ -58,13 +58,13 @@ export class RatingElement extends LitElement {
 
     this.value = this.value === value ? 0 : value
 
-    this.updateComplete.then(() => fire(this, 'change'))
+    this.updateComplete.then(() => fire(this, 'change', {bubbles: true}))
   }
 
   protected override updated(props: PropertyValues) {
     super.updated(props)
     if (props.has('value')) {
-      fire(this, 'input')
+      fire(this, 'input', {bubbles: true, composed: true})
     }
   }
 

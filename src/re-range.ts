@@ -95,7 +95,7 @@ export class RangeElement extends ReElement {
         const bounds = this.getBoundingClientRect()
         const fraction = pe.offsetX / (bounds.width)
         this.value = this.snap_(fraction * (this.max - this.min) + this.min)
-        this.updateComplete.then(() => fire(this, 'change'))
+        this.updateComplete.then(() => fire(this, 'change', {bubbles: true}))
         break
       }
       case 'keydown': {
@@ -117,7 +117,7 @@ export class RangeElement extends ReElement {
         break
       }
       case 'keyup': {
-        fire(this, 'change')
+        fire(this, 'change', {bubbles: true})
         break
       }
     }
@@ -162,7 +162,7 @@ export class RangeElement extends ReElement {
     }
 
     if(props.has('value')) {
-      fire(this, 'input')
+      fire(this, 'input', {bubbles: true, composed: true})
     }
 
     this.requestRoughRender()

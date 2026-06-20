@@ -67,7 +67,7 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
   protected updated(props: PropertyValues) {
     super.updated(props)
     if (props.has('open')) {
-      fire(this, 'toggle', {open: this.open})
+      fire(this, 'toggle', {detail: this.open})
     }
   }
 

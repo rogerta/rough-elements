@@ -13,15 +13,15 @@ export type ResolvedOptions = Required<Options>
 /**
  * Fires a custom event with the given type and detail.
  *
- * @param el An element to fire the event.
+ * @param target An element to fire the event.
  * @param type The event's type.
- * @param detail Extra info.
+ * @param options CustomEvent initialazation options.
  */
-export function fire(el: EventTarget, type: string, detail?: any) {
-  el.dispatchEvent(new CustomEvent(type, {
-    detail,
-    composed: true,
-  }))
+export function fire<T>(
+    target: EventTarget,
+    type: string,
+    options: CustomEventInit<T>={}) {
+  target.dispatchEvent(new CustomEvent(type, options))
 }
 
 // The baseclass for all rough elements.
