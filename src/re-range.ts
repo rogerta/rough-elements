@@ -1,7 +1,7 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { fire, ReElement } from './re-element.js'
+import { fire, ReElement } from './internal/re-element.js'
 
 // Use CSS style "writing-mode" to make this range vertical.
 @customElement('re-range')

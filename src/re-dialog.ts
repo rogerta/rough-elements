@@ -1,10 +1,10 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './re-background-mixin.js'
-import { Mixin as BorderMixin } from './re-border-mixin.js'
+import { Mixin as BgMixin } from './internal/re-background-mixin.js'
+import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
 import  './re-button.js'
-import { ReElement } from './re-element.js'
+import { ReElement } from './internal/re-element.js'
 import  './re-icon-button.js'
 
 @customElement('re-dialog')

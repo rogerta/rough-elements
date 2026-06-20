@@ -1,9 +1,9 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './re-background-mixin.js'
-import { Mixin as BorderMixin } from './re-border-mixin.js'
-import { ReElement } from './re-element.js'
+import { Mixin as BgMixin } from './internal/re-background-mixin.js'
+import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { ReElement } from './internal/re-element.js'
 
 @customElement('re-progress')
 export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {

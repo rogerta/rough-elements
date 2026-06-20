@@ -1,7 +1,7 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { fire } from './re-element.js'
+import { fire } from './internal/re-element.js'
 import './re-icon.js'
 import { classMap } from 'lit/directives/class-map.js'
 

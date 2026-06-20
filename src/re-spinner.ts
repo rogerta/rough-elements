@@ -1,7 +1,7 @@
 import { css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ReElement } from './re-element.js'
+import { ReElement } from './internal/re-element.js'
 
 @customElement('re-spinner')
 export class SpinnerElement extends ReElement {

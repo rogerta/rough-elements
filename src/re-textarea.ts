@@ -2,9 +2,9 @@ import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { Mixin as BgMixin } from './re-background-mixin.js'
-import { Mixin as BorderMixin } from './re-border-mixin.js'
-import { fire, ReElement } from './re-element.js'
+import { Mixin as BgMixin } from './internal/re-background-mixin.js'
+import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { fire, ReElement } from './internal/re-element.js'
 import './re-icon-button.js'
 
 // Some useful info that needs to be documented:

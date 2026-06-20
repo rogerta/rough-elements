@@ -1,9 +1,9 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin } from './re-background-mixin.js'
-import type { VARIANTS } from './re-common.js'
-import { ReElement } from './re-element.js'
+import { Mixin } from './internal/re-background-mixin.js'
+import type { VARIANTS } from './internal/re-common.js'
+import { ReElement } from './internal/re-element.js'
 
 @customElement('re-badge')
 export class BadgeElement extends Mixin(ReElement) {

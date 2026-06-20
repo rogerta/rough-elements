@@ -5,7 +5,7 @@ import './re-divider.js'
 import { getItemFromEvent, type ItemElement } from './re-item.js'
 import type { IconElement } from './re-icon.js'
 import type { PanelGroupElement } from './re-panel-group.js'
-import { fire } from './re-element.js'
+import { fire } from './internal/re-element.js'
 
 @customElement('re-tab-group')
 export class TabGroupElement extends LitElement {

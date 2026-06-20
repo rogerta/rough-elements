@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { ButtonElement } from './re-button.js'
 import { IconElement } from './re-icon.js'
-import { fire } from './re-element.js'
+import { fire } from './internal/re-element.js'
 
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonElement {

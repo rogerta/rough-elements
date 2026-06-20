@@ -1,7 +1,7 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ReElement } from './re-element.js'
+import { ReElement } from './internal/re-element.js'
 import { getIcon, getViewBox } from './re-iconset.js'
 
 @customElement('re-icon')

@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { DropdownElement } from  './re-dropdown.js'
 import { getItemFromEvent, ItemElement } from './re-item.js'
-import { fire } from './re-element.js'
+import { fire } from './internal/re-element.js'
 
 /**
  * A select exposes a menu of options that the user can select from.  The
