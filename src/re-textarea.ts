@@ -107,7 +107,7 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
         <!-- The element that prefixes the input control. -->
-        <slot name="prefix" part="prefix"></slot>
+        <slot name="prefix"></slot>
 
         <!-- The textarea control. -->
         <textarea part="textarea"
@@ -126,7 +126,7 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
             ></textarea>
 
         <!-- The element that suffixes the input control. -->
-        <slot name="suffix" part="suffix"></slot>
+        <slot name="suffix"></slot>
         <div id="hiddenslot"><slot></slot></div>
       `,
     ]
