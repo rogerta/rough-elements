@@ -1,4 +1,4 @@
-import { css, html, type PropertyValues } from 'lit'
+import { css, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
 import { Mixin as BgMixin } from './internal/re-background-mixin.js'
@@ -11,21 +11,12 @@ export class CardElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <slot class="hidden" part="image" name="image"></slot>
-        <slot class="hidden" part="header" name="header"></slot>
-        <slot class="hidden" part="body"></slot>
-        <slot class="hidden" part="footer" name="footer"></slot>
+        <slot part="image" name="image"></slot>
+        <slot part="header" name="header"></slot>
+        <slot part="body"></slot>
+        <slot part="footer" name="footer"></slot>
       `,
     ]
-  }
-
-  override updated(_props: PropertyValues) {
-    ['header', 'body', 'footer', 'image'].forEach(part => {
-      const slot =
-          this.renderRoot.querySelector<HTMLSlotElement>(`slot[part=${part}]`)!
-      const hasChildren = slot.assignedNodes().length > 0
-      slot.classList.toggle('hidden', !hasChildren)
-    })
   }
 
   static styles = [
@@ -35,23 +26,15 @@ export class CardElement extends BorderMixin(BgMixin(ReElement)) {
         display: inline-block;
         --img-border: calc(-0.5 * var(--border-width));
       }
-      slot {
-        display: block;
-      }
-      slot.hidden {
-        display: none;
-      }
       slot:not([part=image]) {
         padding: 0.5rem 1rem;
       }
-      slot[part=image] {
+      slot[part=image]::slotted(img) {
+        display: block;
+        width: calc(100% - 2 * var(--img-border)); /* Note: --img-border < 0 */
         margin-top: var(--img-border);
         margin-left: var(--img-border);
         margin-right: var(--img-border);
-      }
-      ::slotted(img) {
-        display: block;
-        width: 100%;
       }
     `
   ]

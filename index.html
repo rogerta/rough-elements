@@ -69,28 +69,36 @@
         margin-top: 2rem;
         margin-bottom: 0;
       }
-      re-card::part(header), re-card::part(footer) {
+      re-card [slot=header], re-card [slot=footer] {
         font-weight: bold;
-      }
-      re-card::part(header) {
-        padding: 0.5rem;
-        border-bottom: solid 1px rgb(160 160 160);
-      }
-      re-card::part(footer) {
-        padding: 2rem;
-        border-top: solid 1px rgb(160 160 160);
       }
 
       #card1 {
         --border-color: brown;
         --background-color: rgb(from var(--border-color) R G B / 0.1);
+        padding: 0.5rem 1rem;
       }
       #card2 {
         --border-color: blue;
         --border-width: 1rem;
+        padding: 0.5rem 1rem;
       }
       #card3 {
         max-width: 512px;
+
+        & [slot=header] {
+          padding: 0.5rem;
+          border-bottom: solid 1px rgb(160 160 160);
+        }
+
+        & .body {
+          padding: 0.5rem 1rem;
+        }
+
+        & [slot=footer] {
+          padding: 2rem;
+          border-top: solid 1px rgb(160 160 160);
+        }
       }
 
       #icon1 {
@@ -624,9 +632,12 @@
       <re-card id="card3">
         <img slot="image" src="https://images.unsplash.com/photo-1559209172-0ff8f6d49ff7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"/>
         <div slot="header">Header</div>
-        The svg element is positioned to covers the padding box of the host
-        element. Overflow is visible so the rough border (SVG sub-elements) can
-        be placed in the host's border box, which is outside the padding box.
+        <div class="body">
+          The svg element is positioned to covers the padding box of the host
+          element. Overflow is visible so the rough border (SVG sub-elements)
+          can be placed in the host's border box, which is outside the padding
+          box.
+        </div>
         <div slot="footer">Footer</div>
       </re-card>
     </div>
