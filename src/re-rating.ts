@@ -18,6 +18,9 @@ export class RatingElement extends LitElement {
 
   static styles = [
     css`
+      :host {
+        --re-rating-color: gold;
+      }
       :host, div {
         display: inline-flex;
       }
@@ -27,12 +30,12 @@ export class RatingElement extends LitElement {
       }
       :host(:not(:hover)) re-icon.selected,
       :host([readonly]) re-icon.selected {
-        --color: var(--re-spinner-color, gold);
+        --color: var(--re-rating-color);
       }
 
       @media (hover: hover) {
         :host(:not([readonly])) :hover > re-icon {
-          --color: var(--re-spinner-color, gold);
+          --color: var(--re-rating-color);
         }
         :host(:not([readonly])) re-icon:hover {
           transform: scale(1.5);
