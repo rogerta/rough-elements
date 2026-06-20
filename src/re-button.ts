@@ -157,7 +157,6 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         color: var(--color, ButtonText);
         user-select: none;
         cursor: pointer;
-        --background-color: canvas; /*ButtonFace;*/
         --button-text-shadow-color: rgb(from black R G B / 0.1);
       }
       :host(:not([variant=text])) {
@@ -171,27 +170,27 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
       }
       :host([variant=primary]) {
         color: white;
-        --background-color: var(--re-primary-color);
+        --re-background-color: var(--re-primary-color);
         --button-text-shadow-color: white;
       }
       :host([variant=success]) {
         color: white;
-        --background-color: var(--re-success-color);
+        --re-background-color: var(--re-success-color);
         --button-text-shadow-color: white;
       }
       :host([variant=neutral]) {
         color: white;
-        --background-color: var(--re-neutral-color);
+        --re-background-color: var(--re-neutral-color);
         --button-text-shadow-color: white;
       }
       :host([variant=warning]) {
         color: white;
-        --background-color: var(--re-warning-color);
+        --re-background-color: var(--re-warning-color);
         --button-text-shadow-color: white;
       }
       :host([variant=danger]) {
         color: white;
-        --background-color: var(--re-danger-color);
+        --re-background-color: var(--re-danger-color);
         --button-text-shadow-color: white;
       }
 
@@ -216,7 +215,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         padding: 0;
         margin: 0;
         height: min-content;
-        background-color: var(--background-color, ButtonFace);
+        background-color: transparent;
         color: inherit;
         -webkit-tap-highlight-color: transparent;
         transition: transform 0.2s ease;

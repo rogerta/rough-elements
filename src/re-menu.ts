@@ -50,6 +50,7 @@ export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
         align-items: stretch;
         justify-content: start;
         padding: 0.25rem 0;
+        background-color: var(--re-background-color, Canvas);
       }
       :host(:not([popover])),
       :host([popover]:popover-open) {

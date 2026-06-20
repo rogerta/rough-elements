@@ -40,6 +40,11 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
 
   private durationTimer_ = 0
 
+  constructor() {
+    super()
+    this.fillStyle = 'hachure'
+  }
+
   show() {
     this.open = true
   }
@@ -181,7 +186,7 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
         }
       }
       :host {
-        --background-color:
+        --re-background-color:
             rgb(from var(--alart-bg-color)
                 calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
       }

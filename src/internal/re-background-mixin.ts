@@ -16,7 +16,7 @@ export declare class MixinInterface {
 
 // Some useful info that needs to be documented:
 //
-// --background-color CSS prop sets the colour of the rough background.
+// --re-background-color CSS prop sets the colour of the rough background.
 // --background-stroke-width CSS prop sets the width of the stroke used to
 //    paint the pattern background.
 export const Mixin =
@@ -35,7 +35,7 @@ export const Mixin =
         * of an SVG element can be used here.  Stroke is always 'none'. */
         #rough .background .solid-fill {
           stroke: none;
-          fill: var(--background-color, inherit);
+          fill: var(--re-background-color, inherit);
           fill-opacity: var(--re-fill-opacity, inherit);
           fill-rule: var(--re-fill-rule, inherit);
         }
@@ -44,7 +44,7 @@ export const Mixin =
         * stroke of an SVG element can be used here.  Fill is always 'none'. */
         #rough .background .pattern-fill {
           fill: none;
-          stroke: var(--background-color, inherit);
+          stroke: var(--re-background-color, inherit);
           stroke-dasharray: var(--re-fill-dasharray, inherit);
           stroke-dashoffset: var(--re-fill-dashoffset, inherit);
           stroke-linecap: var(--re-fill-linecap, inherit);
@@ -66,7 +66,7 @@ export const Mixin =
 
       const borderWidth = parseFloat(cstyles.borderWidth)
       const halfBorderWidth = borderWidth / 2
-      const bgColour = cstyles.getPropertyValue('--background-color')
+      const bgColour = cstyles.getPropertyValue('--re-background-color')
 
       if (bgColour) {
         // NOTE: `fill` is set to 'inherit' so that the colour can dynamically

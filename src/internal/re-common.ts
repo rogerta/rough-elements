@@ -23,6 +23,7 @@ export const STYLES = css`
     --re-help-font-family: var(--re-font-sans-family);
     --re-label-font-family: var(--re-font-sans-family);
 
+    --re-background-color: var(--background-color, Canvas);
     --re-input-background-color: var(--background-color, ButtonFace);
   }
 `

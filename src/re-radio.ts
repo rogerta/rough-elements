@@ -18,6 +18,7 @@ export class RadioElement extends ButtonElement {
         --color: var(--re-primary-color);
       }
       button {
+        background-color: transparent;
         --text-transform: none;
       }
     `

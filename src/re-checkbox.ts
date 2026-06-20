@@ -19,6 +19,7 @@ export class CheckboxElement extends ButtonElement {
         font-weight: bold;
       }
       button {
+        background-color: transparent;
         --text-transform: none;
       }
     `

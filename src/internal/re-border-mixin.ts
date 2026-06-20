@@ -14,9 +14,6 @@ export declare class MixinInterface {
 //
 // --border-width CSS prop sets the width of the rough border.
 // --border-color CSS prop sets the colour of the rough border.
-// --background-color CSS prop sets the colour of the rough background.
-// --background-stroke-width CSS prop sets the width of the stroke used to
-//    paint the pattern background.
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {

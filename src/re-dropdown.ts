@@ -15,23 +15,25 @@ export class DropdownElement extends LitElement {
     */
    @property({ type: Boolean, reflect: true }) disabled = false
 
-  static styles = [css`
-    :host {
-      display: inline-block;
-    }
-    re-button {
-      --text-transform: none;
-    }
-    re-button[part="trigger"]::part(button) {
-      anchor-name: --menu-anchor;
-    }
-    re-menu {
-      /* Where to position the menu dropvoer relative to the trigger */
-      position-anchor: --menu-anchor;
-      position-area: bottom span-right;
-      position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
-    }
-  `]
+  static styles = [
+    css`
+      :host {
+        display: inline-block;
+      }
+      re-button {
+        --text-transform: none;
+      }
+      re-button[part="trigger"]::part(button) {
+        anchor-name: --menu-anchor;
+      }
+      re-menu {
+        /* Where to position the menu dropvoer relative to the trigger */
+        position-anchor: --menu-anchor;
+        position-area: bottom span-right;
+        position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+      }
+    `
+  ]
 
   override firstUpdated(_: PropertyValues) {
     const button = this.renderRoot.querySelector('re-button')

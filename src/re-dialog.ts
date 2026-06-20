@@ -34,7 +34,7 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
 
       re-card {
         padding: 1rem;
-        --background-color: white;
+        --re-background-color: Canvas;
       }
 
       re-card::part(body) {

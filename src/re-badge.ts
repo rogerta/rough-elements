@@ -32,7 +32,7 @@ export class BadgeElement extends Mixin(ReElement) {
         font-size: 0.75rem;
         padding: 0 0.125rem;
         color: var(--color, ButtonText);
-        --background-color: transparent;
+        --re-background-color: transparent;
         cursor: default;
       }
       :host * {
@@ -42,19 +42,19 @@ export class BadgeElement extends Mixin(ReElement) {
         color: white;
       }
       :host([variant=primary]) {
-        --background-color: var(--re-primary-color);
+        --re-background-color: var(--re-primary-color);
       }
       :host([variant=success]) {
-        --background-color: var(--re-success-color);
+        --re-background-color: var(--re-success-color);
       }
       :host([variant=neutral]) {
-        --background-color: var(--re-neutral-color);
+        --re-background-color: var(--re-neutral-color);
       }
       :host([variant=warning]) {
-        --background-color: var(--re-warning-color);
+        --re-background-color: var(--re-warning-color);
       }
       :host([variant=danger]) {
-        --background-color: var(--re-danger-color);
+        --re-background-color: var(--re-danger-color);
       }
     `
   ]
