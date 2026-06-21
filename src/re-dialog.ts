@@ -24,12 +24,44 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
         border: none;
         interpolate-size: allow-keywords;
       }
+
+      /* Should match starting styles below. */
       dialog {
         box-sizing: border-box;
         border: none;
         padding: 0;
         outline: none;
         background-color: transparent;
+        opacity: 0;
+        transition-duration: 0.3s;
+        transition-timing-function: ease;
+        transition-behavior: allow-discrete;
+        transition-property: opacity, overlay, display;
+      }
+      dialog[open] {
+        opacity: 1;
+      }
+
+      /* Should match starting styles below. */
+      dialog::backdrop {
+        background-color: transparent;
+        transition-duration: 0.3s;
+        transition-timing-function: ease;
+        transition-behavior: allow-discrete;
+        transition-property: background-color, overlay, display;
+      }
+      dialog[open]::backdrop {
+        background-color: rgb(100 0 0 / 0.1);
+      }
+
+      @starting-style {
+        /* Should match closed styles above. */
+        dialog[open] {
+          opacity: 0;
+        }
+        dialog[open]::backdrop {
+          background-color: transparent;
+        }
       }
 
       re-card {
