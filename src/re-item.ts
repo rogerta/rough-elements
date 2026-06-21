@@ -59,9 +59,7 @@ export class ItemElement extends LitElement {
         display: inline-block;
         flex: 1 1;
         margin: 0;
-      }
-      .hidden {
-        display: none;
+        color: var(--color);
       }
 
       @media (hover: hover) {

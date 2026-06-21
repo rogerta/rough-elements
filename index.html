@@ -231,6 +231,7 @@
       #rating1container {
         display: flex;
         align-items: center;
+        gap: 0.5rem;
       }
 
       #rating2 {
@@ -246,6 +247,16 @@
       #spinner3 {
         --size: 6rem;
         --track-width: 16px;
+      }
+
+      re-tab-group[name=group1] re-item.selected {
+        --color: red;
+      }
+      re-tab-group[name=group1] re-item.selected::part(body) {
+        --color: green;
+      }
+      re-tab-group[name=group1]::part(indicator) {
+        --color: red;
       }
 
       .panel {

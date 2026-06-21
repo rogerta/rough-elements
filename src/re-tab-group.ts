@@ -75,18 +75,26 @@ export class TabGroupElement extends LitElement {
   }
 
   protected override updated(props: PropertyValues) {
-    let selectedIndex = -1
+    let gridColumn = -1
 
     if (props.has('selected')) {
       // Find the index of the selected tab so that the grid column can be
       // set correctly on the <re-divider>.
       const slot = this.renderRoot.querySelector('slot')
       const tabs = slot?.assignedElements()
-      const index = tabs?.findIndex(t => t.id === this.selected) ?? -1
-      if (index !== -1) {
-        this.selected = tabs![index].id
-        selectedIndex = index + 1
+      let index = tabs?.findIndex(t => t.id === this.selected) ?? -1
+      if (index === -1 && tabs && tabs.length > 0) {
+        index = 0
+        this.selected = tabs[index].id
       }
+
+      if (index !== -1) {
+        gridColumn = index + 1
+      }
+
+      tabs?.forEach((tab, i) => {
+        tab.classList.toggle('selected', i === index)
+      })
 
       // If a valid tab is selected, notify the associated panel group.
       if (this.selected) {
@@ -101,8 +109,8 @@ export class TabGroupElement extends LitElement {
     }
 
     const divider = this.renderRoot.querySelector('re-divider')
-    if (divider) {
-      divider.style.setProperty('grid-column', selectedIndex.toString())
+    if (divider && gridColumn !== -1) {
+      divider.style.setProperty('grid-column', gridColumn.toString())
     }
   }
 
