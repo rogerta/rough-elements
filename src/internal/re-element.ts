@@ -50,7 +50,7 @@ export class ReElement extends LitElement {
     return this.rough_!
   }
 
-  protected get options(): Options { return this.options_}
+  protected get options(): Options { return this.options_ }
 
   override firstUpdated(_: PropertyValues) {
     if (!this.svg_) {
@@ -117,8 +117,7 @@ export class ReElement extends LitElement {
          * Otherwise the resize observer would not get called. */
         box-sizing: border-box;
 
-        /* Should match fillWeight above */
-        --background-stroke-width: 16;
+        --re-background-stroke-width: 16;
       }
 
       /* The svg element is positioned to covers the padding box of the host

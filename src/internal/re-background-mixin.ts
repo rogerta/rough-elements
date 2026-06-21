@@ -17,7 +17,7 @@ export declare class MixinInterface {
 // Some useful info that needs to be documented:
 //
 // --re-background-color CSS prop sets the colour of the rough background.
-// --background-stroke-width CSS prop sets the width of the stroke used to
+// --re-background-stroke-width CSS prop sets the width of the stroke used to
 //    paint the pattern background.
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
@@ -51,7 +51,7 @@ export const Mixin =
           stroke-linejoin: var(--re-fill-linejoin, inherit);
           stroke-miterlimit: var(--re-fill-miterlimit, inherit);
           stroke-opacity: var(--re-fill-opacity, inherit);
-          stroke-width: var(--background-stroke-width, inherit);
+          stroke-width: var(--re-background-stroke-width, inherit);
         }
       `]
 

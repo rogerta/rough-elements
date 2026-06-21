@@ -64,11 +64,11 @@ export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
         if (this.fillFraction < 0.5) {
           label.style.marginLeft = `${this.fillFraction * 100 + 1}%`
           label.style.marginRight = 'auto'
-          label.style.color = 'black'
+          label.style.color = 'var(--label-lower-color)'
         } else {
           label.style.marginLeft = 'auto'
           label.style.marginRight = `${101 - this.fillFraction * 100}%`
-          label.style.color = 'white'
+          label.style.color = 'var(--label-upper-color)'
         }
       }
     }
@@ -82,8 +82,10 @@ export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
       :host {
         display: inline-flex;
         align-items: center;
-        --background-color: rgb(from var(--re-primary-color) R G B / 0.5);
-        --background-stroke-width: 4px;
+        --re-background-color: var(--color);
+        --re-background-stroke-width: 4px;
+        --label-lower-color: var(--color);
+        --label-upper-color: var(--background-color);
       }
       div {
         margin: 0;

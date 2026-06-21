@@ -217,6 +217,17 @@
         --thickness: 10px;
       }
 
+      re-progress {
+        --color: goldenrod;
+        --border-color: red;
+        --label-lower-color: var(--color);
+        --label-upper-color: darkblue;
+      }
+
+      #toggleProgress::part(button) {
+        min-width: 3rem;
+      }
+
       #rating1container {
         display: flex;
         align-items: center;
@@ -245,6 +256,24 @@
         height: 300px;
       }
 
+      #ta1 {
+        --border-color: red;
+      }
+      #ta2 re-icon {
+        --color: green;
+      }
+      #ta3 {
+        & re-icon[slot=prefix] {
+          --color: purple
+        }
+        & re-icon[slot=suffix] {
+          --color: pink;
+        }
+      }
+      #ta3::part(textarea) {
+        color: cyan;
+        font-style: italic;
+      }
       .hidden {
         display: none;
       }
@@ -257,11 +286,11 @@
         <re-icon slot="prefix" name="dangerous"></re-icon>
         Some text
       </re-textarea>
-      <re-textarea disabled>
+      <re-textarea id="ta2" disabled>
         Some text
         <re-icon slot="suffix" name="dangerous"></re-icon>
       </re-textarea>
-      <re-textarea readonly>
+      <re-textarea id="ta3" readonly>
         <re-icon slot="prefix" name="dangerous"></re-icon>
         Some text
         <re-icon slot="suffix" name="dangerous"></re-icon>
