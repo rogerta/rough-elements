@@ -210,6 +210,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
       button {
         display: flex;
         flex-direction: row;
+        justify-content: center;
         align-items: center;
         border: none;
         padding: 0;
