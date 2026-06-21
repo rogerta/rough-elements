@@ -87,6 +87,8 @@ export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
       }
       div {
         margin: 0;
+        display: flex;
+        align-items: center;
         height: 0.5rem;
         font-size: 0.5rem;
         width: fit-content;
