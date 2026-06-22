@@ -34,8 +34,6 @@ export class RangeElement extends ReElement {
         width: 10rem;
         height: 24px;
         --knob-fraction: 0.66;
-        stroke: var(--color, rgb(from black R G B / 0.5));
-        fill: var(--color, rgb(from var(--re-primary-color) R G B / 1));
         outline: none;
       }
       :host([disabled]) {
@@ -44,6 +42,16 @@ export class RangeElement extends ReElement {
 
       :host(:not([disabled]):focus) #rough .line path {
         stroke-width: 2px;
+      }
+
+      #rough .circle {
+        stroke: var(--re-range-knob-outline-color,
+                    var(--re-range-knob-color, var(--color)));
+        fill: var(--re-range-knob-color, var(--color));
+      }
+
+      #rough .line {
+        stroke: var(--re-range-track-color, var(--color));
       }
 
       /* Button press animation */
