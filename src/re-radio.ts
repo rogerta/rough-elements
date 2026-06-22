@@ -14,8 +14,8 @@ export class RadioElement extends ButtonElement {
   static styles = [
     ...super.styles,
     css`
-      :host(:not([disabled]):focus-within) ::slotted([slot=prefix]) {
-        --color: var(--re-primary-color);
+      :host(:not([disabled]):focus-within) button {
+        font-weight: bold;
       }
       button {
         background-color: transparent;
