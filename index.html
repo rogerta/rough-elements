@@ -173,6 +173,50 @@
         transform: rotate(1turn);
       }
 
+      re-select {
+        --color: darkgreen;
+      }
+      re-select #item1 {
+        --color: magenta;
+        font-weight: bold;
+      }
+
+      re-input#i1 {
+        --border-color: red;
+
+        & re-icon[slot=prefix] {
+          --color: green;
+        }
+      }
+
+      re-input#i3 {
+        --border-color: red;
+
+        & re-icon[slot=suffix] {
+          --color: orange;
+        }
+      }
+
+      re-input#i5 {
+        --border-color: orange;
+      }
+      re-input#i5::part(password-icon) {
+        --color: orange;
+      }
+
+      re-menu#menu1 {
+        --border-color: orange;
+
+        & re-divider {
+          --color: green;
+        }
+
+        & re-menu-item [slot=suffix] {
+          color: purple;
+          margin-left: 1rem;
+        }
+      }
+
       #dialog2 {
         & [slot=title] {
           color: red;
@@ -274,6 +318,23 @@
         --re-range-knob-outline-color: blue;
         --re-range-track-color: magenta;
       }
+
+      #radio11 {
+        --color: brown;
+      }
+      #radio11::part(prefix) {
+        --color: purple;
+      }
+      #radio11[checked]::part(prefix) {
+        --color: pink;
+      }
+      #radio11 re-icon {
+        transition: transform 0.75s ease;
+      }
+      #radio11[checked] re-icon {
+        transform: rotate(1turn);
+      }
+
 
       #ta1 {
         --border-color: red;
@@ -503,7 +564,7 @@
         </re-menu-item>
         <re-menu-item id="item3">
           Menu item 3
-          <div slot="suffix" >Ctrl+P</div>
+          <div slot="suffix">Ctrl+P</div>
         </re-menu-item>
         <re-divider></re-divider>
         <re-menu-item id="item4">
