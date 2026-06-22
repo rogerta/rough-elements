@@ -117,7 +117,8 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
         <!-- The element that suffixes the input control. -->
         <slot name="suffix">
           ${this.type === 'password'
-              ? html`<re-icon-button name="${this.renderPasswordIconName_()}"
+              ? html`<re-icon-button part="password-icon"
+                    name="${this.renderPasswordIconName_()}"
                     ?disabled="${this.disabled}"
                     @click="${this.onVisibility_}"></re-icon-button>`
               : nothing }
