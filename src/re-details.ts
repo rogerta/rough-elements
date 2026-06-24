@@ -11,7 +11,7 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) disabled = false
   @property({ type: Boolean, reflect: true }) open = false
 
-  static styles = [
+    static styles = [
     ...super.styles,
     css`
       :host {
@@ -27,6 +27,10 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+      }
+      summary:focus {
+        outline: none;
+        font-weight: bold;
       }
       slot[name=marker] re-icon,
       slot[name=marker]::slotted(re-icon) {
@@ -78,7 +82,7 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
       <details ?open="${this.open}" @toggle="${this.onToggle_}" part="details">
-        <summary part="summary">
+        <summary part="summary" ?inert="${this.disabled}">
           <slot name="summary"></slot>
           <slot name="marker"><re-icon name="keyboard-arrow-right"></re-icon></slot>
         </summary>
