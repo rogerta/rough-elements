@@ -5,6 +5,12 @@ import { ButtonElement } from './re-button.js'
 import { IconElement } from './re-icon.js'
 import { fire } from './internal/re-element.js'
 
+/**
+ * Radio element is a toggleable control that allows users to select a single option
+ * from a group of named options. It inherits from ButtonElement and manages group selection.
+ *
+ * @cssproperty --color - Sets the color of the text and radio button icon. Defaults to `ButtonText`.
+ */
 @customElement('re-radio')
 export class RadioElement extends ButtonElement {
   @property({ type: Boolean, reflect: true }) checked = false

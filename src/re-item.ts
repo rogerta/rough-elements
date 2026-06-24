@@ -7,6 +7,10 @@ import './re-icon.js'
  * An element that is meant to be used inside an `<re-menu>` or 're-select'
  * element.  An optional icon can be prefixed or suffixed.  For menu items,
  * the suffix is often used to show a keyboard shortcut.
+ *
+ * @cssproperty --color - The color of the item's body text.
+ * @cssproperty --re-primary-color - The primary color used for selection background and hover drop-shadow.
+ * @cssproperty --button-text-shadow-color - The color of text shadow on hover.
  */
 @customElement('re-item')
 export class ItemElement extends LitElement {

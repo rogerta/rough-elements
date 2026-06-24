@@ -6,6 +6,10 @@ import type { FILLSTYLE } from './re-common'
 
 type Constructor<T = {}> = new (...args: any[]) => T
 
+/**
+ * Declares the public properties of the Mixin class below.  This is mostly
+ * for vscode+typescript integration, to help with autocompletion in the editor.
+ */
 export declare class MixinInterface {
   fillStyle: FILLSTYLE
   fillFraction: number
@@ -14,18 +18,83 @@ export declare class MixinInterface {
   hachureAngle: number
 }
 
-// Some useful info that needs to be documented:
-//
-// --re-background-color CSS prop sets the colour of the rough background.
-// --re-background-stroke-width CSS prop sets the width of the stroke used to
-//    paint the pattern background.
+/**
+ * A mixin class that fills the background of an element using rough drawing
+ * primitives.
+ *
+ * By default the background is transparent.  See the `fillStyle` property to
+ * determine the types of backgrounds supported.
+ *
+ * The following CSS properties are supported:
+ * @cssproperty --re-background-color - Determines the background.  This applies
+ *    to all fill styles.
+ * @cssproperty --re-background-stroke-width - When filling with `hachure` or
+ *    `zigzag` styles, determines the width of the stroke.
+ * @cssproperty --re-fill-dasharray - When filling with `hachure` or `zigzag`
+ *    styles, defines the dash array for the stroke used to fill the background.
+ * @cssproperty --re-fill-dashoffset - When filling with `hachure` or `zigzag`
+ *    styles, defines the dash offset for the stroke used to fill the
+ *    background.
+ * @cssproperty --re-fill-linecap - When filling with `hachure` or `zigzag`
+ *    styles, defines the line cap for the stroke used to fill the background.
+ * @cssproperty --re-fill-linejoin - When filling with `hachure` or `zigzag`
+ *    styles, defines the line join for the stroke used to fill the background.
+ * @cssproperty --re-fill-miterlimit - When filling with `hachure` or `zigzag`
+ *    styles, defines the miter limit for the stroke used to fill the
+ *    background.
+ * @cssproperty --re-fill-opacity - When using the `solid` style, defines
+ *    the opacity of the fill colour.
+ * @cssproperty --re-fill-rule - When using the `solid` style, defines
+ *    the fill rule of the fill colour.
+ */
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
+    /**
+     * The style of fill to use as the background of this elemnt.  When set to
+     * `none` the element's background is transparent.  This is the default.
+     *
+     * When set to `solid`, the background is filled with the colour specified
+     * in the `--re-background-color` CSS property.  This colour value must
+     * resolve to a valid `rgb()` colour.
+     *
+     * When set to `hachure` or `zigzag`, the background is filled with lines.
+     * The former uses rougly parallel lines whereas the latter uses zigzags
+     * as if the pen was never removed from the paper.  The other properties
+     * and CSS properties affect how the lines are drawn.  Internally, the lines
+     * are SVG <path>s with the stroke being drawn.  Each of the CSS properties
+     * of the form `re-fill-xxx` maps to the equivalent stroke CSS property
+     * `stroke-xxx`.
+     */
     @property({}) fillStyle: FILLSTYLE = 'none'
+
+    /**
+     * Sets the weight of the stroke used to fill the background.
+     * NOTE: This may conflict with --re-background-stroke-width, needs
+     * investigation.
+     */
     @property({}) hachureWeight = 6
+
+    /**
+     * The gap between lines of the `hachure` or `zigzag` styles in pixels.
+     * The larger the gap, the more empty space between the fill lines, causing
+     * more of the background to show through.
+     */
     @property({}) hachureGap = 15
+
+    /**
+     * The angle of the lines of the `hachure` or `zigzag` styles in degrees.
+     * Zero degrees is straight up and down, and positive values turn the lines
+     * clockwise.
+     */
     @property({}) hachureAngle = -75
+
+    /**
+     * Fills on the specified fraction of the element's background, starting
+     * from the left.  This is used to implement the progress bar and likely
+     * needs to be generalized for other uses.  This value must be between
+     * 0 and 1.
+     */
     @property({}) fillFraction = 1
 
     static styles = [

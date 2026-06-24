@@ -5,23 +5,103 @@ pagination:
   alias: c
 permalink: "component/{{ c.tagName | slugify }}/"
 ---
-<!doctype html>
-<html>
-<head>
-<title>Rough Elements</title>
-</head>
-<body>
-<h1>{{c.tagName}}</h1>
+{% extends "./internal/base.njk" %}
+
+{% block style %}
+.classnametitle {
+  opacity: 0.4;
+  font-size: 0.8em;
+}
+h2 {
+  border-top: 1px solid rgb(0 0 0 / 0.2);
+  padding-top: 0.5rem;
+  margin-top: 2rem;
+}
+table {
+  border-collapse: collapse;
+}
+tbody tr:nth-child(even) {
+  background-color: rgb(0 0 0 / 0.05);
+}
+td, th {
+  text-align: start;
+  padding: 0.5rem 1rem;
+  w
+}
+code {
+  color: rgb(40 66 131);
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.slot-name,
+.property-name,
+.property-type,
+.property-params {
+  font-family: monospace;
+  text-wrap: nowrap;
+}
+{% endblock %}
+
+{% block main %}
+<h1>{{c.tagName | replace('re-', '') | replace('-', ' ') | title}} <span class="classnametitle">{{c.tagName}}</span></h1>
+{{c.description | safe}}
+
 <h2>Slots</h2>
   <table>
+  <thead>
     <tr><th>Name</th><th>Description</th></tr>
+  </thead>
+  <tbody>
     {% for slot in c.slots %}
-    <tr><td>{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
+    <tr><td class="slot-name">{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
     {% endfor %}
+  </tbody>
   </table>
 <h2>Properties</h2>
+  <table>
+  <thead>
+    <tr><th>Name</th><th>Description</th><th>Reflects</th><th>Type</th></tr>
+  </thead>
+  <tbody>
+  {% for m in c.members %}
+    {% if m.privacy != 'private' and m.privacy != 'protected' and m.kind == 'field' %}
+      <tr>
+      <td class="property-name">{{m.name}}</td>
+      <td>{{m.description}}</td>
+      <td>{{'true' if m.reflects else ''}}</td>
+      <td class="property-type">{{m.type.text}}</td>
+    </tr>
+    {% endif %}
+  {% endfor %}
+  </tbody>
+  </table>
 <h2>Events</h2>
 <h2>Methods</h2>
+  <table>
+  <thead>
+    <tr><th>Name</th><th>Description</th><th>Arguments</th></tr>
+  </thead>
+  <tbody>
+  {% for m in c.members %}
+    {% if m.privacy != 'private' and m.privacy != 'protected' and m.kind == 'method' %}
+      <tr>
+        <td class="property-name">{{m.name}}</td>
+        <td>{{m.description}}</td>
+        <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
+      </tr>
+    {% endif %}
+  {% endfor %}
+  </tbody>
+  </table>
 <h2>Parts</h2>
-</body>
-</html>
+  <table>
+  <thead>
+    <tr><th>Name</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    {% for slot in c.cssParts %}
+    <tr><td class="slot-name">{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
+    {% endfor %}
+  </tbody>
+  </table>
+{% endblock %}

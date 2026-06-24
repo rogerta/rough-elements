@@ -6,7 +6,7 @@ export default defineConfig({
     lib: {
       entry: resolve(import.meta.dirname, 'src/rough-elements.ts'),
       name: 'rough',
-      fileName: 'rough',
+      fileName: 'rough-elements',
     },
     minify: 'oxc'
   },

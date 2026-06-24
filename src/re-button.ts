@@ -18,6 +18,13 @@ import './re-icon.js'
  * opening a dialog.
  *
  * A Button's style can change using CSS variables.
+ *
+ * @cssproperty --color - Sets the color of the button text / prefix / suffix / icon. Defaults to `ButtonText`.
+ * @cssproperty --re-primary-color - Primary theme color used to color the hover shadow and borders.
+ * @cssproperty --re-success-color - Success theme color used for the success variant background.
+ * @cssproperty --re-neutral-color - Neutral theme color used for the neutral variant background.
+ * @cssproperty --re-warning-color - Warning theme color used for the warning variant background.
+ * @cssproperty --re-danger-color - Danger theme color used for the danger variant background.
  */
 @customElement('re-button')
 export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
@@ -88,6 +95,7 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
    *
    * @param target The popover target element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
+   * @return {void}
    */
   setPopoverTarget(target: HTMLElement) {
     this.updateComplete.then(() => {
@@ -136,11 +144,11 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
         <button name="${this.name}" ?disabled="${this.disabled}" part="button">
-          <!-- The element that prefixes the button text. -->
+          <!-- Slot positioned before the label text. Often used for icons. -->
           <slot name="prefix" part="prefix"></slot>
-          <!-- The button's main body, usually just some text. -->
+          <!-- The main label slot of the button. Typically holds the text. -->
           <slot part="label"></slot>
-          <!-- The element that suffixes the button text. -->
+          <!-- Slot positioned after the label text. Often used for icons or carets. -->
           <slot name="suffix" part="suffix"></slot>
           ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
               : nothing }

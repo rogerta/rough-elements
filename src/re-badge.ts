@@ -5,6 +5,13 @@ import { Mixin } from './internal/re-background-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 
+/**
+ * Badge element displays a small badge showing status, a count, or other metadata.
+ * It supports background fill variants like primary, success, neutral, warning, and danger,
+ * and uses a background mixin to draw a rough background.
+ *
+ * @cssproperty --color - Foreground/text color of the badge. Defaults to `ButtonText`.
+ */
 @customElement('re-badge')
 export class BadgeElement extends Mixin(ReElement) {
   @property({ reflect: true }) variant: VARIANTS = 'primary'
@@ -18,6 +25,7 @@ export class BadgeElement extends Mixin(ReElement) {
     return [
       super.renderRoughSvg(),
       html`
+        <!-- The main body slot of the badge. Typically holds the status label or count. -->
         <slot part="body"></slot>
       `,
     ]

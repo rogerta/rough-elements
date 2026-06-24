@@ -3,6 +3,13 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { ReElement } from './internal/re-element.js'
 
+/**
+ * Divider element is a visual separator between groups of content.
+ * It can be displayed horizontally or vertically.
+ *
+ * @cssproperty --color - The stroke color of the divider line. Defaults to black with 50% opacity.
+ * @cssproperty --thickness - The thickness of the divider. Defaults to 4px.
+ */
 @customElement('re-divider')
 export class DividerElement extends ReElement {
   @property({ type: Boolean, reflect: true }) vertical = false

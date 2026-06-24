@@ -11,6 +11,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.de/
+public/fonts
 
 # Editor directories and files
 .vscode/*
@@ -24,7 +26,6 @@ dist-ssr
 *.sw?
 
 # Documentation generation.
-custom-elements.json
 _data
 _site
 

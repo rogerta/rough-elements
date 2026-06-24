@@ -7,6 +7,10 @@ import type { IconElement } from './re-icon.js'
 import type { PanelGroupElement } from './re-panel-group.js'
 import { fire } from './internal/re-element.js'
 
+/**
+ * TabGroup element organizes content into separate views or tabs.
+ * It manages selection and activates panels associated with tabs by name.
+ */
 @customElement('re-tab-group')
 export class TabGroupElement extends LitElement {
   @property({}) name = ''
@@ -194,7 +198,9 @@ export class TabGroupElement extends LitElement {
 
   override render() {
     return html`
+      <!-- The default slot representing the tab headers (should be <re-item> elements). -->
       <slot @click="${this.onClick_}"></slot>
+      <!-- The visual active tab indicator line. -->
       <re-divider part="indicator"></re-divider>
     `
   }

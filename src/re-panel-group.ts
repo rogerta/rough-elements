@@ -3,6 +3,10 @@ import { customElement, property } from 'lit/decorators.js'
 
 // Set "hidden" class on element.  So embedder needs to set the required
 // styles for this class.
+/**
+ * PanelGroup element groups a set of panels together and handles making only
+ * the selected panel visible by toggling a `hidden` class on the panel child elements.
+ */
 @customElement('re-panel-group')
 export class PanelGroupElement extends LitElement {
   @property({}) name = ''
@@ -35,7 +39,10 @@ export class PanelGroupElement extends LitElement {
   }
 
   override render() {
-    return html`<slot></slot>`
+    return html`
+      <!-- The default slot representing the panel elements. -->
+      <slot></slot>
+    `
   }
 
   private hideAllPanelsExceptSelected_() {

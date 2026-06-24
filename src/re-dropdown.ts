@@ -5,8 +5,8 @@ import './re-button.js'
 import './re-menu.js'
 
 /**
- * A dropdown exposes a menu of actions that the user can perform.  The
- * dropdown consists of a button that toggles the visibility of the menu.
+ * Dropdown element exposes a menu of actions that the user can perform.
+ * It consists of a trigger button and a popover menu panel.
  */
 @customElement('re-dropdown')
 export class DropdownElement extends LitElement {
@@ -47,15 +47,14 @@ export class DropdownElement extends LitElement {
 
   override render() {
     return html`
-      <!-- The button that triggers opening the panel. -->
+      <!-- The trigger button that toggles the dropdown visibility. -->
       <re-button part="trigger" caret ?disabled="${this.disabled}">
-        <!-- The slot used as the label for the trigger button.
-             Usually this is some short text. -->
+        <!-- Slot used as the label for the trigger button. Usually text. -->
         <slot name="label">${this.renderLabelDefault_()}</slot>
       </re-button>
-      <!-- The <re-menu> used as the popover panel. -->
+      <!-- The menu container used as the popover panel. -->
       <re-menu popover part="panel">
-        <!-- Holds the slots of this menu. -->
+        <!-- The default slot representing the menu items. -->
         <slot></slot>
       </re-menu>
     `

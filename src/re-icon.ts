@@ -4,6 +4,13 @@ import { customElement, property } from 'lit/decorators.js'
 import { ReElement } from './internal/re-element.js'
 import { getIcon, getViewBox } from './re-iconset.js'
 
+/**
+ * Icon element displays a hand-drawn rough icon based on a specified name.
+ * It queries the icon path data from an iconset and renders it as an SVG.
+ *
+ * @cssproperty --size - The width and height of the icon. Defaults to `1.5rem`.
+ * @cssproperty --color - The fill color of the icon. Defaults to `inherit`.
+ */
 @customElement('re-icon')
 export class IconElement extends ReElement {
   @property({reflect: true}) name = ''

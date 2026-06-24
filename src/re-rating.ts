@@ -6,6 +6,12 @@ import './re-icon.js'
 import { classMap } from 'lit/directives/class-map.js'
 import { IconElement } from './re-icon.js'
 
+/**
+ * Rating element allows users to view or enter a star rating.
+ * It displays a row of interactive star icons.
+ *
+ * @cssproperty --re-rating-color - Color of the selected rating stars. Defaults to `gold`.
+ */
 @customElement('re-rating')
 export class RatingElement extends LitElement {
   @property({ type: Number }) max = 1
