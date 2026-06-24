@@ -14,12 +14,14 @@ export type ResolvedOptions = Required<Options>
 /**
  * Fires a custom event with the given type and detail.
  *
- * @param target An element to fire the event.
+ * @param target The element firing the event (i.e. the element if the
+ *    AT_TARGET bubbling phase).
  * @param type The event's type.
- * @param options CustomEvent initialazation options.
+ * @param options `CustomEvent` initialazation options.
  *
- * @return False if event is cancelable, and at least one of the event handlers
- *    which received event called Event.preventDefault(). Otherwise true.
+ * @return False if the event is cancelable and at least one of the event
+ *    handlers which received event called Event.preventDefault(). Otherwise
+ *    true.
  */
 export function fire<T>(
     target: EventTarget,
@@ -33,6 +35,26 @@ export function fire<T>(
 // Some useful info that needs to be documented:
 //
 // --rough-z-index CSS prop sets the ordering of the rough elements.
+/**
+ * The base class for many rough elements.
+ *
+ * This class creates and manages the rough rendering of the element using
+ * an SVG element.  This SVG element is a child in the rough element's shadow
+ * DOM.  Subclasses are expected to overide `onResized()` in order to add rough
+ * shapes to this SVG as part of the element's rendering.
+ *
+ * Any classes that derives directly or indirectly from `ReElement` must
+ * remember to call the base class' `firstUpdated()` method or the rough
+ * rendering will be incomplete.
+ *
+ * The `--rough-z-index` CSS property can be used to control where the SVG
+ * element containing the rough rendering appears in the rendering order of
+ * childen of this element.  By default the SVG element is an absolutely
+ * positioned child with a `z-index` of -1.
+ *
+ * The SVG element is exposed as the "rough" part of the web component.  This
+ * may be used for addiional style if needed.
+ */
 export class ReElement extends LitElement {
   @query('svg#rough', true) private svg_?: SVGSVGElement
 
@@ -72,9 +94,19 @@ export class ReElement extends LitElement {
     return html`<svg xmlns="http://www.w3.org/2000/svg" id="rough" part="rough"></svg>`
   }
 
-  // This method is meant to be overidden by derived classes to handle
-  // reizes of the element.  Any returned SVG elements will replace the
-  // current elements inside the SVG.
+  /**
+   * This method is meant to be overidden by derived classes to render the
+   * roughness.  An implementation of this method in a derived class should
+   * call the base class' `onResized()` and append any of its own rough
+   * primitives to the returned array and return the entire set.
+   *
+   * This method is called when the elements is first added to the DOM tree as
+   * well as when the element is resized.  Derived classes should use the
+   * arguments to render the appropraite roughness.
+   *
+   * All elements already in the rough SVG element will be removed and replaced
+   * with newly returned elements.
+   */
   protected onResized(
       _width: number,
       _height: number,
@@ -82,6 +114,10 @@ export class ReElement extends LitElement {
     return []
   }
 
+  /**
+   * Forces the element to immediately re-render its roughness.  The contents
+   * of the rough SVG element are replaced.
+   */
   protected requestRoughRender() {
     if (!this.svg_) {
       throw new Error('No rough svg')

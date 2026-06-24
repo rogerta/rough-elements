@@ -6,14 +6,46 @@ import type { BORDERSTYLE } from './re-common.js'
 
 type Constructor<T = {}> = new (...args: any[]) => T
 
+/**
+ * Declares the public properties of the Mixin class below.  This is mostly
+ * for vscode+typescript integration, to help with autocompletion in the editor.
+ */
 export declare class MixinInterface {
     borderStyle: BORDERSTYLE
 }
 
-// Some useful info that needs to be documented:
-//
-// --border-width CSS prop sets the width of the rough border.
-// --border-color CSS prop sets the colour of the rough border.
+/**
+ * A mixin class that draws a border around the element using rough drawing
+ * primitives.
+ *
+ * By default a simple two-line border is drawn as if a pen went over the
+ * same path twice.  The border is drawing using the `--border-color` CSS
+ * proprty if defined, or the current color of the element with a 50% alpha
+ * channel.
+ *
+ * The standard border width CSS properties are respected such that the rough
+ * border is always drawn in that region.  However larger borders do not
+ * cause more lines to be drawn.  The two lines simply drawn with more space
+ * between them.  The usefulness of changing the border width of a rough element
+ * may be limited.  Setting different widths for different sides of the the
+ * element may also cause unexpected effects.
+ *
+ * Each of the lines is implenmented as an SVG <path> with the stroke being
+ * drawn.  Each of the CSS properties of the form `re-stroke-xxx` maps to the
+ * equivalent stroke CSS property `stroke-xxx`.
+ *
+ * The following CSS properties are supported:
+ * @cssproperty --border-color - The colour used to draw the border.
+ * @cssproperty --border-width - The width of the border.  This defaults to
+ *    0.5rem and generally should not be changed.  See description above.
+ * @cssproperty --re-stroke-dasharray - Defines the dash array for the stroke.
+ * @cssproperty --re-stroke-dashoffset - Defines the dash offset for the stroke.
+ * @cssproperty --re-stroke-linecap - Defines the line cap for the stroke.
+ * @cssproperty --re-stroke-linejoin - Defines the line join for the stroke.
+ * @cssproperty --re-stroke-miterlimit - Defines the miter limit for the stroke.
+ * @cssproperty --re-stroke-opacity - Defines the opacity of the stroke colour.
+ * @cssproperty --re-stroke-width - Defines the opacity of the stroke.
+ */
 export const Mixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {

@@ -8,8 +8,8 @@ export type BORDERSTYLE = 'rectangle' | 'circle' | 'none'
 
 // Styles
 //
-// No need --re-<component>-font-family styles because those can always be set
-// using `re-<component> { font-family: ... }`.
+// No need for --re-<component>-xxx styles because those can always be set
+// using `re-<component> { xxx: ... }`.
 
 export const STYLES = css`
   :host {
