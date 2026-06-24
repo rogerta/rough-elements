@@ -9,8 +9,28 @@ import './re-icon.js'
 import './re-icon-button.js'
 
 /**
- * Alerts display important messages.  They can appear inline or as toast
- * notifications.
+ * Alerts display important messages to the user.  They can appear inline or
+ * as toast notifications.  Alerts should a icon on the left, the message in
+ * the middle, and an optional close button on the right.
+ *
+ * When using an alert inline, make sure to specify the `open` property or it
+ * will not be displayed.  Changing the value can be used to show and hide
+ * the alert as needed.
+ *
+ * When using the alert as a toast, don't specify the `open` property.  When
+ * `toast()` is called the alert will be `open`ed.  Calling `toast()` removes
+ * the alert from its location in the DOM and adds it to an internal alert
+ * stack.  If the alert is not `closeable`, it will be closed and removed from
+ * DOM automatically after `duration` millseconds (or 3sec if not specified).
+ *
+ * The `closeable` property can be set on any alert.  This adds a button along
+ * the right side of the alert which closes it.
+ *
+ * Alerts can be show using different variants, which use different colours
+ * and different icons on the left.
+ *
+ * Alerts display a border and background using the appropriate mixin classes.
+ * See those for details.
  */
 @customElement('re-alert')
 export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
@@ -20,7 +40,7 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) open = false
 
   /**
-   * If true the alert will contain an uicon button at the top right allowing
+   * If true the alert will contain an icon button at the top right allowing
    * the user to close the alert.  If false, the alert will close itself after
    * after 3 seconds.
    */
@@ -45,10 +65,17 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
     this.fillStyle = 'hachure'
   }
 
+  /**
+   * Shows the alert.
+   */
   show() {
     this.open = true
   }
 
+  /**
+   * Hides the alert.  If the alert is located in the internal alert stack,
+   * the alert is removed from the DOM.
+   */
   hide() {
     this.open = false
 
@@ -57,6 +84,11 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
     }
   }
 
+  /**
+   * Open the alert as a toast and move it to the internal alert stack.
+   * Normally this is called when the toast is not open, but the method can
+   * be called on an open alert.
+   */
   toast() {
     const stack = this.createToastStackIfNeeded_()
     this.remove()
