@@ -235,6 +235,11 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
         --re-stroke-width: 2px;
       }
 
+      :host([variant=text]:not([disabled]):focus-within) button {
+          font-weight: bold;
+        }
+      }
+
       #rough {
         color: inherit;
         transition: transform 0.2s ease;
