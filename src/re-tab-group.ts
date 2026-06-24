@@ -20,6 +20,17 @@ export class TabGroupElement extends LitElement {
         grid-auto-flow: column;
         column-gap: 1rem;
       }
+      :host([disabled]) {
+        opacity: 0.5;
+      }
+      :host(:not([disabled]):focus-within) {
+        outline: none;
+
+        & re-divider::part(rough) {
+          stroke-width: 3px;
+        }
+      }
+
       ::slotted(*) {
         grid-row: 1 / 2;
       }
@@ -30,6 +41,70 @@ export class TabGroupElement extends LitElement {
       }
     `
   ]
+
+  constructor() {
+    super()
+
+    // This makes the element focusable.
+    this.setAttribute('tabindex', '0')
+  }
+
+  handleEvent(e: Event) {
+    switch (e.type) {
+      case 'keydown': {
+        const slot = this.renderRoot.querySelector('slot')
+        const tabs = slot?.assignedElements()
+        const length = tabs?.length ?? 0
+        let index = tabs?.findIndex(t => t.id === this.selected) ?? -1
+        if (index === -1) {
+          break
+        }
+
+        const ke = e as KeyboardEvent
+
+        switch (ke.key) {
+          case 'ArrowDown':
+          case 'ArrowLeft':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+
+            while (index > 0) {
+              const tab = tabs![index - 1]
+              if (tab.getAttribute('disabled') !== null) {
+                --index
+                continue
+              }
+
+              this.selected = tab.id
+              fire(this, 'input', {bubbles: true, composed: true})
+              break
+            }
+            break
+          case 'ArrowUp':
+          case 'ArrowRight':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+
+            while (index < length - 1) {
+              const tab = tabs![index + 1]
+              if (tab.getAttribute('disabled') !== null) {
+                ++index
+                continue
+              }
+
+              this.selected = tab.id
+              fire(this, 'input', {bubbles: true, composed: true})
+              break
+            }
+            break
+        }
+        break
+      }
+      case 'keyup': {
+        break
+      }
+    }
+  }
 
   onClick_(e: Event) {
     const item = getItemFromEvent(e)
@@ -112,6 +187,9 @@ export class TabGroupElement extends LitElement {
     if (divider && gridColumn !== -1) {
       divider.style.setProperty('grid-column', gridColumn.toString())
     }
+
+    this.addEventListener('keydown', this)
+    this.addEventListener('keyup', this)
   }
 
   override render() {

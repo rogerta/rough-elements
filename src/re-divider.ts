@@ -43,6 +43,7 @@ export class DividerElement extends ReElement {
 
     const options = Object.assign({
        stroke: 'inherit',
+       strokeWidth: 'inherit',
     }, this.options)
 
     // The default randomness is 2 and stroke width is 1px.  This means lines

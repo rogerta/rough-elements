@@ -109,16 +109,17 @@ export class RangeElement extends ReElement {
       case 'keydown': {
         const ke = e as KeyboardEvent
 
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-
         switch (ke.key) {
           case 'ArrowDown':
           case 'ArrowLeft':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
             this.value -= this.step
             break
           case 'ArrowUp':
           case 'ArrowRight':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
             this.value += this.step
             break
         }

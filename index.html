@@ -248,6 +248,9 @@
         }
       }
 
+      #divider2::part(rough) {
+        stroke-width: 2px;
+      }
       re-menu-item [slot=suffix] {
         font-size: 0.75rem;
         font-family: monospace;
@@ -597,9 +600,9 @@
 
     <div class="demo" id="dividerDemo">
       <h1>re-divider</h1>
-      <re-divider></re-divider>
-      <re-divider style="--thickness: 10px;"></re-divider>
-      <re-divider style="--thickness: 15px;"></re-divider>
+      <re-divider id="divider1" ></re-divider>
+      <re-divider id="divider2" style="--thickness: 10px;"></re-divider>
+      <re-divider id="divider3" style="--thickness: 15px;"></re-divider>
 
       <div>
         <re-divider vertical></re-divider>
