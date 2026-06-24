@@ -31,6 +31,10 @@ export class MenuItemElement extends ItemElement {
         position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
       }
 
+      /* Used to hide submnenu icpn button when there is no submenu. */
+      .hidden {
+        display: none;
+      }
     `
   ]
 

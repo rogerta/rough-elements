@@ -253,15 +253,15 @@
         font-family: monospace;
       }
 
-      re-progress {
-        width: 80%;
-      }
-
       [name=group2]::part(indicator) {
         --thickness: 10px;
       }
 
       re-progress {
+        width: 80%;
+      }
+
+      #progress1 {
         --color: goldenrod;
         --border-color: red;
         --label-lower-color: var(--color);
@@ -313,7 +313,7 @@
         height: 300px;
       }
 
-      re-range {
+      #range1 {
         --re-range-knob-color: green;
         --re-range-knob-outline-color: blue;
         --re-range-track-color: magenta;
@@ -433,6 +433,7 @@
     <div class="demo">
       <h1>re-range</h1>
       <re-range id="range1" step="10"></re-range>
+      <re-range id="range2" step="10"></re-range>
     </div>
 
     <div class="demo">
@@ -447,7 +448,8 @@
 
     <div class="demo">
       <h1>re-progress</h1>
-      <re-progress showValue="true"></re-progress>
+      <re-progress showValue="true" value="0.5"></re-progress>
+      <re-progress id="progress1" showValue="true"></re-progress>
       <re-button id="toggleProgress">Start</re-button>
     </div>
 
@@ -1033,7 +1035,7 @@
       })
 
 
-      const progress = document.querySelector('re-progress')
+      const progress = document.querySelector('#progress1')
       progress.min = MIN
       progress.max = MAX
       //progress.value = MIN
