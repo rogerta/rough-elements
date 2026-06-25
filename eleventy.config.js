@@ -1,3 +1,5 @@
+import { marked } from 'marked'
+
 /** @param {import("@11ty/eleventy").UserConfig} config */
 export default function(config) {
   config.setInputDirectory('./docs')
@@ -11,14 +13,52 @@ export default function(config) {
   config.setQuietMode(true)
   config.setServerOptions({
     port: 9520,
-  });
+  })
+
+  config.addFilter('filterForMethods', function (clazz) {
+    const methods = clazz.members?.filter(m => {
+      return m.kind === 'method' && m.privacy !== 'private' &&
+      m.privacy !== 'protected' && !m.inheritedFrom &&
+      m.name !== 'handleEvent'
+    }) ?? []
+
+    methods.sort((a, b) => a.name.localeCompare(b.name))
+    return methods
+  })
+
+  config.addFilter('filterForParts', function (clazz) {
+    const arr = clazz.cssParts ?? []
+    return arr.toSorted((a, b) => a.name.localeCompare(b.name))
+  })
+
+  config.addFilter('filterForCSSProperties', function (clazz) {
+    const props = clazz.cssProperties?.filter(p => !p.inheritedFrom) ?? []
+    props.sort((a, b) => a.name.localeCompare(b.name))
+    return props
+  })
+
+  config.addFilter('filterForProperties', function (clazz) {
+    // Don't bother documenting private and protected fields. Also, don't
+    // bother documenting the 'styles' field since it's Lit's internal CSS
+    // styling of the element.
+   const props = clazz.members?.filter(m => {
+      return m.kind === 'field' && m.privacy !== 'private' &&
+      m.privacy !== 'protected' && m.name !== 'styles'
+    }) ?? []
+
+    props.sort((a, b) => a.name.localeCompare(b.name))
+    return props
+  })
 
   config.addFilter('mapParam', function (arr) {
-    return arr ? arr.map(e => {
+    return arr?.map(e => {
       const name = e.name ?? ''
       const type = e.type?.text ?? ''
       return type ? `${name}: ${type}` : name
-    }): []
+    }) ?? []
+  })
+
+  config.addFilter('marked', function (str) {
+    return str ? marked.parse(str) : ''
   })
 }
-

@@ -2,6 +2,7 @@ import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { fire, ReElement } from './internal/re-element.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 
 /**
  * Range element represents a slider control to select a numeric value within a range.
@@ -13,7 +14,9 @@ import { fire, ReElement } from './internal/re-element.js'
  * @cssproperty --color - Fallback color for knob and track.
  */
 @customElement('re-range')
-export class RangeElement extends ReElement {
+export class RangeElement extends ReFormControlMixin(ReElement) {
+  static formAssociated = true
+
   @property({ type: Number }) min = 0
   @property({ type: Number }) max = 100
   @property({ type: Number }) step = 1
@@ -23,13 +26,6 @@ export class RangeElement extends ReElement {
    * If true the button is disabled and does not respond to user actions.
    */
   @property({ type: Boolean, reflect: true }) disabled = false
-
-  constructor() {
-    super()
-
-    // This makes the element focusable.
-    this.setAttribute('tabindex', '0')
-  }
 
   static styles = [
     ...super.styles,
@@ -152,37 +148,51 @@ export class RangeElement extends ReElement {
     this.addEventListener('pointerup', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
+    this.setAttribute('tabindex', '0')
   }
 
+  // Note: this function always fixes `value` to make it valid.  So in no
+  // case will the state be invalid for form purposes.
   override updated(props: PropertyValues) {
     super.updated(props)
+
+    let requestRoughRender = false
 
     if(props.has('min')) {
       if (this.min > this.max) {
         this.min = 0
+        requestRoughRender = true
       }
     }
 
     if(props.has('max')) {
       if (this.max < this.min) {
         this.max = 100
+        requestRoughRender = true
       }
     }
 
-    if (this.value !== undefined) {
-      this.value = this.snap_(this.value)
+    if(props.has('value')) {
+      if (this.value === undefined) {
+        this.value = this.min
+      } else {
+        this.value = this.snap_(this.value)
+      }
+
       if (this.value < this.min) {
         this.value = this.min
       } else if (this.value > this.max) {
         this.value = this.max
       }
-    }
 
-    if(props.has('value')) {
+      this.setFormValue(this.value.toString())
       fire(this, 'input', {bubbles: true, composed: true})
+      requestRoughRender = true
     }
 
-    this.requestRoughRender()
+    if (requestRoughRender) {
+      this.requestRoughRender()
+    }
   }
 
   override render() {

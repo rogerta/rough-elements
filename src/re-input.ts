@@ -3,9 +3,11 @@ import { customElement, property } from 'lit/decorators.js'
 import { live } from 'lit/directives/live.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+
 import './re-icon-button.js'
 
 /**
@@ -17,32 +19,36 @@ import './re-icon-button.js'
  * @cssproperty --re-input-background-color - Sets the background color of the input control. Defaults to `ButtonFace`.
  */
 @customElement('re-input')
-export class InputElement extends BorderMixin(BgMixin(ReElement)) {
+export class InputElement extends
+    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+  static formAssociated = true
+
   /**
    * Name used when this button is part of a form submission.
    */
-  @property() name = ''
+  @property({}) name = ''
 
   /**
    * The type of the input.
    */
-  @property() type: 'date' | 'datetime-local' | 'email' | 'number' |
+  @property({}) type: 'date' | 'datetime-local' | 'email' | 'number' |
       'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
   @property({ reflect: true }) autocapitalize = ''
   @property({ type: Boolean, reflect: true }) autocomplete = false
   @property({ type: Boolean, reflect: true }) autofocus = false
   @property({ type: Boolean, reflect: true }) disabled = false
-  @property() form = ''
   @property() list = ''
   @property({ type: Number }) max?: number
   @property({ type: Number }) maxlength?: number
   @property({ type: Number }) min?: number
   @property({ type: Number }) minlength?: number
-  @property({ type: Boolean, reflect: true }) multiple = ''
+  @property({ type: Boolean }) pattern?: string
   @property() placeholder = ''
+  @property({ type: Boolean, reflect: true }) multiple = ''
   @property({ type: Boolean, reflect: true }) readonly = false
-  @property({ type: Number }) step?: number = 1
+  @property({ type: Boolean }) required? = false
+  @property({ type: Number }) step? = 1
   @property() value = ''
 
   @property({state: true}) showPassword_ = false
@@ -75,9 +81,9 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
   /**
    * Gets the input value as a number.
    *
-   * @return {number | undefined} The numeric value of the input, or undefined if not a number.
+   * @return The numeric value of the input, or undefined if not a number.
    */
-  get valueAsNumber() {
+  get valueAsNumber(): number | undefined {
     const input = this.renderRoot.querySelector('input')
     return input?.valueAsNumber
   }
@@ -85,11 +91,22 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
   /**
    * Gets the input value as a Date object.
    *
-   * @return {Date | null | undefined} The date value of the input, or null/undefined if not a date.
+   * @return The date value of the input, or null/undefined if not a date.
    */
-  get valueAsDate() {
+  get valueAsDate(): Date | null | undefined {
     const input = this.renderRoot.querySelector('input')
     return input?.valueAsDate
+  }
+
+  protected override updated(props: PropertyValues) {
+    super.updated(props)
+    if (props.has('value')) {
+      this.setFormValue(this.value)
+
+      const input = this.renderRoot.querySelector('input')
+      this.setValidity(input?.validity ?? {}, input?.validationMessage,
+          input ?? undefined)
+    }
   }
 
   override render() {
@@ -109,15 +126,16 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
             autocomplete="${this.autocomplete}"
             ?autofocus="${this.autofocus}"
             ?disabled="${this.disabled}"
-            form="${this.form}"
             list="${this.list}"
             max="${this.max}"
             min="${this.min}"
             maxlength="${ifDefined(this.maxlength)}"
             minlength="${ifDefined(this.minlength)}"
             multiple="${this.multiple}"
+            pattern="${ifDefined(this.pattern)}"
             placeholder="${ifDefined(this.placeholder)}"
             ?readonly="${this.readonly}"
+            ?required="${ifDefined(this.required)}"
             step="${ifDefined(this.step)}"
             .value="${live(this.value)}"
             @change="${this.onInputChanged_}"

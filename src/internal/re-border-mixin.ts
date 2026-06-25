@@ -46,9 +46,14 @@ export declare class MixinInterface {
  * @cssproperty --re-stroke-opacity - Defines the opacity of the stroke colour.
  * @cssproperty --re-stroke-width - Defines the opacity of the stroke.
  */
-export const Mixin =
+export const BorderMixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
+    /**
+     * Determines the style of border around this element.  Can be `rectangle`
+     * (default) or `circle` or `none`.  The border will be draw in the border
+     * area of the element.
+     */
     @property({}) borderStyle: BORDERSTYLE = 'rectangle'
 
     static styles = [

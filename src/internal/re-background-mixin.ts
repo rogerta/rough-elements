@@ -47,7 +47,7 @@ export declare class MixinInterface {
  * @cssproperty --re-fill-rule - When using the `solid` style, defines
  *    the fill rule of the fill colour.
  */
-export const Mixin =
+export const BackgroundMixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
     /**

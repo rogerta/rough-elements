@@ -1,8 +1,8 @@
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 import './re-icon.js'
@@ -29,18 +29,13 @@ import './re-icon-button.js'
  * Alerts can be shown using different variants, which use different colours
  * and different icons.
  *
- * Alerts display a border and background using the appropriate mixin classes.
- * See those for details.
+ * To control the border and background refer to the Border & Background
+ * documentation.
  *
  * @cssproperty --color - Sets the color of the icon inside the alert.
- * @cssproperty --re-primary-color - Primary theme color used to color the icon and background for the primary variant.
- * @cssproperty --re-success-color - Success theme color used to color the icon and background for the success variant.
- * @cssproperty --re-neutral-color - Neutral theme color used to color the icon and background for the neutral variant.
- * @cssproperty --re-warning-color - Warning theme color used to color the icon and background for the warning variant.
- * @cssproperty --re-danger-color - Danger theme color used to color the icon and background for the danger variant.
  */
 @customElement('re-alert')
-export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
+export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Opens the alert if set to true, closes if set to false.
    */
@@ -120,7 +115,7 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
     if (!stack) {
       stack = this.ownerDocument.createElement('div')
       stack.id = 'reToastStack'
-      stack.style = `
+      stack.style.cssText = `
         position: fixed;
         top: 1rem;
         right: 1rem;
@@ -156,7 +151,7 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
       super.renderRoughSvg(),
       html`
         <!-- The alert's icon. This is an \`re-icon\` element whose name
-             name is determined from the variant. -->
+             is determined from the variant. -->
         <re-icon part="icon" name="${this.renderIconName_()}"></re-icon>
       `,
       html`
@@ -238,10 +233,19 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
           --color: var(--re-danger-color);
         }
       }
+
       :host {
         --re-background-color:
             rgb(from var(--alart-bg-color)
                 calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :host {
+          --re-background-color:
+              rgb(from var(--alart-bg-color)
+                  calc(0.4 * R) calc(0.4 * G) calc(0.4 * B));
+        }
       }
 
       re-icon, re-icon-button {

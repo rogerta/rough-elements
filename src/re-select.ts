@@ -1,9 +1,10 @@
 import { type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+
 import { DropdownElement } from  './re-dropdown.js'
-import { getItemFromEvent, ItemElement } from './re-item.js'
-import { fire } from './internal/re-element.js'
+import { getItemFromEvent } from './re-item.js'
 
 /**
  * A select exposes a menu of options that the user can select from.  The
@@ -16,46 +17,55 @@ import { fire } from './internal/re-element.js'
  * This component inherits all CSS custom properties and slots from DropdownElement.
  */
 @customElement('re-select')
-export class SelectElement extends DropdownElement {
-   @property({ type: Boolean, reflect: true }) multiple = false
-   @property({}) value = ''
-   @property({ type: Number }) selectedIndex = -1
-   @property({ type: Array }) selectedOptions = []
-   @property({ type: Array, state: true }) private labelNodes_: Node[] = []
+export class SelectElement extends ReFormControlMixin(DropdownElement) {
+  static formAssociated = true
+
+  @property({ type: Boolean, reflect: true }) multiple = false
+  @property({ type: Number }) selectedIndex = -1
+  @property({ type: Array }) selectedOptions = []
+  @property({ type: Boolean, reflect: true }) required = false
+  @property({}) value = ''
+
+  @property({ type: Array, state: true }) private labelNodes_: Node[] = []
+
+  validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+
+    if (this.required && this.selectedIndex === -1) {
+      validity.valueMissing = true
+      message = 'Nothing selected'
+    }
+
+    this.setValidity(validity, message)
+  }
 
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
 
     const menu = this.renderRoot.querySelector('re-menu')
-    if (menu) {
-      menu.addEventListener('click', this)
-    }
-
-    // If the select has a preselected value, we need to update the label to
-    // match it.
-     if (props.has('value')) {
-      const slot =
-          this.renderRoot.querySelector<HTMLSlotElement>('re-menu > slot')
-      if (slot) {
-        const selectedNode = slot.assignedNodes().find(node => {
-          return node instanceof ItemElement && node.id === this.value
-        }) as ItemElement | undefined
-
-        if (selectedNode) {
-          this.labelNodes_ = selectedNode.getLabelNodes()
-        }
-      }
-    }
+    menu?.addEventListener('click', this)
   }
 
-  private unselectAllItems_() {
-    const slot =
-        this.renderRoot.querySelector<HTMLSlotElement>('re-menu > slot')
-    if (slot) {
-      slot.assignedNodes().forEach(item => {
-        if (item instanceof ItemElement) {
-          item.selected = false
+  override updated(props: PropertyValues) {
+    super.updated(props)
+
+     if (props.has('value')) {
+      this.setFormValue(this.value)
+      this.findItemByValue_(this.value).then(({index, item}) => {
+        if (index !== -1) {
+          this.unselectAllItems_().then(() => {
+            item!.selected = true
+            this.selectedIndex = index
+            this.labelNodes_ = item!.getLabelNodes()
+            this.validate_()
+          })
+        } else {
+          this.selectedIndex = -1
+          this.labelNodes_ = []
         }
+
+        this.validate_()
       })
     }
   }
@@ -65,14 +75,7 @@ export class SelectElement extends DropdownElement {
       case 'click': {
         const item = getItemFromEvent(e)
         if (item) {
-          this.unselectAllItems_()
-          item.selected = !item.selected
-          if (this.value !== item.id) {
-            this.value = item.id
-            this.labelNodes_ = item.getLabelNodes()
-            this.updateComplete.then(
-                () => fire(this, 'change', {bubbles: true}))
-          }
+          this.value = item.id !== this.value ? item.id : ''
         }
         break
       }

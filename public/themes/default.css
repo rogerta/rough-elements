@@ -1,0 +1,37 @@
+:root {
+  --re-primary-color: rgb(0 0 238);
+  --re-success-color: rgb(0, 200, 0);
+  --re-neutral-color: rgb(64 64 64);
+  --re-warning-color: rgb(238 119 0);
+  --re-danger-color: rgb(238 0 0);
+
+  --foreground-color: black;
+  --background-color: white;
+  --color: var(--foreground-color);
+  --border-color: rgb(from var(--foreground-color) R G B / 0.75);
+}
+
+.bic-vibrant {
+  --color: rgb(0 91 172);
+}
+
+.bic-muted {
+  --color: rgb(40 66 131);
+}
+
+.hb-pencil {
+  --color: rgb(56 57 48);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --re-primary-color: rgb(0 0 238 / 0.9);
+    --re-success-color: rgb(0 200 0 / 0.75);
+    --re-neutral-color: rgb(192 192 192 / 0.75);
+    --re-warning-color: rgb(238 119 0 / 0.75);
+    --re-danger-color: rgb(238 0 0 / 0.75);
+
+    --foreground-color: rgb(216 216 216);
+    --background-color: rgb(32 32 32);
+  }
+}

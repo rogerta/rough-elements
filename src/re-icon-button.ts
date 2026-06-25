@@ -27,8 +27,7 @@ export class IconButtonElement extends LitElement {
    * boundaries to be used.
    *
    * @param target The popover target element.  This element is expected to
-   *    have the `popover` attribute.  It's anchor will be set this button.
-   * @return {void}
+   *    have the `popover` attribute.  It's anchor will be this button.
    */
   setPopoverTarget(target: HTMLElement | null) {
     this.updateComplete.then(() => {
@@ -37,6 +36,22 @@ export class IconButtonElement extends LitElement {
         button.popoverTargetElement = target
       }
     })
+  }
+
+  /**
+   * Toggles the popover associated to this button, if any.
+   *
+   * @param force If true, forces the popoverto show.  If false, forces the
+   *    popover to hide.  If not specified, the state of the popover toggles.
+   * @returns true if the popup is open after the call, and false otherwise.
+   */
+  togglePopover(force?: boolean): boolean {
+    const button = this.renderRoot.querySelector('button')
+    if (button && button.popoverTargetElement &&
+        button.popoverTargetElement instanceof HTMLElement) {
+      return button.popoverTargetElement.togglePopover(force)
+    }
+    return false
   }
 
   override render() {

@@ -2,9 +2,11 @@ import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+
 import './re-icon-button.js'
 
 /**
@@ -14,7 +16,10 @@ import './re-icon-button.js'
  * @cssproperty --re-input-background-color - The background color of the textarea control. Defaults to `ButtonFace`.
  */
 @customElement('re-textarea')
-export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
+export class TextAreaElement extends
+    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+  static formAssociated = true
+
   /**
    * Name used when this button is part of a form submission.
    */
@@ -37,35 +42,47 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Number }) minlength?: number
   @property() placeholder = ''
   @property({ type: Boolean, reflect: true }) readonly = false
+  @property({ type: Boolean }) required? = false
   @property({ type: Number }) rows = 2
+  @property({}) value = ''
 
-  @property({state: true}) showPassword_ = false
+  // /**
+  //  * Sets the value of the textarea control.
+  //  *
+  //  * @param text - The text content to set.
+  //  */
+  // @property({})
+  // set value(text: string) {
+  //   const textarea = this.renderRoot.querySelector('textarea')
+  //   if (textarea) {
+  //     textarea.value = text
+  //   }
+  // }
 
-  /**
-   * Gets the value of the textarea control.
-   *
-   * @return {string} The text content of the textarea.
-   */
-  get value() {
-    const textarea = this.renderRoot.querySelector('textarea')
-    return textarea?.value ?? ''
-  }
-
-  /**
-   * Sets the value of the textarea control.
-   *
-   * @param {string} text - The text content to set.
-   */
-  set value(text: string) {
-    const textarea = this.renderRoot.querySelector('textarea')
-    if (textarea) {
-      textarea.value = text
-    }
-  }
+  // /**
+  //  * Gets the value of the textarea control.
+  //  *
+  //  * @return The text content of the textarea.
+  //  */
+  // get value() {
+  //   const textarea = this.renderRoot.querySelector('textarea')
+  //   return textarea?.value ?? ''
+  // }
 
   constructor() {
     super()
     this.fillStyle = 'solid'
+  }
+
+  private validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+    if (this.required && !this.value) {
+      validity.valueMissing = true
+      message = 'Text cannot be empty'
+    }
+    const anchor = this.renderRoot.querySelector('textarea')
+    this.setValidity(validity, message, anchor ?? undefined)
   }
 
   override firstUpdated(props: PropertyValues) {
@@ -75,6 +92,15 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
     textarea?.addEventListener('change', this)
     textarea?.addEventListener('input', this)
     this.setInitialValueFromSlot_()
+  }
+
+  override updated(props: PropertyValues) {
+    super.updated(props)
+
+    if (props.has('value')) {
+      this.setFormValue(this.value)
+      this.validate_()
+    }
   }
 
   handleEvent(e: Event) {

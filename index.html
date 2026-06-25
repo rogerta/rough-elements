@@ -9,21 +9,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <link href="/themes/light.css" rel="stylesheet">
+    <link href="/themes/default.css" rel="stylesheet">
     <script type="module" src="/src/rough-elements.ts"></script>
     <style>
-      /* Themes
-       *
-       * Properties that useful for theming will accumulate here.
-       */
-      html {
-        --re-primary-color: rgb(0 0 238);
-        --re-success-color: rgb(0, 200, 0);
-        --re-neutral-color: rgb(64 64 64);
-        --re-warning-color: rgb(238 119 0);
-        --re-danger-color: rgb(238 0 0);
-      }
-
       @font-face {
         font-family: 'BackIssuesBB_reg';
         src: url('/fonts/BackIssuesBB_reg.otf');
@@ -34,7 +22,7 @@
         font-family: "BackIssuesBB_reg", serif;
       }
 
-      /* Can 100-900 for weight.  Create a new class for each */
+      /* Can be 100-900 for weight.  Create a new class for each */
       .noto-serif-400 {
         font-family: "Noto Serif", serif;
         font-optical-sizing: auto;
@@ -61,10 +49,10 @@
         color: var(--color, black);
         background: repeating-linear-gradient(
           -45deg,
-          #eeeeee,
-          #eeeeee 13px,
-          #ffffff 13px,
-          #ffffff 26px
+          rgb(from var(--background-color) R G B / 0.95),
+          rgb(from var(--background-color) R G B / 0.95) 13px,
+          var(--background-color) 13px,
+          var(--background-color) 26px
         );
       }
 
@@ -111,6 +99,14 @@
         }
       }
 
+      #button0, #button91 {
+        --color: red;
+        --border-color: green;
+      }
+      #button91::part(prefix) {
+        --color: blue;
+      }
+
       #icon1 {
         --color: brown;
         background-color: rgb(from currentcolor R G B / 0.1);
@@ -136,17 +132,17 @@
         --color: goldenrod;
       }
 
-      re-details:not(#details1) {
+      :not(form) > re-details:not(#details1) {
         width: 100%;
       }
       #details1 {
         min-width: 150px;
       }
-      re-details::part(summary) {
+      :not(form) > re-details::part(summary) {
           font-family: monospace;
       }
-      re-details {
-        & re-icon {
+      :not(form) > re-details {
+        & [slot=marker] {
           rotate: none;
         }
 
@@ -171,10 +167,10 @@
         transform: rotate(1turn);
       }
 
-      re-select {
+      :not(form) > re-select {
         --color: darkgreen;
       }
-      re-select #item1 {
+      :not(form) > re-select #item1 {
         --color: magenta;
         font-weight: bold;
       }
@@ -249,7 +245,7 @@
       #divider2::part(rough) {
         stroke-width: 2px;
       }
-      re-menu-item [slot=suffix] {
+      :not(form) > re-menu-item [slot=suffix] {
         font-size: 0.75rem;
         font-family: monospace;
       }
@@ -296,13 +292,13 @@
         --re-spinner-indicator-color: magenta;
       }
 
-      re-tab-group[name=group1] re-item.selected {
+      :not(form) > re-tab-group[name=group1] re-item.selected {
         --color: red;
       }
-      re-tab-group[name=group1] re-item.selected::part(body) {
+      :not(form) > re-tab-group[name=group1] re-item.selected::part(body) {
         --color: green;
       }
-      re-tab-group[name=group1]::part(indicator) {
+      :not(form) > re-tab-group[name=group1]::part(indicator) {
         --color: red;
       }
 
@@ -336,7 +332,6 @@
         transform: rotate(1turn);
       }
 
-
       #ta1 {
         --border-color: red;
       }
@@ -360,7 +355,27 @@
       }
     </style>
   </head>
-  <body class="noto-sans-400 xbackissue-bb xhb-pencil bic-muted">
+  <body class="noto-sans-400 xbackissue-bb xhb-pencil xbic-muted">
+    <div class="demo">
+      <h1>Form Example</h1>
+      <form id="form1" action="/" name="form1">
+        <re-button id="formbutton" name="button" type="submit">Submit</re-button>
+        <re-checkbox id="formcheckbox" required name="checkbox">Checkbox</re-checkbox>
+        <re-input id="forminput" required name="input"></re-input>
+        <re-radio id="formradio1" required name="radio" value="1" checkedx>One</re-radio>
+        <re-radio id="formradio2" required name="radio" value="2" checkedx>Two</re-radio>
+        <re-radio id="formradio3" required name="radio" value="3">Three</re-radio>
+        <re-range id="formrange" required name="range"></re-range>
+        <re-rating id="formrating" required name="rating"></re-rating>
+        <re-select id="formselect" required name="select">
+          <re-item id="formitem1">Menu item 1</re-item>
+          <re-item id="formitem2">Menu item 2</re-item>
+          <re-item id="formitem3">Menu item 3</re-item>
+        </re-select>
+        <re-textarea id="formtextarea" required name="textarea"></re-textarea>
+      </form>
+    </div>
+
     <div class="demo">
       <h1>re-textarea</h1>
       <re-textarea id="ta1">
@@ -421,7 +436,7 @@
         <re-rating id="rating1"></re-rating><span id="rating1label"></span>
       </div>
       <re-rating  id="rating2" readonly value="2"></re-rating>
-      <re-rating  id="rating3" readonly value="3"></re-rating>
+      <re-rating  id="rating3" disabled value="3"></re-rating>
     </div>
 
     <div class="demo">
@@ -434,7 +449,7 @@
     <div class="demo">
       <h1>re-range</h1>
       <re-range id="range1" step="10"></re-range>
-      <re-range id="range2" step="10"></re-range>
+      <re-range id="range2" step="10" disabled></re-range>
     </div>
 
     <div class="demo">
@@ -457,7 +472,7 @@
     <div class="demo">
       <h1>re-select</h1>
       <re-select value="item1">
-        <re-item id="item0">
+        <re-item id="item0" selected>
           This is a really long menu item to test flexbox
         </re-item>
         <re-item id="item1">
@@ -765,6 +780,7 @@
 
     <div class="demo">
       <h1>re-badge</h1>
+      <re-badge id="badge0">no variant</re-badge>
       <re-badge id="badge1" variant="primary">primary</re-badge>
       <re-badge id="badge2" variant="success">success</re-badge>
       <re-badge id="badge3" variant="neutral">neutral</re-badge>
@@ -1077,6 +1093,17 @@
       document.querySelector('#ta1')
           .addEventListener('change', e => {
         console.log(`textarea changed value=${e.target.value}`)
+      })
+
+      document.querySelector('#form1')
+          .addEventListener('submit', e => {
+        console.log(`form submit attempted`)
+        // Prevent actual submission. But get a FormData() object to
+        // trigger data collection.
+        e.preventDefault()
+
+        const data = new FormData(e.target)
+        console.log(Object.fromEntries(data))
       })
     </script>
   </body>

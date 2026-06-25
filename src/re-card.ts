@@ -1,30 +1,28 @@
 import { css, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
 
 /**
- * Card element is a container to group related information or actions together.
- * It supports optional image, header, body, and footer sections, and draws
- * a rough background and border using background and border mixins.
- *
- * @cssproperty --border-width - The width of the border around the card.
+ * Cards are containers used to group related information or actions.
+ * They support optional image, header, body, and footer sections, are
+ * surrounded by a rough border and can paint an optional background.
  */
 @customElement('re-card')
-export class CardElement extends BorderMixin(BgMixin(ReElement)) {
+export class CardElement extends BorderMixin(BackgroundMixin(ReElement)) {
   override render() {
     return [
       super.renderRoughSvg(),
       html`
-        <!-- Slot to hold an image or media element at the top of the card. -->
+        <!-- The image or media element at the top of the card. -->
         <slot part="image" name="image"></slot>
-        <!-- Slot to hold the card header content. -->
+        <!-- The card's header (positioned above the main body). -->
         <slot part="header" name="header"></slot>
-        <!-- The default slot representing the card's body/content. -->
+        <!-- The card's main body or content. -->
         <slot part="body"></slot>
-        <!-- Slot to hold the card footer content at the bottom. -->
+        <!-- The card's footer (positioned below the main body). -->
         <slot part="footer" name="footer"></slot>
       `,
     ]

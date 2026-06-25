@@ -46,11 +46,17 @@ export class ItemElement extends LitElement {
         cursor: pointer;
       }
       :host([selected]) {
-        background: rgb(from var(--re-primary-color) R G B / 0.1);
+        background: rgb(from var(--color) R G B / 0.1);
       }
       :host([disabled]) {
         opacity: 0.5;
         cursor: default;
+      }
+
+      @media (prefers-color-scheme: dark) {
+        :host([selected]) {
+          background: rgb(from var(--color) R G B / 0.2);
+        }
       }
 
       slot[name=prefix]::slotted(*),

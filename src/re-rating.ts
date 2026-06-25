@@ -1,9 +1,10 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 import { fire } from './internal/re-element.js'
-import './re-icon.js'
-import { classMap } from 'lit/directives/class-map.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+
 import { IconElement } from './re-icon.js'
 
 /**
@@ -13,14 +14,18 @@ import { IconElement } from './re-icon.js'
  * @cssproperty --re-rating-color - Color of the selected rating stars. Defaults to `gold`.
  */
 @customElement('re-rating')
-export class RatingElement extends LitElement {
-  @property({ type: Number }) max = 1
+export class RatingElement extends ReFormControlMixin(LitElement) {
+  static formAssociated = true
+
+  @property({ type: Number }) max = 5
   @property({ type: Number }) value: number = 0
 
   /**
    * If true the user should not be able to change the rating.
    */
+  @property({ type: Boolean, reflect: true }) disabled = false
   @property({ type: Boolean, reflect: true }) readonly = false
+  @property({ type: Boolean, reflect: true }) required = false
 
   static styles = [
     css`
@@ -30,27 +35,105 @@ export class RatingElement extends LitElement {
       :host, div {
         display: inline-flex;
       }
+      :host([disabled]) {
+        opacity: 0.5;
+      }
+      :host(:focus) {
+        outline: none;
+      }
+
       re-icon {
-        --color: rgb(0 0 0 / 0.2);
+        --color: rgb(0 0 0 / 0.3);
         transition: transform 0.2s ease;
       }
+
       :host(:not(:hover)) re-icon.selected,
-      :host([readonly]) re-icon.selected {
+      :host([readonly]) re-icon.selected,
+      :host([disabled]) re-icon.selected {
         --color: var(--re-rating-color);
       }
 
+      :host(:not([disabled]):focus) re-icon,
+      :host(:not([disabled]):active) re-icon {
+        filter: drop-shadow(0 0 4px var(--re-primary-color));
+      }
+
+      @media (prefers-color-scheme: dark) {
+        re-icon {
+          --color: rgb(255 255 255 / 0.3);
+        }
+
+        :host(:not([disabled]):focus) re-icon,
+        :host(:not([disabled]):active) re-icon {
+          filter: drop-shadow(0 0 4px var(--foreground-color));
+        }
+      }
+
       @media (hover: hover) {
-        :host(:not([readonly])) :hover > re-icon {
+        :host(:not([readonly]):not([disabled])) :hover > re-icon {
           --color: var(--re-rating-color);
         }
-        :host(:not([readonly])) re-icon:hover {
+        :host(:not([readonly]):not([disabled])) re-icon:hover {
           transform: scale(1.5);
         }
       }
     `
   ]
 
-  onClick_(e: Event) {
+  private validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+
+    if (this.required) {
+      if (this.value < 1) {
+        validity.valueMissing = true
+        message = 'Rating is required'
+      } else if (this.value > this.max) {
+        validity.rangeOverflow = true
+        message = `Rating is above max of ${this.max}`
+      }
+    }
+
+    this.setValidity(validity, message)
+  }
+
+  private isEditable_() {
+    return !this.disabled && !this.readonly
+  }
+
+  handleEvent(e: Event) {
+    switch (e.type) {
+      case 'keydown': {
+        const ke = e as KeyboardEvent
+
+        switch (ke.key) {
+          case 'ArrowDown':
+          case 'ArrowLeft':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            if (this.value > 0 && this.isEditable_()) {
+            --this.value
+            }
+            break
+          case 'ArrowUp':
+          case 'ArrowRight':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            if (this.value < this.max && this.isEditable_()) {
+            ++this.value
+            }
+            break
+        }
+        break
+      }
+      case 'keyup': {
+        fire(this, 'change', {bubbles: true})
+        break
+      }
+    }
+  }
+
+  private onClick_(e: Event) {
     const target = e.target as HTMLElement
     if (!target.dataset.value) {
       return
@@ -61,7 +144,7 @@ export class RatingElement extends LitElement {
       return
     }
 
-    if (this.readonly) {
+    if (!this.isEditable_()) {
       e.stopPropagation()
       return
     }
@@ -71,7 +154,7 @@ export class RatingElement extends LitElement {
     this.updateComplete.then(() => fire(this, 'change', {bubbles: true}))
   }
 
-  onPointerMove_(e: Event) {
+  private onPointerMove_(e: Event) {
     if (!(e.target instanceof IconElement)) {
       return
     }
@@ -86,6 +169,25 @@ export class RatingElement extends LitElement {
       composed: true,
       detail: Number.parseInt(value)
     })
+  }
+
+  override firstUpdated(props: PropertyValues) {
+    super.firstUpdated(props)
+    this.addEventListener('keydown', this)
+    this.addEventListener('keyup', this)
+    this.setAttribute('tabindex', '0')
+  }
+
+  protected override updated(props: PropertyValues) {
+    super.updated(props)
+
+    if (props.has('value')) {
+      this.setFormValue(this.value.toString())
+    }
+
+    if (props.has('value') || props.has('max')) {
+      this.validate_()
+    }
   }
 
   override render() {

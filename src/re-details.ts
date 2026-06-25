@@ -1,19 +1,38 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
 import './re-icon.js'
 
 /**
- * Details element is a disclosure widget that hides contents until toggled open.
- * It features a summary element that is always visible and a content area that expands.
- * It is rendered using rough border and background mixins.
+ * Details are disclosure elements in which information is visible only
+ * when it is toggled into the open state. A summary, which is always visible,
+ * must be provided in the `summary` slot.
+ *
+ * If the default expanded/collapsed indicator is overriden by filling the
+ * `marker` slot with an `<re-icon>`, that icon will be automatically rotated
+ * by 90&deg; when the details is opened. To prevent this set the rotate CSS
+ * property of the markerto 'none'.  For example, if the details `id` attribute
+ * is `myid` the following could be used:
+ * ```
+ * re-details#myid [slot=marker] {
+ *   rotate: none;
+ * }
+ * ```
  */
 @customElement('re-details')
-export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
+export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
+  /**
+   * If true the details does not respond to user actions.
+   */
   @property({ type: Boolean, reflect: true }) disabled = false
+
+  /**
+   * If true the body is visible to the user, otherwise the body is not
+   * visible.
+   */
   @property({ type: Boolean, reflect: true }) open = false
 
     static styles = [
@@ -86,16 +105,17 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-      <!-- The underlying html details element. -->
+      <!-- The underlying html \`<details>\` element. -->
       <details ?open="${this.open}" @toggle="${this.onToggle_}" part="details">
-        <!-- The summary container holding summary text/marker. -->
+        <!-- The underlying html \`<summary>\` element. -->
         <summary part="summary" ?inert="${this.disabled}">
-          <!-- Slot for details header/summary. -->
+          <!-- The content of the summary. -->
           <slot name="summary"></slot>
-          <!-- Slot for expandable/collapsible indicator icon. -->
+          <!-- The expanded/collapsed indicator. If this slot is not filled
+              a default a rotating chevron \`<re-icon>\` is used. -->
           <slot name="marker"><re-icon name="keyboard-arrow-right"></re-icon></slot>
         </summary>
-        <!-- Slot containing the collapsed/expanded body content. -->
+        <!-- The content of the expandable/collapsible body. -->
         <slot part="content"></slot>
       </details>`
     ]

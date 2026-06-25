@@ -1,69 +1,73 @@
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 import './re-icon.js'
+import { ifDefined } from 'lit/directives/if-defined.js'
 
-// Some useful info that needs to be documented:
-//
-// --color CSS prop sets the color of the icon.
-// --re-primary-color CSS prop sets the hover color.
 /**
- * The Button element is an interactive element activated by a user with a
- * mouse, keyboard, finger, voice command, or other assistive technology.
- * Once activated, it then performs an action, such as submitting a form or
- * opening a dialog.
+ * Buttons are interactive elements activated by the user with a mouse,
+ * keyboard, finger, voice command, or other mechanism.  Once activated, the
+ * button fires an event that tiggers an application specific action.
  *
- * A Button's style can change using CSS variables.
+ * Rough buttons can be used as popover element triggers.  See the
+ * `setPopoverTarget()` method.
  *
- * @cssproperty --color - Sets the color of the button text / prefix / suffix / icon. Defaults to `ButtonText`.
- * @cssproperty --re-primary-color - Primary theme color used to color the hover shadow and borders.
- * @cssproperty --re-success-color - Success theme color used for the success variant background.
- * @cssproperty --re-neutral-color - Neutral theme color used for the neutral variant background.
- * @cssproperty --re-warning-color - Warning theme color used for the warning variant background.
- * @cssproperty --re-danger-color - Danger theme color used for the danger variant background.
+ * To control the border and background refer to the Border & Background
+ * documentation.
+ *
+ * `<re-button>`is meant as a drop in replacement for `<button>` or `<a>`.
+ *
+ * @cssproperty --color - Sets the colour of the button text as well as
+ *    prefix and suffix. Defaults to `ButtonText`.  The colour of the
+ *    prefix and suffix can be set indivudally by styling the corresponding
+ *    parts.
  */
 @customElement('re-button')
-export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
-  /**
-   * Name used when this button is part of a form submission.
-   */
-  @property() name = ''
+export class ButtonElement extends
+    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+  static formAssociated = true
+  static shadowRootOptions: ShadowRootInit = {
+    ...super.shadowRootOptions,
+    delegatesFocus: true,
+  }
 
   /**
-   * When not empty, the button will act like an <a> element with the
-   * specified value of href.
+   * When not empty, the button behaves like an <a> element with the
+   * specified value of `href`.  The default behaviour is to open the link
+   * specified by `href` in the target window.
    */
   @property() href = ''
 
   /**
-   * If href is not empty, specifies the target window to open the link.
+   * If `href` is not empty, specifies the target window to open the link.
    */
   @property() target = ''
 
   /**
-   * If href is not empty, the browser will download the linked file to a
+   * If `href` is not empty, the browser will download the linked file to a
    * file named by this property.
    */
   @property() download = ''
 
   /**
-   * If true, a caret <re-icon> will be suffixed to this button.  This is
+   * If true, a caret `<re-icon>` will be suffixed to this button.  This is
    * used to indicate that the button will open some kind of submenu.
    */
   @property({ type: Boolean, reflect: true }) caret = false
 
   /**
    * If true the button will render with a round border instead of a rectangular
-   * one.  Usually the default slot is filled with a single <re-icon>.
+   * one.  Usually the default slot is filled with a single `<re-icon>`.
    */
   @property({ type: Boolean, reflect: true }) circle = false
 
   /**
-   * If true the button is disabled and does not respond to user actions.
+   * If true the button does not respond to user actions.
    */
   @property({ type: Boolean, reflect: true }) disabled = false
 
@@ -71,6 +75,19 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
    * A theme variant for the button, mostly affectings its colours.
    */
   @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
+
+  // Form specific properties.
+
+  /**
+   * Name used when this button is part of a form submission.
+   */
+  @property({}) type = 'button'
+  @property({}) formaction?: string
+  @property({}) formenctype?: string
+  @property({}) formmethod = 'post'
+  @property({}) formnovalidate?: string
+  @property({}) formtarget = '_self'
+  @property({}) value?: string
 
   constructor() {
     super()
@@ -83,19 +100,19 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
     button?.addEventListener('keydown', this)
     button?.addEventListener('keyup', this)
     button?.addEventListener('blur', this)
+    this.setAttribute('tabindex', '0')
   }
 
   /**
-   * Sets this button to be a trigger for a popover element once the button
-   * finishes it's update cycle (that is, it's `updateComplete` promise
-   * resolves).
+   * Sets this button to be a trigger for a popover element. The popover will
+   * be displayed once the button finishes it's update cycle (that is, once
+   * `updateComplete` promise resolves).
    *
    * `setPopoverTarget` is needed to allow targets from different shawdow root
    * boundaries to be used.
    *
-   * @param target The popover target element.  This element is expected to
+   * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
-   * @return {void}
    */
   setPopoverTarget(target: HTMLElement) {
     this.updateComplete.then(() => {
@@ -108,6 +125,18 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
 
   handleEvent(e: Event) {
     switch (e.type) {
+      case 'click':
+        // If this is a submit button as part of a form, submit the form.
+        if (this.type === 'submit') {
+          if (this.name && this.value) {
+            this.setFormValue(this.value)
+          }
+
+          // TODO: eventually the/a button should be passed to `submitForm()`
+          // so that the submitter properties can be used.
+          this.submitForm()
+        }
+        break
       case 'keydown': {
         const ke = e as KeyboardEvent
         if (ke.key === ' ') {
@@ -143,12 +172,13 @@ export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-        <button name="${this.name}" ?disabled="${this.disabled}" part="button">
-          <!-- Slot positioned before the label text. Often used for icons. -->
+        <button autofocus ?disabled="${this.disabled}" part="button"
+            name="${ifDefined(this.name)}" @click="${this.handleEvent}">
+          <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix" part="prefix"></slot>
-          <!-- The main label slot of the button. Typically holds the text. -->
+          <!-- The main label of the button. Typically holds text. -->
           <slot part="label"></slot>
-          <!-- Slot positioned after the label text. Often used for icons or carets. -->
+          <!-- A suffix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="suffix" part="suffix"></slot>
           ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
               : nothing }
