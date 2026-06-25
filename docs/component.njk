@@ -12,16 +12,35 @@ permalink: "component/{{ c.tagName | slugify }}/"
   opacity: 0.4;
   font-size: 0.8em;
 }
+table {
+  border-collapse: collapse;
+}
+tbody tr:nth-child(even) {
+  background-color: rgb(0 0 0 / 0.05);
+}
+td, th {
+  text-align: start;
+  padding: 0.5rem 1rem;
+}
+.slot-name {
+  font-family: monospace;
+}
 {% endblock %}
 
 {% block main %}
 <h1>{{c.tagName | replace('re-', '') | replace('-', ' ') | title}} <span class="classnametitle">{{c.tagName}}</span></h1>
+{{c.description | safe}}
+
 <h2>Slots</h2>
   <table>
+  <thead>
     <tr><th>Name</th><th>Description</th></tr>
+  </thead>
+  <tbody>
     {% for slot in c.slots %}
-    <tr><td>{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
+    <tr><td class="slot-name">{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
     {% endfor %}
+  </tbody>
   </table>
 <h2>Properties</h2>
 <h2>Events</h2>
