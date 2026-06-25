@@ -31,10 +31,6 @@
     "wireframe"
   ],
   "author": "Roger Tawa <roger@tawacentral.net>",
-  "originalAuthor": "Preet Shihn <preetshihn@gmail.com>",
-  "contributors": [
-    "Preet Shihn <preetshihn@gmail.com>"
-  ],
   "license": "MIT",
   "dependencies": {
     "@rogerta/roughjs": "5.2.0",
