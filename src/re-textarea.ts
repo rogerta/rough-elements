@@ -9,7 +9,6 @@ import './re-icon-button.js'
 
 /**
  * TextArea element captures multi-line text data entered by the user.
- * It draws a rough background and border.
  *
  * @cssproperty --color - The text color. Defaults to `ButtonText`.
  * @cssproperty --re-input-background-color - The background color of the textarea control. Defaults to `ButtonFace`.

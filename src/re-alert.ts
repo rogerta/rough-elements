@@ -15,7 +15,7 @@ import './re-icon-button.js'
  *
  * When using an alert inline, make sure to specify the `open` property or it
  * will not be displayed.  Changing the value can be used to show and hide
- * the alert as needed.  The `show()` and hide()` methods do the same.
+ * the alert as needed.  The `show()` and `hide()` methods do the same.
  *
  * When using the alert as a toast, don't specify the `open` property.  When
  * `toast()` is called the alert will be `open`ed.  Calling `toast()` removes

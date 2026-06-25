@@ -15,10 +15,14 @@
     }
   },
   "scripts": {
-    "cem": "cem analyze --dev",
-    "cem2wc": "node ./tools/cem2wc.js",
     "dev": "vite",
     "build": "vite build && tsc",
+    "docs": "./tools/serve-docs.sh",
+    "docs:build": "npm run docs:cem & npm run docs:cem2wc & npm run docs:11ty",
+    "docs:cem": "cem analyze --dev --litelement --outdir=./dist --quiet",
+    "docs:cem2wc": "node ./tools/cem2wc.js",
+    "docs:data": "npm run docs:cem & npm run docs:cem2wc",
+    "docs:11ty": "eleventy",
     "preview": "vite preview"
   },
   "keywords": [
@@ -42,9 +46,10 @@
     "@custom-elements-manifest/analyzer": "^0.11.0",
     "@rogerta/cem-plugin-litelement-parts": "^1.0.0",
     "@rogerta/cem-plugin-litelement-slots": "^1.0.0",
+    "marked": "^18.0.5",
     "typescript": "6.0.3",
     "vite": "8.0.11",
     "web-component-analyzer": "^2.0.0"
   },
-  "customElements": "custom-elements.json"
+  "customElements": "dist/custom-elements.json"
 }

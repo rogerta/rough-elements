@@ -25,7 +25,6 @@ dist-ssr
 *.sw?
 
 # Documentation generation.
-custom-elements.json
 _data
 _site
 

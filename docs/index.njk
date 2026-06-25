@@ -6,7 +6,7 @@
 <body>
 {% for clazz in components %}
   <h1><a href="component/{{clazz.tagName}}">{{clazz.tagName}}</a></h1>
-  <p>Description</p>
+  <p>{{clazz.description | safe}}</p>
 {% endfor %}
 </body>
 </html>
