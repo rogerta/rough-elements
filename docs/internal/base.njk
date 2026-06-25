@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+<head>
+<title>Rough Elements</title>
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+#maingrid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  min-height: 100vh;
+}
+aside {
+  padding: 0rem 2rem 1rem 2rem;
+  border-right: 1px solid rgb( 0 0 0 / 0.3);
+}
+aside header {
+  margin-bottom: 1rem;
+}
+aside ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+aside ul li {
+  margin-bottom: 0.5rem;
+}
+main {
+  padding: 0rem 2rem 1rem 2rem;
+}
+{% block style %}{% endblock %}
+</style>
+</head>
+<body>
+<div id="maingrid">
+  <aside>
+    <header>
+      <h1><a href="/">Rough Element</a></h1>
+      <div style="height: 150px; background-color: rgb(200 200 200);">Logo image</div>
+    </header>
+    <nav>
+      <ul>
+      {% for clazz in components %}
+        <li><a href="/component/{{clazz.tagName}}">{{clazz.tagName | replace('re-', '') | replace('-', ' ') | title}}</a></lis>
+      {% endfor %}
+      </ul>
+    </nav>
+  </aside>
+  <main>
+    {% block main %}{% endblock %}
+  </main>
+</div>
+</body>
+</html>

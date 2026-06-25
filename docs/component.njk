@@ -5,13 +5,17 @@ pagination:
   alias: c
 permalink: "component/{{ c.tagName | slugify }}/"
 ---
-<!doctype html>
-<html>
-<head>
-<title>Rough Elements</title>
-</head>
-<body>
-<h1>{{c.tagName}}</h1>
+{% extends "./internal/base.njk" %}
+
+{% block style %}
+.classnametitle {
+  opacity: 0.4;
+  font-size: 0.8em;
+}
+{% endblock %}
+
+{% block main %}
+<h1>{{c.tagName | replace('re-', '') | replace('-', ' ') | title}} <span class="classnametitle">{{c.tagName}}</span></h1>
 <h2>Slots</h2>
   <table>
     <tr><th>Name</th><th>Description</th></tr>
@@ -23,5 +27,4 @@ permalink: "component/{{ c.tagName | slugify }}/"
 <h2>Events</h2>
 <h2>Methods</h2>
 <h2>Parts</h2>
-</body>
-</html>
+{% endblock %}

@@ -10,7 +10,7 @@ import './re-icon-button.js'
 
 /**
  * Alerts display important messages to the user.  They can appear inline or
- * as toast notifications.  Alerts show an icon on the left, the message in
+ * as toast notifications.  Alerts show an icon on the left, a message in
  * the middle, and an optional close button on the right.
  *
  * When using an alert inline, make sure to specify the `open` property or it
