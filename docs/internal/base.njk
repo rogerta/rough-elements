@@ -2,9 +2,15 @@
 <html>
 <head>
 <title>Rough Elements</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/styles/default.min.css">
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.11.1/build/languages/javascript.min.js"></script>
+
 <style>
 body {
   margin: 0;
@@ -18,11 +24,12 @@ body {
 #maingrid {
   display: grid;
   grid-template-columns: auto 1fr;
-  min-height: 100vh;
+  height: 100vh;
 }
 aside {
   padding: 2rem;
   border-right: 1px solid rgb( 0 0 0 / 0.3);
+  overflow: auto;
 }
 aside header {
   margin-bottom: 1rem;
@@ -37,6 +44,7 @@ aside ul li {
 }
 main {
   padding: 2rem;
+  overflow: auto;
 }
 aside header img {
   width: 16rem;
@@ -68,5 +76,6 @@ img.logo {
     {% block main %}{% endblock %}
   </main>
 </div>
+<script>hljs.highlightAll();</script>
 </body>
 </html>
