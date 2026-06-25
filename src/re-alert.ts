@@ -10,12 +10,12 @@ import './re-icon-button.js'
 
 /**
  * Alerts display important messages to the user.  They can appear inline or
- * as toast notifications.  Alerts should a icon on the left, the message in
+ * as toast notifications.  Alerts show an icon on the left, the message in
  * the middle, and an optional close button on the right.
  *
  * When using an alert inline, make sure to specify the `open` property or it
  * will not be displayed.  Changing the value can be used to show and hide
- * the alert as needed.
+ * the alert as needed.  The `show()` and hide()` methods do the same.
  *
  * When using the alert as a toast, don't specify the `open` property.  When
  * `toast()` is called the alert will be `open`ed.  Calling `toast()` removes
@@ -24,10 +24,10 @@ import './re-icon-button.js'
  * DOM automatically after `duration` millseconds (or 3sec if not specified).
  *
  * The `closeable` property can be set on any alert.  This adds a button along
- * the right side of the alert which closes it.
+ * the right side of the alert which closes the alert when clicked.
  *
- * Alerts can be show using different variants, which use different colours
- * and different icons on the left.
+ * Alerts can be shown using different variants, which use different colours
+ * and different icons.
  *
  * Alerts display a border and background using the appropriate mixin classes.
  * See those for details.
@@ -141,9 +141,14 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
   override render() {
     return [
       super.renderRoughSvg(),
-      html`<re-icon part="icon" name="${this.renderIconName_()}"></re-icon>`,
       html`
-        <!-- The main body of the alert. -->
+        <!-- The alert's icon. This is an `re-icon` element whose name
+             name is determined from the variant. -->
+        <re-icon part="icon" name="${this.renderIconName_()}"></re-icon>
+      `,
+      html`
+        <!-- The main body of the alert. Normally this is text but can
+             be any valid html. -->
         <slot part="message"></slot>
       `,
       this.renderButton_(),
@@ -168,7 +173,10 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
     if (!this.closable) {
       return nothing
     }
-    return html`<re-icon-button part="button" name="close"
+    return html`
+        <!-- The button used to close the alert if `closeable` is true.
+             This is an `re-icon-button` element. -->
+        <re-icon-button part="button" name="close"
         @click="${this.onClose_}"></re-icon-button>`
   }
 
