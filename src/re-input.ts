@@ -8,12 +8,13 @@ import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
 import './re-icon-button.js'
 
-// Some useful info that needs to be documented:
-//
-// --color CSS prop sets the color of the icon.
-// --re-primary-color CSS prop sets the hover color.
 /**
- * The Input element captures data entered by the user.
+ * Input element captures text or numeric data entered by the user.
+ * It supports password visibility toggle and prefix/suffix slots,
+ * and draws a rough background and border.
+ *
+ * @cssproperty --color - Sets the color of the text and icons. Defaults to `ButtonText`.
+ * @cssproperty --re-input-background-color - Sets the background color of the input control. Defaults to `ButtonFace`.
  */
 @customElement('re-input')
 export class InputElement extends BorderMixin(BgMixin(ReElement)) {
@@ -71,11 +72,21 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
     }
   }
 
+  /**
+   * Gets the input value as a number.
+   *
+   * @return {number | undefined} The numeric value of the input, or undefined if not a number.
+   */
   get valueAsNumber() {
     const input = this.renderRoot.querySelector('input')
     return input?.valueAsNumber
   }
 
+  /**
+   * Gets the input value as a Date object.
+   *
+   * @return {Date | null | undefined} The date value of the input, or null/undefined if not a date.
+   */
   get valueAsDate() {
     const input = this.renderRoot.querySelector('input')
     return input?.valueAsDate
@@ -88,10 +99,10 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-        <!-- The element that prefixes the input control. -->
+        <!-- Slot positioned before the input control. -->
         <slot name="prefix"></slot>
 
-        <!-- The input control. -->
+        <!-- The native HTML input control. -->
         <input part="input" type="${this.renderInputType_()}"
             name="${ifDefined(this.name)}"
             autocapitalize="${this.autocapitalize}"
@@ -114,10 +125,12 @@ export class InputElement extends BorderMixin(BgMixin(ReElement)) {
           <!-- No need to catch and re-fire input events since they bubble
                and are composed by default. -->
 
-        <!-- The element that suffixes the input control. -->
+        <!-- Slot positioned after the input control. Often used for suffix icons or the password visibility toggle button. -->
         <slot name="suffix">
           ${this.type === 'password'
-              ? html`<re-icon-button part="password-icon"
+              ? html`
+                    <!-- The toggle button to show/hide password text. -->
+                    <re-icon-button part="password-icon"
                     name="${this.renderPasswordIconName_()}"
                     ?disabled="${this.disabled}"
                     @click="${this.onVisibility_}"></re-icon-button>`

@@ -8,6 +8,12 @@ import { fire, ReElement } from './internal/re-element.js'
 import  './re-icon-button.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
+/**
+ * Dialog element is a modal dialog container with support for header, body,
+ * actions, and footer. It uses background and border mixins to render a rough dialog.
+ *
+ * @cssproperty --border-width - The width of the dialog border.
+ */
 @customElement('re-dialog')
 export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
   @property({reflect: true}) name = ''
@@ -192,6 +198,11 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
       }
   `]
 
+  /**
+   * Shows the dialog as a modal.
+   *
+   * @return {void}
+   */
   showModal() {
     this.renderRoot.querySelector('dialog')?.showModal()
   }
@@ -219,12 +230,18 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
+        <!-- The native HTML dialog container. -->
         <dialog part="dialog" closedby="${ifDefined(this.closedBy)}"
             @close="${this.onDialogClose_}" @cancel="${this.onDialogCancel_}">
+          <!-- The card container containing dialog header, body and footer. -->
           <re-card part="card" fillStyle="solid">
+            <!-- The header bar containing the title and actions. -->
             <header part="header">
+              <!-- Slot for dialog title text. -->
               <slot name="title"></slot>
+              <!-- Container for slot actions or default close button. -->
               <div part="actions" id="actions">
+                <!-- Slot for dialog action buttons (e.g. close). -->
                 <slot name="actions">
                   <re-icon-button name="close" @click="${this.onClose_}"
                       ></re-icon-button>
@@ -232,9 +249,14 @@ export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
               </div>
             </header>
 
+            <!-- The main dialog body content slot. -->
             <slot></slot>
 
-            <footer part="footer"><slot name="footer"></slot></footer>
+            <!-- The dialog footer. -->
+            <footer part="footer">
+              <!-- Slot for dialog footer actions/buttons. -->
+              <slot name="footer"></slot>
+            </footer>
           </re-card>
         </dialog>
       `

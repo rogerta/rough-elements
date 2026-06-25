@@ -3,7 +3,15 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { fire, ReElement } from './internal/re-element.js'
 
-// Use CSS style "writing-mode" to make this range vertical.
+/**
+ * Range element represents a slider control to select a numeric value within a range.
+ *
+ * @cssproperty --knob-fraction - Height fraction of the knob diameter (between 0 and 1). Defaults to 0.66.
+ * @cssproperty --re-range-knob-outline-color - Stroke color of the knob circle. Defaults to `--re-range-knob-color`.
+ * @cssproperty --re-range-knob-color - Fill color of the knob circle. Defaults to `--color`.
+ * @cssproperty --re-range-track-color - Stroke color of the range track line. Defaults to `--color`.
+ * @cssproperty --color - Fallback color for knob and track.
+ */
 @customElement('re-range')
 export class RangeElement extends ReElement {
   @property({ type: Number }) min = 0

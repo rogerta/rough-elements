@@ -3,6 +3,14 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { ReElement } from './internal/re-element.js'
 
+/**
+ * Spinner element is a loading spinner that indicates an operation is in progress.
+ *
+ * @cssproperty --size - The width and height of the spinner. Defaults to `1.5rem`.
+ * @cssproperty --track-width - The thickness of the spinner track. Defaults to `2px`.
+ * @cssproperty --re-spinner-tracker-color - Color of the background tracker circle. Defaults to `rgb(0 0 0 / 0.1)`.
+ * @cssproperty --re-spinner-indicator-color - Color of the spinning indicator. Defaults to `var(--re-primary-color)`.
+ */
 @customElement('re-spinner')
 export class SpinnerElement extends ReElement {
   @property({ type: Boolean, reflect: true }) showValue = false

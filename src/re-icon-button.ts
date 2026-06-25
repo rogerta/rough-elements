@@ -3,10 +3,13 @@ import { customElement, property } from 'lit/decorators.js'
 
 import './re-icon.js'
 
-// Some useful info that needs to be documented:
-//
-// --color CSS prop sets the color of the icon.
-// --re-primary-color CSS prop sets the hover color.
+/**
+ * IconButton element is an interactive button represented solely by an icon.
+ * It supports triggering action menus, navigation, downloads, and popover targets.
+ *
+ * @cssproperty --color - The color of the button's icon. Defaults to `inherit`.
+ * @cssproperty --re-primary-color - The color used when hovering over the button.
+ */
 @customElement('re-icon-button')
 export class IconButtonElement extends LitElement {
   @property() name = ''
@@ -25,6 +28,7 @@ export class IconButtonElement extends LitElement {
    *
    * @param target The popover target element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
+   * @return {void}
    */
   setPopoverTarget(target: HTMLElement | null) {
     this.updateComplete.then(() => {
@@ -38,7 +42,9 @@ export class IconButtonElement extends LitElement {
   override render() {
     return [
       html`
+        <!-- The button element container. -->
         <button ?disabled="${this.disabled}" part="button">
+          <!-- The icon displayed inside the button. -->
           <re-icon part="icon" name="${this.name}"></re-icon>
         </button>
       `,

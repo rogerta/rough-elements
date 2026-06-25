@@ -5,6 +5,12 @@ import { ButtonElement } from './re-button.js'
 import { IconElement } from './re-icon.js'
 import { fire } from './internal/re-element.js'
 
+/**
+ * Checkbox element is a toggleable control that allows users to make a binary choice.
+ * It supports checked, unchecked, and indeterminate states. It inherits from ButtonElement.
+ *
+ * @cssproperty --color - Sets the color of the text and checkbox icon. Defaults to `ButtonText`.
+ */
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonElement {
   @property({ type: Boolean, reflect: true }) checked = false

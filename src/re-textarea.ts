@@ -7,12 +7,12 @@ import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
 import './re-icon-button.js'
 
-// Some useful info that needs to be documented:
-//
-// --color CSS prop sets the color of the icon.
-// --re-primary-color CSS prop sets the hover color.
 /**
- * The Input element captures data entered by the user.
+ * TextArea element captures multi-line text data entered by the user.
+ * It draws a rough background and border.
+ *
+ * @cssproperty --color - The text color. Defaults to `ButtonText`.
+ * @cssproperty --re-input-background-color - The background color of the textarea control. Defaults to `ButtonFace`.
  */
 @customElement('re-textarea')
 export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
@@ -42,11 +42,21 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
 
   @property({state: true}) showPassword_ = false
 
+  /**
+   * Gets the value of the textarea control.
+   *
+   * @return {string} The text content of the textarea.
+   */
   get value() {
     const textarea = this.renderRoot.querySelector('textarea')
     return textarea?.value ?? ''
   }
 
+  /**
+   * Sets the value of the textarea control.
+   *
+   * @param {string} text - The text content to set.
+   */
   set value(text: string) {
     const textarea = this.renderRoot.querySelector('textarea')
     if (textarea) {
@@ -106,10 +116,10 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-        <!-- The element that prefixes the input control. -->
+        <!-- Slot positioned before the textarea. -->
         <slot name="prefix"></slot>
 
-        <!-- The textarea control. -->
+        <!-- The native HTML textarea control. -->
         <textarea part="textarea"
             name="${ifDefined(this.name)}"
             autocapitalize="${this.autocapitalize}"
@@ -125,8 +135,9 @@ export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
             ?readonly="${this.readonly}"
             ></textarea>
 
-        <!-- The element that suffixes the input control. -->
+        <!-- Slot positioned after the textarea. Often used for suffix icons. -->
         <slot name="suffix"></slot>
+        <!-- Internal slot used to capture initial child text node value. -->
         <div id="hiddenslot"><slot></slot></div>
       `,
     ]

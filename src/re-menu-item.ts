@@ -108,8 +108,10 @@ export class MenuItemElement extends ItemElement {
     return [
       super.render(),
       html`
+        <!-- Icon button pointing to the right, indicating a submenu. -->
         <re-icon-button part="submenu-icon" class="hidden"
             name="keyboard-arrow-right"></re-icon-button>
+        <!-- Slot containing the popover menu to use as a submenu. -->
         <slot name="submenu"></slot>
       `
     ]

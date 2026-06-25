@@ -12,6 +12,8 @@ import { fire } from './internal/re-element.js'
  * While this element derives from `<re-dropdown>`, the `label` slot should not
  * be used directly.  It is used internally to show the currently selected
  * option(s).
+ *
+ * This component inherits all CSS custom properties and slots from DropdownElement.
  */
 @customElement('re-select')
 export class SelectElement extends DropdownElement {

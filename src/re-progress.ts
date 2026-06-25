@@ -5,6 +5,14 @@ import { Mixin as BgMixin } from './internal/re-background-mixin.js'
 import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
 
+/**
+ * Progress element represents the completion progress of a task.
+ * It displays a hand-drawn rough zigzag progress bar.
+ *
+ * @cssproperty --color - Color of the progress label and bar lines.
+ * @cssproperty --label-lower-color - Color of the label when the progress is lower than 50%. Defaults to `--color`.
+ * @cssproperty --label-upper-color - Color of the label when the progress is at or above 50%. Defaults to `--background-color`.
+ */
 @customElement('re-progress')
 export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) showValue = false
@@ -24,6 +32,7 @@ export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
+        <!-- The label displaying the numeric progress value when showValue is true. -->
         <div part="label">${this.renderValue_()}</div>
       `,
     ]

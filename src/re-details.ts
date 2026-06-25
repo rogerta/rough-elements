@@ -6,6 +6,11 @@ import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
 import './re-icon.js'
 
+/**
+ * Details element is a disclosure widget that hides contents until toggled open.
+ * It features a summary element that is always visible and a content area that expands.
+ * It is rendered using rough border and background mixins.
+ */
 @customElement('re-details')
 export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) disabled = false
@@ -81,11 +86,16 @@ export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
+      <!-- The underlying html details element. -->
       <details ?open="${this.open}" @toggle="${this.onToggle_}" part="details">
+        <!-- The summary container holding summary text/marker. -->
         <summary part="summary" ?inert="${this.disabled}">
+          <!-- Slot for details header/summary. -->
           <slot name="summary"></slot>
+          <!-- Slot for expandable/collapsible indicator icon. -->
           <slot name="marker"><re-icon name="keyboard-arrow-right"></re-icon></slot>
         </summary>
+        <!-- Slot containing the collapsed/expanded body content. -->
         <slot part="content"></slot>
       </details>`
     ]

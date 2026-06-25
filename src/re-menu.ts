@@ -38,6 +38,8 @@ import { getItemFromEvent } from './re-item.js'
  *   }
  * }
  * ```
+ *
+ * @cssproperty --re-background-color - The background color of the menu. Defaults to `Canvas`.
  */
 @customElement('re-menu')
 export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
@@ -81,8 +83,7 @@ export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <!-- The main body of the menu. The panel is onle column of
-          -- children representing the menu item choices. -->
+        <!-- The main body slot of the menu, representing a single column of items. -->
         <slot></slot>
       `,
     ]
