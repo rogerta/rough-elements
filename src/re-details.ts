@@ -1,8 +1,8 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
 import './re-icon.js'
 
@@ -12,7 +12,7 @@ import './re-icon.js'
  * It is rendered using rough border and background mixins.
  */
 @customElement('re-details')
-export class DetailsElement extends BorderMixin(BgMixin(ReElement)) {
+export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) disabled = false
   @property({ type: Boolean, reflect: true }) open = false
 

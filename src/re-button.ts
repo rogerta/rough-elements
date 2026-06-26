@@ -1,8 +1,8 @@
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 import './re-icon.js'
@@ -27,7 +27,7 @@ import './re-icon.js'
  * @cssproperty --re-danger-color - Danger theme color used for the danger variant background.
  */
 @customElement('re-button')
-export class ButtonElement extends BorderMixin(BgMixin(ReElement)) {
+export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Name used when this button is part of a form submission.
    */

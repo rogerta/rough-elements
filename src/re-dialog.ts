@@ -1,8 +1,8 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import  './re-button.js'
 import { fire, ReElement } from './internal/re-element.js'
 import  './re-icon-button.js'
@@ -15,7 +15,7 @@ import { ifDefined } from 'lit/directives/if-defined.js'
  * @cssproperty --border-width - The width of the dialog border.
  */
 @customElement('re-dialog')
-export class DialogElement extends BorderMixin(BgMixin(ReElement)) {
+export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
   @property({reflect: true}) name = ''
 
   @property({}) closedBy? = 'any'

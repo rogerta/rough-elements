@@ -1,8 +1,8 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
 
 /**
@@ -14,7 +14,7 @@ import { ReElement } from './internal/re-element.js'
  * @cssproperty --label-upper-color - Color of the label when the progress is at or above 50%. Defaults to `--background-color`.
  */
 @customElement('re-progress')
-export class ProgressElement extends BorderMixin(BgMixin(ReElement)) {
+export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) showValue = false
   @property({ type: Number }) min = 0
   @property({ type: Number }) max = 1

@@ -1,8 +1,8 @@
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 import './re-icon.js'
@@ -40,7 +40,7 @@ import './re-icon-button.js'
  * @cssproperty --re-danger-color - Danger theme color used to color the icon and background for the danger variant.
  */
 @customElement('re-alert')
-export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
+export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Opens the alert if set to true, closes if set to false.
    */

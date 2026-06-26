@@ -1,8 +1,8 @@
 import { css, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
 
 /**
@@ -13,7 +13,7 @@ import { ReElement } from './internal/re-element.js'
  * @cssproperty --border-width - The width of the border around the card.
  */
 @customElement('re-card')
-export class CardElement extends BorderMixin(BgMixin(ReElement)) {
+export class CardElement extends BorderMixin(BackgroundMixin(ReElement)) {
   override render() {
     return [
       super.renderRoughSvg(),

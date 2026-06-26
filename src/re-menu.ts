@@ -1,8 +1,8 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
 import { getItemFromEvent } from './re-item.js'
 
@@ -42,7 +42,7 @@ import { getItemFromEvent } from './re-item.js'
  * @cssproperty --re-background-color - The background color of the menu. Defaults to `Canvas`.
  */
 @customElement('re-menu')
-export class MenuElement extends BorderMixin(BgMixin(ReElement)) {
+export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
   static styles = [
     ...super.styles,
     css`

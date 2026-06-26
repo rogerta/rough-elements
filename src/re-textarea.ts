@@ -2,8 +2,8 @@ import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { Mixin as BgMixin } from './internal/re-background-mixin.js'
-import { Mixin as BorderMixin } from './internal/re-border-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
+import { BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
 import './re-icon-button.js'
 
@@ -14,7 +14,7 @@ import './re-icon-button.js'
  * @cssproperty --re-input-background-color - The background color of the textarea control. Defaults to `ButtonFace`.
  */
 @customElement('re-textarea')
-export class TextAreaElement extends BorderMixin(BgMixin(ReElement)) {
+export class TextAreaElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Name used when this button is part of a form submission.
    */

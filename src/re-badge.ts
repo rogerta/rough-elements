@@ -1,7 +1,7 @@
 import { css, html } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { Mixin } from './internal/re-background-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 
@@ -13,7 +13,7 @@ import { ReElement } from './internal/re-element.js'
  * @cssproperty --color - Foreground/text color of the badge. Defaults to `ButtonText`.
  */
 @customElement('re-badge')
-export class BadgeElement extends Mixin(ReElement) {
+export class BadgeElement extends BackgroundMixin(ReElement) {
   @property({ reflect: true }) variant: VARIANTS = 'primary'
 
   constructor() {
