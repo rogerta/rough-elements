@@ -29,12 +29,10 @@ import './re-icon-button.js'
  * Alerts can be shown using different variants, which use different colours
  * and different icons.
  *
+ * To control the border and background refer to the Border & Background
+ * documentation.
+ *
  * @cssproperty --color - Sets the color of the icon inside the alert.
- * @cssproperty --re-primary-color - Primary theme color used to color the icon and background for the primary variant.
- * @cssproperty --re-success-color - Success theme color used to color the icon and background for the success variant.
- * @cssproperty --re-neutral-color - Neutral theme color used to color the icon and background for the neutral variant.
- * @cssproperty --re-warning-color - Warning theme color used to color the icon and background for the warning variant.
- * @cssproperty --re-danger-color - Danger theme color used to color the icon and background for the danger variant.
  */
 @customElement('re-alert')
 export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
@@ -117,7 +115,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
     if (!stack) {
       stack = this.ownerDocument.createElement('div')
       stack.id = 'reToastStack'
-      stack.style = `
+      stack.style.cssText = `
         position: fixed;
         top: 1rem;
         right: 1rem;

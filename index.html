@@ -111,6 +111,14 @@
         }
       }
 
+      #button0, #button91 {
+        --color: red;
+        --border-color: green;
+      }
+      #button91::part(prefix) {
+        --color: blue;
+      }
+
       #icon1 {
         --color: brown;
         background-color: rgb(from currentcolor R G B / 0.1);
@@ -765,6 +773,7 @@
 
     <div class="demo">
       <h1>re-badge</h1>
+      <re-badge id="badge0">no variant</re-badge>
       <re-badge id="badge1" variant="primary">primary</re-badge>
       <re-badge id="badge2" variant="success">success</re-badge>
       <re-badge id="badge3" variant="neutral">neutral</re-badge>

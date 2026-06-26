@@ -1,4 +1,4 @@
-import { css, html } from 'lit'
+import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { BackgroundMixin } from './internal/re-background-mixin.js'
@@ -6,29 +6,45 @@ import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 
 /**
- * Badge element displays a small badge showing status, a count, or other metadata.
- * It supports background fill variants like primary, success, neutral, warning, and danger,
- * and uses a background mixin to draw a rough background.
+ * Badges display status like information to the user. Generally the body of
+ * a badge is some small amount of text.
  *
- * @cssproperty --color - Foreground/text color of the badge. Defaults to `ButtonText`.
+ * different variants of badges can be shown (defaults to 'primary') each with
+ * their own background colour.  The foreground colour is always white.  The
+ * background is set to the 'solid' fill style.
  */
 @customElement('re-badge')
 export class BadgeElement extends BackgroundMixin(ReElement) {
+  /**
+   * Specifies the variant to use.  Different variants use a different colour
+   * for the background.
+   */
   @property({ reflect: true }) variant: VARIANTS = 'primary'
 
   constructor() {
     super()
     this.fillStyle = 'solid'
+    this.variant = 'primary'
   }
 
   override render() {
     return [
       super.renderRoughSvg(),
       html`
-        <!-- The main body slot of the badge. Typically holds the status label or count. -->
+        <!-- The text of the badge. -->
         <slot part="body"></slot>
       `,
     ]
+  }
+
+  protected override updated(props: PropertyValues) {
+    super.updated(props)
+
+    if (props.has('variant')) {
+      if (!this.variant) {
+        console.error('The variant property of a badge is undefined')
+      }
+    }
   }
 
   static styles = [
@@ -39,7 +55,6 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
         --border-width: 0;
         font-size: 0.75rem;
         padding: 0 0.125rem;
-        color: var(--color, ButtonText);
         --re-background-color: transparent;
         cursor: default;
       }

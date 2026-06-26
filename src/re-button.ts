@@ -7,24 +7,20 @@ import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 import './re-icon.js'
 
-// Some useful info that needs to be documented:
-//
-// --color CSS prop sets the color of the icon.
-// --re-primary-color CSS prop sets the hover color.
 /**
- * The Button element is an interactive element activated by a user with a
- * mouse, keyboard, finger, voice command, or other assistive technology.
- * Once activated, it then performs an action, such as submitting a form or
- * opening a dialog.
+ * Buttons are interactive elements activated by the user with a mouse,
+ * keyboard, finger, voice command, or other assistive technology.  Once
+ * activated, it fires an event that tiggers an application specific action.
  *
- * A Button's style can change using CSS variables.
+ * Rough buttons can be used as popover element triggers.  See the
+ * `setPopoverTarget()` method.
  *
- * @cssproperty --color - Sets the color of the button text / prefix / suffix / icon. Defaults to `ButtonText`.
- * @cssproperty --re-primary-color - Primary theme color used to color the hover shadow and borders.
- * @cssproperty --re-success-color - Success theme color used for the success variant background.
- * @cssproperty --re-neutral-color - Neutral theme color used for the neutral variant background.
- * @cssproperty --re-warning-color - Warning theme color used for the warning variant background.
- * @cssproperty --re-danger-color - Danger theme color used for the danger variant background.
+ * To control the border and background refer to the Border & Background
+ * documentation.
+ *
+ * @cssproperty --color - Sets the colour of the button text as well as
+ *    prefix and suffix icons. Defaults to `ButtonText`.  The colour of the
+ *    icons can be set indivudally styling the corresponding parts.
  */
 @customElement('re-button')
 export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
@@ -34,31 +30,32 @@ export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
   @property() name = ''
 
   /**
-   * When not empty, the button will act like an <a> element with the
-   * specified value of href.
+   * When not empty, the button behaves like an <a> element with the
+   * specified value of `href`.  The default behaviour is to open the link
+   * specified by `href` in the target window.
    */
   @property() href = ''
 
   /**
-   * If href is not empty, specifies the target window to open the link.
+   * If `href` is not empty, specifies the target window to open the link.
    */
   @property() target = ''
 
   /**
-   * If href is not empty, the browser will download the linked file to a
+   * If `href` is not empty, the browser will download the linked file to a
    * file named by this property.
    */
   @property() download = ''
 
   /**
-   * If true, a caret <re-icon> will be suffixed to this button.  This is
+   * If true, a caret `<re-icon>` will be suffixed to this button.  This is
    * used to indicate that the button will open some kind of submenu.
    */
   @property({ type: Boolean, reflect: true }) caret = false
 
   /**
    * If true the button will render with a round border instead of a rectangular
-   * one.  Usually the default slot is filled with a single <re-icon>.
+   * one.  Usually the default slot is filled with a single `<re-icon>`.
    */
   @property({ type: Boolean, reflect: true }) circle = false
 
@@ -86,14 +83,14 @@ export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
   }
 
   /**
-   * Sets this button to be a trigger for a popover element once the button
-   * finishes it's update cycle (that is, it's `updateComplete` promise
-   * resolves).
+   * Sets this button to be a trigger for a popover element. The popover will
+   * be displayed once the button finishes it's update cycle (that is, once
+   * `updateComplete` promise resolves).
    *
    * `setPopoverTarget` is needed to allow targets from different shawdow root
    * boundaries to be used.
    *
-   * @param target The popover target element.  This element is expected to
+   * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
    * @return {void}
    */
