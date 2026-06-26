@@ -32,6 +32,7 @@ code {
   color: rgb(40 66 131);
   font-weight: bold;
   font-size: 1.2em;
+  text-wrap: nowrap;
 }
 .slot-name,
 .property-name,
@@ -44,7 +45,7 @@ code {
 
 {% block main %}
 <h1>{{c.tagName | replace('re-', '') | replace('-', ' ') | title}} <span class="classnametitle">{{c.tagName}}</span></h1>
-{{c.description | safe}}
+{{c.description | marked | safe }}
 
 <h2>Slots</h2>
   <table>
@@ -53,7 +54,10 @@ code {
   </thead>
   <tbody>
     {% for slot in c.slots %}
-    <tr><td class="slot-name">{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
+    <tr>
+      <td class="slot-name">{{slot.name | d('[default]', true)}}</td>
+      <td>{{slot.description | marked | safe }}</td>
+    </tr>
     {% endfor %}
   </tbody>
   </table>
@@ -67,13 +71,14 @@ code {
     {# Don't bother documenting private and protected fields. Also, don't
        bother documenting the 'styles' field since it's Lit's internal CSS
        styling of the element. #}
-    {% if m.privacy != 'private' and m.privacy != 'protected' and m.kind == 'field' and m.name != 'styles' %}
-      <tr>
-        <td class="property-name">{{m.name}}</td>
-        <td>{{m.description}}</td>
-        <td>{{'true' if m.reflects else ''}}</td>
-        <td class="property-type">{{m.type.text}}</td>
-      </tr>
+    {% if m.privacy != 'private' and m.privacy != 'protected' and
+        m.kind == 'field' and m.name != 'styles' %}
+    <tr>
+      <td class="property-name">{{m.name}}</td>
+      <td>{{m.description | marked | safe }}</td>
+      <td>{{'true' if m.reflects else ''}}</td>
+      <td class="property-type">{{m.type.text}}</td>
+    </tr>
     {% endif %}
   {% endfor %}
   </tbody>
@@ -88,11 +93,11 @@ code {
   {% for m in c.members %}
     {# Don't bother documenting private and protected methods. #}
     {% if m.privacy != 'private' and m.privacy != 'protected' and m.kind == 'method' %}
-      <tr>
-        <td class="property-name">{{m.name}}</td>
-        <td>{{m.description}}</td>
-        <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
-      </tr>
+    <tr>
+      <td class="property-name">{{m.name}}</td>
+      <td>{{m.description | marked | safe }}</td>
+      <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
+    </tr>
     {% endif %}
   {% endfor %}
   </tbody>
@@ -104,7 +109,10 @@ code {
   </thead>
   <tbody>
     {% for slot in c.cssParts %}
-    <tr><td class="slot-name">{{slot.name | d('[default]', '[default]')}}</td><td>{{slot.description}}</td></tr>
+    <tr>
+      <td class="slot-name">{{slot.name | d('[default]', '[default]')}}</td>
+      <td>{{slot.description | marked | safe }}</td>
+    </tr>
     {% endfor %}
   </tbody>
   </table>

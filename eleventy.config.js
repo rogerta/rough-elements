@@ -1,3 +1,5 @@
+import { marked } from 'marked'
+
 /** @param {import("@11ty/eleventy").UserConfig} config */
 export default function(config) {
   config.setInputDirectory('./docs')
@@ -20,5 +22,8 @@ export default function(config) {
       return type ? `${name}: ${type}` : name
     }): []
   })
-}
 
+  config.addFilter('marked', function (str) {
+    return str ? marked.parse(str) : ''
+  })
+}
