@@ -63,7 +63,7 @@ export class AlertElement extends BorderMixin(BgMixin(ReElement)) {
    * The amount of time the alert will be displayed before it closes itself.
    * By default an alert will be displayed until programmatically closed.
    */
-  @property({ type: Number }) duration = Infinity
+  @property({ type: Number }) duration: number = Infinity
 
   private durationTimer_ = 0
 

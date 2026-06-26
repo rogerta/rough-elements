@@ -12,5 +12,13 @@ export default function(config) {
   config.setServerOptions({
     port: 9520,
   });
+
+  config.addFilter('mapParam', function (arr) {
+    return arr ? arr.map(e => {
+      const name = e.name ?? ''
+      const type = e.type?.text ?? ''
+      return type ? `${name}: ${type}` : name
+    }): []
+  })
 }
 

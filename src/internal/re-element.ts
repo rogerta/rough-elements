@@ -58,6 +58,11 @@ export function fire<T>(
 export class ReElement extends LitElement {
   @query('svg#rough', true) private svg_?: SVGSVGElement
 
+  /**
+   * Enables debugging in elements when the string is not undefined and not
+   * emtpty.  When enabled, some rough elements will write debgging information
+   * to `console.log`.
+   */
   @property({}) enableDebugging?: string
 
   private observer_?: ResizeObserver
@@ -91,7 +96,11 @@ export class ReElement extends LitElement {
   }
 
   protected renderRoughSvg() {
-    return html`<svg xmlns="http://www.w3.org/2000/svg" id="rough" part="rough"></svg>`
+    return html`
+      <!-- The SVG element that contains the rough rendering of this
+           element. -->
+      <svg xmlns="http://www.w3.org/2000/svg" id="rough" part="rough"></svg>
+    `
   }
 
   /**
