@@ -49,6 +49,11 @@ export declare class MixinInterface {
 export const BorderMixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
+    /**
+     * Determines the style of border around this element.  Can be `rectangle`
+     * (default) or `circle` or `none`.  The border will be draw in the border
+     * area of the element.
+     */
     @property({}) borderStyle: BORDERSTYLE = 'rectangle'
 
     static styles = [

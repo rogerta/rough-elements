@@ -29,9 +29,6 @@ import './re-icon-button.js'
  * Alerts can be shown using different variants, which use different colours
  * and different icons.
  *
- * Alerts display a border and background using the appropriate mixin classes.
- * See those for details.
- *
  * @cssproperty --color - Sets the color of the icon inside the alert.
  * @cssproperty --re-primary-color - Primary theme color used to color the icon and background for the primary variant.
  * @cssproperty --re-success-color - Success theme color used to color the icon and background for the success variant.

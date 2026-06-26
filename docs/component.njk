@@ -64,13 +64,16 @@ code {
   </thead>
   <tbody>
   {% for m in c.members %}
-    {% if m.privacy != 'private' and m.privacy != 'protected' and m.kind == 'field' %}
+    {# Don't bother documenting private and protected fields. Also, don't
+       bother documenting the 'styles' field since it's Lit's internal CSS
+       styling of the element. #}
+    {% if m.privacy != 'private' and m.privacy != 'protected' and m.kind == 'field' and m.name != 'styles' %}
       <tr>
-      <td class="property-name">{{m.name}}</td>
-      <td>{{m.description}}</td>
-      <td>{{'true' if m.reflects else ''}}</td>
-      <td class="property-type">{{m.type.text}}</td>
-    </tr>
+        <td class="property-name">{{m.name}}</td>
+        <td>{{m.description}}</td>
+        <td>{{'true' if m.reflects else ''}}</td>
+        <td class="property-type">{{m.type.text}}</td>
+      </tr>
     {% endif %}
   {% endfor %}
   </tbody>
@@ -83,6 +86,7 @@ code {
   </thead>
   <tbody>
   {% for m in c.members %}
+    {# Don't bother documenting private and protected methods. #}
     {% if m.privacy != 'private' and m.privacy != 'protected' and m.kind == 'method' %}
       <tr>
         <td class="property-name">{{m.name}}</td>
