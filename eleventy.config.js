@@ -16,30 +16,38 @@ export default function(config) {
   })
 
   config.addFilter('filterForMethods', function (clazz) {
-    return clazz.members?.filter(m => {
+    const methods = clazz.members?.filter(m => {
       return m.kind === 'method' && m.privacy !== 'private' &&
       m.privacy !== 'protected' && !m.inheritedFrom &&
       m.name !== 'handleEvent'
     }) ?? []
+
+    methods.sort((a, b) => a.name.localeCompare(b.name))
+    return methods
   })
 
   config.addFilter('filterForParts', function (clazz) {
-    return clazz.cssParts
+    const arr = clazz.cssParts ?? []
+    return arr.toSorted((a, b) => a.name.localeCompare(b.name))
   })
 
   config.addFilter('filterForCSSProperties', function (clazz) {
-    return clazz.cssProperties?.filter(p => !p.inheritedFrom) ?? []
+    const props = clazz.cssProperties?.filter(p => !p.inheritedFrom) ?? []
+    props.sort((a, b) => a.name.localeCompare(b.name))
+    return props
   })
 
   config.addFilter('filterForProperties', function (clazz) {
     // Don't bother documenting private and protected fields. Also, don't
     // bother documenting the 'styles' field since it's Lit's internal CSS
     // styling of the element.
-   return clazz.members?.filter(m => {
+   const props = clazz.members?.filter(m => {
       return m.kind === 'field' && m.privacy !== 'private' &&
-      m.privacy !== 'protected' && !m.inheritedFrom &&
-      m.name !== 'styles'
+      m.privacy !== 'protected' && m.name !== 'styles'
     }) ?? []
+
+    props.sort((a, b) => a.name.localeCompare(b.name))
+    return props
   })
 
   config.addFilter('mapParam', function (arr) {
