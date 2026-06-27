@@ -55,6 +55,10 @@ export class InputElement extends
     this.fillStyle = 'solid'
   }
 
+  override getFormValue(): string | Blob | undefined {
+    return this.value
+  }
+
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
     const input = this.renderRoot.querySelector('input')

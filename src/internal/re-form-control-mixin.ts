@@ -10,6 +10,7 @@ type Constructor<T = {}> = new (...args: any[]) => T
 export declare class FormControlInterface {
   name: string
   form: string
+  getFormValue(): string | Blob | undefined
   submitForm(submitter?: HTMLElement): boolean
 }
 
@@ -42,6 +43,16 @@ export const ReFormControlMixin =
     private controller_?: ReFormSubmissionController
     private form_: HTMLFormElement | null = null
 
+    /**
+     * Derived classes are expected to override this method and return the
+     * value to be submitted as part of the form.
+     *
+     * @returns The value to submit as part of the form, or undefined if there
+     *    is nothng to submit.
+     */
+    getFormValue(): string | Blob | undefined {
+      throw new Error('A form control must override this method')
+    }
     /**
      * Submits the form if any.
      *

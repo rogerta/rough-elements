@@ -51,6 +51,10 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     `
   ]
 
+  override getFormValue(): string | Blob | undefined {
+    return this.value.toString()
+  }
+
   onClick_(e: Event) {
     const target = e.target as HTMLElement
     if (!target.dataset.value) {

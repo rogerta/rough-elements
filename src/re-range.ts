@@ -2,6 +2,7 @@ import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { fire, ReElement } from './internal/re-element.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 
 /**
  * Range element represents a slider control to select a numeric value within a range.
@@ -13,7 +14,7 @@ import { fire, ReElement } from './internal/re-element.js'
  * @cssproperty --color - Fallback color for knob and track.
  */
 @customElement('re-range')
-export class RangeElement extends ReElement {
+export class RangeElement extends ReFormControlMixin(ReElement) {
   @property({ type: Number }) min = 0
   @property({ type: Number }) max = 100
   @property({ type: Number }) step = 1
@@ -87,6 +88,10 @@ export class RangeElement extends ReElement {
       }
     `
   ]
+
+  override getFormValue(): string | Blob | undefined {
+    return this.value.toString()
+  }
 
   handleEvent(e: Event) {
     switch (e.type) {

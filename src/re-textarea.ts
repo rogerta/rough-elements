@@ -54,6 +54,10 @@ export class TextAreaElement extends
     return textarea?.value ?? ''
   }
 
+  override getFormValue(): string | Blob | undefined {
+    return this.value
+  }
+
   /**
    * Sets the value of the textarea control.
    *

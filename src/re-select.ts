@@ -25,6 +25,10 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
    @property({ type: Array }) selectedOptions = []
    @property({ type: Array, state: true }) private labelNodes_: Node[] = []
 
+   override getFormValue(): string | Blob | undefined {
+    return this.selectedIndex === -1 ? undefined : this.value
+  }
+
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
 

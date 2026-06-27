@@ -37,6 +37,10 @@ export class RadioElement extends ButtonElement {
     this.borderStyle = 'none'
   }
 
+  override getFormValue(): string | Blob | undefined {
+    return this.checked ? (this.value ?? 'on') : undefined
+  }
+
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
 

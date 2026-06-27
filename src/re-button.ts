@@ -75,12 +75,13 @@ export class ButtonElement extends
   /**
    * Name used when this button is part of a form submission.
    */
-  @property() type = 'submit'
-  @property() formaction?: string
-  @property() formenctype?: string
-  @property() formmethod = 'post'
-  @property() formnovalidate?: string
-  @property() formtarget = '_self'
+  @property({}) type = 'button'
+  @property({}) formaction?: string
+  @property({}) formenctype?: string
+  @property({}) formmethod = 'post'
+  @property({}) formnovalidate?: string
+  @property({}) formtarget = '_self'
+  @property({}) value?: string
 
   constructor() {
     super()
@@ -116,10 +117,17 @@ export class ButtonElement extends
     })
   }
 
+  override getFormValue(): string | Blob | undefined {
+    return this.name
+  }
+
   handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
+        // If this is a submit button as part of a form, submit the form.
         if (this.type === 'submit') {
+          // TODO: eventually the button should be passed to `submitForm()`
+          // so that the submitter properties can be used.
           this.submitForm()
         }
         break
