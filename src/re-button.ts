@@ -63,7 +63,7 @@ export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
   @property({ type: Boolean, reflect: true }) circle = false
 
   /**
-   * If true the button is disabled and does not respond to user actions.
+   * If true the button does not respond to user actions.
    */
   @property({ type: Boolean, reflect: true }) disabled = false
 
