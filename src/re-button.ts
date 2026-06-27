@@ -3,9 +3,11 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { BackgroundMixin } from './internal/re-background-mixin.js'
 import { BorderMixin } from './internal/re-border-mixin.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
 import { ReElement } from './internal/re-element.js'
 import './re-icon.js'
+import { ifDefined } from 'lit/directives/if-defined.js'
 
 /**
  * Buttons are interactive elements activated by the user with a mouse,
@@ -26,12 +28,8 @@ import './re-icon.js'
  *    parts.
  */
 @customElement('re-button')
-export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
-  /**
-   * Name used when this button is part of a form submission.
-   */
-  @property() name = ''
-
+export class ButtonElement extends
+    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
   /**
    * When not empty, the button behaves like an <a> element with the
    * specified value of `href`.  The default behaviour is to open the link
@@ -72,6 +70,18 @@ export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
    */
   @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
 
+  // Form specific properties.
+
+  /**
+   * Name used when this button is part of a form submission.
+   */
+  @property() type = 'submit'
+  @property() formaction?: string
+  @property() formenctype?: string
+  @property() formmethod = 'post'
+  @property() formnovalidate?: string
+  @property() formtarget = '_self'
+
   constructor() {
     super()
     this.fillStyle = 'solid'
@@ -108,6 +118,11 @@ export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
 
   handleEvent(e: Event) {
     switch (e.type) {
+      case 'click':
+        if (this.type === 'submit') {
+          this.submitForm()
+        }
+        break
       case 'keydown': {
         const ke = e as KeyboardEvent
         if (ke.key === ' ') {
@@ -143,7 +158,8 @@ export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
     return [
       this.renderRoughSvg(),
       html`
-        <button name="${this.name}" ?disabled="${this.disabled}" part="button">
+        <button ?disabled="${this.disabled}" part="button"
+            name="${ifDefined(this.name)}" @click="${this.handleEvent}">
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix" part="prefix"></slot>
           <!-- The main label of the button. Typically holds text. -->

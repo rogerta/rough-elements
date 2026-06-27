@@ -1,9 +1,10 @@
-import { css, html, LitElement, type PropertyValues } from 'lit'
+import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { classMap } from 'lit/directives/class-map.js'
 
 import { fire } from './internal/re-element.js'
-import './re-icon.js'
-import { classMap } from 'lit/directives/class-map.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+
 import { IconElement } from './re-icon.js'
 
 /**
@@ -13,7 +14,7 @@ import { IconElement } from './re-icon.js'
  * @cssproperty --re-rating-color - Color of the selected rating stars. Defaults to `gold`.
  */
 @customElement('re-rating')
-export class RatingElement extends LitElement {
+export class RatingElement extends ReFormControlMixin(LitElement) {
   @property({ type: Number }) max = 1
   @property({ type: Number }) value: number = 0
 

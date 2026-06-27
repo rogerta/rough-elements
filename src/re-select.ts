@@ -1,9 +1,11 @@
 import { type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
+import { fire } from './internal/re-element.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+
 import { DropdownElement } from  './re-dropdown.js'
 import { getItemFromEvent, ItemElement } from './re-item.js'
-import { fire } from './internal/re-element.js'
 
 /**
  * A select exposes a menu of options that the user can select from.  The
@@ -16,7 +18,7 @@ import { fire } from './internal/re-element.js'
  * This component inherits all CSS custom properties and slots from DropdownElement.
  */
 @customElement('re-select')
-export class SelectElement extends DropdownElement {
+export class SelectElement extends ReFormControlMixin(DropdownElement) {
    @property({ type: Boolean, reflect: true }) multiple = false
    @property({}) value = ''
    @property({ type: Number }) selectedIndex = -1

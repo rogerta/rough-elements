@@ -6,6 +6,8 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { BackgroundMixin } from './internal/re-background-mixin.js'
 import { BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
+import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+
 import './re-icon-button.js'
 
 /**
@@ -17,7 +19,8 @@ import './re-icon-button.js'
  * @cssproperty --re-input-background-color - Sets the background color of the input control. Defaults to `ButtonFace`.
  */
 @customElement('re-input')
-export class InputElement extends BorderMixin(BackgroundMixin(ReElement)) {
+export class InputElement extends
+    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
   /**
    * Name used when this button is part of a form submission.
    */
