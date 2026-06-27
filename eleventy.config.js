@@ -13,7 +13,15 @@ export default function(config) {
   config.setQuietMode(true)
   config.setServerOptions({
     port: 9520,
-  });
+  })
+
+  config.addFilter('filterForMethods', function (members) {
+    return members.filter(m => {
+      return m.kind === 'method' && m.privacy !== 'private' &&
+      m.privacy !== 'protected' && !m.inheritedFrom &&
+      m.name !== 'handleEvent'
+    })
+  })
 
   config.addFilter('mapParam', function (arr) {
     return arr ? arr.map(e => {

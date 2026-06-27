@@ -114,25 +114,25 @@ code {
 <h2>Events</h2>
 
 <h2>Methods</h2>
-  <table>
-  <thead>
-    <tr><th>Name</th><th>Description</th><th>Arguments</th></tr>
-  </thead>
-  <tbody>
-  {% for m in c.members %}
-    {# Don't bother documenting private, protected, or inherited methods. #}
-    {% if m.privacy != 'private' and m.privacy != 'protected' and
-       m.kind == 'method' and m.inheritedFrom == undefined and
-       m.name != 'handleEvent' %}
-    <tr>
-      <td class="property-name">{{m.name}}</td>
-      <td>{{m.description | marked | safe }}</td>
-      <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
-    </tr>
-    {% endif %}
-  {% endfor %}
-  </tbody>
-  </table>
+  {% set methods = c.members | filterForMethods %}
+  {% if methods | length %}
+    <table>
+    <thead>
+      <tr><th>Name</th><th>Description</th><th>Arguments</th></tr>
+    </thead>
+    <tbody>
+    {% for m in methods %}
+      <tr>
+        <td class="property-name">{{m.name}}</td>
+        <td>{{m.description | marked | safe }}</td>
+        <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+    </table>
+  {% else %}
+    No methods.
+  {% endif %}
 
 <h2>Parts</h2>
   <table>
