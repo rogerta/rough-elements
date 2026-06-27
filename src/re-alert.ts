@@ -151,7 +151,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
       super.renderRoughSvg(),
       html`
         <!-- The alert's icon. This is an \`re-icon\` element whose name
-             name is determined from the variant. -->
+             is determined from the variant. -->
         <re-icon part="icon" name="${this.renderIconName_()}"></re-icon>
       `,
       html`

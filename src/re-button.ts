@@ -9,8 +9,8 @@ import './re-icon.js'
 
 /**
  * Buttons are interactive elements activated by the user with a mouse,
- * keyboard, finger, voice command, or other assistive technology.  Once
- * activated, it fires an event that tiggers an application specific action.
+ * keyboard, finger, voice command, or other mechanism.  Once activated, the
+ * button fires an event that tiggers an application specific action.
  *
  * Rough buttons can be used as popover element triggers.  See the
  * `setPopoverTarget()` method.
@@ -18,9 +18,12 @@ import './re-icon.js'
  * To control the border and background refer to the Border & Background
  * documentation.
  *
+ * `<re-button>`is meant as a drop in replacement for `<button>` or `<a>`.
+ *
  * @cssproperty --color - Sets the colour of the button text as well as
- *    prefix and suffix icons. Defaults to `ButtonText`.  The colour of the
- *    icons can be set indivudally styling the corresponding parts.
+ *    prefix and suffix. Defaults to `ButtonText`.  The colour of the
+ *    prefix and suffix can be set indivudally by styling the corresponding
+ *    parts.
  */
 @customElement('re-button')
 export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
@@ -141,11 +144,11 @@ export class ButtonElement extends BorderMixin(BackgroundMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
         <button name="${this.name}" ?disabled="${this.disabled}" part="button">
-          <!-- Slot positioned before the label text. Often used for icons. -->
+          <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix" part="prefix"></slot>
-          <!-- The main label slot of the button. Typically holds the text. -->
+          <!-- The main label of the button. Typically holds text. -->
           <slot part="label"></slot>
-          <!-- Slot positioned after the label text. Often used for icons or carets. -->
+          <!-- A suffix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="suffix" part="suffix"></slot>
           ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
               : nothing }

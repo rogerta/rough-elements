@@ -9,9 +9,9 @@ import { ReElement } from './internal/re-element.js'
  * Badges display status like information to the user. Generally the body of
  * a badge is some small amount of text.
  *
- * different variants of badges can be shown (defaults to 'primary') each with
- * their own background colour.  The foreground colour is always white.  The
- * background is set to the 'solid' fill style.
+ * Different variants of badges can be shown (defaults to 'primary') each with
+ * their own background colour.  The foreground colour is always fixed by the
+ * theme.
  */
 @customElement('re-badge')
 export class BadgeElement extends BackgroundMixin(ReElement) {

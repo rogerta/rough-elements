@@ -6,15 +6,34 @@ import { IconElement } from './re-icon.js'
 import { fire } from './internal/re-element.js'
 
 /**
- * Checkbox element is a toggleable control that allows users to make a binary choice.
- * It supports checked, unchecked, and indeterminate states. It inherits from ButtonElement.
+ * Checkboxes are toggleable controls that allows the user to make a "Yes" or
+ * "No" choice.  Checkboxes may be programmatically set to an indeterminate
+ * states to indicate that no choice has been made.
  *
- * @cssproperty --color - Sets the color of the text and checkbox icon. Defaults to `ButtonText`.
+ * Because `<re-checkbox>` dervices from `<re-button>` it exposes the
+ * prefix/default/suffix slots.  However the prefix slot is used to render an
+ * icon that represents the yes/no/indeterminate state.  Adding more content to
+ * the prefix slot may cause unexpected results.  However, the
+ * prefix/label/suffix parts can still be used to style the corresponding
+ * slot content.
+ *
+ * @cssproperty --color - Sets the color of the text and checkbox icon.
+ *    Defaults to `ButtonText`.
  */
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonElement {
-  @property({ type: Boolean, reflect: true }) checked = false
-  @property({ type: Boolean, reflect: true }) indeterminate = false
+  /**
+   * True if the checkbox is "checked" and false otherwise.
+   */
+  @property({ type: Boolean }) checked = false
+
+  /**
+   * When true the checkbox renders in a way to indicate to the user that
+   * no choice has been made.  However this has no effect on the `checked`
+   * property, and programmtically the checkbox is always either checked
+   * or not.
+   */
+  @property({ type: Boolean }) indeterminate = false
 
   private prefix_?: IconElement
 
@@ -70,9 +89,8 @@ export class CheckboxElement extends ButtonElement {
   protected override updated(props: PropertyValues) {
     super.updated(props)
     if (this.prefix_) {
-      this.prefix_.name = this.checked ? 'checkbox'
-          : (this.indeterminate ? 'checkbox-indeterminate'
-              : 'checkbox-outline-blank')
+      this.prefix_.name = this.indeterminate ? 'checkbox-indeterminate'
+          : (this.checked ? 'checkbox' : 'checkbox-outline-blank')
     }
   }
 }

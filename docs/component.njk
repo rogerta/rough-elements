@@ -69,6 +69,7 @@ code {
     {% endfor %}
   </tbody>
   </table>
+
 <h2>Properties</h2>
   <table>
   <thead>
@@ -92,7 +93,26 @@ code {
   {% endfor %}
   </tbody>
   </table>
+
+<h2>CSS Properties</h2>
+  <table>
+  <thead>
+    <tr><th>Name</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    {% for part in c.cssProperties %}
+      {% if part.inheritedFrom == undefined %}
+      <tr>
+        <td class="property-name">{{part.name }}</td>
+        <td>{{part.description | marked | safe }}</td>
+      </tr>
+      {% endif %}
+    {% endfor %}
+  </tbody>
+  </table>
+
 <h2>Events</h2>
+
 <h2>Methods</h2>
   <table>
   <thead>
@@ -113,6 +133,7 @@ code {
   {% endfor %}
   </tbody>
   </table>
+
 <h2>Parts</h2>
   <table>
   <thead>
@@ -120,7 +141,7 @@ code {
   </thead>
   <tbody>
     {% for part in c.cssParts %}
-      {% if part.inheritedFrom == undefined %}
+      {% if true %}
       <tr>
         <td class="part-name">{{part.name | d('[default]', '[default]')}}</td>
         <td>{{part.description | marked | safe }}</td>
