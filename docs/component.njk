@@ -32,8 +32,7 @@ tbody tr:nth-child(even) {
 }
 td, th {
   text-align: start;
-  padding: 0.5rem 1rem;
-  w
+  padding: 0 1rem;
 }
 code {
   color: rgb(40 66 131);
@@ -71,50 +70,52 @@ code {
   </table>
 
 <h2>Properties</h2>
-  <table>
-  <thead>
-    <tr><th>Name</th><th>Description</th><th>Reflects</th><th>Type</th></tr>
-  </thead>
-  <tbody>
-  {% for m in c.members %}
-    {# Don't bother documenting private and protected fields. Also, don't
-       bother documenting the 'styles' field since it's Lit's internal CSS
-       styling of the element. #}
-    {% if m.privacy != 'private' and m.privacy != 'protected' and
-        m.kind == 'field' and m.name != 'styles' and
-        m.inheritedFrom == undefined %}
+  {% set properties = c | filterForProperties %}
+  {% if properties | length %}
+    <table>
+    <thead>
+      <tr><th>Name</th><th>Description</th><th>Reflects</th><th>Type</th></tr>
+    </thead>
+    <tbody>
+    {% for m in properties %}
     <tr>
       <td class="property-name">{{m.name}}</td>
       <td>{{m.description | marked | safe }}</td>
       <td>{{'true' if m.reflects else ''}}</td>
       <td class="property-type">{{m.type.text}}</td>
     </tr>
-    {% endif %}
-  {% endfor %}
-  </tbody>
-  </table>
+    {% endfor %}
+    </tbody>
+    </table>
+  {% else %}
+    No properties.
+  {% endif %}
 
 <h2>CSS Properties</h2>
-  <table>
-  <thead>
-    <tr><th>Name</th><th>Description</th></tr>
-  </thead>
-  <tbody>
-    {% for part in c.cssProperties %}
-      {% if part.inheritedFrom == undefined %}
+  {% set cssProperties = c | filterForCSSProperties %}
+  {% if cssProperties | length %}
+    <table>
+    <thead>
+      <tr><th>Name</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      {% for prop in cssProperties %}
       <tr>
-        <td class="property-name">{{part.name }}</td>
-        <td>{{part.description | marked | safe }}</td>
+        <td class="property-name">{{prop.name }}</td>
+        <td>{{prop.description | marked | safe }}</td>
       </tr>
-      {% endif %}
-    {% endfor %}
-  </tbody>
-  </table>
+      {% endfor %}
+    </tbody>
+    </table>
+  {% else %}
+    No CSS properties.
+  {% endif %}
 
 <h2>Events</h2>
+No events.
 
 <h2>Methods</h2>
-  {% set methods = c.members | filterForMethods %}
+  {% set methods = c | filterForMethods %}
   {% if methods | length %}
     <table>
     <thead>
@@ -122,11 +123,11 @@ code {
     </thead>
     <tbody>
     {% for m in methods %}
-      <tr>
-        <td class="property-name">{{m.name}}</td>
-        <td>{{m.description | marked | safe }}</td>
-        <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
-      </tr>
+    <tr>
+      <td class="property-name">{{m.name}}</td>
+      <td>{{m.description | marked | safe }}</td>
+      <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
+    </tr>
     {% endfor %}
     </tbody>
     </table>
@@ -135,19 +136,23 @@ code {
   {% endif %}
 
 <h2>Parts</h2>
-  <table>
-  <thead>
-    <tr><th>Name</th><th>Description</th></tr>
-  </thead>
-  <tbody>
-    {% for part in c.cssParts %}
-      {% if true %}
+  {% set parts = c | filterForParts %}
+  {% if parts | length %}
+    <table>
+    <thead>
+      <tr><th>Name</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      {% for part in parts %}
       <tr>
         <td class="part-name">{{part.name | d('[default]', '[default]')}}</td>
         <td>{{part.description | marked | safe }}</td>
       </tr>
-      {% endif %}
-    {% endfor %}
-  </tbody>
-  </table>
-{% endblock %}
+      {% endfor %}
+    </tbody>
+    </table>
+  {% else %}
+    No parts.
+  {% endif %}
+
+  {% endblock %}
