@@ -26,6 +26,7 @@ export class CheckboxElement extends ButtonElement {
    * True if the checkbox is "checked" and false otherwise.
    */
   @property({ type: Boolean }) checked = false
+  @property({ type: Boolean }) required? = false
 
   /**
    * When true the checkbox renders in a way to indicate to the user that
@@ -57,8 +58,15 @@ export class CheckboxElement extends ButtonElement {
     this.borderStyle = 'none'
   }
 
-  override getFormValue(): string | Blob | undefined {
-    return this.checked ? (this.value ?? 'on') : undefined
+  private validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+    if (this.required && !this.checked) {
+      validity.valueMissing = true
+      message = 'Must be checked'
+    }
+    const anchor = this.renderRoot.querySelector('button')
+    this.setValidity(validity, message, anchor ?? undefined)
   }
 
   override firstUpdated(props: PropertyValues) {
@@ -95,6 +103,11 @@ export class CheckboxElement extends ButtonElement {
     if (this.prefix_) {
       this.prefix_.name = this.indeterminate ? 'checkbox-indeterminate'
           : (this.checked ? 'checkbox' : 'checkbox-outline-blank')
+    }
+
+    if (props.has('checked')) {
+      this.setFormValue(this.checked ? (this.value ?? 'on') : null)
+      this.validate_()
     }
   }
 }

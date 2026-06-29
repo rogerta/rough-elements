@@ -19,14 +19,33 @@ import { getItemFromEvent, ItemElement } from './re-item.js'
  */
 @customElement('re-select')
 export class SelectElement extends ReFormControlMixin(DropdownElement) {
-   @property({ type: Boolean, reflect: true }) multiple = false
-   @property({}) value = ''
-   @property({ type: Number }) selectedIndex = -1
-   @property({ type: Array }) selectedOptions = []
-   @property({ type: Array, state: true }) private labelNodes_: Node[] = []
+  static formAssociated = true
 
-   override getFormValue(): string | Blob | undefined {
-    return this.selectedIndex === -1 ? undefined : this.value
+  @property({ type: Boolean, reflect: true }) multiple = false
+  @property({}) value = ''
+  @property({ type: Number }) selectedIndex = -1
+  @property({ type: Array }) selectedOptions = []
+  @property({ type: Boolean, reflect: true }) required = false
+
+  @property({ type: Array, state: true }) private labelNodes_: Node[] = []
+
+  constructor() {
+    super()
+
+    // This makes the element focusable.
+    this.setAttribute('tabindex', '0')
+  }
+
+  validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+
+    if (this.required && this.selectedIndex === -1) {
+      validity.valueMissing = true
+      message = 'Nothing selected'
+    }
+
+    this.setValidity(validity, message)
   }
 
   override firstUpdated(props: PropertyValues) {
@@ -36,21 +55,36 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
     if (menu) {
       menu.addEventListener('click', this)
     }
+  }
+
+  override updated(props: PropertyValues) {
+    super.updated(props)
 
     // If the select has a preselected value, we need to update the label to
     // match it.
      if (props.has('value')) {
+      this.setFormValue(this.value)
+
       const slot =
           this.renderRoot.querySelector<HTMLSlotElement>('re-menu > slot')
       if (slot) {
-        const selectedNode = slot.assignedNodes().find(node => {
+        const assignedNodes = slot.assignedNodes()
+        this.selectedIndex = assignedNodes.findIndex(node => {
           return node instanceof ItemElement && node.id === this.value
-        }) as ItemElement | undefined
+        })
 
-        if (selectedNode) {
+        if (this.selectedIndex !== -1) {
+          const selectedNode = assignedNodes[this.selectedIndex] as ItemElement
           this.labelNodes_ = selectedNode.getLabelNodes()
+        } else {
+          this.labelNodes_ = []
         }
+      } else {
+        this.selectedIndex = -1
+        this.labelNodes_ = []
       }
+
+      this.validate_()
     }
   }
 
@@ -73,12 +107,7 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
         if (item) {
           this.unselectAllItems_()
           item.selected = !item.selected
-          if (this.value !== item.id) {
-            this.value = item.id
-            this.labelNodes_ = item.getLabelNodes()
-            this.updateComplete.then(
-                () => fire(this, 'change', {bubbles: true}))
-          }
+          this.value = item.selected ? item.id : ''
         }
         break
       }

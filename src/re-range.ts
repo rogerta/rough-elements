@@ -15,6 +15,8 @@ import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
  */
 @customElement('re-range')
 export class RangeElement extends ReFormControlMixin(ReElement) {
+  static formAssociated = true
+
   @property({ type: Number }) min = 0
   @property({ type: Number }) max = 100
   @property({ type: Number }) step = 1
@@ -89,10 +91,6 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
     `
   ]
 
-  override getFormValue(): string | Blob | undefined {
-    return this.value.toString()
-  }
-
   handleEvent(e: Event) {
     switch (e.type) {
       case 'pointerdown': {
@@ -159,35 +157,48 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
     this.addEventListener('keyup', this)
   }
 
+  // Note: this function always fixes `value` to make it valid.  So in no
+  // case will the state be invalid for form purposes.
   override updated(props: PropertyValues) {
     super.updated(props)
+
+    let requestRoughRender = false
 
     if(props.has('min')) {
       if (this.min > this.max) {
         this.min = 0
+        requestRoughRender = true
       }
     }
 
     if(props.has('max')) {
       if (this.max < this.min) {
         this.max = 100
+        requestRoughRender = true
       }
     }
 
-    if (this.value !== undefined) {
-      this.value = this.snap_(this.value)
+    if(props.has('value')) {
+      if (this.value === undefined) {
+        this.value = this.min
+      } else {
+        this.value = this.snap_(this.value)
+      }
+
       if (this.value < this.min) {
         this.value = this.min
       } else if (this.value > this.max) {
         this.value = this.max
       }
-    }
 
-    if(props.has('value')) {
+      this.setFormValue(this.value.toString())
       fire(this, 'input', {bubbles: true, composed: true})
+      requestRoughRender = true
     }
 
-    this.requestRoughRender()
+    if (requestRoughRender) {
+      this.requestRoughRender()
+    }
   }
 
   override render() {

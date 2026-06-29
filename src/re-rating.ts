@@ -1,4 +1,4 @@
-import { css, html, LitElement } from 'lit'
+import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
@@ -15,13 +15,16 @@ import { IconElement } from './re-icon.js'
  */
 @customElement('re-rating')
 export class RatingElement extends ReFormControlMixin(LitElement) {
-  @property({ type: Number }) max = 1
+  static formAssociated = true
+
+  @property({ type: Number }) max = 5
   @property({ type: Number }) value: number = 0
 
   /**
    * If true the user should not be able to change the rating.
    */
   @property({ type: Boolean, reflect: true }) readonly = false
+  @property({ type: Boolean, reflect: true }) required = false
 
   static styles = [
     css`
@@ -51,11 +54,63 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     `
   ]
 
-  override getFormValue(): string | Blob | undefined {
-    return this.value.toString()
+  constructor() {
+    super()
+
+    // This makes the element focusable.
+    this.setAttribute('tabindex', '0')
   }
 
-  onClick_(e: Event) {
+  private validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+
+    if (this.required) {
+      if (this.value < 1) {
+        validity.valueMissing = true
+        message = 'Rating is required'
+      } else if (this.value > this.max) {
+        validity.rangeOverflow = true
+        message = `Rating is above max of ${this.max}`
+      }
+    }
+
+    this.setValidity(validity, message)
+  }
+
+  handleEvent(e: Event) {
+    switch (e.type) {
+      case 'keydown': {
+        const ke = e as KeyboardEvent
+
+        switch (ke.key) {
+          case 'ArrowDown':
+          case 'ArrowLeft':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            if (this.value > 0) {
+            --this.value
+            }
+            break
+          case 'ArrowUp':
+          case 'ArrowRight':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            if (this.value < this.max) {
+            ++this.value
+            }
+            break
+        }
+        break
+      }
+      case 'keyup': {
+        fire(this, 'change', {bubbles: true})
+        break
+      }
+    }
+  }
+
+  private onClick_(e: Event) {
     const target = e.target as HTMLElement
     if (!target.dataset.value) {
       return
@@ -76,7 +131,7 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     this.updateComplete.then(() => fire(this, 'change', {bubbles: true}))
   }
 
-  onPointerMove_(e: Event) {
+  private onPointerMove_(e: Event) {
     if (!(e.target instanceof IconElement)) {
       return
     }
@@ -91,6 +146,24 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
       composed: true,
       detail: Number.parseInt(value)
     })
+  }
+
+  override firstUpdated(props: PropertyValues) {
+    super.firstUpdated(props)
+    this.addEventListener('keydown', this)
+    this.addEventListener('keyup', this)
+  }
+
+  protected override updated(props: PropertyValues) {
+    super.updated(props)
+
+    if (props.has('value')) {
+      this.setFormValue(this.value.toString())
+    }
+
+    if (props.has('value') || props.has('max')) {
+      this.validate_()
+    }
   }
 
   override render() {

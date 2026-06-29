@@ -18,6 +18,8 @@ import './re-icon-button.js'
 @customElement('re-textarea')
 export class TextAreaElement extends
     BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+  static formAssociated = true
+
   /**
    * Name used when this button is part of a form submission.
    */
@@ -40,39 +42,47 @@ export class TextAreaElement extends
   @property({ type: Number }) minlength?: number
   @property() placeholder = ''
   @property({ type: Boolean, reflect: true }) readonly = false
+  @property({ type: Boolean }) required? = false
   @property({ type: Number }) rows = 2
+  @property({}) value = ''
 
-  @property({state: true}) showPassword_ = false
+  // /**
+  //  * Sets the value of the textarea control.
+  //  *
+  //  * @param text - The text content to set.
+  //  */
+  // @property({})
+  // set value(text: string) {
+  //   const textarea = this.renderRoot.querySelector('textarea')
+  //   if (textarea) {
+  //     textarea.value = text
+  //   }
+  // }
 
-  /**
-   * Gets the value of the textarea control.
-   *
-   * @return {string} The text content of the textarea.
-   */
-  get value() {
-    const textarea = this.renderRoot.querySelector('textarea')
-    return textarea?.value ?? ''
-  }
-
-  override getFormValue(): string | Blob | undefined {
-    return this.value
-  }
-
-  /**
-   * Sets the value of the textarea control.
-   *
-   * @param {string} text - The text content to set.
-   */
-  set value(text: string) {
-    const textarea = this.renderRoot.querySelector('textarea')
-    if (textarea) {
-      textarea.value = text
-    }
-  }
+  // /**
+  //  * Gets the value of the textarea control.
+  //  *
+  //  * @return The text content of the textarea.
+  //  */
+  // get value() {
+  //   const textarea = this.renderRoot.querySelector('textarea')
+  //   return textarea?.value ?? ''
+  // }
 
   constructor() {
     super()
     this.fillStyle = 'solid'
+  }
+
+  private validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+    if (this.required && !this.value) {
+      validity.valueMissing = true
+      message = 'Text cannot be empty'
+    }
+    const anchor = this.renderRoot.querySelector('textarea')
+    this.setValidity(validity, message, anchor ?? undefined)
   }
 
   override firstUpdated(props: PropertyValues) {
@@ -82,6 +92,15 @@ export class TextAreaElement extends
     textarea?.addEventListener('change', this)
     textarea?.addEventListener('input', this)
     this.setInitialValueFromSlot_()
+  }
+
+  override updated(props: PropertyValues) {
+    super.updated(props)
+
+    if (props.has('value')) {
+      this.setFormValue(this.value)
+      this.validate_()
+    }
   }
 
   handleEvent(e: Event) {

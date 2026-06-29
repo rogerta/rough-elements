@@ -14,6 +14,7 @@ import { fire } from './internal/re-element.js'
 @customElement('re-radio')
 export class RadioElement extends ButtonElement {
   @property({ type: Boolean, reflect: true }) checked = false
+  @property({ type: Boolean }) required? = false
 
   private prefix_?: IconElement
 
@@ -37,8 +38,14 @@ export class RadioElement extends ButtonElement {
     this.borderStyle = 'none'
   }
 
-  override getFormValue(): string | Blob | undefined {
-    return this.checked ? (this.value ?? 'on') : undefined
+  private validate_(isRequired: boolean) {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+    if (isRequired && !this.checked) {
+      validity.valueMissing = true
+      message = 'Must be checked'
+    }
+    this.setValidity(validity, message)
   }
 
   override firstUpdated(props: PropertyValues) {
@@ -58,7 +65,6 @@ export class RadioElement extends ButtonElement {
         return
       }
 
-      this.uncheckOtherRadio_()
       this.checked = true
       fire(this, 'change', {bubbles: true})
     })
@@ -69,23 +75,34 @@ export class RadioElement extends ButtonElement {
   }
 
   // Uhcheck all othe radio buttons with the same name in the same root
-  // as this radio button.
+  // as this radio button.  As a side effect, returns a boolean indicating
+  // whether this radio group is required or not.
   private uncheckOtherRadio_() {
     const root = this.getRootNode()
+    let isRequired = false
     if (root instanceof ShadowRoot || root instanceof Document) {
       root.querySelectorAll('re-radio').forEach(radio => {
         if (radio !== this && radio.name === this.name) {
           radio.checked = false
+          isRequired ||= radio.required ?? false
         }
       })
     }
+
+    return isRequired
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues<this>) {
     super.updated(props)
     if (this.prefix_) {
       this.prefix_.name = this.checked ? 'radio-button-checked'
           : 'radio-button-unchecked'
+    }
+
+    if (props.has('checked') && this.checked) {
+      const isRequired = this.uncheckOtherRadio_()
+      this.setFormValue(this.value ?? 'on')
+      this.validate_(isRequired)
     }
   }
 }

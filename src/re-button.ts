@@ -30,6 +30,8 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 @customElement('re-button')
 export class ButtonElement extends
     BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+  static formAssociated = true
+
   /**
    * When not empty, the button behaves like an <a> element with the
    * specified value of `href`.  The default behaviour is to open the link
@@ -106,7 +108,6 @@ export class ButtonElement extends
    *
    * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
-   * @return {void}
    */
   setPopoverTarget(target: HTMLElement) {
     this.updateComplete.then(() => {
@@ -117,16 +118,16 @@ export class ButtonElement extends
     })
   }
 
-  override getFormValue(): string | Blob | undefined {
-    return this.name
-  }
-
   handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
         // If this is a submit button as part of a form, submit the form.
         if (this.type === 'submit') {
-          // TODO: eventually the button should be passed to `submitForm()`
+          if (this.name && this.value) {
+            this.setFormValue(this.value)
+          }
+
+          // TODO: eventually the/a button should be passed to `submitForm()`
           // so that the submitter properties can be used.
           this.submitForm()
         }

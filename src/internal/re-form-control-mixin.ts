@@ -3,15 +3,18 @@
 import { LitElement, type PropertyValues } from 'lit'
 import { property } from 'lit/decorators.js'
 
-import { ReFormSubmissionController } from './re-form-sumbmission-controller.js'
-
 type Constructor<T = {}> = new (...args: any[]) => T
 
 export declare class FormControlInterface {
   name: string
-  form: string
-  getFormValue(): string | Blob | undefined
-  submitForm(submitter?: HTMLElement): boolean
+  setFormValue(
+        value: string | File | FormData | null,
+        state?: string | File | FormData | null): void
+  setValidity(
+        flags: ValidityStateFlags,
+        message?: string,
+        anchor?: HTMLElement): void
+  submitForm(submitter?: HTMLElement): void
 }
 
 /**
@@ -33,26 +36,36 @@ export const ReFormControlMixin =
      */
     @property({}) name = ''
 
-    /**
-     * ID of the form that contains this control.  The form must be in the same
-     * document or shadow root as the button.  If the ID is not specified or
-     * if the form is not found, any containing `<form>` element is used.
-     */
-    @property({}) form = ''
+    internals_?: ElementInternals
 
-    private controller_?: ReFormSubmissionController
-    private form_: HTMLFormElement | null = null
-
-    /**
-     * Derived classes are expected to override this method and return the
-     * value to be submitted as part of the form.
-     *
-     * @returns The value to submit as part of the form, or undefined if there
-     *    is nothng to submit.
-     */
-    getFormValue(): string | Blob | undefined {
-      throw new Error('A form control must override this method')
+    setFormValue(
+        value: string | File | FormData | null,
+        state?: string | File | FormData | null) {
+      this.internals_?.setFormValue(value, state)
     }
+
+    setValidity(
+        flags: ValidityStateFlags,
+        message?: string,
+        anchor?: HTMLElement) {
+      this.internals_?.setValidity(flags, message, anchor)
+    }
+
+    // Wrapper methods for element internals.
+
+    get validity() { return this.internals_?.validity ?? {}}
+    get validationMessage() { return this.internals_?.validationMessage }
+    get willValidate() { return this.internals_?.willValidate }
+    checkValidity() { return this.internals_?.checkValidity() ?? true }
+    reportValidity() { return this.internals_?.reportValidity() ?? true }
+    setCustomValidity(message: string) {
+      if (message) {
+        this.internals_?.setValidity({ customError: true }, message)
+      } else {
+        this.internals_?.setValidity({})
+      }
+    }
+
     /**
      * Submits the form if any.
      *
@@ -60,73 +73,24 @@ export const ReFormControlMixin =
      * @returns True if there was a from to submit.
      */
     submitForm(submitter?: HTMLElement) {
-      this.form_?.requestSubmit(submitter)
-      return this.form_ !== null
-    }
-
-    /**
-     * Returns the form associated with this form control.  If `form`is the ID
-     * of a valid HTML form element, it is returned.  Otherwise the closest
-     * containing `<form>`is found.
-     *
-     * @returns The form associated with this form controlor `null` if none
-     *    is found.
-     */
-    private findForm_() {
-      const root = this.getRootNode()
-      if (root instanceof ShadowRoot || root instanceof Document) {
-        const form = root.getElementById(this.form)
-        if (form?.tagName == 'form') {
-          return form as HTMLFormElement
-        }
-
-        return this.closest('form')
-      }
-
-      return null
-    }
-
-    private shutdownController_() {
-      if (this.controller_) {
-        this.controller_.shutdown()
-        this.controller_ = undefined
-      }
-    }
-
-    private updateForm_(form: HTMLFormElement | null) {
-      if (form !== this.form_) {
-        if (this.form_) {
-          this.shutdownController_()
-        }
-
-        this.form_ = form
-
-        if (form) {
-          this.controller_ = new ReFormSubmissionController(this, form)
-        }
-      }
+      this.internals_?.form?.requestSubmit(submitter)
     }
 
     override connectedCallback() {
       super.connectedCallback()
-      this.updateForm_(this.findForm_())
+      this.internals_ = this.attachInternals()
     }
 
     override disconnectedCallback() {
       super.disconnectedCallback()
-      this.updateForm_(null)
     }
 
     protected override firstUpdated(props: PropertyValues) {
       super.firstUpdated(props)
-      this.updateForm_(this.findForm_())
     }
 
     protected override updated(props: PropertyValues) {
       super.updated(props)
-      if (props.has('form')) {
-        this.updateForm_(this.findForm_())
-      }
     }
   }
   return MixinClass as Constructor<FormControlInterface> & T;
