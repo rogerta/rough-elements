@@ -23,6 +23,7 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
   /**
    * If true the user should not be able to change the rating.
    */
+  @property({ type: Boolean, reflect: true }) disabled = false
   @property({ type: Boolean, reflect: true }) readonly = false
   @property({ type: Boolean, reflect: true }) required = false
 
@@ -34,20 +35,34 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
       :host, div {
         display: inline-flex;
       }
+      :host([disabled]) {
+        opacity: 0.5;
+      }
+      :host(:focus) {
+        outline: none;
+      }
+
+
       re-icon {
         --color: rgb(0 0 0 / 0.2);
         transition: transform 0.2s ease;
       }
       :host(:not(:hover)) re-icon.selected,
-      :host([readonly]) re-icon.selected {
+      :host([readonly]) re-icon.selected,
+      :host([disabled]) re-icon.selected {
         --color: var(--re-rating-color);
       }
 
+      :host(:not([disabled]):focus) re-icon,
+      :host(:not([disabled]):active) re-icon {
+        filter: drop-shadow(0 0 4px var(--re-primary-color));
+      }
+
       @media (hover: hover) {
-        :host(:not([readonly])) :hover > re-icon {
+        :host(:not([readonly]):not([disabled])) :hover > re-icon {
           --color: var(--re-rating-color);
         }
-        :host(:not([readonly])) re-icon:hover {
+        :host(:not([readonly]):not([disabled])) re-icon:hover {
           transform: scale(1.5);
         }
       }
@@ -78,6 +93,10 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     this.setValidity(validity, message)
   }
 
+  private isEditable_() {
+    return !this.disabled && !this.readonly
+  }
+
   handleEvent(e: Event) {
     switch (e.type) {
       case 'keydown': {
@@ -88,7 +107,7 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
           case 'ArrowLeft':
             // Prevent the default otherwise the page may scroll.
             ke.preventDefault()
-            if (this.value > 0) {
+            if (this.value > 0 && this.isEditable_()) {
             --this.value
             }
             break
@@ -96,7 +115,7 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
           case 'ArrowRight':
             // Prevent the default otherwise the page may scroll.
             ke.preventDefault()
-            if (this.value < this.max) {
+            if (this.value < this.max && this.isEditable_()) {
             ++this.value
             }
             break
@@ -121,7 +140,7 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
       return
     }
 
-    if (this.readonly) {
+    if (!this.isEditable_()) {
       e.stopPropagation()
       return
     }
