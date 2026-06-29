@@ -15,6 +15,7 @@ import { fire } from './internal/re-element.js'
 export class RadioElement extends ButtonElement {
   @property({ type: Boolean, reflect: true }) checked = false
   @property({ type: Boolean }) required? = false
+  @property({}) value?: string
 
   private prefix_?: IconElement
 
@@ -38,14 +39,21 @@ export class RadioElement extends ButtonElement {
     this.borderStyle = 'none'
   }
 
-  private validate_(isRequired: boolean) {
+  private validate_() {
     const validity: ValidityStateFlags = {}
     let message: string | undefined
-    if (isRequired && !this.checked) {
-      validity.valueMissing = true
-      message = 'Must be checked'
+    if (this.required && !this.checked) {
+      let atLeastOneChecked = false
+      this.forEachOtherRadio_(radio => atLeastOneChecked ||= radio.checked)
+
+      if (!atLeastOneChecked) {
+        validity.valueMissing = true
+        message = `At least one "${this.name}" radio button must be chosen`
+      }
     }
-    this.setValidity(validity, message)
+
+    const anchor = this.renderRoot.querySelector('button')
+    this.setValidity(validity, message, anchor ?? undefined)
   }
 
   override firstUpdated(props: PropertyValues) {
@@ -70,26 +78,25 @@ export class RadioElement extends ButtonElement {
     })
 
     if (this.checked) {
-      this.uncheckOtherRadio_()
+      this.forEachOtherRadio_(radio => radio.checked = false)
+    }
+
+    // If this radio button is required but not checked, make sure to set
+    // its validity to invalid.
+    if (this.required && !this.checked) {
+      this.validate_()
     }
   }
 
-  // Uhcheck all othe radio buttons with the same name in the same root
-  // as this radio button.  As a side effect, returns a boolean indicating
-  // whether this radio group is required or not.
-  private uncheckOtherRadio_() {
+  private forEachOtherRadio_(cb: (radio: RadioElement) => void) {
     const root = this.getRootNode()
-    let isRequired = false
     if (root instanceof ShadowRoot || root instanceof Document) {
       root.querySelectorAll('re-radio').forEach(radio => {
         if (radio !== this && radio.name === this.name) {
-          radio.checked = false
-          isRequired ||= radio.required ?? false
+          cb(radio)
         }
       })
     }
-
-    return isRequired
   }
 
   protected override updated(props: PropertyValues<this>) {
@@ -100,9 +107,10 @@ export class RadioElement extends ButtonElement {
     }
 
     if (props.has('checked') && this.checked) {
-      const isRequired = this.uncheckOtherRadio_()
+      this.forEachOtherRadio_(radio => radio.checked = false)
       this.setFormValue(this.value ?? 'on')
-      this.validate_(isRequired)
+      this.validate_()
+      this.forEachOtherRadio_(radio => radio.validate_())
     }
   }
 }
