@@ -26,12 +26,43 @@ icons.set('warning', 'm40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67
 // their view box set here.
 // TODO: stop using iron-icons above and use all from fonts.google.com to
 // sumplify things.
-const vewboxes = new Map<string, string>()
+const viewboxes = new Map<string, string>()
 
 export function getIcon(id: string) {
   return icons.get(id)
 }
 
 export function getViewBox(id: string) {
-  return vewboxes.get(id) ?? '0 -960 960 960'
+  return viewboxes.get(id) ?? '0 -960 960 960'
+}
+
+/**
+ * Adds a user defined icon.  User defined icons must have a non-empty
+ * collection and id.
+ *
+ * @param collection The collection this icon belongs to.
+ * @param id The unique ID of the icon within the collection.
+ * @param d The path to be drawn as would be specified for `d` attribute of
+ *    the SVG `<path>` element (see
+ *    https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d).
+ * @param viewbox An optional viewbox string formatted as
+ *    `min-x min-y width height`.  If the viewbox of the icon is
+ *    `0 -960 960 960` (recommended, this is the viewbox used by Google's font
+ *    icons at https://fonts.google.com/icons) then this argument can be
+ *    omitted.
+ */
+export function addUserIcon(
+    collection: string,
+    id: string,
+    d: string,
+    viewbox?: string) {
+  if (!collection || !id) {
+    throw new Error('collection and id must be non-empty strings')
+  }
+
+  const key = `${collection}:${id}`
+  icons.set(key, d)
+  if (viewbox) {
+    viewboxes.set(key, viewbox)
+  }
 }
