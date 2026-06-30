@@ -11,6 +11,11 @@ import { NO_ITEM } from './re-menu.js'
  */
 @customElement('re-dropdown')
 export class DropdownElement extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...super.shadowRootOptions,
+    delegatesFocus: true,
+  }
+
   /**
    * If true the button is disabled and does not respond to user actions.
    */
@@ -20,6 +25,7 @@ export class DropdownElement extends LitElement {
     css`
       :host {
         display: inline-block;
+        outline: none;
       }
       re-button {
         --text-transform: none;
@@ -75,12 +81,14 @@ export class DropdownElement extends LitElement {
         button.setPopoverTarget(panel)
       }
     }
+
+    this.setAttribute('tabindex', '0')
   }
 
   override render() {
     return html`
       <!-- The trigger button that toggles the dropdown visibility. -->
-      <re-button part="trigger" caret ?disabled="${this.disabled}">
+      <re-button autofocus part="trigger" caret ?disabled="${this.disabled}">
         <!-- Slot used as the label for the trigger button. Usually text. -->
         <slot name="label">${this.renderLabelDefault_()}</slot>
       </re-button>
