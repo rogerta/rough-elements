@@ -5,8 +5,8 @@
   --re-warning-color: rgb(238 119 0);
   --re-danger-color: rgb(238 0 0);
 
-  --color: black;
-  --background-color: white;
+  --color: white;
+  --background-color: black;
   --border-color: rgb(from var(--color) R G B / 0.75);
 }
 
