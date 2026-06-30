@@ -150,6 +150,9 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
    *    is found index is -1 and item is `null`.  Otherwise
    */
   findItemByValue(value: string) {
+    if (!value) {
+      return NO_ITEM
+    }
     const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
     if (!slot) {
       return NO_ITEM
@@ -160,7 +163,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
       return NO_ITEM
     }
 
-    const index = !value ? 0 : assignedElements.findIndex(node => {
+    const index = assignedElements.findIndex(node => {
       return node instanceof ItemElement && node.id === value
     })
 
