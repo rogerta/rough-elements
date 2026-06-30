@@ -209,11 +209,22 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
           case 'ArrowLeft':
           case 'ArrowRight':
           case ' ':
-          case 'Enter':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
+
+            // Standard buttons generate a click() event only when the spacebar
+            // is pressed, so do nothing here.
+            break
+            case 'Enter':
+            // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
+            ke.preventDefault()
+            ke.stopPropagation()
+            if(this.kbNavState_?.currentItem) {
+              this.kbNavState_.currentItem.click()
+            }
             break
         }
         break
@@ -253,7 +264,6 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
             }
             break
           case ' ':
-          case 'Enter':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
@@ -261,6 +271,15 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
             if(this.kbNavState_?.currentItem) {
               this.kbNavState_.currentItem.click()
             }
+            break
+          case 'Enter':
+            // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
+            ke.preventDefault()
+            ke.stopPropagation()
+
+            // Standard buttons generate a click() event only when the enter key
+            // is released, so do nothing here.
             break
         }
         break
