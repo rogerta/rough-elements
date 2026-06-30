@@ -4,27 +4,33 @@ import { customElement } from 'lit/decorators.js'
 import { BackgroundMixin } from './internal/re-background-mixin.js'
 import { BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
-import { getItemFromEvent } from './re-item.js'
+import { getItemFromEvent, ItemElement } from './re-item.js'
+
+// Return value of findItemByValue() when an item cannot be found.
+export const NO_ITEM = {
+  index: -1,
+  item: null,
+}
 
 /**
- * Shows a menu as typically seen in a dropdown or context menu.  Usually
- * the children elements of a menu are `<re-menu-item>` and `<re-divider>`
- * elements but they can be any type.
+ * Menus show a list of user selectable options as often seen in a dropdown or
+ * context menu.  Children of the menu are usually `<re-item>`s,
+ * `<re-menu-item>`s or `<re-divider>` elements but any type can be used.
  *
  * The most common use of menus is as follows:
  *
  * ```html
- * <re-menu id="menu1" @click="${this.onMenuClicked_}">
+ * <re-menu popover id="menu1" @click="${this.onMenuClicked_}">
  *   <re-menu-item id="item1">...</re-menu-item>
  *   <re-menu-item id="item2">...</re-menu-item>
  *   <re-menu-item id="item3">...</re-menu-item>
  * </re-menu>
  * ```
  * ```js
- * import { getItemFromEvent } from 'rough-elements/re-item.ts'
+ * import { getItemFromEvent } from '@rough-elements/re-item.ts'
  *
  * onMenuClicked_(e: Event) {
- *   const item = getItemFromEvent(e, 're-menu-item')
+ *   const item = getItemFromEvent(e)
  *   switch (item?.id) {
  *     case 'item1':
  *        ...
@@ -38,6 +44,11 @@ import { getItemFromEvent } from './re-item.js'
  *   }
  * }
  * ```
+ *
+ * A menu has the `tabindex` attribute set to `-1`.  This allows
+ * keyboard navigation of the menu items with the arrow keys.  When a menu is
+ * used as a popover, the owner should register for the `toggle` event
+ * and call `focus()` on the menu when it is opened.
  *
  * @cssproperty --re-background-color - The background color of the menu. Defaults to `Canvas`.
  */
@@ -53,6 +64,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         justify-content: start;
         padding: 0.25rem 0;
         background-color: var(--re-background-color, Canvas);
+        outline: none;
       }
       :host(:not([popover])),
       :host([popover]:popover-open) {
@@ -62,12 +74,37 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     `
   ]
 
+  /**
+   * Find the item in the drop down list whose `id` matches `value`.
+   *
+   * @param value The value to match an item's ID.
+   * @returns An object with two properties: index and item.  If no item
+   *    is found index is -1 and item is `null`.  Otherwise
+   */
+  findItemByValue(value: string) {
+    const slot =
+        this.renderRoot.querySelector<HTMLSlotElement>('slot')
+    if (!slot) {
+      return NO_ITEM
+    }
+
+    const assignedElements = slot.assignedElements({ flatten: true })
+    if (assignedElements.length === 0) {
+      return NO_ITEM
+    }
+
+    const index = !value ? 0 : assignedElements.findIndex(node => {
+      return node instanceof ItemElement && node.id === value
+    })
+
+    return { index, item: assignedElements[index] as ItemElement }
+  }
+
   handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
-        // Only close the menu if the user clicked on an <re-menu-item>.
-        if (this.matches(':popover-open') &&
-            getItemFromEvent(e)) {
+        // Only close the menu if the user clicked on an item.
+        if (this.matches(':popover-open') && getItemFromEvent(e)) {
           this.hidePopover()
         }
         break
@@ -77,6 +114,13 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
   firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     this.addEventListener('click', this)
+
+    // This makes the element focusable programmtically.  This is best practice
+    // for popovers that are focusable.
+    // TODO: tabindex should never be set in the ctor for web components.  Need
+    // to fix all the other classes (which seem to be working right now in
+    // chrome...)
+    this.setAttribute('tabindex', '-1')
   }
 
   override render() {
