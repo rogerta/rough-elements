@@ -82,8 +82,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
    *    is found index is -1 and item is `null`.  Otherwise
    */
   findItemByValue(value: string) {
-    const slot =
-        this.renderRoot.querySelector<HTMLSlotElement>('slot')
+    const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
     if (!slot) {
       return NO_ITEM
     }
@@ -98,6 +97,17 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     })
 
     return { index, item: assignedElements[index] as ItemElement }
+  }
+
+  unselectAllItems() {
+    const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
+    if (slot) {
+      slot.assignedElements({ flatten: true }).forEach(item => {
+        if (item instanceof ItemElement) {
+          item.selected = false
+        }
+      })
+    }
   }
 
   handleEvent(e: Event) {
@@ -118,6 +128,59 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         // is possible.
         this.focus()
         break
+
+      case 'keydown': {
+        const ke = e as KeyboardEvent
+        switch (ke.key) {
+          case 'ArrowDown':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keydown key=${ke.key}`)
+            break
+          case 'ArrowUp':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keydown key=${ke.key}`)
+            break
+          case 'ArrowLeft':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keydown key=${ke.key}`)
+            break
+          case 'ArrowRight':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keydown key=${ke.key}`)
+            break
+        }
+        break
+      }
+      case 'keyup': {
+        const ke = e as KeyboardEvent
+        switch (ke.key) {
+          case 'ArrowDown':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keyup key=${ke.key}`)
+            break
+          case 'ArrowUp':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keyup key=${ke.key}`)
+            break
+          case 'ArrowLeft':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keyup key=${ke.key}`)
+            break
+          case 'ArrowRight':
+            // Prevent the default otherwise the page may scroll.
+            ke.preventDefault()
+            console.log(`keyup key=${ke.key}`)
+            break
+        }
+        break
+      }
     }
   }
 
@@ -125,6 +188,8 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     super.firstUpdated(props)
     this.addEventListener('click', this)
     this.addEventListener('toggle', this)
+    this.addEventListener('keydown', this)
+    this.addEventListener('keyup', this)
 
     // This makes the element focusable programmtically.  This is best practice
     // for popovers that are focusable.

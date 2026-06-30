@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 
 import { DropdownElement } from  './re-dropdown.js'
-import { getItemFromEvent, ItemElement } from './re-item.js'
+import { getItemFromEvent } from './re-item.js'
 
 /**
  * A select exposes a menu of options that the user can select from.  The
@@ -61,30 +61,17 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
       this.setFormValue(this.value)
       this.findItemByValue_(this.value).then(({index, item}) => {
         if (index !== -1) {
-          this.unselectAllItems_()
-          item!.selected = true
-
-          this.selectedIndex = index
-          this.labelNodes_ = item!.getLabelNodes()
-
+          this.unselectAllItems_().then(() => {
+            item!.selected = true
+            this.selectedIndex = index
+            this.labelNodes_ = item!.getLabelNodes()
+          })
         } else {
           this.selectedIndex = -1
           this.labelNodes_ = []
         }
 
         this.validate_()
-      })
-    }
-  }
-
-  private unselectAllItems_() {
-    const slot =
-        this.renderRoot.querySelector<HTMLSlotElement>('re-menu > slot')
-    if (slot) {
-      slot.assignedNodes().forEach(item => {
-        if (item instanceof ItemElement) {
-          item.selected = false
-        }
       })
     }
   }

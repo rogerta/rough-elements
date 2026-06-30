@@ -3,7 +3,6 @@ import { customElement, property } from 'lit/decorators.js'
 
 import './re-button.js'
 import './re-menu.js'
-import { ItemElement } from './re-item.js'
 import { NO_ITEM } from './re-menu.js'
 
 /**
@@ -16,8 +15,6 @@ export class DropdownElement extends LitElement {
    * If true the button is disabled and does not respond to user actions.
    */
   @property({ type: Boolean, reflect: true }) disabled = false
-
-  private currentValue_?: string
 
   static styles = [
     css`
@@ -58,63 +55,16 @@ export class DropdownElement extends LitElement {
     return menu?.findItemByValue(value) ?? NO_ITEM
   }
 
-  onToggle_(e: Event) {
-    const te = e as ToggleEvent
-    if (te.newState === 'open') {
-      this.currentValue_ = undefined
-    }
-  }
+  protected async unselectAllItems_() {
+    const menu = this.renderRoot.querySelector('re-menu')
 
-  onKeyDown_(e: Event) {
-    const ke = e as KeyboardEvent
-    switch (ke.key) {
-      case 'ArrowDown':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keydown key=${ke.key}`)
-        break
-      case 'ArrowUp':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keydown key=${ke.key}`)
-        break
-      case 'ArrowLeft':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keydown key=${ke.key}`)
-        break
-      case 'ArrowRight':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keydown key=${ke.key}`)
-        break
-    }
-  }
+    // If this methods happens to be called early in dropdown creation, like
+    // at firstUpdated() time, it's possible for the menu to not be finished
+    // its own update cycle.  Wait for it to compelete before looking for
+    // the item.
+    await menu?.updateComplete
 
-  onKeyUp_(e: Event) {
-    const ke = e as KeyboardEvent
-    switch (ke.key) {
-      case 'ArrowDown':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keyup key=${ke.key}`)
-        break
-      case 'ArrowUp':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keyup key=${ke.key}`)
-        break
-      case 'ArrowLeft':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keyup key=${ke.key}`)
-        break
-      case 'ArrowRight':
-        // Prevent the default otherwise the page may scroll.
-        ke.preventDefault()
-        console.log(`keyup key=${ke.key}`)
-        break
-    }
+    return menu?.unselectAllItems()
   }
 
   override firstUpdated(_: PropertyValues) {
@@ -135,8 +85,7 @@ export class DropdownElement extends LitElement {
         <slot name="label">${this.renderLabelDefault_()}</slot>
       </re-button>
       <!-- The menu container used as the popover panel. -->
-      <re-menu popover part="panel" @toggle="${this.onToggle_}"
-          @keydown="${this.onKeyDown_}" @keyup="${this.onKeyUp_}">
+      <re-menu popover part="panel">
         <!-- The default slot representing the menu items. -->
         <slot></slot>
       </re-menu>
