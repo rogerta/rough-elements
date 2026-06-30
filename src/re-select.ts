@@ -28,13 +28,6 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
 
   @property({ type: Array, state: true }) private labelNodes_: Node[] = []
 
-  constructor() {
-    super()
-
-    // This makes the element focusable.
-    this.setAttribute('tabindex', '0')
-  }
-
   validate_() {
     const validity: ValidityStateFlags = {}
     let message: string | undefined
@@ -52,6 +45,7 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
 
     const menu = this.renderRoot.querySelector('re-menu')
     menu?.addEventListener('click', this)
+    this.setAttribute('tabindex', '0')
   }
 
   override updated(props: PropertyValues) {

@@ -69,13 +69,6 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     `
   ]
 
-  constructor() {
-    super()
-
-    // This makes the element focusable.
-    this.setAttribute('tabindex', '0')
-  }
-
   private validate_() {
     const validity: ValidityStateFlags = {}
     let message: string | undefined
@@ -171,6 +164,7 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     super.firstUpdated(props)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
+    this.setAttribute('tabindex', '0')
   }
 
   protected override updated(props: PropertyValues) {

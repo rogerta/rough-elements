@@ -27,13 +27,6 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
    */
   @property({ type: Boolean, reflect: true }) disabled = false
 
-  constructor() {
-    super()
-
-    // This makes the element focusable.
-    this.setAttribute('tabindex', '0')
-  }
-
   static styles = [
     ...super.styles,
     css`
@@ -155,6 +148,7 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
     this.addEventListener('pointerup', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
+    this.setAttribute('tabindex', '0')
   }
 
   // Note: this function always fixes `value` to make it valid.  So in no
