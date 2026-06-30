@@ -17,6 +17,11 @@ import { ItemElement } from './re-item.js'
  */
 @customElement('re-menu-item')
 export class MenuItemElement extends ItemElement {
+  constructor() {
+    super()
+    this.addEventListener('click', this)
+  }
+
   static styles = [
     ...super.styles,
     css`
@@ -31,7 +36,7 @@ export class MenuItemElement extends ItemElement {
         position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
       }
 
-      /* Used to hide submnenu icon button when there is no submenu. */
+      /* Used to hide submenu icon button when there is no submenu. */
       .hidden {
         display: none;
       }
@@ -44,8 +49,11 @@ export class MenuItemElement extends ItemElement {
   getSubmenu() {
     const slot =
         this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name=submenu]')
-    return slot && slot.assignedElements().length > 0
+    const menu = slot && slot.assignedElements().length > 0
         ? slot.assignedElements()[0] : undefined
+    return (
+        menu instanceof HTMLElement && menu.getAttribute('popover') !== null)
+            ? menu : undefined
   }
 
   showSubmenu() {
@@ -80,20 +88,28 @@ export class MenuItemElement extends ItemElement {
   handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
+        // If there is no submenu, nothing to do here.  Just treat this like
+        // a simple <re-item>.
+        const submenu = this.getSubmenu()
+        if (!submenu) {
+          break
+        }
+
         const target = e.target as HTMLElement
 
-        // If the clicked element is not in either the shadow or light DOMs
-        // of this element, ignore it.  This happens when the user clicks
-        // inside a submenu.
+        // If the clicked element is not this element or in either the shadow
+        // or light DOMs of this element, ignore it.  This happens when the
+        // user clicks inside a submenu.
         const root = target.getRootNode()
         const parent = target.parentNode
-        if ((root !== this.renderRoot) && (parent !== this)) {
-          // If the target is an <re-menu-item> (for example, the user did not
-          // clicked on a re-divider), then ignore the click here so it
-          // propgates up the tree.
-          if (target.tagName === 'RE-MENU-ITEM') {
+        if ((target !== this) && (root !== this.renderRoot) &&
+            (parent !== this)) {
+          // // If the target is an <re-menu-item> (for example, the user did not
+          // // clicked on a re-divider), then ignore the click here so it
+          // // propgates up the tree.
+          // if (target.tagName === 'RE-MENU-ITEM') {
             break
-          }
+          // }
         }
 
         // From this point on, the menu item consumes the event.  It's either
@@ -102,19 +118,13 @@ export class MenuItemElement extends ItemElement {
 
         e.stopPropagation()
 
-        // Ignore this click if it's the arrow icon button.  Otherwise the
-        // menu would close itself below.
+        // Ignore this click if it's the arrow icon button since it's the
+        // trigger of the popover.  Otherwise the menu would close itself below.
         if (target.tagName === 'RE-ICON-BUTTON') {
           break
         }
 
-        const slot = this.shadowRoot
-            ?.querySelector<HTMLSlotElement>('slot[name=submenu]')
-        const menu = slot?.assignedElements()[0]
-        if (menu instanceof HTMLElement &&
-            menu.getAttribute('popover') !== null) {
-          menu.togglePopover()
-        }
+        submenu.togglePopover()
         break
     }
   }
