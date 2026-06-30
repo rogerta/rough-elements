@@ -61,11 +61,6 @@ export class DropdownElement extends LitElement {
   onToggle_(e: Event) {
     const te = e as ToggleEvent
     if (te.newState === 'open') {
-      // <re-menu> has tabindex==-1 which means it will only get focus if
-      // programmatically set.  So request focus now.  tabindex is not set
-      // to zero since this is not recommended by mdn or what-wg for popovers.
-      const menu = te.target as HTMLElement
-      menu.focus()
       this.currentValue_ = undefined
     }
   }

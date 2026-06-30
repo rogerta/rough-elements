@@ -47,8 +47,8 @@ export const NO_ITEM = {
  *
  * A menu has the `tabindex` attribute set to `-1`.  This allows
  * keyboard navigation of the menu items with the arrow keys.  When a menu is
- * used as a popover, the owner should register for the `toggle` event
- * and call `focus()` on the menu when it is opened.
+ * used as a popover, it will request focus for itself in response to the
+ * `toggle` event.
  *
  * @cssproperty --re-background-color - The background color of the menu. Defaults to `Canvas`.
  */
@@ -108,12 +108,23 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
           this.hidePopover()
         }
         break
+
+      case 'toggle':
+        // <re-menu> has tabindex==-1 which means it will only get focus if
+        // programmatically set.  So request focus now.  tabindex is not set
+        // to zero since this is not recommended by mdn or what-wg for popovers.
+        // If this event is received then the menu has been configured as a
+        // popover.  Request focus now so that keyboard navigation of the menu
+        // is possible.
+        this.focus()
+        break
     }
   }
 
   firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     this.addEventListener('click', this)
+    this.addEventListener('toggle', this)
 
     // This makes the element focusable programmtically.  This is best practice
     // for popovers that are focusable.
