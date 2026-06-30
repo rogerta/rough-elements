@@ -38,20 +38,35 @@ export class MenuItemElement extends ItemElement {
     `
   ]
 
+  /**
+   * Returns this menu item's associated submenu if any.
+   */
+  getSubmenu() {
+    const slot =
+        this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name=submenu]')
+    return slot && slot.assignedElements().length > 0
+        ? slot.assignedElements()[0] : undefined
+  }
+
+  showSubmenu() {
+    // Note: calling button.click() does not seem to show the popover.  To
+    // make this work togglePopover() was exposed from <re-icon-button>.  See
+    // if there is a way to make click() work.
+    const button = this.renderRoot.querySelector('re-icon-button')
+    button?.togglePopover()
+  }
+
   protected override updated(props: PropertyValues) {
     super.updated(props)
 
-    const slot =
-        this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name=submenu]')
-    const hasSubmenu = slot && slot.assignedElements().length > 0
+    const submenu = this.getSubmenu()
     const arrow = this.shadowRoot?.querySelector('re-icon-button')
-    arrow?.classList.toggle('hidden', !hasSubmenu)
+    arrow?.classList.toggle('hidden', submenu === undefined)
 
-    if (hasSubmenu) {
-      const menu = slot.assignedElements()[0]
-      if (menu instanceof HTMLElement &&
-          menu.getAttribute('popover') !== null) {
-        arrow?.setPopoverTarget(menu)
+    if (submenu) {
+      if (submenu instanceof HTMLElement &&
+          submenu.getAttribute('popover') !== null) {
+        arrow?.setPopoverTarget(submenu)
         this.renderRoot.addEventListener('click', this)
       } else {
         console.error('submenu should have the popover attribute')

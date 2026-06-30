@@ -4,7 +4,9 @@ import { customElement } from 'lit/decorators.js'
 import { BackgroundMixin } from './internal/re-background-mixin.js'
 import { BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
+
 import { getItemFromEvent, ItemElement } from './re-item.js'
+import { MenuItemElement } from './re-menu-item.js'
 
 // Return value of findItemByValue() when an item cannot be found.
 export const NO_ITEM = {
@@ -19,14 +21,14 @@ class KeyboardNavState {
   constructor(
     public assignedElements: Element[],
     public currentIndex: number,
-    public curentItem?: ItemElement,  // Must be valid if currentIndex !== -1.
+    public currentItem?: ItemElement,  // Must be valid if currentIndex !== -1.
   ) {
     // Update the current fields with the selected item, if any.
     this.assignedElements.forEach((el, index) => {
       if (el instanceof ItemElement){
         if (el.selected) {
           this.currentIndex = index
-          this.curentItem = el
+          this.currentItem = el
         }
       }
     })
@@ -40,14 +42,14 @@ class KeyboardNavState {
     }
 
     if (this.currentIndex !== -1) {
-      this.curentItem!.selected = false
+      this.currentItem!.selected = false
     }
 
     // If nextIndex !== -1, then it is guaranteed that the element at that
     // index is an ItemElement.
     this.currentIndex = nextIndex
-    this.curentItem = this.assignedElements[this.currentIndex] as ItemElement
-    this.curentItem!.selected = true
+    this.currentItem = this.assignedElements[this.currentIndex] as ItemElement
+    this.currentItem!.selected = true
   }
 
   private findPrev_(index: number) {
@@ -115,7 +117,6 @@ class KeyboardNavState {
  */
 @customElement('re-menu')
 export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
-
   private kbNavState_?: KeyboardNavState
 
   static styles = [
@@ -177,7 +178,10 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
   handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
-        // Only close the menu if the user clicked on an item.
+        // Only close the menu if the user clicked on an item.  A call to
+        // matches() then hidePopover() is used instead of togglePopover(false)
+        // because the latter throws an error is this menu deos not have the
+        // popover attribute.
         if (this.matches(':popover-open') && getItemFromEvent(e)) {
           this.hidePopover()
         }
@@ -205,7 +209,9 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
           case 'ArrowLeft':
           case 'ArrowRight':
             // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
+            ke.stopPropagation()
             break
         }
         break
@@ -215,27 +221,42 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         switch (ke.key) {
           case 'ArrowDown':
             // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
+            ke.stopPropagation()
             this.kbNavState_?.move(false)
             break
           case 'ArrowUp':
             // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
+            ke.stopPropagation()
             this.kbNavState_?.move(true)
             break
           case 'ArrowLeft':
             // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
+            ke.stopPropagation()
             console.log(`keyup key=${ke.key}`)
             break
           case 'ArrowRight':
             // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
-            console.log(`keyup key=${ke.key}`)
+            ke.stopPropagation()
+            const item = this.kbNavState_?.currentItem
+            if(item && item instanceof MenuItemElement) {
+              item.showSubmenu()
+            }
             break
           case 'Enter':
-            if(this.kbNavState_?.curentItem) {
-              this.kbNavState_.curentItem.click()
+            // Prevent the default otherwise the page may scroll.
+            // Prevent bubbling in case this is a nested submenu.
+            ke.preventDefault()
+            ke.stopPropagation()
+            if(this.kbNavState_?.currentItem) {
+              this.kbNavState_.currentItem.click()
             }
             break
         }
