@@ -27,3 +27,14 @@ export const STYLES = css`
     --re-input-background-color: var(--background-color, ButtonFace);
   }
 `
+
+/**
+ * Causes the caller to sleep for the specified number of msec.  The caller
+ * is expected to await om this function.
+ *
+ * @param tmo The amount of time to sleep in msec.
+ * @returns A promise tha resolves with void after `tmo` msecs.
+ */
+export function sleep(tmo: number) {
+  return new Promise(resolve => setTimeout(resolve, tmo))
+}

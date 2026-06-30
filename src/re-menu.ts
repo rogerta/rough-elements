@@ -7,6 +7,7 @@ import { ReElement } from './internal/re-element.js'
 
 import { getItemFromEvent, ItemElement } from './re-item.js'
 import { MenuItemElement } from './re-menu-item.js'
+import { sleep } from './internal/re-common.js'
 
 // Return value of findItemByValue() when an item cannot be found.
 export const NO_ITEM = {
@@ -18,6 +19,8 @@ export const NO_ITEM = {
 // is created when the menu is shown up and discarded once the user makes a
 // selection or dismisses the menu.
 class KeyboardNavState {
+  previousActiveElement = document.activeElement as HTMLElement
+
   constructor(
     public assignedElements: Element[],
     public currentIndex: number,
@@ -183,22 +186,19 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         // because the latter throws an error is this menu deos not have the
         // popover attribute.
         if (this.matches(':popover-open') && getItemFromEvent(e)) {
-          this.hidePopover()
+          sleep(100).then(() => this.hidePopover())
         }
         break
 
-      case 'toggle':
-        // <re-menu> has tabindex==-1 which means it will only get focus if
-        // programmatically set.  So request focus now.  tabindex is not set
-        // to zero since this is not recommended by mdn or what-wg for popovers.
-        // If this event is received then the menu has been configured as a
-        // popover.  Request focus now so that keyboard navigation of the menu
-        // is possible.
-        this.focus()
-
-        const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
-        this.kbNavState_= new KeyboardNavState(
-            slot?.assignedElements({ flatten: true }) ?? [], -1, undefined)
+      case 'beforetoggle':
+        const te = e as ToggleEvent
+        if(te.newState ===  'open') {
+          const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
+          this.kbNavState_= new KeyboardNavState(
+              slot?.assignedElements({ flatten: true }) ?? [], -1, undefined)
+        } else {
+          this.kbNavState_?.previousActiveElement?.focus()
+        }
         break
 
       case 'keydown': {
@@ -208,6 +208,8 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
           case 'ArrowUp':
           case 'ArrowLeft':
           case 'ArrowRight':
+          case ' ':
+          case 'Enter':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
@@ -250,6 +252,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
               item.showSubmenu()
             }
             break
+          case ' ':
           case 'Enter':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
@@ -268,16 +271,17 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
   firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     this.addEventListener('click', this)
-    this.addEventListener('toggle', this)
+    this.addEventListener('beforetoggle', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
 
-    // This makes the element focusable programmtically.  This is best practice
-    // for popovers that are focusable.
-    // TODO: tabindex should never be set in the ctor for web components.  Need
-    // to fix all the other classes (which seem to be working right now in
+    // This makes the element focusable.  This depends on delegatesFocus not
+    // being set on the shadow root of this element.
+    // TODO: attributes should never be set in the ctor for web components.
+    // Need to fix all the other classes (which seem to be working right now in
     // chrome...)
     this.setAttribute('tabindex', '-1')
+    this.setAttribute('autofocus', '')
   }
 
   override render() {
