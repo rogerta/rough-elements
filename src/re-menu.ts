@@ -20,12 +20,19 @@ export const NO_ITEM = {
 // selection or dismisses the menu.
 class KeyboardNavState {
   previousActiveElement = document.activeElement as HTMLElement
+  assignedElements: Element[]
+  currentIndex: number
+  currentItem?: ItemElement  // Must be valid if currentIndex !== -1.
 
   constructor(
-    public assignedElements: Element[],
-    public currentIndex: number,
-    public currentItem?: ItemElement,  // Must be valid if currentIndex !== -1.
+    assignedElements: Element[],
+    currentIndex: number,
+    currentItem?: ItemElement,
   ) {
+    this.assignedElements = assignedElements
+    this.currentIndex = currentIndex
+    this.currentItem = currentItem
+
     // Update the current fields with the selected item, if any.
     this.assignedElements.forEach((el, index) => {
       if (el instanceof ItemElement){
