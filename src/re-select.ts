@@ -45,7 +45,6 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
 
     const menu = this.renderRoot.querySelector('re-menu')
     menu?.addEventListener('click', this)
-    this.setAttribute('tabindex', '0')
   }
 
   override updated(props: PropertyValues) {
@@ -59,6 +58,7 @@ export class SelectElement extends ReFormControlMixin(DropdownElement) {
             item!.selected = true
             this.selectedIndex = index
             this.labelNodes_ = item!.getLabelNodes()
+            this.validate_()
           })
         } else {
           this.selectedIndex = -1
