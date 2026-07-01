@@ -94,15 +94,6 @@ export class ButtonElement extends
     this.fillStyle = 'solid'
   }
 
-  override firstUpdated(props: PropertyValues) {
-    super.firstUpdated(props)
-    const button = this.renderRoot.querySelector('button')
-    button?.addEventListener('keydown', this)
-    button?.addEventListener('keyup', this)
-    button?.addEventListener('blur', this)
-    this.setAttribute('tabindex', '0')
-  }
-
   /**
    * Sets this button to be a trigger for a popover element. The popover will
    * be displayed once the button finishes it's update cycle (that is, once
@@ -159,13 +150,25 @@ export class ButtonElement extends
     }
   }
 
-  protected override updated(props: PropertyValues) {
-    super.updated(props)
+  // Using willUpdate() instead of updated() to avoid a double update cycle.
+  protected override willUpdate(props: PropertyValues) {
+    super.willUpdate(props)
 
-    const isTextButton = this.variant === 'text'
-    this.borderStyle = isTextButton ? 'none'
-        : (this.circle ? 'circle' : 'rectangle')
-    this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
+    if (props.has('variant') || props.has('circle')) {
+      const isTextButton = this.variant === 'text'
+      this.borderStyle = isTextButton ? 'none'
+          : (this.circle ? 'circle' : 'rectangle')
+      this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
+    }
+  }
+
+  override firstUpdated(props: PropertyValues) {
+    super.firstUpdated(props)
+    const button = this.renderRoot.querySelector('button')
+    button?.addEventListener('keydown', this)
+    button?.addEventListener('keyup', this)
+    button?.addEventListener('blur', this)
+    this.setAttribute('tabindex', '0')
   }
 
   override render() {

@@ -153,6 +153,9 @@ export class TabGroupElement extends LitElement {
     })
   }
 
+  // The work in this function can't be done in willUpdate() because the <slot>
+  // element is not populated with the assigned elements until after the first
+  // update cycle.
   protected override updated(props: PropertyValues) {
     let gridColumn = -1
 
