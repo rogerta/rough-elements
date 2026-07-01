@@ -42,11 +42,11 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
         outline: none;
       }
 
-
       re-icon {
-        --color: rgb(0 0 0 / 0.2);
+        --color: rgb(0 0 0 / 0.3);
         transition: transform 0.2s ease;
       }
+
       :host(:not(:hover)) re-icon.selected,
       :host([readonly]) re-icon.selected,
       :host([disabled]) re-icon.selected {
@@ -56,6 +56,17 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
       :host(:not([disabled]):focus) re-icon,
       :host(:not([disabled]):active) re-icon {
         filter: drop-shadow(0 0 4px var(--re-primary-color));
+      }
+
+      @media (prefers-color-scheme: dark) {
+        re-icon {
+          --color: rgb(255 255 255 / 0.3);
+        }
+
+        :host(:not([disabled]):focus) re-icon,
+        :host(:not([disabled]):active) re-icon {
+          filter: drop-shadow(0 0 4px var(--foreground-color));
+        }
       }
 
       @media (hover: hover) {
