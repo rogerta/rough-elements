@@ -21,3 +21,17 @@
 .hb-pencil {
   --color: rgb(56 57 48);
 }
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --re-primary-color: rgb(0 0 238 / 0.9);
+    --re-success-color: rgb(0 200 0 / 0.75);
+    --re-neutral-color: rgb(192 192 192 / 0.75);
+    --re-warning-color: rgb(238 119 0 / 0.75);
+    --re-danger-color: rgb(238 0 0 / 0.75);
+
+      --color: rgb(216 216 216);
+    --background-color: rgb(32 32 32);
+    --border-color: rgb(from var(--color) R G B / 0.75);
+  }
+}
