@@ -42,9 +42,10 @@ code {
 }
 .slot-name,
 .part-name,
+.property-default,
 .property-name,
-.property-type,
-.property-params {
+.property-params,
+.property-type {
   font-family: monospace;
   text-wrap: nowrap;
 }
@@ -74,7 +75,7 @@ code {
   {% if properties | length %}
     <table>
     <thead>
-      <tr><th>Name</th><th>Description</th><th>Reflects</th><th>Type</th></tr>
+      <tr><th>Name</th><th>Description</th><th>Reflects</th><th>Type</th><th>Default</th></tr>
     </thead>
     <tbody>
     {% for m in properties %}
@@ -83,6 +84,7 @@ code {
       <td>{{m.description | marked | safe }}</td>
       <td>{{'true' if m.reflects else ''}}</td>
       <td class="property-type">{{m.type.text}}</td>
+      <td class="property-default">{{m.default | d('', true) }}</td>
     </tr>
     {% endfor %}
     </tbody>
@@ -145,7 +147,7 @@ No events.
     <tbody>
       {% for part in parts %}
       <tr>
-        <td class="part-name">{{part.name | d('[default]', '[default]')}}</td>
+        <td class="part-name">{{part.name | d('[default]', true)}}</td>
         <td>{{part.description | marked | safe }}</td>
       </tr>
       {% endfor %}

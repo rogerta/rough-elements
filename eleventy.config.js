@@ -38,12 +38,22 @@ export default function(config) {
   })
 
   config.addFilter('filterForProperties', function (clazz) {
-    // Don't bother documenting private and protected fields. Also, don't
-    // bother documenting the 'styles' field since it's Lit's internal CSS
-    // styling of the element.
+    // Don't bother documenting private and protected fields.
+    // Don't bother documenting fields inherited from border and backfground
+    // mixins,since those are documented in a separate web page and clutter
+    // the properties list.
+    //
+    // Also, don't bother documenting some internal fields.  For example,
+    // 'styles' is Lit's internal CSS styling of the element.
    const props = clazz.members?.filter(m => {
       return m.kind === 'field' && m.privacy !== 'private' &&
-      m.privacy !== 'protected' && m.name !== 'styles'
+      m.privacy !== 'protected' &&
+      m.inheritedFrom?.name !== 'BackgroundMixin' &&
+      m.inheritedFrom?.name !== 'BorderMixin' &&
+      m.name !== 'styles' &&
+      m.name !== 'enableDebugging' &&
+      m.name !== 'formAssociated' &&
+      m.name !== 'shadowRootOptions'
     }) ?? []
 
     props.sort((a, b) => a.name.localeCompare(b.name))

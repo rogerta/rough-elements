@@ -18,7 +18,8 @@ import { ifDefined } from 'lit/directives/if-defined.js'
  * `setPopoverTarget()` method.
  *
  * To control the border and background refer to the Border & Background
- * documentation.
+ * documentation.  By default buttons have a solid background and a rectangle
+ * border, except `varaiant=text` which have neither.
  *
  * `<re-button>`is meant as a drop in replacement for `<button>` or `<a>`.
  *
@@ -56,7 +57,8 @@ export class ButtonElement extends
 
   /**
    * If true, a caret `<re-icon>` will be suffixed to this button.  This is
-   * used to indicate that the button will open some kind of submenu.
+   * mostly used internally to indicate that the button will open some kind of
+   * submenu.
    */
   @property({ type: Boolean, reflect: true }) caret = false
 
@@ -79,14 +81,45 @@ export class ButtonElement extends
   // Form specific properties.
 
   /**
-   * Name used when this button is part of a form submission.
+   * The button type for form submissions. Use type `'submit'` to make this
+   * button submit its associated form.
    */
-  @property({}) type = 'button'
+  @property({}) type? = 'button'
+
+  /**
+   * If this button is used to submit the form, the form's `action` is
+   * overridden with this URL.
+   */
   @property({}) formaction?: string
+
+  /**
+   * If this button is used to submit the form, the form's `enctype` is
+   * overridden with this encoding type.
+   */
   @property({}) formenctype?: string
-  @property({}) formmethod = 'post'
+
+  /**
+   * If this button is used to submit the form, the form's `method` is
+   * overridden with this method.
+   */
+  @property({}) formmethod? = 'post'
+
+  /**
+   * If this button is used to submit the form, the form's `novalidate` is
+   * overridden with this value.
+   */
   @property({}) formnovalidate?: string
+
+  /**
+   * If this button is used to submit the form, the form's `target` is
+   * overridden with this value.
+   */
   @property({}) formtarget = '_self'
+
+  /**
+   * If this button is used to submit the form, this buttons `name` and `value`
+   * are submitted with the form data.
+   */
   @property({}) value?: string
 
   constructor() {

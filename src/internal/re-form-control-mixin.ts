@@ -36,7 +36,7 @@ export const ReFormControlMixin =
      */
     @property({}) name = ''
 
-    internals_?: ElementInternals
+    private internals_?: ElementInternals
 
     setFormValue(
         value: string | File | FormData | null,
@@ -53,12 +53,12 @@ export const ReFormControlMixin =
 
     // Wrapper methods for element internals.
 
-    get validity() { return this.internals_?.validity ?? {}}
-    get validationMessage() { return this.internals_?.validationMessage }
-    get willValidate() { return this.internals_?.willValidate }
-    checkValidity() { return this.internals_?.checkValidity() ?? true }
-    reportValidity() { return this.internals_?.reportValidity() ?? true }
-    setCustomValidity(message: string) {
+    protected get validity() { return this.internals_?.validity ?? {}}
+    protected get validationMessage() { return this.internals_?.validationMessage }
+    protected get willValidate() { return this.internals_?.willValidate }
+    protected checkValidity() { return this.internals_?.checkValidity() ?? true }
+    protected reportValidity() { return this.internals_?.reportValidity() ?? true }
+    protected setCustomValidity(message: string) {
       if (message) {
         this.internals_?.setValidity({ customError: true }, message)
       } else {
