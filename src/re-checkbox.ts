@@ -1,8 +1,8 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ButtonElement } from './re-button.js'
 import { IconElement } from './re-icon.js'
+import { ButtonBaseElement } from './internal/re-button-base.js'
 import { fire } from './internal/re-element.js'
 
 /**
@@ -10,23 +10,19 @@ import { fire } from './internal/re-element.js'
  * "No" choice.  Checkboxes may be programmatically set to an indeterminate
  * states to indicate that no choice has been made.
  *
- * Because `<re-checkbox>` dervices from `<re-button>` it exposes the
- * prefix/default/suffix slots.  However the prefix slot is used to render an
- * icon that represents the yes/no/indeterminate state.  Adding more content to
- * the prefix slot may cause unexpected results.  However, the
- * prefix/label/suffix parts can still be used to style the corresponding
- * slot content.
- *
- * @cssproperty --color - Sets the color of the text and checkbox icon.
- *    Defaults to `ButtonText`.
+ * Although checkboxes exposes a `prefix` slot it is used internally to
+ * render an icon that represents the yes/no/indeterminate state.  Adding more
+ * content to the `prefix` slot may cause unexpected results.  However, the
+ * `prefix` part can still be used for CSS styling of the icon.
  */
 @customElement('re-checkbox')
-export class CheckboxElement extends ButtonElement {
+export class CheckboxElement extends ButtonBaseElement {
+  static formAssociated = true
+
   /**
    * True if the checkbox is "checked" and false otherwise.
    */
-  @property({ type: Boolean }) checked = false
-  @property({ type: Boolean }) required? = false
+  @property({ type: Boolean, reflect: true }) checked = false
 
   /**
    * When true the checkbox renders in a way to indicate to the user that
@@ -36,24 +32,47 @@ export class CheckboxElement extends ButtonElement {
    */
   @property({ type: Boolean }) indeterminate = false
 
+  /**
+   * If true, the checkbox must be checked before its form can be submitted.
+   */
+  @property({ type: Boolean }) required = false
+
+  /**
+   * Value to be returned for this checkbox when its form is submitted.  If
+   * no value is specified, the default value of "on" is used.  If the checkbox
+   * is not checked, no value is submitted.
+   */
+  @property({}) value?: string
+
   private prefix_?: IconElement
 
   static styles = [
     ...super.styles,
     css`
+      :host {
+        padding: 0.25rem 0.5rem;
+      }
       :host(:not([disabled]):focus-within) button {
         font-weight: bold;
       }
+
+      :host(:not([disabled]):active) button,
+      :host(:not([disabled]).is-active) button {
+        transform: scale(0.9);
+      }
+
+      slot[name=suffix]::slotted(*) {
+        margin-right: -0.25rem;
+      }
+
       button {
         background-color: transparent;
-        --text-transform: none;
       }
     `
   ]
 
   constructor() {
     super()
-    this.variant = 'text'
     this.fillStyle = 'none'
     this.borderStyle = 'none'
   }

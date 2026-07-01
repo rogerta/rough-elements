@@ -1,9 +1,10 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ButtonElement } from './re-button.js'
-import { IconElement } from './re-icon.js'
 import { fire } from './internal/re-element.js'
+import { ButtonBaseElement } from './internal/re-button-base.js'
+
+import { IconElement } from './re-icon.js'
 
 /**
  * Radio element is a toggleable control that allows users to select a single option
@@ -12,9 +13,26 @@ import { fire } from './internal/re-element.js'
  * @cssproperty --color - Sets the color of the text and radio button icon. Defaults to `ButtonText`.
  */
 @customElement('re-radio')
-export class RadioElement extends ButtonElement {
+export class RadioElement extends ButtonBaseElement {
+  static formAssociated = true
+
+  /**
+   * True if the radio button is "checked" and false otherwise.
+   */
   @property({ type: Boolean, reflect: true }) checked = false
-  @property({ type: Boolean }) required? = false
+
+  /**
+   * If true, the radio button must be checked before its form can be submitted.
+   * Note that only one radio button of any group with the given name can and
+   * needs to be checked.
+   */
+  @property({ type: Boolean }) required = false
+
+  /**
+   * Value to be returned for this radio button when its form is submitted.  If
+   * no value is specified, the default value of "on" is used.  If the radio
+   * button is not checked, no value is submitted.
+   */
   @property({}) value?: string
 
   private prefix_?: IconElement
@@ -22,19 +40,30 @@ export class RadioElement extends ButtonElement {
   static styles = [
     ...super.styles,
     css`
+      :host {
+        padding: 0.25rem 0.5rem;
+      }
       :host(:not([disabled]):focus-within) button {
         font-weight: bold;
       }
+
+      :host(:not([disabled]):active) button,
+      :host(:not([disabled]).is-active) button {
+        transform: scale(0.9);
+      }
+
+      slot[name=suffix]::slotted(*) {
+        margin-right: -0.25rem;
+      }
+
       button {
         background-color: transparent;
-        --text-transform: none;
       }
     `
   ]
 
   constructor() {
     super()
-    this.variant = 'text'
     this.fillStyle = 'none'
     this.borderStyle = 'none'
   }
