@@ -31,6 +31,10 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 export class ButtonElement extends
     BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
   static formAssociated = true
+  static shadowRootOptions: ShadowRootInit = {
+    ...super.shadowRootOptions,
+    delegatesFocus: true,
+  }
 
   /**
    * When not empty, the button behaves like an <a> element with the
@@ -96,6 +100,7 @@ export class ButtonElement extends
     button?.addEventListener('keydown', this)
     button?.addEventListener('keyup', this)
     button?.addEventListener('blur', this)
+    this.setAttribute('tabindex', '0')
   }
 
   /**
@@ -167,7 +172,7 @@ export class ButtonElement extends
     return [
       this.renderRoughSvg(),
       html`
-        <button ?disabled="${this.disabled}" part="button"
+        <button autofocus ?disabled="${this.disabled}" part="button"
             name="${ifDefined(this.name)}" @click="${this.handleEvent}">
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix" part="prefix"></slot>
