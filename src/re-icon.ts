@@ -22,6 +22,7 @@ export class IconElement extends ReElement {
         display: inline-block;
         width: var(--size, 1.5rem);
         height: var(--size, 1.5rem);
+        border-width: 0;
       }
       .icon {
         stroke: none;

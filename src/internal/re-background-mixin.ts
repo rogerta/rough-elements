@@ -100,6 +100,10 @@ export const BackgroundMixin =
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,
       css`
+        :host {
+          --re-background-stroke-width: 16;
+        }
+
         /* Styling for the solid fill of shapes.  Anything that affects the fill
         * of an SVG element can be used here.  Stroke is always 'none'. */
         #rough .background .solid-fill {

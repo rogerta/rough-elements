@@ -115,6 +115,10 @@
         --color: red;
         --border-color: green;
       }
+      #button62 {
+        border-width: 0;
+        --size: 64px;
+      }
       #button91::part(prefix) {
         --color: blue;
       }
@@ -763,6 +767,15 @@
       <re-button id="button5" disabled variant="danger">Danger</re-button>
 
       <re-button id="button6" circle><re-icon name="arrow-back"></re-icon></re-button>
+
+      <span>
+        <re-button id="button61" circle variant="text"><re-icon name="info"></re-icon></re-button>
+        Simulation of icon button
+      </span>
+      <span>
+        <re-button id="button62" circle variant="text"><re-icon name="dangerous"></re-icon></re-button>
+        Simulation of large icon button
+      </span>
 
       <re-button id="button7" variant="text">Text</re-button>
       <re-button id="button71" variant="text">

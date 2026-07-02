@@ -161,8 +161,6 @@ export class ReElement extends LitElement {
          * rough border is re-drawn when the element's border width changes.
          * Otherwise the resize observer would not get called. */
         box-sizing: border-box;
-
-        --re-background-stroke-width: 16;
       }
 
       /* The svg element is positioned to covers the padding box of the host
