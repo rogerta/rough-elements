@@ -87,16 +87,15 @@ class KeyboardNavState {
 
 /**
  * Menus show a list of user selectable options as often seen in a dropdown or
- * context menu.  Children of the menu are usually `<re-item>`s,
- * `<re-menu-item>`s or `<re-divider>` elements but any type can be used.
+ * context menu.  Children of the menu are usually `<re-item>`,
+ * `<re-menu-item>` or `<re-divider>` elements but any content can be used.
  *
  * The most common use of menus is as follows:
- *
  * ```html
- * <re-menu popover id="menu1" @click="${this.onMenuClicked_}">
- *   <re-menu-item id="item1">...</re-menu-item>
- *   <re-menu-item id="item2">...</re-menu-item>
- *   <re-menu-item id="item3">...</re-menu-item>
+ * <re-menu popover id="menu1" @click="${onMenuClicked_}">
+ *   <re-item id="item1">...</re-item>
+ *   <re-item id="item2">...</re-item>
+ *   <re-item id="item3">...</re-item>
  * </re-menu>
  * ```
  * ```js

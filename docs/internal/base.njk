@@ -97,6 +97,12 @@ img.logo {
     {% block main %}{% endblock %}
   </main>
 </div>
-<script>hljs.highlightAll();</script>
+<script>
+// Reduce the number of languages highlight.js should consider to improve
+// correct language detection.  Otherwise small snippets of html are ofen
+// confused for perl or bash.
+hljs.configure({languages: ['html', 'css', 'javascript']});
+hljs.highlightAll();
+</script>
 </body>
 </html>

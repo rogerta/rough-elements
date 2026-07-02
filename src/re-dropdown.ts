@@ -6,8 +6,45 @@ import './re-menu.js'
 import { NO_ITEM } from './re-menu.js'
 
 /**
- * Dropdown element exposes a menu of actions that the user can perform.
- * It consists of a trigger button and a popover menu panel.
+ * Dropdowns expose a menu of actions that the user can perform.
+ * A dropdown consists of a trigger button and a popover menu panel.
+ *
+ * The `label` slot provides the content of the trigger button, usually some
+ * short text, and should always be specified.
+ *
+ * Any children not assigned to a slot are placed in the popover menu panel.
+ * These are usually `<re-item>`, `<re-menu-item>` or `<re-divider>` elements,
+ * but any content can be placed there.
+ *
+ * A common use of a dropdown is as follows:
+ * ```
+ * <re-dropdown id="dd1"@click="${onItemClicked_}">
+ *   <span slot="label">Click me</span>
+ *   <re-item id="item1">...</re-item>
+ *   <re-item id="item2">...</re-item>
+ *   <re-divider></re-divider>
+ *   <re-item id="item3">...</re-item>
+ * </re-dropdown>
+ * ```
+ * ```
+ * import { getItemFromEvent } from '@rough-elements/re-item.ts'
+ *
+ * onItemClicked_(e: Event) {
+ *   const item = getItemFromEvent(e)
+ *   switch (item?.id) {
+ *     case 'item1':
+ *        ...
+ *        break
+ *     case 'item2':
+ *        ...
+ *        break
+ *     case 'item3':
+ *        ...
+ *        break
+ *   }
+ * }
+ * ```
+ *
  */
 @customElement('re-dropdown')
 export class DropdownElement extends LitElement {
@@ -87,14 +124,14 @@ export class DropdownElement extends LitElement {
 
   override render() {
     return html`
-      <!-- The trigger button that toggles the dropdown visibility. -->
+      <!-- The \`<re-button>\` that impements the trigger button. -->
       <re-button autofocus part="trigger" caret ?disabled="${this.disabled}">
-        <!-- Slot used as the label for the trigger button. Usually text. -->
+        <!-- The label for the trigger button. Usually text. -->
         <slot name="label">${this.renderLabelDefault_()}</slot>
       </re-button>
-      <!-- The menu container used as the popover panel. -->
+      <!-- The \`<re-menu>\` that implements the popover panel. -->
       <re-menu popover part="panel">
-        <!-- The default slot representing the menu items. -->
+        <!-- Unslotted children elements appear in the menu panel. -->
         <slot></slot>
       </re-menu>
     `
