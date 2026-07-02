@@ -1,4 +1,4 @@
-import { css, html, nothing, type PropertyValues } from 'lit'
+import { css, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
 import { property } from 'lit/decorators.js'
 
 import { BackgroundMixin } from './re-background-mixin.js'
@@ -24,31 +24,6 @@ export class ButtonBaseElement extends
    * If true the button does not respond to user actions.
    */
   @property({ type: Boolean, reflect: true }) disabled = false
-
-  constructor() {
-    super()
-    this.fillStyle = 'solid'
-  }
-
-  /**
-   * Sets this button to be a trigger for a popover element. The popover will
-   * be displayed once the button finishes it's update cycle (that is, once
-   * `updateComplete` promise resolves).
-   *
-   * `setPopoverTarget` is needed to allow targets from different shawdow root
-   * boundaries to be used.
-   *
-   * @param target The popover element.  This element is expected to
-   *    have the `popover` attribute.  It's anchor will be set this button.
-   */
-  setPopoverTarget(target: HTMLElement) {
-    this.updateComplete.then(() => {
-      const button = this.renderRoot.querySelector('button')
-      if (button) {
-        button.popoverTargetElement = target
-      }
-    })
-  }
 
   handleEvent(e: Event) {
     switch (e.type) {
@@ -95,13 +70,13 @@ export class ButtonBaseElement extends
           <slot part="label"></slot>
           <!-- A suffix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="suffix" part="suffix"></slot>
-          ${this.renderCaretIfNEeeded_() }
+          ${this.renderCaretIfNeeded_() }
         </button>
       `,
     ]
   }
 
-  protected renderCaretIfNEeeded_() {
+  protected renderCaretIfNeeded_(): TemplateResult | typeof nothing {
     return nothing
   }
 

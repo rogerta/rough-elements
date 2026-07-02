@@ -1,13 +1,10 @@
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import { BorderMixin } from './internal/re-border-mixin.js'
-import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 import type { VARIANTS } from './internal/re-common.js'
-import { ReElement } from './internal/re-element.js'
+import { ButtonBaseElement } from './internal/re-button-base.js'
+
 import './re-icon.js'
-import { ifDefined } from 'lit/directives/if-defined.js'
 
 /**
  * Buttons are interactive elements activated by the user with a mouse,
@@ -29,13 +26,8 @@ import { ifDefined } from 'lit/directives/if-defined.js'
  *    parts.
  */
 @customElement('re-button')
-export class ButtonElement extends
-    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+export class ButtonElement extends ButtonBaseElement {
   static formAssociated = true
-  static shadowRootOptions: ShadowRootInit = {
-    ...super.shadowRootOptions,
-    delegatesFocus: true,
-  }
 
   /**
    * When not empty, the button behaves like an <a> element with the
@@ -69,11 +61,6 @@ export class ButtonElement extends
   @property({ type: Boolean, reflect: true }) circle = false
 
   /**
-   * If true the button does not respond to user actions.
-   */
-  @property({ type: Boolean, reflect: true }) disabled = false
-
-  /**
    * A theme variant for the button, mostly affectings its colours.
    */
   @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
@@ -84,7 +71,7 @@ export class ButtonElement extends
    * The button type for form submissions. Use type `'submit'` to make this
    * button submit its associated form.
    */
-  @property({}) type? = 'button'
+  @property({}) type = 'button'
 
   /**
    * If this button is used to submit the form, the form's `action` is
@@ -102,7 +89,7 @@ export class ButtonElement extends
    * If this button is used to submit the form, the form's `method` is
    * overridden with this method.
    */
-  @property({}) formmethod? = 'post'
+  @property({}) formmethod = 'post'
 
   /**
    * If this button is used to submit the form, the form's `novalidate` is
@@ -161,24 +148,8 @@ export class ButtonElement extends
           this.submitForm()
         }
         break
-      case 'keydown': {
-        const ke = e as KeyboardEvent
-        if (ke.key === ' ') {
-          this.classList.add('is-active')
-        }
-        break
-      }
-      case 'keyup': {
-        const ke = e as KeyboardEvent
-        if (ke.key === ' ') {
-          this.classList.remove('is-active')
-        }
-        break
-      }
-      case 'blur':
-        this.classList.remove('is-active')
-        break
       default:
+        super.handleEvent(e)
         break
     }
   }
@@ -195,53 +166,21 @@ export class ButtonElement extends
     }
   }
 
-  override firstUpdated(props: PropertyValues) {
-    super.firstUpdated(props)
-    const button = this.renderRoot.querySelector('button')
-    button?.addEventListener('keydown', this)
-    button?.addEventListener('keyup', this)
-    button?.addEventListener('blur', this)
-    this.setAttribute('tabindex', '0')
-  }
-
-  override render() {
-    return [
-      this.renderRoughSvg(),
-      html`
-        <button autofocus ?disabled="${this.disabled}" part="button"
-            name="${ifDefined(this.name)}" @click="${this.handleEvent}">
-          <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
-          <slot name="prefix" part="prefix"></slot>
-          <!-- The main label of the button. Typically holds text. -->
-          <slot part="label"></slot>
-          <!-- A suffix for the label.  An \`<re-icon>\` is often used here. -->
-          <slot name="suffix" part="suffix"></slot>
-          ${this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
-              : nothing }
-        </button>
-      `,
-    ]
+  protected override renderCaretIfNeeded_() {
+    return this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
+                      : nothing
   }
 
   static styles = [
     ...super.styles,
     css`
-      :host {
-        display: inline-block;
-        color: var(--color, ButtonText);
-        user-select: none;
-        cursor: pointer;
-        --button-text-shadow-color: rgb(from black R G B / 0.1);
-      }
       :host(:not([variant=text])) {
         --text-transform: uppercase;
       }
-      :host * {
-        cursor: pointer;
+      :host(:not([circle])) {
+        padding: 0.25rem 0.5rem;
       }
-      :host([disabled]) {
-        opacity: 0.5;
-      }
+
       :host([variant=primary]) {
         color: white;
         --re-background-color: var(--re-primary-color);
@@ -268,13 +207,7 @@ export class ButtonElement extends
         --button-text-shadow-color: white;
       }
 
-      slot[name=prefix]::slotted(*) {
-        margin-left: -0.25rem;
-      }
       :host(:not([caret])) slot[name=suffix]::slotted(*) {
-        margin-right: -0.25rem;
-      }
-      re-icon[name=keyboard-arrow-down] {
         margin-right: -0.25rem;
       }
 
@@ -282,62 +215,17 @@ export class ButtonElement extends
        * that the browser does not add extra width and/or height due to
        * template whitespace nodes or descender gaps for inline-block. */
       button {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        border: none;
-        padding: 0;
-        margin: 0;
-        height: min-content;
-        background-color: transparent;
-        color: inherit;
-        -webkit-tap-highlight-color: transparent;
-        transition: transform 0.2s ease;
-        font-family: var(--re-input-font-family);
         text-transform: var(--text-transform);
-      }
-      :host(:not([circle])) {
-        padding: 0.25rem 0.5rem;
-      }
-      /* Removes the focus ring only for mouse/touch interactions */
-      button:focus {
-        outline: none;
-      }
-
-      :host(:not([disabled]):focus-within) {
-        --re-stroke-width: 2px;
       }
 
       :host([variant=text]:not([disabled]):focus-within) button {
-          font-weight: bold;
-        }
-      }
-
-      #rough {
-        color: inherit;
-        transition: transform 0.2s ease;
+        font-weight: bold;
       }
 
       /* Button press animation */
-      :host(:not([disabled]):active) #rough,
-      :host(:not([disabled]).is-active) #rough {
-        transform: scale(0.95);
-      }
       :host([variant=text]:not([disabled]):active) button,
       :host([variant=text]:not([disabled]).is-active) button {
         transform: scale(0.9);
-      }
-
-      @media (hover: hover) {
-        :host(:hover:not([disabled])) button {
-          text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
-        }
-        :host(:hover:active:not([disabled])) button {
-          text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
-        }
       }
     `,
   ]
