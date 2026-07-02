@@ -7,15 +7,15 @@ import { fire, ReElement } from './internal/re-element.js'
 import './re-icon.js'
 
 /**
- * Details are disclosure elements in which information is visible only
- * when it is toggled into the open state. A summary, which is always visible,
+ * Details are disclosure elements in which more detailed information is
+ * visible only when it is toggled open. A summary, which is always visible,
  * must be provided in the `summary` slot.
  *
  * If the default expanded/collapsed indicator is overriden by filling the
  * `marker` slot with an `<re-icon>`, that icon will be automatically rotated
  * by 90&deg; when the details is opened. To prevent this set the rotate CSS
- * property of the markerto 'none'.  For example, if the details `id` attribute
- * is `myid` the following could be used:
+ * property of the marker to 'none'.  For example, a details with `id`
+ * equal to `myid` can prevent automatic rotation as follows:
  * ```
  * re-details#myid [slot=marker] {
  *   rotate: none;

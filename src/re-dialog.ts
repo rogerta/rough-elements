@@ -9,16 +9,46 @@ import  './re-icon-button.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
 /**
- * Dialog element is a modal dialog container with support for header, body,
- * actions, and footer. It uses background and border mixins to render a rough dialog.
+ * Dialogs are shown when immedidate user interaction is required.
+ * Usually dialogs appear in the middle of the page overlaying existing
+ * content, but `<re-dialog>`s can also be pinned along any edge (top, right,
+ * bottom, or left) of the viewport.  When pinned this way dialogs are often
+ * called "drawers".
  *
- * @cssproperty --border-width - The width of the dialog border.
+ * Dialogs are shown by caling `showModal()`.  Dialogs are dismissed by calling
+ * `requestClose()` or by user interaction:  the user can press the Escape key,
+ * click outside the dialog, or click the Close button.  This behaviour can
+ * be changed with the `closeBy` property.
+ *
+ * Dialogs use an `<re-card>` to layout their content.  The `footer` slot of
+ * `<re-dialog>` fills a standard `<footer>` HTML element that itself fills
+ * the `footer` slot of `<re-card>`.  The `footer` slot usually contains
+ * buttons such as "OK" or "Cancel".  By default `<re-dialog>`'s `footer`
+ * slot is empty.
+ *
+ * The `title` and `actions` slots fill the `header` slot of `<re-card>` from
+ * left to right.  The `actions` slots is filled by default with a Close button.
+ * Keep in mind that if the `actions` slot is filled by the caller, the default
+ * Close button is not shown.  The caller should either provide some other
+ * mechanism to close the dialog or depend on one of the default close
+ * interactions.
+ *
+ * Any content not assigned to a slot fills the body of the `<re-card>`.
  */
 @customElement('re-dialog')
 export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
-  @property({reflect: true}) name = ''
-
-  @property({}) closedBy? = 'any'
+  /**
+   * Controls how the dialog can be closed by user interaction.  If set to
+   * `'any'` the dialog can be closed with a click outside the dialog, a press
+   * of the Escape key, or some caller specific mechanism.
+   *
+   * If set to `'closerequest'` the dialog can only be closed by a press
+   * of the Escape key or some caller specific mechanism.
+   *
+   * if set the `'none'` the dialog can only be closed by some caller specific
+   * mechanism.
+   */
+  @property({}) closedby: 'any' | 'closerequest' | 'none' = 'any'
 
   static styles = [
     ...super.styles,
@@ -199,12 +229,17 @@ export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
   `]
 
   /**
-   * Shows the dialog as a modal.
-   *
-   * @return {void}
+   * Shows the dialog.
    */
   showModal() {
     this.renderRoot.querySelector('dialog')?.showModal()
+  }
+
+  /**
+   * Programmatically requests the dialog to close.
+   */
+  requestClose() {
+    this.renderRoot.querySelector('dialog')?.requestClose()
   }
 
   private onDialogClose_() {
@@ -217,10 +252,6 @@ export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
     }
   }
 
-  private onClose_() {
-    this.renderRoot.querySelector('dialog')?.requestClose()
-  }
-
   protected override updated(props: PropertyValues) {
     super.updated(props)
     this.requestRoughRender()
@@ -230,31 +261,37 @@ export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <!-- The native HTML dialog container. -->
-        <dialog part="dialog" closedby="${ifDefined(this.closedBy)}"
+        <!-- The native HTML \`<dialog>\` wrapping the \`<re-card>\`. -->
+        <dialog part="dialog" closedby="${ifDefined(this.closedby)}"
             @close="${this.onDialogClose_}" @cancel="${this.onDialogCancel_}">
-          <!-- The card container containing dialog header, body and footer. -->
+          <!-- The \`<re-card>\` used to layout the dialog. -->
           <re-card part="card" fillStyle="solid">
-            <!-- The header bar containing the title and actions. -->
+            <!-- The header bar containing the \`title\` and \`actions\`
+                 slots. -->
             <header part="header">
-              <!-- Slot for dialog title text. -->
+              <!-- The dialog's title. By default the font is slightly larger
+                   than normal text. -->
               <slot name="title"></slot>
-              <!-- Container for slot actions or default close button. -->
+              <!-- \`<div>\` container that holds the \`actions\` slot. -->
               <div part="actions" id="actions">
-                <!-- Slot for dialog action buttons (e.g. close). -->
+                <!-- Dialog action buttons. If not filled by the caller then
+                     this slot is filled with an \`<re-icon-button>\` tha
+                     can be used to close the dialog.  This slot is usually
+                     filled with one or more \`<re-icon-button>\`s allowing
+                     the user to perform various actions. -->
                 <slot name="actions">
-                  <re-icon-button name="close" @click="${this.onClose_}"
+                  <re-icon-button name="close" @click="${this.requestClose}"
                       ></re-icon-button>
                 </slot>
               </div>
             </header>
 
-            <!-- The main dialog body content slot. -->
+            <!-- The main body of the dialog. -->
             <slot></slot>
 
-            <!-- The dialog footer. -->
+            <!-- The dialog's footer. -->
             <footer part="footer">
-              <!-- Slot for dialog footer actions/buttons. -->
+              <!-- The dialog's footer buttons, such as "OK" or "Cancel". -->
               <slot name="footer"></slot>
             </footer>
           </re-card>

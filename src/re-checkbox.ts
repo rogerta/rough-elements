@@ -6,14 +6,14 @@ import { ButtonBaseElement } from './internal/re-button-base.js'
 import { fire } from './internal/re-element.js'
 
 /**
- * Checkboxes are toggleable controls that allows the user to make a "Yes" or
- * "No" choice.  Checkboxes may be programmatically set to an indeterminate
+ * Checkboxes are toggleable controls that allows the user to make "Yes" or
+ * "No" choices.  Checkboxes may be programmatically set to an indeterminate
  * states to indicate that no choice has been made.
  *
- * Although checkboxes exposes a `prefix` slot it is used internally to
- * render an icon that represents the yes/no/indeterminate state.  Adding more
- * content to the `prefix` slot may cause unexpected results.  However, the
- * `prefix` part can still be used for CSS styling of the icon.
+ * The checkbox `prefix` slot it is used internally to render an icon that
+ * represents the yes/no/indeterminate state.  Adding more content to this
+ * slot may cause unexpected results.  However, the `prefix` part can be
+ * used to CSS style the icon.
  */
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonBaseElement {

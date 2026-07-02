@@ -21,7 +21,8 @@ export class ButtonBaseElement extends
   }
 
   /**
-   * If true the button does not respond to user actions.
+   * If true the button does not respond to user actions.  Disabled buttons are
+   * not sumbitted as part of a form.
    */
   @property({ type: Boolean, reflect: true }) disabled = false
 
@@ -62,6 +63,7 @@ export class ButtonBaseElement extends
     return [
       this.renderRoughSvg(),
       html`
+        <!-- The underyling native button representing this element. -->
         <button autofocus ?disabled="${this.disabled}" part="button"
             name="${ifDefined(this.name)}" @click="${this.handleEvent}">
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
