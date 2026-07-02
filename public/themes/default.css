@@ -1,4 +1,6 @@
 :root {
+  color-scheme: light dark;
+
   --re-primary-color: rgb(0 0 238);
   --re-success-color: rgb(0, 200, 0);
   --re-neutral-color: rgb(64 64 64);

@@ -1,10 +1,8 @@
-import { css, html, type PropertyValues } from 'lit'
+import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import { BorderMixin } from './internal/re-border-mixin.js'
 import  './re-button.js'
-import { fire, ReElement } from './internal/re-element.js'
+import { fire } from './internal/re-element.js'
 import  './re-icon-button.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
@@ -18,7 +16,7 @@ import { ifDefined } from 'lit/directives/if-defined.js'
  * Dialogs are shown by caling `showModal()`.  Dialogs are dismissed by calling
  * `requestClose()` or by user interaction:  the user can press the Escape key,
  * click outside the dialog, or click the Close button.  This behaviour can
- * be changed with the `closeBy` property.
+ * be changed with the `closeby` property.
  *
  * Dialogs use an `<re-card>` to layout their content.  The `footer` slot of
  * `<re-dialog>` fills a standard `<footer>` HTML element that itself fills
@@ -27,16 +25,16 @@ import { ifDefined } from 'lit/directives/if-defined.js'
  * slot is empty.
  *
  * The `title` and `actions` slots fill the `header` slot of `<re-card>` from
- * left to right.  The `actions` slots is filled by default with a Close button.
- * Keep in mind that if the `actions` slot is filled by the caller, the default
- * Close button is not shown.  The caller should either provide some other
- * mechanism to close the dialog or depend on one of the default close
- * interactions.
+ * left to right.  The `actions` slots is filled by default with a Close
+ * `<re-icon-button>` button.  Keep in mind that if the `actions` slot is
+ * filled by the caller, the default Close button is not shown.  The caller
+ * should either provide some other mechanism to close the dialog or depend on
+ * one of the default close interactions.
  *
  * Any content not assigned to a slot fills the body of the `<re-card>`.
  */
 @customElement('re-dialog')
-export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
+export class DialogElement extends LitElement {
   /**
    * Controls how the dialog can be closed by user interaction.  If set to
    * `'any'` the dialog can be closed with a click outside the dialog, a press
@@ -51,7 +49,7 @@ export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
   @property({}) closedby: 'any' | 'closerequest' | 'none' = 'any'
 
   static styles = [
-    ...super.styles,
+    //...super.styles,
     css`
       :host {
         position: absolute;
@@ -87,7 +85,7 @@ export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
         transition-property: background-color, overlay, display;
       }
       dialog[open]::backdrop {
-        background-color: rgb(100 0 0 / 0.1);
+        background-color: rgb(0 0 0 / 0.2);
       }
 
       @starting-style {
@@ -226,6 +224,12 @@ export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
           transform: translateX(-100%);
         }
       }
+
+      @media (prefers-color-scheme: dark) {
+        dialog::backdrop {
+          xbackground-color: rgb(255 255 255 / 0.1);
+        }
+      }
   `]
 
   /**
@@ -254,12 +258,10 @@ export class DialogElement extends BorderMixin(BackgroundMixin(ReElement)) {
 
   protected override updated(props: PropertyValues) {
     super.updated(props)
-    this.requestRoughRender()
   }
 
   override render() {
     return [
-      super.renderRoughSvg(),
       html`
         <!-- The native HTML \`<dialog>\` wrapping the \`<re-card>\`. -->
         <dialog part="dialog" closedby="${ifDefined(this.closedby)}"

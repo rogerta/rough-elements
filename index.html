@@ -49,11 +49,23 @@
         color: var(--color, black);
         background: repeating-linear-gradient(
           -45deg,
-          rgb(from var(--background-color) R G B / 0.95),
-          rgb(from var(--background-color) R G B / 0.95) 13px,
+          rgb(from var(--background-color) calc(R * 0.9) calc(G * 0.9) calc(B * 0.9)),
+          rgb(from var(--background-color) calc(R * 0.9) calc(G * 0.9) calc(B * 0.9)) 13px,
           var(--background-color) 13px,
           var(--background-color) 26px
         );
+      }
+      @media (prefers-color-scheme: dark) {
+        body {
+          color: var(--color, black);
+          background: repeating-linear-gradient(
+            -45deg,
+            rgb(from var(--background-color) calc(R * 0.1) calc(G * 0.1) calc(B * 0.1)),
+          rgb(from var(--background-color) calc(R * 0.1) calc(G * 0.1) calc(B * 0.1)) 13px,
+            var(--background-color) 13px,
+            var(--background-color) 26px
+          );
+        }
       }
 
       .demo {
@@ -218,7 +230,7 @@
         }
         & .body {
           font-style: italic;
-          color: rgb(0 0 0 / 0.5);
+          color: light-dark(darkblue, lightblue);
         }
       }
 
@@ -643,8 +655,20 @@
           <re-icon-button slot="actions" name="check"></re-icon-button>
           <re-icon-button slot="actions" name="dangerous"></re-icon-button>
           <div class="body">
-            This dialog body needs to be long to make it a more
-            realistic example.
+            <re-button id="dialogbutton" name="button">Button</re-button>
+            <re-checkbox id="dialogcheckbox" required name="checkbox">Checkbox</re-checkbox>
+            <re-input id="dialoginput" required name="input"></re-input>
+            <re-radio id="dialogradio1" required name="radio" value="1" checkedx>One</re-radio>
+            <re-radio id="dialogradio2" required name="radio" value="2" checkedx>Two</re-radio>
+            <re-radio id="dialogradio3" required name="radio" value="3">Three</re-radio>
+            <re-range id="dialogrange" required name="range"></re-range>
+            <re-rating id="dialograting" required name="rating"></re-rating>
+            <re-select id="dialogselect" required name="select">
+              <re-item id="dialogitem1">Menu item 1</re-item>
+              <re-item id="dialogitem2">Menu item 2</re-item>
+              <re-item id="dialogitem3">Menu item 3</re-item>
+            </re-select>
+            <re-textarea id="formtextarea" required name="textarea"></re-textarea>
           </div>
           <re-button slot="footer">Previous</re-button>
           <re-button variant="primary" slot="footer">Next</re-button>
