@@ -18,6 +18,9 @@ export class TabGroupElement extends LitElement {
 
   static styles = [
     css`
+      :host {
+        border-bottom: 1px solid var(--border-color);
+      }
       :host, div {
         display: inline-grid;
         grid-auto-columns: auto;
