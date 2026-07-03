@@ -11,12 +11,18 @@ import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 import './re-icon-button.js'
 
 /**
- * Input element captures text or numeric data entered by the user.
- * It supports password visibility toggle and prefix/suffix slots,
- * and draws a rough background and border.
+ * Inputs collect information from the user like text, numbers, and dates.
+ * The full list of supported information types is listed in the `type`
+ * property.
  *
- * @cssproperty --color - Sets the color of the text and icons. Defaults to `ButtonText`.
- * @cssproperty --re-input-background-color - Sets the background color of the input control. Defaults to `ButtonFace`.
+ * Inputs can optionally show an icon to the left and/or right of the input
+ * area.  By default neither is shown except for the password input type which
+ * shows an icon for revealing or concealing the typed password.
+ *
+ * `<re-input>` is meant as a drop in replacement for `<input>` for the
+ * supported types.  Most of the properties listed below mirror the properties
+ * of `<input>` with the same name.  Don't forget that, unlike `<input>`, a
+ * closing tag `</re-input>` is required.
  */
 @customElement('re-input')
 export class InputElement extends
@@ -34,24 +40,97 @@ export class InputElement extends
   @property({}) type: 'date' | 'datetime-local' | 'email' | 'number' |
       'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
+  /**
+   * Controls whether inputted text is automatically capitalized and, if so,
+   * in what manner. See the [autocapitalize](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocapitalize)
+   * global attribute page for more information.
+   */
   @property({ reflect: true }) autocapitalize = ''
+
+  /**
+   * A space-separated string that describes what, if any, type of autocomplete
+   * functionality the input should provide. A typical implementation of
+   * autocomplete recalls previous values entered in the same input field, but
+   * more complex forms of autocomplete can exist.
+   */
   @property({ type: Boolean, reflect: true }) autocomplete = false
+
+  /**
+   * If present, indicates that the input should automatically have focus when
+   * the page has finished loading (or when the `<dialog>` containing the
+   * element has been displayed).
+   */
   @property({ type: Boolean, reflect: true }) autofocus = false
+
+  /**
+   * If true the input does not respond to user actions.  Disabled inputs are
+   * not sumbitted as part of a form.
+   */
   @property({ type: Boolean, reflect: true }) disabled = false
+
+  /**
+   * ID attribute of the `<datalist>` of autocomplete options.  It must be
+   * in the same shadow root or light DOM as the `<re-input>` element.
+   */
   @property() list = ''
+
+  /**
+   * The input’s maximum value. Only applies to date and number input types.
+   */
   @property({ type: Number }) max?: number
+
+  /**
+   * Maximum length (number of characters) of value.
+   */
   @property({ type: Number }) maxlength?: number
+
+  /**
+   * The input’s maximum value. Only applies to date and number input types.
+   */
   @property({ type: Number }) min?: number
+
+  /**
+   * Minimum length (number of characters) of value.
+   */
   @property({ type: Number }) minlength?: number
+
+  /**
+   * Pattern that `value` must match to be valid.
+   */
   @property({ type: Boolean }) pattern?: string
+
+  /**
+   * Text that appears in the form control when it has no value set.
+   */
   @property() placeholder = ''
+
+  /**
+   * Boolean. Whether to allow multiple values.
+   */
   @property({ type: Boolean, reflect: true }) multiple = ''
+
+  /**
+   * Boolean. The value is not editable.
+   */
   @property({ type: Boolean, reflect: true }) readonly = false
+
+  /**
+   * If true, the checkbox must be checked before its form can be submitted.
+   */
   @property({ type: Boolean }) required? = false
+
+  /**
+   * Incremental values that are valid.
+   */
   @property({ type: Number }) step? = 1
+
+  /**
+   * The value of the control. When specified in the HTML, corresponds to the
+   * initial value.
+   */
   @property() value = ''
 
-  @property({state: true}) showPassword_ = false
+  @property({ state: true }) private showPassword_ = false
 
   constructor() {
     super()
@@ -113,13 +192,18 @@ export class InputElement extends
     if (this.enableDebugging) {
       console.log(`render type=${this.type}`)
     }
+
+    // No need to catch and re-fire `input` events since they bubble
+    // and are composed by default.  Only the `change` event is caught and
+    // re-fired.
     return [
       this.renderRoughSvg(),
       html`
-        <!-- Slot positioned before the input control. -->
+        <!-- Content before the input control.  If needed this is usually
+             filled with an icon. -->
         <slot name="prefix"></slot>
 
-        <!-- The native HTML input control. -->
+        <!-- The native HTML \`<input>\` control. -->
         <input part="input" type="${this.renderInputType_()}"
             name="${ifDefined(this.name)}"
             autocapitalize="${this.autocapitalize}"
@@ -140,14 +224,15 @@ export class InputElement extends
             .value="${live(this.value)}"
             @change="${this.onInputChanged_}"
             />
-          <!-- No need to catch and re-fire input events since they bubble
-               and are composed by default. -->
 
-        <!-- Slot positioned after the input control. Often used for suffix icons or the password visibility toggle button. -->
+        <!-- Content after the input control.  If needed this is usually
+             filled with an icon.  Note that password input types already fill
+             this slot by default with an icon to reveal or conceal the
+             typed password. -->
         <slot name="suffix">
           ${this.type === 'password'
               ? html`
-                    <!-- The toggle button to show/hide password text. -->
+                    <!-- The toggle button to reveal/conceal password text. -->
                     <re-icon-button part="password-icon"
                     name="${this.renderPasswordIconName_()}"
                     ?disabled="${this.disabled}"
@@ -170,7 +255,7 @@ export class InputElement extends
     this.showPassword_ = !this.showPassword_
   }
 
-  onInputChanged_(e: Event) {
+  private onInputChanged_(e: Event) {
     fire(this, 'change')
   }
 

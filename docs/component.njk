@@ -47,7 +47,12 @@ code {
 .property-params,
 .property-type {
   font-family: monospace;
-  text-wrap: nowrap;
+  xtext-wrap: nowrap;  /* May need to be more selective */
+}
+.readonly {
+  color: red;
+  font-weight: bold;
+  font-size: 0.8em;
 }
 {% endblock %}
 
@@ -83,7 +88,10 @@ code {
       <td class="property-name">{{m.name}}</td>
       <td>{{m.description | marked | safe }}</td>
       <td>{{'true' if m.reflects else ''}}</td>
-      <td class="property-type">{{m.type.text}}</td>
+      <td class="property-type">
+        {{'<span class="readonly">READONLY</span>' | safe if m.readonly else ''}}
+        {{m.type.text}}
+      </td>
       <td class="property-default">{{m.default | d('', true) }}</td>
     </tr>
     {% endfor %}
