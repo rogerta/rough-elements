@@ -16,23 +16,24 @@ import './re-icon.js'
  *
  * To control the border and background refer to the Border & Background
  * documentation.  By default buttons have a solid background and a rectangle
- * border, except `varaiant=text` which have neither.
+ * border, except `variant=text` which have neither.
  *
  * ### Icon Buttons
- * An "icon button" is a common pattern that can be implemented  by placing a
+ * An "icon button" is a common pattern that can be implemented by placing a
  * single `<re-icon>` in the default slot and setting `circle` to true.  If no
  * border is desired, set `variant=text` as well.  For example:
  * ```
  * <re-button circle variant="text"><re-icon name="info"></re-icon></re-button>
  * ```
  * The button can be made larger or smaller by setting the `--size` CSS
- * property on the embedded `<re-icon>` element.  For example:
+ * property on the embedded `<re-icon>` element.  If `variant=text` is used
+ * the border space can optionally be removed too.  For example:
  * ```
  *   re-button[circle] re-icon {
  *     --size: 3rem;
  *   }
  *   re-button[circle][variant=text] {
- *     border-size: 0;  // Optionally, defaults to 0.5rem otherwise.
+ *     border-width: 0;  // Optionally, defaults to 0.5rem otherwise.
  *   }
  * ```
  *

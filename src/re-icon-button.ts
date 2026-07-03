@@ -1,131 +1,44 @@
-import { css, html, LitElement } from 'lit'
+import { html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-icon.js'
 
 /**
- * IconButton element is an interactive button represented solely by an icon.
- * It supports triggering action menus, navigation, downloads, and popover targets.
+ * Icon buttons implement the no-border "Icon Button" pattern described in
+ * `<re-button>`.
  *
- * @cssproperty --color - The color of the button's icon. Defaults to `inherit`.
- * @cssproperty --re-primary-color - The color used when hovering over the button.
+ * Writing:
+ * ```
+ * <re-icon-button name="???"></re-icon-button>
+ * ```
+ * is a shortcut for writing:
+ * ```
+ * <re-button circle variant="text"><re-icon name="???"></re-icon></re-button>
+ * ```
  */
 @customElement('re-icon-button')
 export class IconButtonElement extends LitElement {
+  static shadowRootOptions: ShadowRootInit = {
+    ...super.shadowRootOptions,
+    delegatesFocus: true,
+  }
+
+  /**
+   * The name of the icon to display.
+   */
   @property() name = ''
-  @property() href = ''
-  @property() target = ''
-  @property() download = ''
-  @property({ type: Boolean, reflect: true }) disabled = false
 
-  /**
-   * Sets this button to be a trigger for a popover element once the button
-   * finishes it's update cycle (that is, it's `updateComplete` promise
-   * resolves).
-   *
-   * `setPopoverTarget` is needed to allow targets from different shawdow root
-   * boundaries to be used.
-   *
-   * @param target The popover target element.  This element is expected to
-   *    have the `popover` attribute.  It's anchor will be this button.
-   */
-  setPopoverTarget(target: HTMLElement | null) {
-    this.updateComplete.then(() => {
-      const button = this.renderRoot.querySelector('button')
-      if (button) {
-        button.popoverTargetElement = target
-      }
-    })
+  protected override firstUpdated(_: PropertyValues) {
+    this.setAttribute('tabindex', '0')
   }
 
-  /**
-   * Toggles the popover associated to this button, if any.
-   *
-   * @param force If true, forces the popoverto show.  If false, forces the
-   *    popover to hide.  If not specified, the state of the popover toggles.
-   * @returns true if the popup is open after the call, and false otherwise.
-   */
-  togglePopover(force?: boolean): boolean {
-    const button = this.renderRoot.querySelector('button')
-    if (button && button.popoverTargetElement &&
-        button.popoverTargetElement instanceof HTMLElement) {
-      return button.popoverTargetElement.togglePopover(force)
-    }
-    return false
+  protected render() {
+    return html`
+      <re-button autofocus variant="text" circle>
+        <re-icon name="${this.name}"></re-icon>
+      </re-button>
+    `
   }
-
-  override render() {
-    return [
-      html`
-        <!-- The button element container. -->
-        <button ?disabled="${this.disabled}" part="button">
-          <!-- The icon displayed inside the button. -->
-          <re-icon part="icon" name="${this.name}"></re-icon>
-        </button>
-      `,
-    ]
-  }
-
-  static styles = [
-    css`
-      :host {
-        display: inline-block;
-        color: var(--color, inherit);
-        border: none;
-        user-select: none;
-        cursor: pointer;
-      }
-      :host * {
-        cursor: pointer;
-      }
-      :host([disabled]) {
-        opacity: 0.5;
-      }
-
-      /* NOTE: the button display is set to flex so that the browser does not
-       * add extra width and/or height due to template whitespace nodes or
-       * descender gaps for inline-block. */
-      button {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: none;
-        padding: 0;
-        margin: 0;
-        height: min-content;
-        background: transparent;
-        color: inherit;
-      }
-      /* Removes the focus ring only for mouse/touch interactions */
-      button:focus:not(:focus-visible) {
-        outline: none;
-      }
-
-      re-icon {
-        color: inherit;
-        transition: all 0.2s ease;
-      }
-      :host(:not([disabled])) :active {
-        transform: scale(0.9);
-      }
-      @media (hover: hover) {
-        :host(:hover:not([disabled])) {
-          color: var(--re-primary-color);
-
-          & re-icon::part(rough) {
-            filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
-          }
-        }
-        :host(:hover:active:not([disabled])) {
-          color: var(--re-primary-color);
-
-          & re-icon::part(rough) {
-            filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
-          }
-        }
-      }
-    `,
-  ]
 }
 
 declare global {

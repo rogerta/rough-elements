@@ -5,14 +5,27 @@ import { ReElement } from './internal/re-element.js'
 import { getIcon, getViewBox } from './re-iconset.js'
 
 /**
- * Icon element displays a hand-drawn rough icon based on a specified name.
- * It queries the icon path data from an iconset and renders it as an SVG.
+ * Icons display hand-drawn rough icons from the Rough Elements iconset
+ * registry.
+ *
+ * The `name` property identfies the icon to display. Rough Elements comes with
+ * a set pre-defined icons and additional icons can be registered using the
+ * `addUserIcon()` function exported from `re-iconset.ts`.  Icons are rendered
+ * with enough randomness such that two icons with the same name will appear
+ * slightly diffrently.
+ *
+ * An empty name renders no icon but the `<re-icon>` remains part of the normal
+ * page layout.  This is useful to reserve space on the page that might later be
+ * filled with an icon.
  *
  * @cssproperty --size - The width and height of the icon. Defaults to `1.5rem`.
  * @cssproperty --color - The fill color of the icon. Defaults to `inherit`.
  */
 @customElement('re-icon')
 export class IconElement extends ReElement {
+  /**
+   * The name of the icon to display.
+   */
   @property({reflect: true}) name = ''
 
   static styles = [
