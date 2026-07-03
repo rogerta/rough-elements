@@ -4,13 +4,22 @@ import { customElement, property } from 'lit/decorators.js'
 import './re-icon.js'
 
 /**
- * An element that is meant to be used inside an `<re-menu>` or 're-select'
- * element.  An optional icon can be prefixed or suffixed.  For menu items,
- * the suffix is often used to show a keyboard shortcut.
+ * Items define elements that are used inside containers such as `<re-menu>`,
+ * `<re-select>` and `<re-tab-group>`.
  *
- * @cssproperty --color - The color of the item's body text.
- * @cssproperty --re-primary-color - The primary color used for selection background and hover drop-shadow.
- * @cssproperty --button-text-shadow-color - The color of text shadow on hover.
+ * Each item has a body, which is usually text, and optional prefixes and
+ * suffixes that can be used to add icons or other elements.  The prefix and
+ * suffix slots default to empty `<re-icon>`s if they are not filled by the
+ * caller.  This allows item bodies to line up nicely if `<re-icon>`s are used
+ * in some items but not others.
+ *
+ * The `selected` property is set by the container that holds the item.  This
+ * is mainly used to allow callers to style the item differently when it is
+ * selected.
+ *
+ * The `disabled` property can be set by the caller to prevent this item from
+ * reacting to user input.  For example a disabled item in an `<re-menu>` will
+ * not fire a `click` event when clicked.
  */
 @customElement('re-item')
 export class ItemElement extends LitElement {
@@ -118,7 +127,8 @@ export class ItemElement extends LitElement {
 
   override render(): unknown {
     return html`
-      <!-- Slot used to hold the item prefix.  Often this is an <re-icon>. -->
+      <!-- Item prefix, often filled with an \`<re-icon>\`.  Defaults to
+           an empty icon. -->
       <slot name="prefix"><re-icon part="prefix"></re-icon></slot>
       <!-- The main body of the item. As a slot, any nodes in the light DOM
            not explicitly assigned to another slot are assigned to this slot.
@@ -126,8 +136,10 @@ export class ItemElement extends LitElement {
            default has the "inline-block" display, some margins, and will grow
            and shrink as needed wihin the <re-item>. -->
       <slot part="body"></slot>
-      <!-- For menu items, this is often used to show the keyboard shortcut
-           that also triggers the same action as the menu item. -->
+      <!-- Item suffix, often filled with an \`<re-icon>\`.
+           For menu items, this is often used to show the keyboard shortcut
+           that also triggers the same action as the menu item.
+           Defaults to an empty icon. -->
       <slot name="suffix"><re-icon part="suffix"></re-icon> </slot>
     `
   }
@@ -141,7 +153,7 @@ declare global {
 
 /**
  * Given an Event (usually a `click` event), returns the ID of the closest
- * <re-item> that is not disabled.  This function is helpful since clicking
+ * `<re-item>` that is not disabled.  This function is helpful since clicking
  * the prefix/suffix/body part of the item could cause the target of the event
  * to be that part, complicating item detection.
  *

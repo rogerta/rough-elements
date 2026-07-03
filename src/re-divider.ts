@@ -4,8 +4,14 @@ import { customElement, property } from 'lit/decorators.js'
 import { ReElement } from './internal/re-element.js'
 
 /**
- * Dividers are visual separator between groups of content.
- * They can can be displayed horizontally or vertically.
+ * Dividers are visual separators between groups of content using rough,
+ * hand-drawn lines.
+ *
+ * Dividers can be displayed horizontally or vertically.
+ *
+ * The `--thickness` CSS property can be used to control the number of lines
+ * drawn.  The default is 4px, which draws one or two lines. About every three
+ * extra pixels will draw a new pair of lines.
  */
 @customElement('re-divider')
 export class DividerElement extends ReElement {
