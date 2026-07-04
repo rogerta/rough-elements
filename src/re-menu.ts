@@ -92,7 +92,7 @@ class KeyboardNavState {
  *
  * The most common use of menus is as follows:
  * ```html
- * <re-menu popover id="menu1" @click="${onMenuClicked_}">
+ * <re-menu popover id="menu1"@click="${onMenuClicked_}">
  *   <re-item id="item1">...</re-item>
  *   <re-item id="item2">...</re-item>
  *   <re-item id="item3">...</re-item>
@@ -121,8 +121,6 @@ class KeyboardNavState {
  * keyboard navigation of the menu items with the arrow keys.  When a menu is
  * used as a popover, it will request focus for itself in response to the
  * `toggle` event.
- *
- * @cssproperty --re-background-color - The background color of the menu. Defaults to `Canvas`.
  */
 @customElement('re-menu')
 export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
@@ -176,6 +174,9 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     return { index, item: assignedElements[index] as ItemElement }
   }
 
+  /**
+   * Unselect all items in the menu.
+   */
   unselectAllItems() {
     const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
     if (slot) {
