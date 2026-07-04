@@ -4,9 +4,16 @@ import { customElement, property } from 'lit/decorators.js'
 import './re-icon.js'
 
 /**
- * Items define elements that are used inside containers such as `<re-menu>`,
- * `<re-select>` and `<re-tab-group>`.
- *
+ * Items define elements that are used inside containers such as
+ * `<re-dropdown>`, `<re-menu>`, `<re-select>` or `<re-tab-group>`.  They
+ * are used as follows:
+ * ```
+ * <re-select>
+ *   <re-item id="item1">...</re-item>
+ *   <re-item id="item2">...</re-item>
+ *   <re-item id="item3">...</re-item>
+ * </re-select>
+ * ```
  * Each item has a body, which is usually text, and optional prefixes and
  * suffixes that can be used to add icons or other elements.  The prefix and
  * suffix slots default to empty `<re-icon>`s if they are not filled by the
@@ -15,7 +22,8 @@ import './re-icon.js'
  *
  * The `selected` property is set by the container that holds the item.  This
  * is mainly used to allow callers to style the item differently when it is
- * selected.
+ * selected.  Note that some containers, such as `<re-dropdown>`, don't select
+ * items so this property is not used.
  *
  * The `disabled` property can be set by the caller to prevent this item from
  * reacting to user input.  For example a disabled item in an `<re-menu>` will
@@ -130,11 +138,11 @@ export class ItemElement extends LitElement {
       <!-- Item prefix, often filled with an \`<re-icon>\`.  Defaults to
            an empty icon. -->
       <slot name="prefix"><re-icon part="prefix"></re-icon></slot>
-      <!-- The main body of the item. As a slot, any nodes in the light DOM
-           not explicitly assigned to another slot are assigned to this slot.
-           As a part, the slot can be styled as needed.  Note the slot by
-           default has the "inline-block" display, some margins, and will grow
-           and shrink as needed wihin the <re-item>. -->
+      <!-- The main body of the item. Any nodes in the light DOM not explicitly
+           assigned to another slot are assigned to this one.  The part can be
+           styled as needed which by default has the "inline-block" display,
+           some margins, and will grow and shrink as needed wihin the
+           \`<re-item>\`. -->
       <slot part="body"></slot>
       <!-- Item suffix, often filled with an \`<re-icon>\`.
            For menu items, this is often used to show the keyboard shortcut
