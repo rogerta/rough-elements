@@ -269,7 +269,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
             ke.stopPropagation()
             const item = this.kbNavState_?.currentItem
             if(item && item instanceof MenuItemElement) {
-              item.showSubmenu()
+              item.toggleSubmenu()
             }
             break
           case ' ':

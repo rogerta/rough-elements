@@ -131,7 +131,7 @@ export class ButtonElement extends ButtonBaseElement {
   /**
    * Sets this button to be a trigger for a popover element. The popover will
    * be displayed once the button finishes it's update cycle (that is, once
-   * `updateComplete` promise resolves).
+   * the `updateComplete` promise resolves).
    *
    * `setPopoverTarget` is needed to allow targets from different shawdow root
    * boundaries to be used.
@@ -139,7 +139,7 @@ export class ButtonElement extends ButtonBaseElement {
    * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
    */
-  setPopoverTarget(target: HTMLElement) {
+  setPopoverTarget(target: HTMLElement | null) {
     this.updateComplete.then(() => {
       const button = this.renderRoot.querySelector('button')
       if (button) {

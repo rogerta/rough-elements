@@ -137,18 +137,16 @@ export class ItemElement extends LitElement {
     return html`
       <!-- Item prefix, often filled with an \`<re-icon>\`.  Defaults to
            an empty icon. -->
-      <slot name="prefix"><re-icon part="prefix"></re-icon></slot>
-      <!-- The main body of the item. Any nodes in the light DOM not explicitly
-           assigned to another slot are assigned to this one.  The part can be
-           styled as needed which by default has the "inline-block" display,
-           some margins, and will grow and shrink as needed wihin the
-           \`<re-item>\`. -->
+      <slot name="prefix"><re-icon></re-icon></slot>
+      <!-- The main body of the item.  The slot uses the "inline-block" display,
+           has no margins, and will grow and shrink as needed wihin the
+           \`<re-item>\`. Extra styling is possible using the part. -->
       <slot part="body"></slot>
       <!-- Item suffix, often filled with an \`<re-icon>\`.
            For menu items, this is often used to show the keyboard shortcut
            that also triggers the same action as the menu item.
            Defaults to an empty icon. -->
-      <slot name="suffix"><re-icon part="suffix"></re-icon> </slot>
+      <slot name="suffix"><re-icon></re-icon></slot>
     `
   }
 }

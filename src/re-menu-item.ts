@@ -6,13 +6,31 @@ import './re-icon-button.js'
 import { ItemElement } from './re-item.js'
 
 /**
- * An element that is meant to be used inside an `<re-menu>` element.  An
- * optional icon can be prefixed or suffixed.  The suffix is often used
- * to show a keyboard shortcut.
+ * Menu items are Items that open up a menu when clicked .  They can be used
+ * anywhere an Item can be used (essentially `<re-menu-item>` extends
+ * `<re-item>`) and a submenu is needed.  For example:
+ * ```
+ * <re-dropdown>
+ *   <re-item id="item1">...</re-item>
+ *   <re-item id="item2">...</re-item>
+ *   <re-item id="item3">...</re-item>
+ *   <re-menu-item id="item3">
+ *     ...
+ *     <re-menu popover slot="submenu">
+ *       <re-item id="item31">...</re-item>
+ *       <re-item id="item32">...</re-item>
+ *       <re-item id="item33">...</re-item>
+ *     </re-menu>
+ *   </re-item>
+ * </re-dropdown>
+ * ```
+ * The menu must be assigned to fill the`submenu` slot and have the `popover`
+ * attribute.  Any element type can be used but `<re-menu>` is the most common.
  *
- * If a submenu is specified, a right-pointing arrow icon is shown at the right
- * of the menu item.  In this case, the submenu should be specicied with the
- * `popover` attribute.  Note that menu items with a submenu will not propagate
+ * If a submenu is specified, a right-pointing arrow icon is shown is the
+ * `suffix `slot of the menu item.
+ *
+ * Note that menu items with a submenu will not propagate
  * `click` events as they are consumed the menu item to manage the submenu.
  */
 @customElement('re-menu-item')
@@ -44,7 +62,8 @@ export class MenuItemElement extends ItemElement {
   ]
 
   /**
-   * Returns this menu item's associated submenu if any.
+   * Returns this menu item's associated submenu, if any and if valid. A valid
+   * submenu is an `HTMLElement` with the `popover` attribute.
    */
   getSubmenu() {
     const slot =
@@ -56,7 +75,10 @@ export class MenuItemElement extends ItemElement {
             ? menu : undefined
   }
 
-  showSubmenu() {
+  /**
+   * Toggles the visible state of the submenu.
+   */
+  toggleSubmenu() {
     // Note: calling button.click() does not seem to show the popover.  To
     // make this work togglePopover() was exposed from <re-icon-button>.  See
     // if there is a way to make click() work.
