@@ -536,90 +536,88 @@
       <h1>re-dropdown</h1>
       <re-dropdown>
         <span slot="label">Dropdown</span>
-        <re-menu-item id="item1">
+        <re-item id="item1">
           <re-icon slot="prefix" name="check"></re-icon>
           Menu item 1
-        </re-menu-item>
-        <re-menu-item id="item2" disabled>
-          Menu item 2
-          <re-icon slot="suffix" name="close"></re-icon>
-        </re-menu-item>
-        <re-menu-item id="item3">
-          Menu item 3
-          <div slot="suffix" >Ctrl+P</div>
-        </re-menu-item>
+        </re-item>
+        <re-item id="item2" disabled>
+          Menu item 2<re-icon slot="suffix" name="close"></re-icon>
+        </re-item>
+        <re-item id="item3">
+          Menu item 3<div slot="suffix" >Ctrl+P</div>
+        </re-item>
         <re-divider></re-divider>
         <re-menu-item id="item4">
           Menu item 4
           <re-menu popover slot="submenu">
-            <re-menu-item id="item41">
+            <re-item id="item41">
               <re-icon slot="prefix" name="check"></re-icon>
               Menu item 1
-            </re-menu-item>
-            <re-menu-item id="item42" disabled>
+            </re-item>
+            <re-item id="item42" disabled>
               Menu item 2
               <re-icon slot="suffix" name="close"></re-icon>
-            </re-menu-item>
-            <re-menu-item id="item43">
+            </re-item>
+            <re-item id="item43">
               Menu item 3
               <div slot="suffix" >Ctrl+P</div>
-            </re-menu-item>
+            </re-item>
           </re-menu>
         </re-menu-item>
       </re-dropdown>
 
       <re-dropdown disabled>
         <span slot="label">Dropdown</span>
-        <re-menu-item id="item1">
+        <re-item id="item1">
           <re-icon slot="prefix" name="check"></re-icon>
           Menu item 1
-        </re-menu-item>
-        <re-menu-item id="item2" disabled>
+        </re-item>
+        <re-item id="item2" disabled>
           Menu item 2
           <re-icon slot="suffix" name="close"></re-icon>
-        </re-menu-item>
-        <re-menu-item id="item3">
+        </re-item>
+        <re-item id="item3">
           Menu item 3
           <div slot="suffix" >Ctrl+P</div>
-        </re-menu-item>
+        </re-item>
       </re-dropdown>
     </div>
 
     <div class="demo">
       <h1>re-menu</h1>
       <re-menu id="menu1">
-        <re-menu-item id="item1">
+        <re-item id="item1">
           <re-icon slot="prefix" name="check"></re-icon>
           Menu item 1
-        </re-menu-item>
-        <re-menu-item id="item2" disabled>
+        </re-item>
+        <re-item id="item2" disabled>
           Menu item 2
           <re-icon slot="suffix" name="close"></re-icon>
-        </re-menu-item>
-        <re-menu-item id="item3">
+        </re-item>
+        <re-item id="item3">
           Menu item 3
           <div slot="suffix">Ctrl+P</div>
-        </re-menu-item>
+        </re-item>
         <re-divider></re-divider>
         <re-menu-item id="item4">
           Menu item 4
           <re-menu id="menu2" popover slot="submenu">
-            <re-menu-item id="item41">
+            <re-item id="item41">
               <re-icon slot="prefix" name="check"></re-icon>
               Menu item 1
-            </re-menu-item>
-            <re-menu-item id="item42">
+            </re-item>
+            <re-item id="item42">
               Menu item 2
               <re-icon slot="suffix" name="close"></re-icon>
-            </re-menu-item>
+            </re-item>
             <re-divider></re-divider>
             <re-menu-item id="item43">
               Menu item 3
               <div slot="suffix" >Ctrl+P</div>
               <re-menu id="menu3" popover slot="submenu">
-                <re-menu-item id="item431">
+                <re-item id="item431">
                   Menu item 1
-                </re-menu-item>
+                </re-item>
               </re-menu>
             </re-menu-item>
           </re-menu>
