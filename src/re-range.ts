@@ -51,11 +51,11 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
       #rough .circle {
         stroke: var(--re-range-knob-outline-color,
                     var(--re-range-knob-color, var(--color)));
-        fill: var(--re-range-knob-color, var(--color));
+        fill: var(--re-range-knob-color, var(--re-primary-color));
       }
 
       #rough .line {
-        stroke: var(--re-range-track-color, var(--color));
+        stroke: var(--re-range-track-color, var(--border-color));
       }
 
       /* Button press animation */
@@ -85,6 +85,10 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
   ]
 
   handleEvent(e: Event) {
+    if (this.disabled) {
+      return
+    }
+
     switch (e.type) {
       case 'pointerdown': {
         const pe = e as PointerEvent
