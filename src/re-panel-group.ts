@@ -54,7 +54,7 @@ export class PanelGroupElement extends LitElement {
         console.error('Panel children should be HTML elements')
       }
 
-      p.classList.toggle('hidden', id !== this.selected)
+      p.classList.toggle('re-hidden', id !== this.selected)
     })
   }
 }

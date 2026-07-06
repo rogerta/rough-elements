@@ -53,11 +53,6 @@ export class MenuItemElement extends ItemElement {
         position-area: center inline-end;
         position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
       }
-
-      /* Used to hide submenu icon button when there is no submenu. */
-      .hidden {
-        display: none;
-      }
     `
   ]
 
@@ -91,7 +86,7 @@ export class MenuItemElement extends ItemElement {
 
     const submenu = this.getSubmenu()
     const arrow = this.shadowRoot?.querySelector('re-icon-button')
-    arrow?.classList.toggle('hidden', submenu === undefined)
+    arrow?.classList.toggle('re-hidden', submenu === undefined)
 
     if (submenu) {
       if (submenu instanceof HTMLElement &&
@@ -156,7 +151,7 @@ export class MenuItemElement extends ItemElement {
       super.render(),
       html`
         <!-- Icon button pointing to the right, indicating a submenu. -->
-        <re-icon-button part="submenu-icon" class="hidden"
+        <re-icon-button part="submenu-icon" class="re-hidden"
             name="keyboard-arrow-right"></re-icon-button>
         <!-- Slot containing the popover menu to use as a submenu. -->
         <slot name="submenu"></slot>
