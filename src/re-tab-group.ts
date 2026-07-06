@@ -13,7 +13,15 @@ import { fire } from './internal/re-element.js'
  */
 @customElement('re-tab-group')
 export class TabGroupElement extends LitElement {
+  /**
+   * The name of the panel group.  It must be unique within a given shadow
+   * root or light DOM.
+   */
   @property({}) name = ''
+
+  /**
+   * The `id` of the tab that is currently selected.
+   */
   @property({}) selected = ''
 
   static styles = [
