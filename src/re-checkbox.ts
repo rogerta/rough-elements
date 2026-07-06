@@ -10,7 +10,7 @@ import { fire } from './internal/re-element.js'
  * "No" choices.  Checkboxes may be programmatically set to an indeterminate
  * states to indicate that no choice has been made.
  *
- * The checkbox `prefix` slot it is used internally to render an icon that
+ * The checkbox `prefix` slot is used internally to render an icon that
  * represents the yes/no/indeterminate state.  Adding more content to this
  * slot may cause unexpected results.  However, the `prefix` part can be
  * used to CSS style the icon.
