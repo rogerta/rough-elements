@@ -6,8 +6,7 @@ import { BorderMixin } from './internal/re-border-mixin.js'
 import { ReElement } from './internal/re-element.js'
 
 /**
- * Progress element represents the completion progress of a task.
- * It displays a hand-drawn rough zigzag progress bar.
+ * Progress elements represent the completion progress of a task.
  *
  * @cssproperty --color - Color of the progress label and bar lines.
  * @cssproperty --label-lower-color - Color of the label when the progress is lower than 50%. Defaults to `--color`.
@@ -15,9 +14,26 @@ import { ReElement } from './internal/re-element.js'
  */
 @customElement('re-progress')
 export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
-  @property({ type: Boolean, reflect: true }) showValue = false
+  /**
+   * If true the numeric value of the progress is displayed on the progress bar.
+   */
+  @property({ type: Boolean, reflect: true }) showvalue = false
+
+  /**
+   * The lower numeric bound of the measured range. This must be less than
+   * `max` if specified.
+   */
   @property({ type: Number }) min = 0
+
+  /**
+   * The upper numeric bound of the measured range. This must be greater than
+   * `min` if specified.
+   */
   @property({ type: Number }) max = 1
+
+  /**
+   * The current value of the progress bar.
+   */
   @property({ type: Number }) value?: number
 
   constructor() {
@@ -32,14 +48,15 @@ export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <!-- The label displaying the numeric progress value when showValue is true. -->
+        <!-- The label displaying the numeric progress value when \`showvalue\`
+             is true. -->
         <div part="label">${this.renderValue_()}</div>
       `,
     ]
   }
 
-  renderValue_() {
-    return this.showValue && this.value ? this.value.toFixed(1) : ''
+  private renderValue_() {
+    return this.showvalue && this.value ? this.value.toFixed(1) : ''
   }
 
   override updated(props: PropertyValues) {
