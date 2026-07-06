@@ -7,10 +7,12 @@
   --re-warning-color: rgb(238 119 0);
   --re-danger-color: rgb(238 0 0);
 
+  --color: var(--foreground-color);
+  --border-color: rgb(from var(--foreground-color) R G B / 0.7);
+
+  /* The following colours are light-theme specific. */
   --foreground-color: black;
   --background-color: white;
-  --color: var(--foreground-color);
-  --border-color: rgb(from var(--foreground-color) R G B / 0.75);
 }
 
 .re-hidden {
@@ -31,7 +33,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --re-primary-color: rgb(0 0 238 / 0.9);
+    --re-primary-color: rgb(0 0 238 / 0.75);
     --re-success-color: rgb(0 200 0 / 0.75);
     --re-neutral-color: rgb(192 192 192 / 0.75);
     --re-warning-color: rgb(238 119 0 / 0.75);

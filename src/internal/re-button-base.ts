@@ -100,7 +100,11 @@ export class ButtonBaseElement extends
       }
 
       slot[name=prefix]::slotted(*) {
+        --color: var(--border-color);
         margin-left: -0.25rem;
+      }
+      slot[name=suffix]::slotted(*) {
+        --color: var(--border-color);
       }
       re-icon[name=keyboard-arrow-down] {
         margin-right: -0.25rem;

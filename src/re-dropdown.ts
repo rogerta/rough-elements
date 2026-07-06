@@ -65,7 +65,10 @@ export class DropdownElement extends LitElement {
         outline: none;
       }
       re-button {
-        --text-transform: none;
+        --re-background-color: transparent;
+      }
+      re-button::part(button) {
+        text-transform: none;
       }
       re-button[part="trigger"]::part(button) {
         anchor-name: --menu-anchor;

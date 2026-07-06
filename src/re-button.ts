@@ -189,7 +189,7 @@ export class ButtonElement extends ButtonBaseElement {
     ...super.styles,
     css`
       :host(:not([variant=text])) {
-        --text-transform: uppercase;
+        --re-background-color: rgb(from var(--foreground-color) R G B / 0.05);
       }
       :host(:not([circle])) {
         padding: 0.25rem 0.5rem;
@@ -229,11 +229,17 @@ export class ButtonElement extends ButtonBaseElement {
        * that the browser does not add extra width and/or height due to
        * template whitespace nodes or descender gaps for inline-block. */
       button {
-        text-transform: var(--text-transform);
+        text-transform: uppercase;
       }
 
+      re-icon[name=keyboard-arrow-down] {
+        --color: var(--border-color);
+      }
+
+      /* This does not set the font-weight to bold since that affects the
+       * width of the control, which is annoying. */
       :host([variant=text]:not([disabled]):focus-within) button {
-        font-weight: bold;
+        text-shadow: 0.5px 0 0 currentcolor, -0.5px 0 0 currentcolor;
       }
 
       /* Button press animation */

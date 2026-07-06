@@ -62,13 +62,19 @@ export class CheckboxElement extends ButtonBaseElement {
       :host {
         padding: 0.25rem 0.5rem;
       }
+      /* This does not set the font-weight to bold since that affects the
+       * width of the control, which is annoying. */
       :host(:not([disabled]):focus-within) button {
-        font-weight: bold;
+        text-shadow: 0.5px 0 0 currentcolor, -0.5px 0 0 currentcolor;
       }
 
       :host(:not([disabled]):active) button,
       :host(:not([disabled]).is-active) button {
         transform: scale(0.9);
+      }
+
+      :host([checked]) slot[name=prefix]::slotted(*) {
+        --color: var(--re-primary-color);
       }
 
       slot[name=suffix]::slotted(*) {
