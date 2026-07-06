@@ -1,11 +1,32 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-// Set "hidden" class on element.  So embedder needs to set the required
-// styles for this class.
 /**
- * PanelGroup element groups a set of panels together and handles making only
- * the selected panel visible by toggling a `hidden` class on the panel child elements.
+ * Panel Groups manage sets of elements (also called panels) ensuring that
+ * only one is visible at a time.
+ * ```html
+ * <re-panel-group name="my-group" selected="panel1">
+ *   <div data-id="panel1">...</div>
+ *   <div data-id="panel2">...</div>
+ *   <div data-id="panel3">...</div>
+ * </re-panel-group>
+ * ```
+ * Each panel must have a `data-id` attribute whose value is unique in the
+ * group.  Setting the `selected` property of the panel group to the `data-id`
+ * value of a panel makes that panel visible and hides all others.
+ *
+ * Alternately, the panel group can be paired with a Tab Group that shares the
+ * same name.  The tab group should have one Item for each panel, where the `id`
+ * of the item matches the `data-id` of the panel.  Clicking on an item makes
+ * the corresponding panel visible.  For example, here is a tab group that is
+ * paired with the panel group above:
+ * ```html
+ * <re-tab-group name="my-group">
+ *   <re-item id="panel1">...</re-item>
+ *   <re-item id="panel2">...</re-item>
+ *   <re-item id="panel3">...</re-item>
+ * </re-tab-group>
+ * ```
  */
 @customElement('re-panel-group')
 export class PanelGroupElement extends LitElement {
@@ -51,7 +72,7 @@ export class PanelGroupElement extends LitElement {
     panels?.forEach(p => {
       const id = p instanceof HTMLElement ? p.dataset.id : undefined
       if (id === undefined) {
-        console.error('Panel children should be HTML elements')
+        console.error('Panels should be HTML elements')
       }
 
       p.classList.toggle('re-hidden', id !== this.selected)
