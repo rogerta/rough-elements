@@ -95,9 +95,9 @@ export class InputElement extends
   @property({ type: Number }) minlength?: number
 
   /**
-   * Pattern that `value` must match to be valid.
+   * Regular expression pattern that `value` must match to be valid.
    */
-  @property({ type: Boolean }) pattern?: string
+  @property({}) pattern?: string
 
   /**
    * Text that appears in the form control when it has no value set.
