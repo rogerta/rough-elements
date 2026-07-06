@@ -17,8 +17,18 @@ import { IconElement } from './re-icon.js'
  *
  * The radio button `prefix` slot is used internally to render an icon that
  * represents the chosen or not state. Adding more content to this slot may
- * cause unexpected results. However, the prefix part can be used to CSS style
- * the icon.
+ * cause unexpected results.  It's possible to style the icon using
+ * CSS like the following:
+ * ```
+ *  re-radio#myid [slot=prefix] {
+ *    --color: purple;
+ *    transition: transform 0.75s ease;
+ *  }
+ *  re-radio#myid[checked] [slot=prefix] {
+ *    --color: pink;
+ *    transform: rotate(1turn);
+ *  }
+ * ```
  */
 @customElement('re-radio')
 export class RadioElement extends ButtonBaseElement {

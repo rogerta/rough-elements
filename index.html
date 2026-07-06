@@ -119,7 +119,7 @@
         border-width: 0;
         --size: 64px;
       }
-      #button91::part(prefix) {
+      #button91 [slot=prefix] {
         --color: blue;
       }
 
@@ -170,16 +170,12 @@
       #checkbox1 {
         --color: brown;
       }
-      #checkbox1::part(prefix) {
+      #checkbox1 [slot=prefix] {
         --color: purple;
-      }
-      #checkbox1[checked]::part(prefix) {
-        --color: pink;
-      }
-      #checkbox1 re-icon {
         transition: transform 0.75s ease;
       }
-      #checkbox1[checked] re-icon {
+      #checkbox1[checked] [slot=prefix] {
+        --color: pink;
         transform: rotate(1turn);
       }
 
@@ -335,16 +331,12 @@
       #radio11 {
         --color: brown;
       }
-      #radio11::part(prefix) {
+      #radio11 [slot=prefix] {
         --color: purple;
-      }
-      #radio11[checked]::part(prefix) {
-        --color: pink;
-      }
-      #radio11 re-icon {
         transition: transform 0.75s ease;
       }
-      #radio11[checked] re-icon {
+      #radio11[checked] [slot=prefix] {
+        --color: pink;
         transform: rotate(1turn);
       }
 

@@ -67,11 +67,11 @@ export class ButtonBaseElement extends
         <button autofocus ?disabled="${this.disabled}" part="button"
             name="${ifDefined(this.name)}" @click="${this.handleEvent}">
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
-          <slot name="prefix" part="prefix"></slot>
+          <slot name="prefix"></slot>
           <!-- The main label of the button. Typically holds text. -->
-          <slot part="label"></slot>
+          <slot></slot>
           <!-- A suffix for the label.  An \`<re-icon>\` is often used here. -->
-          <slot name="suffix" part="suffix"></slot>
+          <slot name="suffix"></slot>
           ${this.renderCaretIfNeeded_() }
         </button>
       `,

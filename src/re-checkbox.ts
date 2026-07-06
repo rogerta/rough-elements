@@ -12,8 +12,18 @@ import { fire } from './internal/re-element.js'
  *
  * The checkbox `prefix` slot is used internally to render an icon that
  * represents the yes/no/indeterminate state.  Adding more content to this
- * slot may cause unexpected results.  However, the `prefix` part can be
- * used to CSS style the icon.
+ * slot may cause unexpected results.  It's possible to style the icon using
+ * CSS like the following:
+ * ```
+ *  re-checkbox#myid [slot=prefix] {
+ *    --color: purple;
+ *    transition: transform 0.75s ease;
+ *  }
+ *  re-checkbox#myid[checked] [slot=prefix] {
+ *    --color: pink;
+ *    transform: rotate(1turn);
+ *  }
+ * ```
  */
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonBaseElement {
