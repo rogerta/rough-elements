@@ -240,6 +240,10 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
                 calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
       }
 
+      [part=button] {
+        --color: var(--border-color);
+      }
+
       @media (prefers-color-scheme: dark) {
         :host {
           --re-background-color:

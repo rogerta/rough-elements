@@ -59,6 +59,7 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
       slot[name=marker] re-icon,
       slot[name=marker]::slotted(re-icon) {
         transition: rotate 0.2s ease;
+        --color: var(--border-color);
       }
       details[open] slot[name=marker] re-icon,
       details[open] slot[name=marker]::slotted(re-icon) {
