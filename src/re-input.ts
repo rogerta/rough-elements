@@ -255,7 +255,7 @@ export class InputElement extends
     this.showPassword_ = !this.showPassword_
   }
 
-  private onInputChanged_(e: Event) {
+  private onInputChanged_(_: Event) {
     fire(this, 'change')
   }
 
