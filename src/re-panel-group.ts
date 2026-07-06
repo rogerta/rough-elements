@@ -27,6 +27,8 @@ import { customElement, property } from 'lit/decorators.js'
  *   <re-item id="panel3">...</re-item>
  * </re-tab-group>
  * ```
+ * It's important that the panel and tab groups be in the same shadow root or
+ * light DOM so that they can find each other.
  */
 @customElement('re-panel-group')
 export class PanelGroupElement extends LitElement {
