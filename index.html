@@ -383,6 +383,10 @@
 
     <div class="demo">
       <h1>re-textarea</h1>
+      <re-textarea id="ta0">
+        <re-icon slot="prefix" name="dangerous"></re-icon>
+        Some text
+      </re-textarea>
       <re-textarea id="ta1">
         <re-icon slot="prefix" name="dangerous"></re-icon>
         Some text
@@ -516,7 +520,10 @@
       <re-input id="i5" placeholder="password" type="password"></re-input>
       <re-input id="i6" placeholder="search" type="search"></re-input>
       <re-input id="i7" placeholder="tel" type="tel"></re-input>
-      <re-input id="i8" placeholder="text" type="text"></re-input>
+      <re-input id="i8" placeholder="text" type="text">
+        <re-icon slot="prefix" name="check"></re-icon>
+        <re-icon slot="suffix" name="check"></re-icon>
+      </re-input>
       <re-input id="i9" placeholder="time" type="time"></re-input>
       <re-input id="i10" placeholder="url" type="url"></re-input>
       <re-button id="toggleInputs" variant="danger">Toggle enable</re-button>

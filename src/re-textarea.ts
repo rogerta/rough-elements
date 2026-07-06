@@ -189,10 +189,12 @@ export class TextAreaElement extends
       slot[name="prefix"]::slotted(*) {
         margin-left: -0.25rem;
         margin-right: 0.25rem;
+        --color: var(--border-color);
       }
       slot[name="suffix"]::slotted(*) {
         margin-left: 0.25rem;
         margin-right: 0.25rem;
+        --color: var(--border-color);
       }
 
       textarea {
