@@ -7,28 +7,84 @@ import { DropdownElement } from  './re-dropdown.js'
 import { getItemFromEvent } from './re-item.js'
 
 /**
- * A select exposes a menu of options that the user can select from.  The
- * currently selected option is shown as the label of the select.
+ * Selects expose a menu of options that the user can can choose.
+ * A select consists of a trigger button and a popover menu panel with the full
+ * list of options to choose.
  *
- * While this element derives from `<re-dropdown>`, the `label` slot should not
- * be used directly.  It is used internally to show the currently selected
- * option(s).
+ * The `label` slot provides the content of the trigger button and is filled
+ * internally with the currently selected option(s).  It should not be filled
+ * by the caller except to override the default rendering (not recommended).
  *
- * This component inherits all CSS custom properties and slots from DropdownElement.
- */
+ * Any children not assigned to a slot are placed in the popover menu panel.
+ * These are usually `<re-item>`, `<re-menu-item>` or `<re-divider>` elements,
+ * but any content can be placed there.
+ *
+ * A typical use of select is as follows:
+* ```
+ * <re-select id="sel1"@change="${onChanged}">
+ *   <re-item id="item1">...</re-item>
+ *   <re-item id="item2">...</re-item>
+ *   <re-divider></re-divider>
+ *   <re-item id="item3">...</re-item>
+ * </re-select>
+ * ```
+ * ```
+ * onChanged(e: Event) {
+ *   const id = e.target.value
+ *   switch (id) {
+ *     case 'item1':
+ *        ...
+ *        break
+ *     case 'item2':
+ *        ...
+ *        break
+ *     case 'item3':
+ *        ...
+ *        break
+ *   }
+ * }
+ * ```
+ * `<re-select>` participates in forms just like the stardard HTML `<select>`.
+  */
 @customElement('re-select')
 export class SelectElement extends ReFormControlMixin(DropdownElement) {
   static formAssociated = true
 
+  /**
+   * If true, multiple options can be selected simultaneously.  Otherwise only
+   * one option can be selected at a time.
+   *
+   * NOT YET IMPLEMENTED
+   */
   @property({ type: Boolean, reflect: true }) multiple = false
+
+  /**
+   * The index of the currently selected option.  If no option is selected,
+   * this is -1.
+   */
   @property({ type: Number }) selectedIndex = -1
+
+  /**
+   * The currently selected option(s).  If no option is selected, this is an
+   * empty array.
+   *
+   * NOT YET IMPLEMENTED
+   */
   @property({ type: Array }) selectedOptions = []
+
+  /**
+   * If true, an option must be selected before its form can be submitted.
+   */
   @property({ type: Boolean, reflect: true }) required = false
+
+  /**
+   * The `id` of the item that is currently selected.
+   */
   @property({}) value = ''
 
   @property({ type: Array, state: true }) private labelNodes_: Node[] = []
 
-  validate_() {
+  private validate_() {
     const validity: ValidityStateFlags = {}
     let message: string | undefined
 

@@ -24,6 +24,8 @@ import { fire } from './internal/re-element.js'
  *    transform: rotate(1turn);
  *  }
  * ```
+ * `<re-checkbox>` participates in forms just like the stardard HTML
+ * `<input type="checkbox"/>`.
  */
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonBaseElement {

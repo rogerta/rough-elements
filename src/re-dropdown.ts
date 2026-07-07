@@ -18,7 +18,7 @@ import { NO_ITEM } from './re-menu.js'
  *
  * A common use of a dropdown is as follows:
  * ```
- * <re-dropdown id="dd1"@click="${onItemClicked_}">
+ * <re-dropdown id="dd1"@click="${onItemClicked}">
  *   <span slot="label">Click me</span>
  *   <re-item id="item1">...</re-item>
  *   <re-item id="item2">...</re-item>
@@ -29,7 +29,7 @@ import { NO_ITEM } from './re-menu.js'
  * ```
  * import { getItemFromEvent } from '@rough-elements/re-item.ts'
  *
- * onItemClicked_(e: Event) {
+ * onItemClicked(e: Event) {
  *   const item = getItemFromEvent(e)
  *   switch (item?.id) {
  *     case 'item1':

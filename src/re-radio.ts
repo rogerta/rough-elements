@@ -29,6 +29,8 @@ import { IconElement } from './re-icon.js'
  *    transform: rotate(1turn);
  *  }
  * ```
+ * `<re-radio>` participates in forms just like the stardard HTML
+ * `<input type="radio"/>`.
  */
 @customElement('re-radio')
 export class RadioElement extends ButtonBaseElement {

@@ -23,6 +23,8 @@ import './re-icon-button.js'
  * supported types.  Most of the properties listed below mirror the properties
  * of `<input>` with the same name.  Don't forget that, unlike `<input>`, a
  * closing tag `</re-input>` is required.
+ *
+ * `<re-input>` participates in forms just like the stardard HTML `<input>`.
  */
 @customElement('re-input')
 export class InputElement extends
