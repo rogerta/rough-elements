@@ -1,10 +1,11 @@
 import { css } from 'lit'
-import { customElement, property } from 'lit/decorators.js'
+import { customElement } from 'lit/decorators.js'
 
 import { ReElement } from './internal/re-element.js'
 
 /**
- * Spinner element is a loading spinner that indicates an operation is in progress.
+ * Spinners show progress being made for an operation that will take an
+ * indterminate amount of time.
  *
  * @cssproperty --size - The width and height of the spinner. Defaults to `1.5rem`.
  * @cssproperty --track-width - The thickness of the spinner track. Defaults to `2px`.
@@ -13,15 +14,8 @@ import { ReElement } from './internal/re-element.js'
  */
 @customElement('re-spinner')
 export class SpinnerElement extends ReElement {
-  @property({ type: Boolean, reflect: true }) showValue = false
-  @property({ type: Number }) min = 0
-  @property({ type: Number }) max = 1
-  @property({ type: Number }) value?: number
-
   override render() {
-    return [
-      super.renderRoughSvg(),
-    ]
+    return super.renderRoughSvg()
   }
 
   protected override onResized(
@@ -63,7 +57,7 @@ export class SpinnerElement extends ReElement {
         height: var(--size);
       }
       svg :first-child path {
-        stroke: var(--re-spinner-tracker-color, rgb(0 0 0 / 0.1));
+        stroke: var(--re-spinner-tracker-color, var(--border-color));
       }
       svg :nth-child(2) path {
         stroke: var(--re-spinner-indicator-color, var(--re-primary-color));

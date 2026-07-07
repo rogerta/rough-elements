@@ -8,8 +8,21 @@ import type { PanelGroupElement } from './re-panel-group.js'
 import { fire } from './internal/re-element.js'
 
 /**
- * TabGroup element organizes content into separate views or tabs.
- * It manages selection and activates panels associated with tabs by name.
+ * TabGroups allow users to choose a single option from a group of options that
+ * are organized in one row, often called Tabs in this configuration.  Tab
+ * groups are mainly used in conjunction with Panel Groups, allowing the use of
+ * the former to control which panel is visible in the latter.  See the
+ * documentation of panel groups for more details.
+ *
+ * The children of `<re-tab-group>` should be `<re-items>`s.  A typical use
+ * is as follows:
+ * ```
+ * <re-tab-group name="my-group">
+ *   <re-item id="tab1">...</re-item>
+ *   <re-item id="tab2">...</re-item>
+ *   <re-item id="tab3">...</re-item>
+ * </re-tab-group>
+ * ```
  */
 @customElement('re-tab-group')
 export class TabGroupElement extends LitElement {
@@ -121,7 +134,7 @@ export class TabGroupElement extends LitElement {
     }
   }
 
-  onClick_(e: Event) {
+  private onClick_(e: Event) {
     const item = getItemFromEvent(e)
     if (!item) {
       return
@@ -214,7 +227,8 @@ export class TabGroupElement extends LitElement {
     return html`
       <!-- The default slot representing the tab headers (should be <re-item> elements). -->
       <slot @click="${this.onClick_}"></slot>
-      <!-- The visual active tab indicator line. -->
+      <!-- The visual active tab indicator line, implement using an
+           \`<re-divider>\`. -->
       <re-divider part="indicator"></re-divider>
     `
   }

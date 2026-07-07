@@ -7,7 +7,7 @@ import { DropdownElement } from  './re-dropdown.js'
 import { getItemFromEvent } from './re-item.js'
 
 /**
- * Selects expose a menu of options that the user can can choose.
+ * Selects expose a menu of options from which the user can choose one or many.
  * A select consists of a trigger button and a popover menu panel with the full
  * list of options to choose.
  *

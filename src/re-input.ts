@@ -58,6 +58,12 @@ export class InputElement extends
   @property({ type: Boolean, reflect: true }) autocomplete = false
 
   /**
+   * Controls whether automatic spelling correction and processing of text is
+   * enabled while the user is editing this textarea.
+   */
+  @property({ type: Boolean, reflect: true }) autocorrect = true
+
+  /**
    * If present, indicates that the input should automatically have focus when
    * the page has finished loading (or when the `<dialog>` containing the
    * element has been displayed).
@@ -210,6 +216,7 @@ export class InputElement extends
             name="${ifDefined(this.name)}"
             autocapitalize="${this.autocapitalize}"
             autocomplete="${this.autocomplete}"
+            autocorrect="${this.autocorrect ? 'on' : 'off'}"
             ?autofocus="${this.autofocus}"
             ?disabled="${this.disabled}"
             list="${this.list}"
