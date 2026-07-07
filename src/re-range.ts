@@ -5,7 +5,8 @@ import { fire, ReElement } from './internal/re-element.js'
 import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 
 /**
- * Range element represents a slider control to select a numeric value within a range.
+ * Ranges collect a numeric values from the user that falls within a specific
+ * range.
  *
  * @cssproperty --knob-fraction - Height fraction of the knob diameter (between 0 and 1). Defaults to 0.66.
  * @cssproperty --re-range-knob-outline-color - Stroke color of the knob circle. Defaults to `--re-range-knob-color`.
@@ -17,9 +18,25 @@ import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 export class RangeElement extends ReFormControlMixin(ReElement) {
   static formAssociated = true
 
+  /**
+   * The range’s maximum value.
+   */
   @property({ type: Number }) min = 0
+
+   /**
+   * The range’s maximum value.
+   */
   @property({ type: Number }) max = 100
+
+  /**
+   * Incremental values that are valid.
+   */
   @property({ type: Number }) step = 1
+
+  /**
+   * The value of the control. When specified in the HTML, corresponds to the
+   * initial value.
+   */
   @property({ type: Number }) value: number = 50
 
   /**
@@ -84,6 +101,30 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
     `
   ]
 
+  private validate_() {
+    const validity: ValidityStateFlags = {}
+    let message: string | undefined
+
+    if (this.min >= this.max) {
+      validity.customError = true
+      message = 'Min must be less than max'
+    } else if (!Number.isFinite(this.value)) {
+      validity.typeMismatch = true
+      message = 'Value is not a number'
+    } else if (this.value < this.min) {
+      validity.rangeUnderflow = true
+      message = 'The value must be greater than or equal to the min'
+    } else if (this.value > this.max) {
+      validity.rangeOverflow = true
+      message = 'The value must be less than or equal to the max'
+    } else if (this.value !== this.snap_(this.value)) {
+      validity.stepMismatch = true
+      message = 'The value must be a multiple of the step'
+    }
+
+    this.setValidity(validity, message)
+  }
+
   handleEvent(e: Event) {
     if (this.disabled) {
       return
@@ -141,7 +182,8 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
   }
 
   private snap_(value: number) {
-    return Math.round(value / this.step) * this.step
+    const diff = value - this.min
+    return this.min + Math.round(diff / this.step) * this.step
 
   }
 
@@ -160,42 +202,31 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
   override updated(props: PropertyValues) {
     super.updated(props)
 
+    let revalidate = false
     let requestRoughRender = false
 
-    if(props.has('min')) {
-      if (this.min > this.max) {
-        this.min = 0
-        requestRoughRender = true
-      }
+    if(props.has('min') || props.has('max')) {
+      revalidate = true
+      requestRoughRender = true
     }
 
-    if(props.has('max')) {
-      if (this.max < this.min) {
-        this.max = 100
-        requestRoughRender = true
-      }
+    if(props.has('step')) {
+      revalidate = true
     }
 
     if(props.has('value')) {
-      if (this.value === undefined) {
-        this.value = this.min
-      } else {
-        this.value = this.snap_(this.value)
-      }
-
-      if (this.value < this.min) {
-        this.value = this.min
-      } else if (this.value > this.max) {
-        this.value = this.max
-      }
-
       this.setFormValue(this.value.toString())
       fire(this, 'input', {bubbles: true, composed: true})
+      revalidate = true
       requestRoughRender = true
     }
 
     if (requestRoughRender) {
       this.requestRoughRender()
+    }
+
+    if (revalidate) {
+      this.validate_()
     }
   }
 
@@ -225,7 +256,8 @@ export class RangeElement extends ReFormControlMixin(ReElement) {
     }
 
     const diameter = height * fraction
-    const position = (this.value - this.min) / (this.max - this.min) * width
+    let position = (this.value - this.min) / (this.max - this.min) * width
+    position = Math.min(Math.max(position, 0), width)
     options.fill = 'inherit'
     options.fillStyle = 'solid'
     roughElements.push(this.rough.circle(position, half, diameter, options))
