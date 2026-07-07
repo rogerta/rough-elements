@@ -8,8 +8,11 @@ import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
 import { IconElement } from './re-icon.js'
 
 /**
- * Rating element allows users to view or enter a star rating.
- * It displays a row of interactive star icons.
+ * Ratings collect star ratings from (or display them to) the user.  Ratings
+ * can be configured with 3 to 5 stars.
+ *
+ * Ratings can be associated with HTML forms and will submit their rating.
+ * In this case, the `name` property must be set to a valid string.
  *
  * @cssproperty --re-rating-color - Color of the selected rating stars. Defaults to `gold`.
  */
@@ -17,14 +20,30 @@ import { IconElement } from './re-icon.js'
 export class RatingElement extends ReFormControlMixin(LitElement) {
   static formAssociated = true
 
+  /**
+   * The number of stars to display.  The minimum is 3 and the maximum is 5.
+   */
   @property({ type: Number }) max = 5
+
+  /**
+   * The rating. When specified in the HTML, corresponds to the initial value.
+   */
   @property({ type: Number }) value: number = 0
 
   /**
-   * If true the user should not be able to change the rating.
+   * If true the input does not respond to user actions.  Disabled inputs are
+   * not sumbitted as part of a form.
    */
   @property({ type: Boolean, reflect: true }) disabled = false
+
+  /**
+   * If true, the rating is not editable.
+   */
   @property({ type: Boolean, reflect: true }) readonly = false
+
+  /**
+   * If true, the checkbox must be checked before its form can be submitted.
+   */
   @property({ type: Boolean, reflect: true }) required = false
 
   static styles = [
@@ -45,6 +64,10 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
       re-icon {
         --color: rgb(0 0 0 / 0.3);
         transition: transform 0.2s ease;
+      }
+
+      .hidden {
+        display: none;
       }
 
       :host(:not(:hover)) re-icon.selected,
@@ -176,6 +199,10 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
     this.setAttribute('tabindex', '0')
+
+    if (!Number.isInteger(this.max) || this.max < 3 || this.max > 5) {
+      console.error(`Invalid max value ${this.max}.  Must be between 3 and 5.`)
+    }
   }
 
   protected override updated(props: PropertyValues) {
@@ -194,8 +221,8 @@ export class RatingElement extends ReFormControlMixin(LitElement) {
     const classes1 = {selected: this.value > 0 }
     const classes2 = {selected: this.value > 1 }
     const classes3 = {selected: this.value > 2 }
-    const classes4 = {selected: this.value > 3 }
-    const classes5 = {selected: this.value > 4 }
+    const classes4 = {selected: this.value > 3, hidden: this.max < 4 }
+    const classes5 = {selected: this.value > 4, hidden: this.max < 5 }
 
     return html`
       <div @click="${this.onClick_}" @pointermove="${this.onPointerMove_}">
