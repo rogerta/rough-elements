@@ -2,7 +2,7 @@ import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { fire, ReElement } from './internal/re-element.js'
-import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+import { FormControlMixin } from './internal/re-form-control-mixin.js'
 
 /**
  * Ranges collect a numeric values from the user that falls within a specific
@@ -15,7 +15,7 @@ import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
  * @cssproperty --color - Fallback color for knob and track.
  */
 @customElement('re-range')
-export class RangeElement extends ReFormControlMixin(ReElement) {
+export class RangeElement extends FormControlMixin(ReElement) {
   static formAssociated = true
 
   /**

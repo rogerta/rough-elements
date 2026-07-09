@@ -27,7 +27,7 @@ export declare class FormControlInterface {
  * @param superClass Usually LitElement or ReElement.
  * @returns The mixin base class supporting form participation.
  */
-export const ReFormControlMixin =
+export const FormControlMixin =
     <T extends Constructor<LitElement>>(superClass: T) => {
   class MixinClass extends superClass {
     /**

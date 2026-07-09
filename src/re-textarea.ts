@@ -5,7 +5,7 @@ import { ifDefined } from 'lit/directives/if-defined.js'
 import { BackgroundMixin } from './internal/re-background-mixin.js'
 import { BorderMixin } from './internal/re-border-mixin.js'
 import { fire, ReElement } from './internal/re-element.js'
-import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+import { FormControlMixin } from './internal/re-form-control-mixin.js'
 
 import './re-icon-button.js'
 
@@ -24,7 +24,7 @@ import './re-icon-button.js'
  */
 @customElement('re-textarea')
 export class TextAreaElement extends
-    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+    BorderMixin(BackgroundMixin(FormControlMixin(ReElement))) {
   static formAssociated = true
 
   /**

@@ -1,7 +1,7 @@
 import { type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ReFormControlMixin } from './internal/re-form-control-mixin.js'
+import { FormControlMixin } from './internal/re-form-control-mixin.js'
 
 import { DropdownElement } from  './re-dropdown.js'
 import { getItemFromEvent } from './re-item.js'
@@ -47,7 +47,7 @@ import { getItemFromEvent } from './re-item.js'
  * `<re-select>` participates in forms just like the stardard HTML `<select>`.
   */
 @customElement('re-select')
-export class SelectElement extends ReFormControlMixin(DropdownElement) {
+export class SelectElement extends FormControlMixin(DropdownElement) {
   static formAssociated = true
 
   /**

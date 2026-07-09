@@ -3,7 +3,7 @@ import { property } from 'lit/decorators.js'
 
 import { BackgroundMixin } from './re-background-mixin.js'
 import { BorderMixin } from './re-border-mixin.js'
-import { ReFormControlMixin } from './re-form-control-mixin.js'
+import { FormControlMixin } from './re-form-control-mixin.js'
 import { ReElement } from './re-element.js'
 
 import '../re-icon.js'
@@ -14,7 +14,7 @@ import { ifDefined } from 'lit/directives/if-defined.js'
  * buttons, links, checkboxes and radio buttons.
  */
 export class ButtonBaseElement extends
-    BorderMixin(BackgroundMixin(ReFormControlMixin(ReElement))) {
+    BorderMixin(BackgroundMixin(FormControlMixin(ReElement))) {
   static shadowRootOptions: ShadowRootInit = {
     ...super.shadowRootOptions,
     delegatesFocus: true,
