@@ -1,6 +1,6 @@
 // Base class for all elements that can submit data as part of a form.
 
-import { LitElement, type PropertyValues } from 'lit'
+import { LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
 
 type Constructor<T = {}> = new (...args: any[]) => T

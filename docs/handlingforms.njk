@@ -1,0 +1,58 @@
+{% extends "./internal/base.njk" %}
+
+{% block style %}
+table {
+  border-top: 1px solid rgb(0 0 0 / 0.2);
+  border-bottom: 1px solid rgb(0 0 0 / 0.2);
+  margin: 1rem 0;
+}
+th {
+  padding-top: 1rem;
+}
+{% endblock %}
+
+{% block main %}
+
+<h1>Handling Forms</h1>
+The following Rough Elements can be used in HTML forms much like their native
+counterparts.  See the individual component pages for details.  As with any
+form controls, these elements must not be <code>disabled</code> and must
+have a valid <code>name</code> attribute to be included in form submission.
+
+<ul>
+{% set formControlled = components | filterForFormControlled %}
+{% for clazz in formControlled %}
+  <li><a href="../component/{{clazz.tagName}}">&lt;{{ clazz.tagName }}&gt;</a></li>
+{% endfor %}
+</ul>
+
+These elements do not support the <code>form</code> attribute and must be
+nested within a <code>&lt;form&gt;</code> element to be included.  For example,
+here is a simple form that includes these elements:
+<pre><code>&lt;form&gt;
+  &lt;re-checkbox required name="checkbox"&gt;Checkbox&lt;/re-checkbox&gt;
+
+  &lt;re-input required name="input" pattern="a\d+z"&gt;&lt;/re-input&gt;
+
+  &lt;re-range required name="range"
+      min="0" max="100" step="5" value="3"&gt;&lt;/re-range&gt;
+
+  &lt;re-radio required name="radio" value="1"&gt;One&lt;/re-radio&gt;
+  &lt;re-radio required name="radio" value="2"&gt;Two&lt;/re-radio&gt;
+  &lt;re-radio required name="radio" value="3"&gt;Three&lt;/re-radio&gt;
+
+  &lt;re-rating required name="rating"&gt;&lt;/re-rating&gt;
+
+  &lt;re-select required name="select"&gt;
+    &lt;re-item id="item1"&gt;Item 1&lt;/re-item&gt;
+    &lt;re-item id="item2"&gt;Item 2&lt;/re-item&gt;
+    &lt;re-item id="item3"&gt;Item 3&lt;/re-item&gt;
+  &lt;/re-select&gt;
+
+  &lt;re-textarea required name="textarea"&gt;&lt;/re-textarea&gt;
+
+  &lt;re-button name="button" type="submit"&gt;Submit&lt;/re-button&gt;
+&lt;/form&gt;</code></pre>
+</code></pre>
+
+{% endblock %}

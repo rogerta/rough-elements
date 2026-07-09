@@ -8,6 +8,9 @@ import { FormControlMixin } from './internal/re-form-control-mixin.js'
  * Ranges collect a numeric values from the user that falls within a specific
  * range.
  *
+ * `<re-range>` participates in forms just like the stardard HTML
+ * `<input type="range">`.
+ *
  * @cssproperty --knob-fraction - Height fraction of the knob diameter (between 0 and 1). Defaults to 0.66.
  * @cssproperty --re-range-knob-outline-color - Stroke color of the knob circle. Defaults to `--re-range-knob-color`.
  * @cssproperty --re-range-knob-color - Fill color of the knob circle. Defaults to `--color`.

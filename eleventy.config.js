@@ -1,14 +1,15 @@
 import { marked } from 'marked'
 
-/** @param {import("@11ty/eleventy").UserConfig} config */
+/** @param {import("@11ty/eleventy/UserConfig").UserConfig} config */
 export default function(config) {
   config.setInputDirectory('./docs')
   config.setOutputDirectory('./dist/docs')
 
-  // Copy `img/` to output.  Note: the input directory prefix
+  // Copy folders to output.  Note: the input directory prefix
   // is stripped from the file name before being copied to
   // the output.
   config.addPassthroughCopy('./docs/img')
+  config.addPassthroughCopy('./docs/css')
 
   config.setQuietMode(true)
   config.setServerOptions({
@@ -70,5 +71,24 @@ export default function(config) {
 
   config.addFilter('marked', function (str) {
     return str ? marked.parse(str) : ''
+  })
+
+  config.addFilter('filterForMixins', function (clazz) {
+    return clazz?.mixins ?? []
+  })
+
+  config.addFilter('filterForBordered', function (components) {
+    return components.filter(
+        c => c.mixins?.some(m => m.name === 'BorderMixin'))
+  })
+
+  config.addFilter('filterForBackgrounded', function (components) {
+    return components.filter(
+        c => c.mixins?.some(m => m.name === 'BackgroundMixin'))
+  })
+
+  config.addFilter('filterForFormControlled', function (components) {
+    return components.filter(
+        c => c.members?.find(m => m.name === 'formAssociated'))
   })
 }

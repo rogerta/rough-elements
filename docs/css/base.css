@@ -1,0 +1,32 @@
+table {
+  border-collapse: collapse;
+  max-width: 64rem;
+}
+tbody tr:nth-child(even) {
+  background-color: rgb(0 0 0 / 0.05);
+}
+td, th {
+  text-align: start;
+  padding: 0 1rem;
+}
+code {
+  color: rgb(40 66 131);
+  font-weight: bold;
+  font-size: 1.2em;
+  text-wrap: nowrap;
+}
+.slot-name,
+.part-name,
+.property-default,
+.property-name,
+.property-params,
+.property-type {
+  font-family: monospace;
+  xtext-wrap: nowrap;  /* May need to be more selective */
+}
+.readonly {
+  color: red;
+  font-weight: bold;
+  font-size: 0.8em;
+}
+
