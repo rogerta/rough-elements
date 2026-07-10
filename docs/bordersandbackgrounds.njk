@@ -19,7 +19,10 @@ The following elements use <code>BorderMixin</code> to add a rough border:
 </ul>
 
 Each of the elements above has the following properties and CSS properties in
-addition to the ones listed on their individual documentation pages:
+addition to the ones listed on their individual documentation pages.  The CSS
+properties whose names begin with <code>re-</code> are lower level and tricker
+to work with.  Generally speaking their default values should be good enough
+for most cases.
 
 {% set c = mixins | findMixin('BorderMixinInterface') %}
 {% include "./internal/properties.njk" %}
@@ -36,7 +39,10 @@ background:
 </ul>
 
 Each of the elements above has the following properties and CSS properties in
-addition to the ones listed on their individual documentation pages:
+addition to the ones listed on their individual documentation pages.  The CSS
+properties whose names begin with <code>re-</code> are lower level and tricker
+to work with.  Generally speaking their default values should be good enough
+for most cases.
 
 {% set c = mixins | findMixin('BackgroundMixinInterface') %}
 {% include "./internal/properties.njk" %}

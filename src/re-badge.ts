@@ -55,7 +55,7 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
         --border-width: 0;
         font-size: 0.75rem;
         padding: 0 0.125rem;
-        --re-background-color: transparent;
+        --background-color: transparent;
         cursor: default;
       }
       :host * {
@@ -65,19 +65,19 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
         color: white;
       }
       :host([variant=primary]) {
-        --re-background-color: var(--re-primary-color);
+        --background-color: var(--re-primary-color);
       }
       :host([variant=success]) {
-        --re-background-color: var(--re-success-color);
+        --background-color: var(--re-success-color);
       }
       :host([variant=neutral]) {
-        --re-background-color: var(--re-neutral-color);
+        --background-color: var(--re-neutral-color);
       }
       :host([variant=warning]) {
-        --re-background-color: var(--re-warning-color);
+        --background-color: var(--re-warning-color);
       }
       :host([variant=danger]) {
-        --re-background-color: var(--re-danger-color);
+        --background-color: var(--re-danger-color);
       }
     `
   ]

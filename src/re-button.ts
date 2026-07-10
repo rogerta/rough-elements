@@ -189,7 +189,7 @@ export class ButtonElement extends ButtonBaseElement {
     ...super.styles,
     css`
       :host(:not([variant=text])) {
-        --re-background-color: rgb(from var(--foreground-color) R G B / 0.05);
+        --background-color: rgb(from var(--foreground-color) R G B / 0.05);
       }
       :host(:not([circle])) {
         padding: 0.25rem 0.5rem;
@@ -197,27 +197,27 @@ export class ButtonElement extends ButtonBaseElement {
 
       :host([variant=primary]) {
         color: white;
-        --re-background-color: var(--re-primary-color);
+        --background-color: var(--re-primary-color);
         --button-text-shadow-color: white;
       }
       :host([variant=success]) {
         color: white;
-        --re-background-color: var(--re-success-color);
+        --background-color: var(--re-success-color);
         --button-text-shadow-color: white;
       }
       :host([variant=neutral]) {
         color: white;
-        --re-background-color: var(--re-neutral-color);
+        --background-color: var(--re-neutral-color);
         --button-text-shadow-color: white;
       }
       :host([variant=warning]) {
         color: white;
-        --re-background-color: var(--re-warning-color);
+        --background-color: var(--re-warning-color);
         --button-text-shadow-color: white;
       }
       :host([variant=danger]) {
         color: white;
-        --re-background-color: var(--re-danger-color);
+        --background-color: var(--re-danger-color);
         --button-text-shadow-color: white;
       }
 

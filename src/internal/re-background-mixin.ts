@@ -14,7 +14,7 @@ type Constructor<T = {}> = new (...args: any[]) => T
  * determine the types of backgrounds supported.
  *
  * The following CSS properties are supported:
- * @cssproperty --re-background-color - Determines the background.  This applies
+ * @cssproperty --background-color - Determines the background.  This applies
  *    to all fill styles.
  * @cssproperty --re-background-stroke-width - When filling with `hachure` or
  *    `zigzag` styles, determines the width of the stroke.
@@ -41,7 +41,7 @@ export declare class BackgroundMixinInterface {
    * `none` the element's background is transparent.  This is the default.
    *
    * When set to `solid`, the background is filled with the colour specified
-   * in the `--re-background-color` CSS property.  This colour value must
+   * in the `--background-color` CSS property.  This colour value must
    * resolve to a valid `rgb()` colour.
    *
    * When set to `hachure` or `zigzag`, the background is filled with lines.
@@ -107,7 +107,7 @@ export const BackgroundMixin =
         * of an SVG element can be used here.  Stroke is always 'none'. */
         #rough .background .solid-fill {
           stroke: none;
-          fill: var(--re-background-color, inherit);
+          fill: var(--background-color, inherit);
           fill-opacity: var(--re-fill-opacity, inherit);
           fill-rule: var(--re-fill-rule, inherit);
         }
@@ -116,7 +116,7 @@ export const BackgroundMixin =
         * stroke of an SVG element can be used here.  Fill is always 'none'. */
         #rough .background .pattern-fill {
           fill: none;
-          stroke: var(--re-background-color, inherit);
+          stroke: var(--background-color, inherit);
           stroke-dasharray: var(--re-fill-dasharray, inherit);
           stroke-dashoffset: var(--re-fill-dashoffset, inherit);
           stroke-linecap: var(--re-fill-linecap, inherit);
@@ -138,7 +138,7 @@ export const BackgroundMixin =
 
       const borderWidth = parseFloat(cstyles.borderWidth)
       const halfBorderWidth = borderWidth / 2
-      const bgColour = cstyles.getPropertyValue('--re-background-color')
+      const bgColour = cstyles.getPropertyValue('--background-color')
 
       if (bgColour) {
         // NOTE: `fill` is set to 'inherit' so that the colour can dynamically

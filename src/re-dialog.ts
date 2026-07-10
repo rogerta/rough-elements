@@ -100,7 +100,7 @@ export class DialogElement extends LitElement {
 
       re-card {
         padding: 1rem;
-        --re-background-color: Canvas;
+        --background-color: Canvas;
       }
 
       re-card::part(body) {

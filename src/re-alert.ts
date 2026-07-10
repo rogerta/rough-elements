@@ -235,7 +235,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
       }
 
       :host {
-        --re-background-color:
+        --background-color:
             rgb(from var(--alart-bg-color)
                 calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
       }
@@ -246,7 +246,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
 
       @media (prefers-color-scheme: dark) {
         :host {
-          --re-background-color:
+          --background-color:
               rgb(from var(--alart-bg-color)
                   calc(0.4 * R) calc(0.4 * G) calc(0.4 * B));
         }
