@@ -317,7 +317,8 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <!-- The main body slot of the menu, representing a single column of items. -->
+        <!-- The main body slot of the menu, representing a single column
+             of items. -->
         <slot></slot>
       `,
     ]

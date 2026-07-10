@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { FormControlMixin } from './internal/re-form-control-mixin.js'
 
 import { DropdownElement } from  './re-dropdown.js'
-import { getItemFromEvent } from './re-item.js'
+import { getItemFromEvent, ItemElement } from './re-item.js'
 
 /**
  * Selects expose a menu of options from which the user can choose one or many.
@@ -60,7 +60,12 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
 
   /**
    * The index of the currently selected option.  If no option is selected,
-   * this is -1.
+   * this is -1.  If multiple options are selected, this is the index of the
+   * first selected option.
+   *
+   * Keep in mind that if `<re-menu-item>`s are used, all items are reduced to
+   * a flattened array before the selected index is calculated.  In these cases
+   * it's likely easier to depend on the `value` property than this one.
    */
   @property({ type: Number }) selectedIndex = -1
 
@@ -101,6 +106,23 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
 
     const menu = this.renderRoot.querySelector('re-menu')
     menu?.addEventListener('click', this)
+
+    // The initially selected item is chosen as follows, in decreasing order
+    // of precedence:
+    // - if there is an item with an `id` that matches the `value` property,
+    //   that item is selected
+    // - if an item has the selected attribute, that item is selected
+    // - otherise, the first item in the list is selected
+    //
+    // To handle this, if the `value` is not set but an item has the
+    // `selected` attribute, set the `value` to that item's `id`.
+    if (!this.value) {
+      const item = this.querySelector<ItemElement>('re-item[selected]') ??
+          this.querySelector<ItemElement>('re-item')
+      if (item) {
+        this.value = item.id
+      }
+    }
   }
 
   override updated(props: PropertyValues) {
