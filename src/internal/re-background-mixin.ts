@@ -55,7 +55,7 @@ export declare class BackgroundMixinInterface {
   fillStyle: FILLSTYLE
 
   /**
-   * Fills on the specified fraction of the element's background, starting
+   * Fills the specified fraction of the element's background, starting
    * from the left.  This is used to implement the progress bar and likely
    * needs to be generalized for other uses.  This value must be between
    * 0 and 1.
@@ -64,8 +64,8 @@ export declare class BackgroundMixinInterface {
 
   /**
    * Sets the weight of the stroke used to fill the background.
-   * NOTE: This may conflict with --re-background-stroke-width, needs
-   * investigation.
+   * NOTE: Explain further how this interacts with
+   * `--re-background-stroke-width`.
    */
   hachureWeight: number
 

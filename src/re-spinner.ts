@@ -57,7 +57,8 @@ export class SpinnerElement extends ReElement {
         height: var(--size);
       }
       svg :first-child path {
-        stroke: var(--re-spinner-tracker-color, var(--border-color));
+        stroke: var(--re-spinner-tracker-color,
+                    rgb(from var(--border-color) R G B / 0.3));
       }
       svg :nth-child(2) path {
         stroke: var(--re-spinner-indicator-color, var(--re-primary-color));

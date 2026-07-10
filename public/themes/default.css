@@ -8,7 +8,7 @@
   --re-danger-color: rgb(238 0 0);
 
   --color: var(--foreground-color);
-  --border-color: rgb(from var(--foreground-color) R G B / 0.7);
+  --border-color: rgb(from var(--foreground-color) R G B / 0.5);
 
   /* The following colours are light-theme specific. */
   --foreground-color: black;
