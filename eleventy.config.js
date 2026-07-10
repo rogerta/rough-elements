@@ -11,6 +11,10 @@ export default function(config) {
   config.addPassthroughCopy('./docs/img')
   config.addPassthroughCopy('./docs/css')
 
+  // Don't process files in the `internal` folder.  This folder cotains
+  // base templates and inlude templates.
+  config.ignores.add('./docs/internal/**')
+
   config.setQuietMode(true)
   config.setServerOptions({
     port: 9520,
@@ -90,5 +94,9 @@ export default function(config) {
   config.addFilter('filterForFormControlled', function (components) {
     return components.filter(
         c => c.members?.find(m => m.name === 'formAssociated'))
+  })
+
+  config.addFilter('findMixin', function (mixins, name) {
+    return mixins.find(m => m.name === name)
   })
 }

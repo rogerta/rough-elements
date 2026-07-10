@@ -26,11 +26,6 @@ h1 {
   padding: 3rem 0 1rem 0;
   margin: 0;
 }
-h2 {
-  border-top: 1px solid rgb(0 0 0 / 0.2);
-  padding-top: 0.5rem;
-  margin-top: 2rem;
-}
 {% endblock %}
 
 {% block main %}
@@ -39,7 +34,8 @@ h2 {
   <span class="classnametitle">{{c.tagName}}</span>
   {% set mixins = c | filterForMixins %}
   {% for m in mixins %}
-    <a href="../bordersandbackgrounds/"><span class="classmixin">{{ m.name | replace('Mixin', '') }}</span></a>
+    <a href="../bordersandbackgrounds/"><span class="classmixin"
+        >{{ m.name | replace('Mixin', '') }}</span></a>
   {% endfor %}
 </h1>
 {{c.description | marked | safe }}
@@ -59,51 +55,8 @@ h2 {
   </tbody>
   </table>
 
-<h2>Properties</h2>
-  {% set properties = c | filterForProperties %}
-  {% if properties | length %}
-    <table>
-    <thead>
-      <tr><th>Name</th><th>Description</th><th>Reflects</th><th>Type</th><th>Default</th></tr>
-    </thead>
-    <tbody>
-    {% for m in properties %}
-    <tr>
-      <td class="property-name">{{m.name}}</td>
-      <td>{{m.description | marked | safe }}</td>
-      <td>{{'true' if m.reflects else ''}}</td>
-      <td class="property-type">
-        {{'<span class="readonly">READONLY</span>' | safe if m.readonly else ''}}
-        {{m.type.text}}
-      </td>
-      <td class="property-default">{{m.default | d('', true) }}</td>
-    </tr>
-    {% endfor %}
-    </tbody>
-    </table>
-  {% else %}
-    No properties.
-  {% endif %}
-
-<h2>CSS Properties</h2>
-  {% set cssProperties = c | filterForCSSProperties %}
-  {% if cssProperties | length %}
-    <table>
-    <thead>
-      <tr><th>Name</th><th>Description</th></tr>
-    </thead>
-    <tbody>
-      {% for prop in cssProperties %}
-      <tr>
-        <td class="property-name">{{prop.name }}</td>
-        <td>{{prop.description | marked | safe }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-    </table>
-  {% else %}
-    No CSS properties.
-  {% endif %}
+{% include "./internal/properties.njk" %}
+{% include "./internal/css-properties.njk" %}
 
 <h2>Events</h2>
 No events.

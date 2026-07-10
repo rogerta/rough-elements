@@ -1,3 +1,9 @@
+h2 {
+  border-top: 1px solid rgb(0 0 0 / 0.2);
+  padding-top: 0.5rem;
+  margin-top: 2rem;
+  max-width: 64rem;
+}
 table {
   border-collapse: collapse;
   max-width: 64rem;

@@ -1,0 +1,19 @@
+<h2>CSS Properties</h2>
+{% set cssProperties = c | filterForCSSProperties %}
+{% if cssProperties | length %}
+  <table>
+  <thead>
+    <tr><th>Name</th><th>Description</th></tr>
+  </thead>
+  <tbody>
+    {% for prop in cssProperties %}
+    <tr>
+      <td class="property-name">{{prop.name }}</td>
+      <td>{{prop.description | marked | safe }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  </table>
+{% else %}
+  No CSS properties.
+{% endif %}

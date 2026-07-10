@@ -1,16 +1,5 @@
 {% extends "./internal/base.njk" %}
 
-{% block style %}
-table {
-  border-top: 1px solid rgb(0 0 0 / 0.2);
-  border-bottom: 1px solid rgb(0 0 0 / 0.2);
-  margin: 1rem 0 2rem 0;
-}
-th {
-  padding-top: 1rem;
-}
-{% endblock %}
-
 {% block main %}
 
 <h1>Borders & Backgrounds</h1>
@@ -18,7 +7,7 @@ Rough Elements provides a set of mixins that are used to add rough borders and
 backgrounds to the custom elements. These mixins are designed to be flexible
 and to easily create visually appealing components with minimal effort.
 
-<h2>BorderMixin</h2>
+<h1>BorderMixin</h1>
 The following elements use <code>BorderMixin</code> to add a rough border:
 <ul>
 {% set bordered = components | filterForBordered %}
@@ -29,49 +18,14 @@ The following elements use <code>BorderMixin</code> to add a rough border:
 {% endfor %}
 </ul>
 
-Each of the elements above has the following properties in addition to the ones
-listed on their individual documentation pages:
-
-<table>
-<thead>
-  <tr><th>Name</th><th>Description</th><th>Reflects</th><th>Type</th><th>Default</th></tr>
-</thead>
-<tbody>
-<tr>
-  <td class="property-name">borderStyle</td>
-  <td><p>Determines the style of border around this element.  Can be
-    <code>'rectangle'</code>, <code>'circle'</code> or <code>'none'</code>.
-    The border will be draw in the border area of the element.</p></td>
-  <td></td>
-  <td class="property-type">BORDERSTYLE</td>
-  <td class="property-default"><code>'rectangle'</code></td>
-</tr>
-</tbody>
-</table>
-
-Furthermore, each of the elements above has the following CSS properties in
+Each of the elements above has the following properties and CSS properties in
 addition to the ones listed on their individual documentation pages:
 
-<table>
-<thead>
-  <tr><th>Name</th><th>Description</th></tr>
-</thead>
-<tbody>
-  <tr>
-    <td class="property-name"><code>--border-color</code></td>
-    <td><p>Sets the colour of the border.  Defaults to <code>--foreground-color</code></p></td>
-  </tr>
-  <tr>
-    <td class="property-name"><code>--border-width</code></td>
-    <td><p>
-      Sets the width of the border.  Wider border take more space but still
-      use only two rough lines.  Defaults to <code>0.5rem</code>
-    </p></td>
-  </tr>
-</tbody>
-</table>
+{% set c = mixins | findMixin('BorderMixin') %}
+{% include "./internal/properties.njk" %}
+{% include "./internal/css-properties.njk" %}
 
-<h2>BackgroundMixin</h2>
+<h1>BackgroundMixin</h1>
 The following elements use <code></code>BackgroundMixin</code> to add a rough
 background:
 <ul>
@@ -80,5 +34,12 @@ background:
   <li><a href="../component/{{clazz.tagName}}">&lt;{{ clazz.tagName }}&gt;</a></li>
 {% endfor %}
 </ul>
+
+Each of the elements above has the following properties and CSS properties in
+addition to the ones listed on their individual documentation pages:
+
+{% set c = mixins | findMixin('BackgroundMixin') %}
+{% include "./internal/properties.njk" %}
+{% include "./internal/css-properties.njk" %}
 
 {% endblock %}
