@@ -8,7 +8,7 @@ backgrounds to the custom elements. These mixins are designed to be flexible
 and to easily create visually appealing components with minimal effort.
 
 <h1>Borders</h1>
-The following elements use <code>BorderMixin</code> to add a rough border:
+The following elements make use of a rough border:
 <ul>
 {% set bordered = components | filterForBordered %}
 {% for clazz in bordered %}
@@ -17,6 +17,9 @@ The following elements use <code>BorderMixin</code> to add a rough border:
   </li>
 {% endfor %}
 </ul>
+
+A rough border is defined as a pair of non-straight and non-parallel lines that
+outline the element and fill the "border box" of the elements CSS box model.
 
 Each of the elements above has the following properties and CSS properties in
 addition to the ones listed on their individual documentation pages.  The CSS
@@ -29,14 +32,19 @@ for most cases.
 {% include "./internal/css-properties.njk" %}
 
 <h1>Backgrounds</h1>
-The following elements use <code>BackgroundMixin</code> to add a rough
-background:
+The following elements make use of a rough background:
 <ul>
 {% set backgrounded = components | filterForBackgrounded %}
 {% for clazz in backgrounded %}
   <li><a href="../component/{{clazz.tagName}}"><code>&lt;{{ clazz.tagName }}&gt;</code></a></li>
 {% endfor %}
 </ul>
+
+A rough background can be a quadrilateral of non-parallel opposide sides that
+mostly fills the "order and content boxes of the element.  A rough background
+can also be a sequence of connected (zigzag) or unconencted (hachure) lines
+that fill the same boxes that appear to be drawn with a pencil, pen, or thick
+highlighter.  See the <code>fillStyle</code> property for more detials.
 
 Each of the elements above has the following properties and CSS properties in
 addition to the ones listed on their individual documentation pages.  The CSS
