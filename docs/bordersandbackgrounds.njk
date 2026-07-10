@@ -7,13 +7,13 @@ Rough Elements provides a set of mixins that are used to add rough borders and
 backgrounds to the custom elements. These mixins are designed to be flexible
 and to easily create visually appealing components with minimal effort.
 
-<h1>BorderMixin</h1>
+<h1>Borders</h1>
 The following elements use <code>BorderMixin</code> to add a rough border:
 <ul>
 {% set bordered = components | filterForBordered %}
 {% for clazz in bordered %}
   <li>
-    <a href="../component/{{clazz.tagName}}">&lt;{{ clazz.tagName }}&gt;</a>
+    <a href="../component/{{clazz.tagName}}"><code>&lt;{{ clazz.tagName }}&gt;</code></a>
   </li>
 {% endfor %}
 </ul>
@@ -21,24 +21,24 @@ The following elements use <code>BorderMixin</code> to add a rough border:
 Each of the elements above has the following properties and CSS properties in
 addition to the ones listed on their individual documentation pages:
 
-{% set c = mixins | findMixin('BorderMixin') %}
+{% set c = mixins | findMixin('BorderMixinInterface') %}
 {% include "./internal/properties.njk" %}
 {% include "./internal/css-properties.njk" %}
 
-<h1>BackgroundMixin</h1>
-The following elements use <code></code>BackgroundMixin</code> to add a rough
+<h1>Backgrounds</h1>
+The following elements use <code>BackgroundMixin</code> to add a rough
 background:
 <ul>
 {% set backgrounded = components | filterForBackgrounded %}
 {% for clazz in backgrounded %}
-  <li><a href="../component/{{clazz.tagName}}">&lt;{{ clazz.tagName }}&gt;</a></li>
+  <li><a href="../component/{{clazz.tagName}}"><code>&lt;{{ clazz.tagName }}&gt;</code></a></li>
 {% endfor %}
 </ul>
 
 Each of the elements above has the following properties and CSS properties in
 addition to the ones listed on their individual documentation pages:
 
-{% set c = mixins | findMixin('BackgroundMixin') %}
+{% set c = mixins | findMixin('BackgroundMixinInterface') %}
 {% include "./internal/properties.njk" %}
 {% include "./internal/css-properties.njk" %}
 

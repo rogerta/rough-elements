@@ -7,14 +7,6 @@ import type { BORDERSTYLE } from './re-common.js'
 type Constructor<T = {}> = new (...args: any[]) => T
 
 /**
- * Declares the public properties of the Mixin class below.  This is mostly
- * for vscode+typescript integration, to help with autocompletion in the editor.
- */
-export declare class MixinInterface {
-    borderStyle: BORDERSTYLE
-}
-
-/**
  * A mixin class that draws a border around the element using rough drawing
  * primitives.
  *
@@ -46,14 +38,21 @@ export declare class MixinInterface {
  * @cssproperty --re-stroke-opacity - Defines the opacity of the stroke colour.
  * @cssproperty --re-stroke-width - Defines the opacity of the stroke.
  */
+export declare class BorderMixinInterface {
+  /**
+   * Determines the style of border around this element.  Can be `rectangle`
+   * (default) or `circle` or `none`.  The border will be draw in the border
+   * area of the element.
+   */
+  borderStyle: BORDERSTYLE
+}
+
+/**
+ * See description of `BorderMixinInterface` for details.
+ */
 export const BorderMixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
-    /**
-     * Determines the style of border around this element.  Can be `rectangle`
-     * (default) or `circle` or `none`.  The border will be draw in the border
-     * area of the element.
-     */
     @property({}) borderStyle: BORDERSTYLE = 'rectangle'
 
     static styles = [
@@ -117,5 +116,5 @@ export const BorderMixin =
       return roughElements
     }
   }
-  return MixinClass as Constructor<MixinInterface> & T;
+  return MixinClass as Constructor<BorderMixinInterface> & T;
 }

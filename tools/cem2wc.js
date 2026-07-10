@@ -2,10 +2,14 @@ import { mkdir, readFile, writeFile } from 'fs/promises'
 import { marked } from 'marked'
 
 async function writeMixins(cemData) {
-  // Only includes classes that are actully web components.
+  // Find the mixins.  While CEM does find mixins and annotates them as such
+  // in custom-elements.json, it does not include @cssproperty doctags.  The
+  // workaround is to document the correspond ???MixinInterface class instead,
+  // which is what get extracted and written here.
   const mixins = cemData.modules
       .flatMap(m =>
-          m.declarations.filter(d => d.kind === 'mixin'))
+          m.declarations.filter(
+              d => d.kind === 'class' && d.name.endsWith('MixinInterface')))
 
   // Save the output.
   await mkdir('./docs/_data', { recursive: true })
