@@ -1,6 +1,6 @@
 import { LitElement, css, html, type PropertyValues } from 'lit'
 import { property, query } from 'lit/decorators.js'
-import rough from '@rogerta/roughjs'
+import * as rough from '@rough/roughjs'
 
 import { STYLES } from './re-common.js'
 

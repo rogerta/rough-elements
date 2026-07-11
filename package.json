@@ -37,7 +37,7 @@
   "author": "Roger Tawa <roger@tawacentral.net>",
   "license": "MIT",
   "dependencies": {
-    "@rogerta/roughjs": "5.2.0",
+    "@rough/roughjs": "npm:@jsr/rough__roughjs@^6.0.3",
     "lit": "3.3.2"
   },
   "devDependencies": {
