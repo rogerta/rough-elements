@@ -69,8 +69,6 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
 
   /**
    * Shows the alert by setting the `open` property to true.
-   *
-   * @return {void}
    */
   show() {
     this.open = true
@@ -79,8 +77,6 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Hides the alert.  If the alert is located in the internal alert stack,
    * the alert is removed from the DOM.
-   *
-   * @return {void}
    */
   hide() {
     this.open = false
@@ -94,8 +90,6 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
    * Open the alert as a toast and move it to the internal alert stack.
    * Normally this is called when the toast is not open, but the method can
    * be called on an open alert.
-   *
-   * @return {void}
    */
   toast() {
     const stack = this.createToastStackIfNeeded_()
