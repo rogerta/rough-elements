@@ -14,8 +14,8 @@ type Constructor<T = {}> = new (...args: any[]) => T
  * determine the types of backgrounds supported.
  *
  * The following CSS properties are supported:
- * @cssproperty --background-color - Determines the background.  This applies
- *    to all fill styles.
+ * @cssproperty --re-background-color - Determines the background.  This applies
+ *    to all fill styles.  Defaults to `--background-color`.
  * @cssproperty --re-background-stroke-width - When filling with `hachure` or
  *    `zigzag` styles, determines the width of the stroke.
  * @cssproperty --re-fill-dasharray - When filling with `hachure` or `zigzag`
@@ -107,7 +107,7 @@ export const BackgroundMixin =
         * of an SVG element can be used here.  Stroke is always 'none'. */
         #rough .background .solid-fill {
           stroke: none;
-          fill: var(--background-color, inherit);
+          fill: var(--re-background-color, var(--background-color));
           fill-opacity: var(--re-fill-opacity, inherit);
           fill-rule: var(--re-fill-rule, inherit);
         }
@@ -116,7 +116,7 @@ export const BackgroundMixin =
         * stroke of an SVG element can be used here.  Fill is always 'none'. */
         #rough .background .pattern-fill {
           fill: none;
-          stroke: var(--background-color, inherit);
+          stroke: var(--re-background-color, var(--background-color));
           stroke-dasharray: var(--re-fill-dasharray, inherit);
           stroke-dashoffset: var(--re-fill-dashoffset, inherit);
           stroke-linecap: var(--re-fill-linecap, inherit);

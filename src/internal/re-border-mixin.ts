@@ -59,15 +59,14 @@ export const BorderMixin =
       ...(superClass as unknown as typeof ReElement).styles,
       css`
         :host {
-          --border-width: 0.5rem;
-          border-width: var(--border-width);
+          border-width: var(--re-border-width, var(--border-width));
         }
 
         /* Styling for the outline of shapes.  Anything that affects the stroke
         * of an SVG element can be used here.  Fill is always 'none'. */
         #rough .border .outline {
           fill: none;
-          stroke: var(--border-color, rgb(from currentcolor R G B / 0.5));
+          stroke: var(--re-border-color, var(--border-color));
           stroke-dasharray: var(--re-stroke-dasharray, inherit);
           stroke-dashoffset: var(--re-stroke-dashoffset, inherit);
           stroke-linecap: var(--re-stroke-linecap, inherit);

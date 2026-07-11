@@ -77,7 +77,7 @@ export class ButtonElement extends ButtonBaseElement {
   /**
    * A theme variant for the button, mostly affectings its colours.
    */
-  @property({ reflect: true }) variant: VARIANTS | 'text' | '' = ''
+  @property({ reflect: true }) variant: VARIANTS | 'text' = 'none'
 
   // Form specific properties.
 
@@ -189,6 +189,7 @@ export class ButtonElement extends ButtonBaseElement {
     ...super.styles,
     css`
       :host(:not([variant=text])) {
+        color: var(--foreground-color);
         --background-color: rgb(from var(--foreground-color) R G B / 0.05);
       }
       :host(:not([circle])) {
@@ -196,27 +197,22 @@ export class ButtonElement extends ButtonBaseElement {
       }
 
       :host([variant=primary]) {
-        color: white;
         --background-color: var(--re-primary-color);
         --button-text-shadow-color: white;
       }
       :host([variant=success]) {
-        color: white;
         --background-color: var(--re-success-color);
         --button-text-shadow-color: white;
       }
       :host([variant=neutral]) {
-        color: white;
         --background-color: var(--re-neutral-color);
         --button-text-shadow-color: white;
       }
       :host([variant=warning]) {
-        color: white;
         --background-color: var(--re-warning-color);
         --button-text-shadow-color: white;
       }
       :host([variant=danger]) {
-        color: white;
         --background-color: var(--re-danger-color);
         --button-text-shadow-color: white;
       }

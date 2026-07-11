@@ -19,12 +19,11 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
    * Specifies the variant to use.  Different variants use a different colour
    * for the background.
    */
-  @property({ reflect: true }) variant: VARIANTS = 'primary'
+  @property({ reflect: true }) variant: VARIANTS = 'none'
 
   constructor() {
     super()
     this.fillStyle = 'solid'
-    this.variant = 'primary'
   }
 
   override render() {
@@ -55,29 +54,29 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
         --border-width: 0;
         font-size: 0.75rem;
         padding: 0 0.125rem;
-        --background-color: transparent;
+        --re-background-color: var(--foreground-color);
         cursor: default;
       }
       :host * {
         cursor: default;
       }
       slot {
-        color: white;
+        color: var(--background-color);
       }
       :host([variant=primary]) {
-        --background-color: var(--re-primary-color);
+        --re-background-color: var(--re-primary-color);
       }
       :host([variant=success]) {
-        --background-color: var(--re-success-color);
+        --re-background-color: var(--re-success-color);
       }
       :host([variant=neutral]) {
-        --background-color: var(--re-neutral-color);
+        --re-background-color: var(--re-neutral-color);
       }
       :host([variant=warning]) {
-        --background-color: var(--re-warning-color);
+        --re-background-color: var(--re-warning-color);
       }
       :host([variant=danger]) {
-        --background-color: var(--re-danger-color);
+        --re-background-color: var(--re-danger-color);
       }
     `
   ]
