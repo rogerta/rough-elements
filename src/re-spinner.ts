@@ -10,7 +10,7 @@ import { ReElement } from './internal/re-element.js'
  * @cssproperty --size - The width and height of the spinner. Defaults to `1.5rem`.
  * @cssproperty --track-width - The thickness of the spinner track. Defaults to `2px`.
  * @cssproperty --re-spinner-tracker-color - Color of the background tracker circle. Defaults to `rgb(0 0 0 / 0.1)`.
- * @cssproperty --re-spinner-indicator-color - Color of the spinning indicator. Defaults to `var(--re-primary-color)`.
+ * @cssproperty --re-spinner-indicator-color - Color of the spinning indicator. Defaults to `var(--primary-color)`.
  */
 @customElement('re-spinner')
 export class SpinnerElement extends ReElement {
@@ -61,7 +61,7 @@ export class SpinnerElement extends ReElement {
                     rgb(from var(--border-color) R G B / 0.3));
       }
       svg :nth-child(2) path {
-        stroke: var(--re-spinner-indicator-color, var(--re-primary-color));
+        stroke: var(--re-spinner-indicator-color, var(--primary-color));
         stroke-dasharray: var(--dash-small) var(--dash-large);
         transform-origin: center;
         animation: morphdash 2s ease-in-out infinite alternate,

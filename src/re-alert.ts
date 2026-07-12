@@ -198,33 +198,33 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
       }
 
       :host([variant=primary]) {
-        --alart-bg-color: var(--re-primary-color);
+        --alart-bg-color: var(--primary-color);
         & re-icon {
-          --color: var(--re-primary-color);
+          --color: var(--primary-color);
         }
       }
       :host([variant=success]) {
-        --alart-bg-color: var(--re-success-color);
+        --alart-bg-color: var(--success-color);
         & re-icon {
-          --color: var(--re-success-color);
+          --color: var(--success-color);
         }
       }
       :host([variant=neutral]) {
-        --alart-bg-color: var(--re-neutral-color);
+        --alart-bg-color: var(--neutral-color);
         & re-icon {
-          --color: var(--re-neutral-color);
+          --color: var(--neutral-color);
         }
       }
       :host([variant=warning]) {
-        --alart-bg-color: var(--re-warning-color);
+        --alart-bg-color: var(--warning-color);
         & re-icon {
-          --color: var(--re-warning-color);
+          --color: var(--warning-color);
         }
       }
       :host([variant=danger]) {
-        --alart-bg-color: var(--re-danger-color);
+        --alart-bg-color: var(--danger-color);
         & re-icon {
-          --color: var(--re-danger-color);
+          --color: var(--danger-color);
         }
       }
 

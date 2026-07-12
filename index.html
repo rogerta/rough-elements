@@ -49,10 +49,10 @@
         color: var(--color, black);
         background: repeating-linear-gradient(
           -45deg,
-          rgb(from var(--background-color) calc(R * 0.9) calc(G * 0.9) calc(B * 0.9)),
-          rgb(from var(--background-color) calc(R * 0.9) calc(G * 0.9) calc(B * 0.9)) 13px,
-          var(--background-color) 13px,
-          var(--background-color) 26px
+          rgb(from var(--background-color) calc(R * 0.95) calc(G * 0.95) calc(B * 0.95)),
+          rgb(from var(--background-color) calc(R * 0.95) calc(G * 0.95) calc(B * 0.95)) 8px,
+          var(--background-color) 8px,
+          var(--background-color) 24px
         );
       }
       @media (prefers-color-scheme: dark) {
@@ -60,10 +60,10 @@
           color: var(--color, black);
           background: repeating-linear-gradient(
             -45deg,
-            rgb(from var(--background-color) calc(R * 0.1) calc(G * 0.1) calc(B * 0.1)),
-          rgb(from var(--background-color) calc(R * 0.1) calc(G * 0.1) calc(B * 0.1)) 13px,
-            var(--background-color) 13px,
-            var(--background-color) 26px
+            rgb(from var(--background-color) calc(R * 1.1) calc(G * 1.1) calc(B * 1.1)),
+          rgb(from var(--background-color) calc(R * 1.1) calc(G * 1.1) calc(B * 1.1)) 8px,
+            var(--background-color) 8px,
+            var(--background-color) 24px
           );
         }
       }
@@ -764,7 +764,8 @@
       <re-button id="button2" variant="success">Success</re-button>
       <re-button id="button3" variant="neutral">Neutral</re-button>
       <re-button id="button4" variant="warning">Warning</re-button>
-      <re-button id="button5" disabled variant="danger">Danger</re-button>
+      <re-button id="button5" disabled variant="danger">Disabled</re-button>
+      <re-button id="button51" variant="danger">Danger</re-button>
 
       <re-button id="button6" circle><re-icon name="arrow-back"></re-icon></re-button>
 

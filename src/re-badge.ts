@@ -64,19 +64,19 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
         color: var(--background-color);
       }
       :host([variant=primary]) {
-        --re-background-color: var(--re-primary-color);
+        --re-background-color: var(--primary-color);
       }
       :host([variant=success]) {
-        --re-background-color: var(--re-success-color);
+        --re-background-color: var(--success-color);
       }
       :host([variant=neutral]) {
-        --re-background-color: var(--re-neutral-color);
+        --re-background-color: var(--neutral-color);
       }
       :host([variant=warning]) {
-        --re-background-color: var(--re-warning-color);
+        --re-background-color: var(--warning-color);
       }
       :host([variant=danger]) {
-        --re-background-color: var(--re-danger-color);
+        --re-background-color: var(--danger-color);
       }
     `
   ]

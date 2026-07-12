@@ -197,23 +197,23 @@ export class ButtonElement extends ButtonBaseElement {
       }
 
       :host([variant=primary]) {
-        --background-color: var(--re-primary-color);
+        --background-color: var(--primary-color);
         --button-text-shadow-color: white;
       }
       :host([variant=success]) {
-        --background-color: var(--re-success-color);
+        --background-color: var(--success-color);
         --button-text-shadow-color: white;
       }
       :host([variant=neutral]) {
-        --background-color: var(--re-neutral-color);
+        --background-color: var(--neutral-color);
         --button-text-shadow-color: white;
       }
       :host([variant=warning]) {
-        --background-color: var(--re-warning-color);
+        --background-color: var(--warning-color);
         --button-text-shadow-color: white;
       }
       :host([variant=danger]) {
-        --background-color: var(--re-danger-color);
+        --background-color: var(--danger-color);
         --button-text-shadow-color: white;
       }
 

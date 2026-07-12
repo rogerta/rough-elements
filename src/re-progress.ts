@@ -108,7 +108,7 @@ export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
       :host {
         display: inline-flex;
         align-items: center;
-        --color: var(--re-primary-color);
+        --color: var(--primary-color);
         --background-color: var(--color);
         --re-background-stroke-width: 4px;
         --label-lower-color: var(--color);

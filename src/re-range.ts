@@ -71,7 +71,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
       #rough .circle {
         stroke: var(--re-range-knob-outline-color,
                     var(--re-range-knob-color, var(--color)));
-        fill: var(--re-range-knob-color, var(--re-primary-color));
+        fill: var(--re-range-knob-color, var(--primary-color));
       }
 
       #rough .line {
@@ -94,11 +94,11 @@ export class RangeElement extends FormControlMixin(ReElement) {
       @media (hover: hover) {
         :host(:hover:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
         }
         :host(:hover:active:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--re-primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
         }
       }
     `

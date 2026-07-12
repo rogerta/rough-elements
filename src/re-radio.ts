@@ -75,7 +75,7 @@ export class RadioElement extends ButtonBaseElement {
       }
 
       :host([checked]) slot[name=prefix]::slotted(*) {
-        --color: var(--re-primary-color);
+        --color: var(--primary-color);
       }
 
       slot[name=suffix]::slotted(*) {

@@ -78,7 +78,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
 
       :host(:not([disabled]):focus) re-icon,
       :host(:not([disabled]):active) re-icon {
-        filter: drop-shadow(0 0 4px var(--re-primary-color));
+        filter: drop-shadow(0 0 4px var(--primary-color));
       }
 
       @media (prefers-color-scheme: dark) {

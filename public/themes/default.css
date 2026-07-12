@@ -3,11 +3,11 @@
 
   /* These CSS variables apply to both colour schemes. */
 
-  --primary-color: rgb(0 0 238);
-  --success-color: rgb(0, 200, 0);
-  --neutral-color: rgb(64 64 64);
-  --warning-color: rgb(238 119 0);
-  --danger-color: rgb(238 0 0);
+  --primary-base-color: hsl(200.4 98% 39.4%);
+  --success-base-color: hsl(142.1 76.2% 36.3%);
+  --neutral-base-color: hsl(240 5.2% 33.9%);
+  --warning-base-color: hsl(20.5 90.2% 48.2%);
+  --danger-base-color: hsl(0 72.2% 50.6%);
 
   --color: var(--foreground-color);
   --border-color: rgb(from var(--foreground-color) R G B / 0.5);
@@ -32,23 +32,24 @@
 
 /* The following colours are light-theme specific. */
 :root {
-  --re-primary-color: rgb(0 0 238);
-  --re-success-color: rgb(0, 200, 0);
-  --re-neutral-color: rgb(64 64 64);
-  --re-warning-color: rgb(238 119 0);
-  --re-danger-color: rgb(238 0 0);
+  --primary-color: hsl(from var(--primary-base-color) h s 70%);
+  --success-color: hsl(from var(--success-base-color) h s 70%);
+  --neutral-color: hsl(from var(--neutral-base-color) h s 70%);
+  --warning-color: hsl(from var(--warning-base-color) h s 70%);
+  --danger-color:  hsl(from var(--danger-base-color) h s 70%);
 
   --foreground-color: black;
   --background-color: white;
 }
 
+/* The following colours are dark-theme specific. */
 @media (prefers-color-scheme: dark) {
   :root {
-    --re-primary-color: hsl(from rgb(0 0 238) h s 70%);
-    --re-success-color: hsl(from rgb(0, 200, 0) h s 70%);
-    --re-neutral-color: hsl(from rgb(64 64 64) h s 70%);
-    --re-warning-color: hsl(from rgb(238 119 0) h s 70%);
-    --re-danger-color: hsl(from rgb(238 0 0) h s 70%);
+    --primary-color: var(--primary-base-color);
+    --success-color: var(--success-base-color);
+    --neutral-color: var(--neutral-base-color);
+    --warning-color: var(--warning-base-color);
+    --danger-color: var(--danger-base-color);
 
     --foreground-color: rgb(216 216 216);
     --background-color: rgb(32 32 32);
