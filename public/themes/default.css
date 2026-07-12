@@ -19,15 +19,15 @@
 }
 
 .bic-vibrant {
-  --foreground: rgb(0 91 172);
+  --foreground-color: rgb(0 91 172);
 }
 
 .bic-muted {
-  --foreground: rgb(40 66 131);
+  --foreground-color: rgb(40 66 131);
 }
 
 .hb-pencil {
-  --foreground: rgb(56 57 48);
+  --foreground-color: rgb(56 57 48);
 }
 
 /* The following colours are light-theme specific. */
