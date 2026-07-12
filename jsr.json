@@ -1,0 +1,13 @@
+{
+  "name": "@rough/rough-elements",
+  "version": "0.1.0",
+  "license": "MIT",
+  "exports": "./src/rough-elements.ts",
+  "publish: {
+    "include": [
+      "LICENSE",
+      "public/themes/*.css"
+    ]
+  }
+}
+
