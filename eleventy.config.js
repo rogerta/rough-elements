@@ -1,7 +1,10 @@
 import { marked } from 'marked'
+import { HtmlBasePlugin } from '@11ty/eleventy'
 
 /** @param {import("@11ty/eleventy/UserConfig")} config */
 export default function(config) {
+  config.addPlugin(HtmlBasePlugin)
+
   config.setInputDirectory('./docs')
   config.setOutputDirectory('./dist/docs')
 
@@ -99,4 +102,14 @@ export default function(config) {
   config.addFilter('findMixin', function (mixins, name) {
     return mixins.find(m => m.name === name)
   })
+}
+
+// Setup a dynamic path prefix for GitHub Pages
+const pathPrefix = process.env.GITHUB_REPOSITORY
+    ? `/${process.env.GITHUB_REPOSITORY.split('/')[1]}/`
+    : '/'
+console.log(`pathPrefix=${pathPrefix}`)
+
+export const config = {
+  pathPrefix
 }
