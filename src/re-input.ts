@@ -25,6 +25,12 @@ import './re-icon-button.js'
  * closing tag `</re-input>` is required.
  *
  * `<re-input>` participates in forms just like the stardard HTML `<input>`.
+ *
+ * @event input - Fires when the value has been changed as a direct result of
+ *    a user action.
+ * @event change - Fires when the value has been changed and committed by the
+ *    user. Unlike the input event, the change event is not necessarily fired
+ *    for each alteration to an element's value.
  */
 @customElement('re-input')
 export class InputElement extends

@@ -99,6 +99,10 @@ export default function(config) {
         c => c.members?.find(m => m.name === 'formAssociated'))
   })
 
+  config.addFilter('filterForEvents', function (clazz) {
+    return clazz?.events ?? []
+  })
+
   config.addFilter('findMixin', function (mixins, name) {
     return mixins.find(m => m.name === name)
   })

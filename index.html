@@ -997,7 +997,7 @@
 
       document.querySelectorAll('re-details').forEach(details => {
         details.addEventListener('toggle', e => {
-          console.log('Details toggled, open=' + e.target.open)
+          console.log('Details toggled, newState=' + e.newState)
         })
       })
 
@@ -1094,6 +1094,20 @@
         })
       })
 
+      document.querySelectorAll('re-textarea').forEach(ta => {
+        ta.addEventListener('input', e => {
+          console.log(`input re-textarea ${e.target.value}`)
+        })
+        ta.addEventListener('change', e => {
+          console.log(`change re-textarea ${e.target.value}`)
+        })
+        ta.addEventListener('select', e => {
+          console.log(`select re-textarea ${e.target.value}`)
+        })
+        ta.addEventListener('selectionchange', e => {
+          console.log(`selectionchange re-textarea ${e.target.value}`)
+        })
+      })
 
       const progress = document.querySelector('#progress1')
       progress.min = MIN

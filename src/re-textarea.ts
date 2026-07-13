@@ -21,6 +21,12 @@ import './re-icon-button.js'
 
  * `<re-textarea>` participates in forms just like the stardard HTML
  * `<textarea>`.
+ *
+ * @event input - Fires when the value has been changed as a direct result of
+ *    a user action.
+ * @event change - Fires when the value has been changed and committed by the
+ *    user. Unlike the input event, the change event is not necessarily fired
+ *    for each alteration to an element's value.
  */
 @customElement('re-textarea')
 export class TextAreaElement extends
@@ -114,29 +120,6 @@ export class TextAreaElement extends
    */
   @property({}) value = ''
 
-  // /**
-  //  * Sets the value of the textarea control.
-  //  *
-  //  * @param text - The text content to set.
-  //  */
-  // @property({})
-  // set value(text: string) {
-  //   const textarea = this.renderRoot.querySelector('textarea')
-  //   if (textarea) {
-  //     textarea.value = text
-  //   }
-  // }
-
-  // /**
-  //  * Gets the value of the textarea control.
-  //  *
-  //  * @return The text content of the textarea.
-  //  */
-  // get value() {
-  //   const textarea = this.renderRoot.querySelector('textarea')
-  //   return textarea?.value ?? ''
-  // }
-
   constructor() {
     super()
     this.fillStyle = 'solid'
@@ -156,7 +139,6 @@ export class TextAreaElement extends
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
     const textarea = this.renderRoot.querySelector('textarea')
-    textarea?.addEventListener('blur', this)
     textarea?.addEventListener('change', this)
     textarea?.addEventListener('input', this)
     this.setInitialValueFromSlot_()
@@ -173,16 +155,21 @@ export class TextAreaElement extends
 
   handleEvent(e: Event) {
     switch (e.type) {
-      case 'blur':
-        // TODO: fire only if the textarea was changed.
-        fire(this, 'change', {bubbles: true})
-        break
       case 'change':
+        fire(this, 'change', { bubbles: true })
+        break
       case 'input': {
         const ta = e.target as HTMLTextAreaElement
         this.value = ta.value
+        // Input events are composed so don't need to re-fired.
         break
       }
+      case 'select':
+        fire(this, 'select', { bubbles: true })
+        break
+      case 'selectionchange':
+        fire(this, 'selectionchange', { bubbles: true })
+        break
       default:
         break
     }
@@ -225,6 +212,8 @@ export class TextAreaElement extends
             minlength="${ifDefined(this.minlength)}"
             placeholder="${ifDefined(this.placeholder)}"
             ?readonly="${this.readonly}"
+            @select="${this}"
+            @selectionchange="${this}"
             ></textarea>
 
         <!-- Slot positioned after the textarea. Often used for suffix icons. -->

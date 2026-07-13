@@ -21,6 +21,12 @@ import './re-icon.js'
  *   rotate: none;
  * }
  * ```
+ *
+ * @event toggle - The toggle event fires just after the `<re-details>` is
+ *    shown or hidden.  When the element transitions from hidden to showing,
+ *    `event.detail.newState` is set to 'open' and `event.detail.oldState` is
+ *    set to 'close'.  When the element transitions from showing to hidden,
+ *    the value of the states is reversed.
  */
 @customElement('re-details')
 export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
@@ -93,13 +99,21 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
   protected override updated(props: PropertyValues) {
     super.updated(props)
     if (props.has('open')) {
-      fire(this, 'toggle', {detail: this.open})
+      const details = this.renderRoot.querySelector('details')
+      if (details) {
+        details.open = this.open
+      }
     }
   }
 
   private onToggle_(e: ToggleEvent) {
-    const target = e.target as HTMLDetailsElement
-    this.open = target?.open ?? false
+    this.open = e.newState === 'open'
+
+    const te = new ToggleEvent(e.type, {
+      newState: e.newState,
+      oldState: e.oldState,
+    })
+    this.dispatchEvent(te)
   }
 
   protected render() {
@@ -107,7 +121,7 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
       this.renderRoughSvg(),
       html`
       <!-- The underlying html \`<details>\` element. -->
-      <details ?open="${this.open}" @toggle="${this.onToggle_}" part="details">
+      <details ?open="${this.open}" part="details" @toggle="${this.onToggle_}">
         <!-- The underlying html \`<summary>\` element. -->
         <summary part="summary" ?inert="${this.disabled}">
           <!-- The content of the summary. -->

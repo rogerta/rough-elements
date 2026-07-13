@@ -11,6 +11,12 @@ import { FormControlMixin } from './internal/re-form-control-mixin.js'
  * `<re-range>` participates in forms just like the stardard HTML
  * `<input type="range">`.
  *
+ * @event input - Fires when the value has been changed as a direct result of
+ *    a user action.
+ * @event change - Fires when the value has been changed and committed by the
+ *    user. Unlike the input event, the change event is not necessarily fired
+ *    for each alteration to an element's value.
+ *
  * @cssproperty --knob-fraction - Height fraction of the knob diameter (between 0 and 1). Defaults to 0.66.
  * @cssproperty --re-range-knob-outline-color - Stroke color of the knob circle. Defaults to `--re-range-knob-color`.
  * @cssproperty --re-range-knob-color - Fill color of the knob circle. Defaults to `--color`.

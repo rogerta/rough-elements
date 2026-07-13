@@ -59,7 +59,24 @@ h1 {
 {% include "./internal/css-properties.njk" %}
 
 <h2>Events</h2>
-No events.
+  {% set events = c | filterForEvents %}
+  {% if events | length %}
+    <table>
+    <thead>
+      <tr><th>Name</th><th>Description</th></tr>
+    </thead>
+    <tbody>
+      {% for event in events %}
+      <tr>
+        <td class="part-name">{{event.name | d('[default]', true)}}</td>
+        <td>{{event.description | marked | safe }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+    </table>
+  {% else %}
+    No events.
+  {% endif %}
 
 <h2>Methods</h2>
   {% set methods = c | filterForMethods %}

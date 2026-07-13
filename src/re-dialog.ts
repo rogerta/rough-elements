@@ -32,6 +32,11 @@ import { ifDefined } from 'lit/directives/if-defined.js'
  * one of the default close interactions.
  *
  * Any content not assigned to a slot fills the body of the `<re-card>`.
+ *
+ * @event close - Fired when the `<dialog>` has been closed.
+ * @event cancel - Fires when the user triggers a close request.  This event
+ *    is cancelable.
+ *
  */
 @customElement('re-dialog')
 export class DialogElement extends LitElement {
@@ -47,6 +52,13 @@ export class DialogElement extends LitElement {
    * mechanism.
    */
   @property({}) closedby: 'any' | 'closerequest' | 'none' = 'any'
+
+  /**
+   * Returns true if the dialog is open.
+   */
+  get open() {
+    return this.renderRoot.querySelector('dialog')?.open ?? false
+  }
 
   static styles = [
     //...super.styles,

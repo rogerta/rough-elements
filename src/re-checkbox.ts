@@ -26,6 +26,12 @@ import { fire } from './internal/re-element.js'
  * ```
  * `<re-checkbox>` participates in forms just like the stardard HTML
  * `<input type="checkbox"/>`.
+ *
+ * @event input - Fires when the value has been changed as a direct result of
+ *    a user action to checking or uncheck the checkbox.
+ * @event change - Fires when the value has been changed and committed by the
+ *    user. Unlike the input event, the change event is not necessarily fired
+ *    for each alteration to an element's value.
  */
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonBaseElement {

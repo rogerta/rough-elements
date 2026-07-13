@@ -23,6 +23,12 @@ import { fire } from './internal/re-element.js'
  *   <re-item id="tab3">...</re-item>
  * </re-tab-group>
  * ```
+ *
+ * @event input - Fires when the value has been changed as a direct result of
+ *    a user action.
+ * @event change - Fires when the value has been changed and committed by the
+ *    user. Unlike the input event, the change event is not necessarily fired
+ *    for each alteration to an element's value.
  */
 @customElement('re-tab-group')
 export class TabGroupElement extends LitElement {

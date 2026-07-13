@@ -31,6 +31,10 @@ import { IconElement } from './re-icon.js'
  * ```
  * `<re-radio>` participates in forms just like the stardard HTML
  * `<input type="radio"/>`.
+ *
+ * @event change - Fires when the value has been changed and committed by the
+ *    user. Unlike the input event, the change event is not necessarily fired
+ *    for each alteration to an element's value.
  */
 @customElement('re-radio')
 export class RadioElement extends ButtonBaseElement {
