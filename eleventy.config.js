@@ -1,6 +1,6 @@
 import { marked } from 'marked'
 
-/** @param {import("@11ty/eleventy/UserConfig").UserConfig} config */
+/** @param {import("@11ty/eleventy/UserConfig")} config */
 export default function(config) {
   config.setInputDirectory('./docs')
   config.setOutputDirectory('./dist/docs')

@@ -1,0 +1,57 @@
+{% extends "./internal/base.njk" %}
+
+{% block style %}
+{% endblock %}
+
+{% block main %}
+
+<h1>User Defined Icons</h1>
+<p>
+  Rough Elements are bundled with a small set of vector icons.
+  These can be used by specifying their name when rendering an
+  <code>&lt;re-icon&gt;</code> element:
+</p>
+<pre><code>&lt;re-icon name="close"&gt;&lt;/re-icon&gt;
+</code></pre>
+<p>
+  See the file <code>re-iconset.ts</code> for a list of predefined icons.
+  These icons are identical to the <a href="https://fonts.google.com/icons">Google Icons</a> with
+  the same name (with underscores (_) replaced with dashes (-)).
+</p>
+
+<p>
+  Define new icons by calling <code>addUserIcon()</code> as needed:
+</p>
+  <pre><code>import { addUserIcon } from '@rough/rough-elements/re-iconset.js'
+const path = 'path definition as used by SVG path element'
+addUserIcon('app-name', 'icon-name', path)</code></pre>
+<p>
+  If the viewbox of the icon is not '0 -960 960 960' then specify it as the
+  last argument to <code>addUserIcon()</code>:
+</p>
+  <pre><code>addUserIcon('app-name', 'icon-name', path, '0 0 100 100')</code></pre>
+
+<p>
+  Both <code>'app-name'</code> and <code>'icon-name'</code> must be non-empty strings.
+  The new icon can then be used with <code>&lt;re-icon&gt;</code> by concatenating
+  the two names with as colon:
+</p>
+<pre><code>&lt;re-icon name="app-name:icon-name"&gt;&lt;/re-icon&gt;
+</code></pre>
+
+<p>
+  The easiest way to add new icons is to look through the
+  <a href="https://fonts.google.com/icons">Google Icons</a> and find those
+  that suite your needs.  Donwload the icons as SVGfiles and use the
+  <code>d</code> attribute of the <code>path</code> SVG element as the
+  <code>path</code> argument to <code>addUserIcon()</code>.  These icons use a
+  viewbox of '0 -960 960 960' so no viewport argument is needed.  This process
+  maybe automated in the future.
+</p>
+
+<p>
+  See the <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d">Mozilla SVG Path definition specification</a>
+  for more details.
+</p>
+
+{% endblock %}
