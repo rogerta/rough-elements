@@ -23,7 +23,7 @@
   Define new icons by calling <code>addUserIcon()</code> as needed:
 </p>
   <pre><code>import { addUserIcon } from '@rough/rough-elements/re-iconset.js'
-const path = 'path definition as used by SVG path element'
+const path = 'path definition as used by SVG path element *'
 addUserIcon('app-name', 'icon-name', path)</code></pre>
 <p>
   If the viewbox of the icon is not '0 -960 960 960' then specify it as the
@@ -34,7 +34,7 @@ addUserIcon('app-name', 'icon-name', path)</code></pre>
 <p>
   Both <code>'app-name'</code> and <code>'icon-name'</code> must be non-empty strings.
   The new icon can then be used with <code>&lt;re-icon&gt;</code> by concatenating
-  the two names with as colon:
+  the two names with a colon:
 </p>
 <pre><code>&lt;re-icon name="app-name:icon-name"&gt;&lt;/re-icon&gt;
 </code></pre>
@@ -50,7 +50,7 @@ addUserIcon('app-name', 'icon-name', path)</code></pre>
 </p>
 
 <p>
-  See the <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d">Mozilla SVG Path definition specification</a>
+  * See the <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d">Mozilla SVG Path definition specification</a>
   for more details.
 </p>
 
