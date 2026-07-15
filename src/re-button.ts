@@ -38,7 +38,10 @@ import './re-icon.js'
  * ```
  *
  * `<re-button>` is meant as a drop in replacement for `<button>` or `<a>`.
- * */
+ *
+ * @cssproperty --button-text-shadow-color - The colour used for the button
+ *    shadow used when the button is hovered.
+ */
 @customElement('re-button')
 export class ButtonElement extends ButtonBaseElement {
   static formAssociated = true
@@ -64,7 +67,7 @@ export class ButtonElement extends ButtonBaseElement {
   /**
    * If true, a caret `<re-icon>` will be suffixed to this button.  This is
    * mostly used internally to indicate that the button will open some kind of
-   * submenu.
+   * submenu.  It's color is taken from `--border-color`.
    */
   @property({ type: Boolean, reflect: true }) caret = false
 
@@ -181,8 +184,13 @@ export class ButtonElement extends ButtonBaseElement {
   }
 
   protected override renderCaretIfNeeded_() {
-    return this.caret ? html`<re-icon name="keyboard-arrow-down"></re-icon>`
-                      : nothing
+    return this.caret
+        ? html`
+          <!-- The \`<re-icon>\` used for the caret, if any. See the
+               \`caret\` property. -->
+          <re-icon part="caret" name="keyboard-arrow-down"></re-icon>
+        `
+        : nothing
   }
 
   static styles = [
@@ -190,31 +198,31 @@ export class ButtonElement extends ButtonBaseElement {
     css`
       :host(:not([variant=text])) {
         color: var(--foreground-color);
-        --background-color: rgb(from var(--foreground-color) R G B / 0.05);
+        --re-background-color: rgb(from var(--foreground-color) R G B / 0.05);
       }
       :host(:not([circle])) {
         padding: 0.25rem 0.5rem;
       }
 
       :host([variant=primary]) {
-        --background-color: var(--primary-color);
-        --button-text-shadow-color: white;
+        --re-background-color: var(--primary-color);
+        --button-text-shadow-color: var(--foreground-color);
       }
       :host([variant=success]) {
-        --background-color: var(--success-color);
-        --button-text-shadow-color: white;
+        --re-background-color: var(--success-color);
+        --button-text-shadow-color: var(--foreground-color);
       }
       :host([variant=neutral]) {
-        --background-color: var(--neutral-color);
-        --button-text-shadow-color: white;
+        --re-background-color: var(--neutral-color);
+        --button-text-shadow-color: var(--foreground-color);
       }
       :host([variant=warning]) {
-        --background-color: var(--warning-color);
-        --button-text-shadow-color: white;
+        --re-background-color: var(--warning-color);
+        --button-text-shadow-color: var(--foreground-color);
       }
       :host([variant=danger]) {
-        --background-color: var(--danger-color);
-        --button-text-shadow-color: white;
+        --re-background-color: var(--danger-color);
+        --button-text-shadow-color: var(--foreground-color);
       }
 
       :host(:not([caret])) slot[name=suffix]::slotted(*) {
@@ -235,7 +243,8 @@ export class ButtonElement extends ButtonBaseElement {
       /* This does not set the font-weight to bold since that affects the
        * width of the control, which is annoying. */
       :host([variant=text]:not([disabled]):focus-within) button {
-        text-shadow: 0.5px 0 0 currentcolor, -0.5px 0 0 currentcolor;
+        text-shadow: 0.5px 0 0 var(--foreground-color),
+                    -0.5px 0 0 var(--foreground-color);
       }
 
       /* Button press animation */

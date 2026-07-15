@@ -3,9 +3,9 @@
 
   /* These CSS variables apply to both colour schemes. */
 
-  --primary-base-color: hsl(200.4 98% 39.4%);
+  --primary-base-color: hsl(210.4 98% 39.4%);
   --success-base-color: hsl(142.1 76.2% 36.3%);
-  --neutral-base-color: hsl(240 5.2% 33.9%);
+  --neutral-base-color: hsl(240 5.2% 53.9%);
   --warning-base-color: hsl(20.5 90.2% 48.2%);
   --danger-base-color: hsl(0 72.2% 50.6%);
 
@@ -32,7 +32,7 @@
 
 /* The following colours are light-theme specific. */
 :root {
-  --primary-color: hsl(from var(--primary-base-color) h s 70%);
+  --primary-color: hsl(from var(--primary-base-color) h s 60%);
   --success-color: hsl(from var(--success-base-color) h s 70%);
   --neutral-color: hsl(from var(--neutral-base-color) h s 70%);
   --warning-color: hsl(from var(--warning-base-color) h s 70%);

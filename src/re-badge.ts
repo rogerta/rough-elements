@@ -12,6 +12,13 @@ import { ReElement } from './internal/re-element.js'
  * Different variants of badges can be shown (defaults to 'primary') each with
  * their own background colour.  The foreground colour is always fixed by the
  * theme.
+ *
+ * @cssproperty --text-color - The colour to use for the badge's text.
+ *    Defaults to `--background-color`.
+ * @cssproperty --re-background-color - The background colour of the badge.
+ *    Defaults to `--<VARIANT>-color` where `<VARIANT>` is the value of the
+ *    `variant` property.  If no variant property is specified, then
+ *    `--forground-color` is used.
  */
 @customElement('re-badge')
 export class BadgeElement extends BackgroundMixin(ReElement) {
@@ -54,14 +61,12 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
         --border-width: 0;
         font-size: 0.75rem;
         padding: 0 0.125rem;
+        color: var(--text-color, var(--background-color));
         --re-background-color: var(--foreground-color);
         cursor: default;
       }
       :host * {
         cursor: default;
-      }
-      slot {
-        color: var(--background-color);
       }
       :host([variant=primary]) {
         --re-background-color: var(--primary-color);

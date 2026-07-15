@@ -32,7 +32,11 @@ import './re-icon-button.js'
  * To control the border and background refer to the Border & Background
  * documentation.
  *
- * @cssproperty --color - Sets the color of the icon inside the alert.
+ * @cssproperty --color - The colour of the alert's icon.  This colour is
+ *    also used as the alert background with an alpha of 0.2.  Defaults to
+ *    `--<VARIANT>-color` where `<VARIANT>` is the value of the `variant`
+ *    property.  If no variant property is specified, then `--forground-color`
+ *    is used.
  */
 @customElement('re-alert')
 export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
@@ -192,58 +196,31 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
         align-items: center;
         padding: 0.25rem 0.5rem;
         gap: 0.5rem;
+        --color: var(--foreground-color);
+        --re-background-color: rgb(from var(--color) R G B / 0.2);
       }
       :host([open]) {
         display: inline-flex;
       }
 
       :host([variant=primary]) {
-        --alart-bg-color: var(--primary-color);
-        & re-icon {
-          --color: var(--primary-color);
-        }
+        --color: var(--primary-color);
       }
       :host([variant=success]) {
-        --alart-bg-color: var(--success-color);
-        & re-icon {
-          --color: var(--success-color);
-        }
+        --color: var(--success-color);
       }
       :host([variant=neutral]) {
-        --alart-bg-color: var(--neutral-color);
-        & re-icon {
-          --color: var(--neutral-color);
-        }
+        --color: var(--neutral-color);
       }
       :host([variant=warning]) {
-        --alart-bg-color: var(--warning-color);
-        & re-icon {
-          --color: var(--warning-color);
-        }
+        --color: var(--warning-color);
       }
       :host([variant=danger]) {
-        --alart-bg-color: var(--danger-color);
-        & re-icon {
-          --color: var(--danger-color);
-        }
-      }
-
-      :host {
-        --background-color:
-            rgb(from var(--alart-bg-color)
-                calc(0.1 * R + 230) calc(0.1 * G + 230) calc(0.1 * B + 230));
+        --color: var(--danger-color);
       }
 
       [part=button] {
         --color: var(--border-color);
-      }
-
-      @media (prefers-color-scheme: dark) {
-        :host {
-          --background-color:
-              rgb(from var(--alart-bg-color)
-                  calc(0.4 * R) calc(0.4 * G) calc(0.4 * B));
-        }
       }
 
       re-icon, re-icon-button {
