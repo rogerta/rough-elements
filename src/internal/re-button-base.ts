@@ -87,7 +87,7 @@ export class ButtonBaseElement extends
     css`
       :host {
         display: inline-block;
-        color: var(--color, ButtonText);
+        color: var(--color);
         user-select: none;
         cursor: pointer;
         --button-text-shadow-color: rgb(from black R G B / 0.1);
@@ -150,12 +150,10 @@ export class ButtonBaseElement extends
 
       @media (hover: hover) {
         :host(:hover:not([disabled])) button {
-          text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
         :host(:hover:active:not([disabled])) button {
-          text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
       }
     `,

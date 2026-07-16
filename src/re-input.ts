@@ -282,7 +282,7 @@ export class InputElement extends
         flex-direction: row;
         justify-content: start;
         align-items: center;
-        color: var(--color, ButtonText);
+        color: var(--color);
         padding: 0.25rem 0.5rem;
         font-family: var(--re-input-font-family);
       }

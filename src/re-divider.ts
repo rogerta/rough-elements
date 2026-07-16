@@ -26,7 +26,7 @@ export class DividerElement extends ReElement {
     css`
       :host {
         display: block;
-        stroke: var(--color, rgb(from black R G B / 0.5));
+        stroke: var(--border-color);
         --thickness: 4px;
         border-width: 0;
         box-sizing: content-box;

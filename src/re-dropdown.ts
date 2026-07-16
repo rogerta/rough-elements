@@ -65,7 +65,7 @@ export class DropdownElement extends LitElement {
         outline: none;
       }
       re-button {
-        --background-color: transparent;
+        --re-background-color: transparent;
       }
       re-button::part(button) {
         text-transform: none;

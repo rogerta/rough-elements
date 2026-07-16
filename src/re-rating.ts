@@ -62,7 +62,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
       }
 
       re-icon {
-        --color: rgb(0 0 0 / 0.3);
+        --color: rgb(from var(--foreground-color) R G B / 0.3);
         transition: transform 0.2s ease;
       }
 
@@ -78,18 +78,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
 
       :host(:not([disabled]):focus) re-icon,
       :host(:not([disabled]):active) re-icon {
-        filter: drop-shadow(0 0 4px var(--primary-color));
-      }
-
-      @media (prefers-color-scheme: dark) {
-        re-icon {
-          --color: rgb(255 255 255 / 0.3);
-        }
-
-        :host(:not([disabled]):focus) re-icon,
-        :host(:not([disabled]):active) re-icon {
-          filter: drop-shadow(0 0 4px var(--foreground-color));
-        }
+        filter: drop-shadow(0 0 4px var(--foreground-color));
       }
 
       @media (hover: hover) {

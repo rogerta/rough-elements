@@ -39,8 +39,12 @@ import './re-icon.js'
  *
  * `<re-button>` is meant as a drop in replacement for `<button>` or `<a>`.
  *
- * @cssproperty --button-text-shadow-color - The colour used for the button
- *    shadow used when the button is hovered.
+ * @cssproperty --hover-shadow-color - The colour of shadow used when the
+ *    button is hovered.
+ * @cssproperty --color - The colour of the button body, which is often text.
+ *    Defaults to `--forground-color`.
+ * @cssproperty --re-input-font-family - The font family to use for the button
+ *    text.  Defaults to `--font-sans-family`.
  */
 @customElement('re-button')
 export class ButtonElement extends ButtonBaseElement {
@@ -197,7 +201,7 @@ export class ButtonElement extends ButtonBaseElement {
     ...super.styles,
     css`
       :host(:not([variant=text])) {
-        color: var(--foreground-color);
+        color: var(--color);
         --re-background-color: rgb(from var(--foreground-color) R G B / 0.05);
       }
       :host(:not([circle])) {
@@ -206,23 +210,23 @@ export class ButtonElement extends ButtonBaseElement {
 
       :host([variant=primary]) {
         --re-background-color: var(--primary-color);
-        --button-text-shadow-color: var(--foreground-color);
+        --hover-shadow-color: var(--foreground-color);
       }
       :host([variant=success]) {
         --re-background-color: var(--success-color);
-        --button-text-shadow-color: var(--foreground-color);
+        --hover-shadow-color: var(--foreground-color);
       }
       :host([variant=neutral]) {
         --re-background-color: var(--neutral-color);
-        --button-text-shadow-color: var(--foreground-color);
+        --hover-shadow-color: var(--foreground-color);
       }
       :host([variant=warning]) {
         --re-background-color: var(--warning-color);
-        --button-text-shadow-color: var(--foreground-color);
+        --hover-shadow-color: var(--foreground-color);
       }
       :host([variant=danger]) {
         --re-background-color: var(--danger-color);
-        --button-text-shadow-color: var(--foreground-color);
+        --hover-shadow-color: var(--foreground-color);
       }
 
       :host(:not([caret])) slot[name=suffix]::slotted(*) {

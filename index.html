@@ -46,7 +46,7 @@
       }
 
       body {
-        color: var(--color, black);
+        color: var(--foreground-color);
         background: repeating-linear-gradient(
           -45deg,
           rgb(from var(--background-color) calc(R * 0.95) calc(G * 0.95) calc(B * 0.95)),
@@ -57,7 +57,6 @@
       }
       @media (prefers-color-scheme: dark) {
         body {
-          color: var(--color, black);
           background: repeating-linear-gradient(
             -45deg,
             rgb(from var(--background-color) calc(R * 1.1) calc(G * 1.1) calc(B * 1.1)),

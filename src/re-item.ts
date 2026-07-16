@@ -92,11 +92,11 @@ export class ItemElement extends LitElement {
       @media (hover: hover) {
         :host(:hover:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
         :host(:hover:active:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
       }
     `

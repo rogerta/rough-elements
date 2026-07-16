@@ -39,7 +39,7 @@ export class IconElement extends ReElement {
       }
       .icon {
         stroke: none;
-        fill: var(--color, inherit);
+        fill: var(--color);
       }
     `
   ]

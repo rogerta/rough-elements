@@ -76,7 +76,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
 
       #rough .circle {
         stroke: var(--re-range-knob-outline-color,
-                    var(--re-range-knob-color, var(--color)));
+                    var(--re-range-knob-color, var(--primary-color)));
         fill: var(--re-range-knob-color, var(--primary-color));
       }
 
@@ -100,11 +100,11 @@ export class RangeElement extends FormControlMixin(ReElement) {
       @media (hover: hover) {
         :host(:hover:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
         :host(:hover:active:not([disabled])) {
           text-shadow: 0 0 3px var(--button-text-shadow-color);
-          filter: drop-shadow(0px 0px 4px rgb(from var(--primary-color) R G B / 0.8));
+          filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
       }
     `
@@ -140,10 +140,10 @@ export class RangeElement extends FormControlMixin(ReElement) {
     }
 
     switch (e.type) {
+      // @ts-expect-error - no break
       case 'pointerdown': {
         const pe = e as PointerEvent
         this.setPointerCapture(pe.pointerId)
-        break
       }
       case 'pointermove': {
         const pe = e as PointerEvent
@@ -151,6 +151,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
           const bounds = this.getBoundingClientRect()
           const fraction = pe.offsetX / (bounds.width)
           this.value = this.snap_(fraction * (this.max - this.min) + this.min)
+          fire(this, 'input', {bubbles: true, composed: true})
         }
         break
       }
@@ -172,13 +173,13 @@ export class RangeElement extends FormControlMixin(ReElement) {
           case 'ArrowLeft':
             // Prevent the default otherwise the page may scroll.
             ke.preventDefault()
-            this.value -= this.step
+            this.value = Math.max(this.value - this.step, this.min)
             break
           case 'ArrowUp':
           case 'ArrowRight':
             // Prevent the default otherwise the page may scroll.
             ke.preventDefault()
-            this.value += this.step
+            this.value = Math.min(this.value + this.step, this.max)
             break
         }
         break
@@ -225,7 +226,6 @@ export class RangeElement extends FormControlMixin(ReElement) {
 
     if(props.has('value')) {
       this.setFormValue(this.value.toString())
-      fire(this, 'input', {bubbles: true, composed: true})
       revalidate = true
       requestRoughRender = true
     }

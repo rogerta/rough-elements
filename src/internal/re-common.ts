@@ -13,16 +13,11 @@ export type BORDERSTYLE = 'rectangle' | 'circle' | 'none'
 
 export const STYLES = css`
   :host {
-    --re-font-sans-family: "Noto Sans", sans-serif;
-    --re-font-serif-family: "Noto Serif", serif;
-    --re-font-mono-family: monospace;
+    --re-input-font-family: var(--font-sans-family);
+    --re-help-font-family: var(--font-sans-family);
+    --re-label-font-family: var(--font-sans-family);
 
-    --re-font-size: 1rem;
-
-    --re-input-font-family: var(--re-font-sans-family);
-    --re-help-font-family: var(--re-font-sans-family);
-    --re-label-font-family: var(--re-font-sans-family);
-
+    --color: var(--foreground-color, ButtonText);
     --re-input-background-color: var(--background-color, ButtonFace);
   }
 `

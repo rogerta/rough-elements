@@ -196,7 +196,6 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
         align-items: center;
         padding: 0.25rem 0.5rem;
         gap: 0.5rem;
-        --color: var(--foreground-color);
         --re-background-color: rgb(from var(--color) R G B / 0.2);
       }
       :host([open]) {
