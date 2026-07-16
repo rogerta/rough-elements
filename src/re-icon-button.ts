@@ -17,6 +17,11 @@ import './re-icon.js'
  * ```
  *
  * @csspart button - The underyling native button representing this element.
+ *
+ * @cssproperty --color - The colour of the icon button.  Defaults to
+ *    `--foreground-color`.
+ * @cssproperty --size - The width and height of the icon button.  Defaults to
+ *    `1.5rem`.
  */
 @customElement('re-icon-button')
 export class IconButtonElement extends LitElement {

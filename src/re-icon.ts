@@ -19,7 +19,8 @@ import { getIcon, getViewBox } from './re-iconset.js'
  * filled with an icon.
  *
  * @cssproperty --size - The width and height of the icon. Defaults to `1.5rem`.
- * @cssproperty --color - The fill color of the icon. Defaults to `inherit`.
+ * @cssproperty --color - The fill color of the icon.  Defaults to
+ *    `--foreground-color`.
  */
 @customElement('re-icon')
 export class IconElement extends ReElement {

@@ -22,6 +22,9 @@ import './re-icon.js'
  * }
  * ```
  *
+ * @cssproperty --color - The colour of the summary marker slot's icon.
+ *    Defaults to `--border-color`.
+ *
  * @event toggle - The toggle event fires just after the `<re-details>` is
  *    shown or hidden.  When the element transitions from hidden to showing,
  *    `event.detail.newState` is set to 'open' and `event.detail.oldState` is

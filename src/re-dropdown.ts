@@ -45,6 +45,8 @@ import { NO_ITEM } from './re-menu.js'
  * }
  * ```
  *
+ * @cssproperty --re-background-color - The background colour of the dropdown
+ *    trigger button.  Defaults to `transparent`.
  */
 @customElement('re-dropdown')
 export class DropdownElement extends LitElement {

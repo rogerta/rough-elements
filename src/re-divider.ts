@@ -9,9 +9,10 @@ import { ReElement } from './internal/re-element.js'
  *
  * Dividers can be displayed horizontally or vertically.
  *
- * The `--thickness` CSS property can be used to control the number of lines
- * drawn.  The default is 4px, which draws one or two lines. About every three
- * extra pixels will draw a new pair of lines.
+ * @cssproperty --border-color - The colour of the divider's lines.
+ * @cssproperty --thickness - Controls the number of lines drawn.  The default
+ * is 4px, which draws one or two lines. About every three extra pixels will
+ * draw a new pair of lines.
  */
 @customElement('re-divider')
 export class DividerElement extends ReElement {
