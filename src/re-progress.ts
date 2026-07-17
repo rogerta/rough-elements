@@ -9,8 +9,10 @@ import { ReElement } from './internal/re-element.js'
  * Progress elements represent the completion progress of a task.
  *
  * @cssproperty --color - Color of the progress label and bar lines.
- * @cssproperty --label-lower-color - Color of the label when the progress is lower than 50%. Defaults to `--color`.
- * @cssproperty --label-upper-color - Color of the label when the progress is at or above 50%. Defaults to `--background-color`.
+ * @cssproperty --label-lower-color - Color of the label when the progress
+ *    is lower than 50%. Defaults to `--color`.
+ * @cssproperty --label-upper-color - Color of the label when the progress
+ *    is at or above 50%. Defaults to `--background-color`.
  */
 @customElement('re-progress')
 export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
@@ -109,7 +111,7 @@ export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
         display: inline-flex;
         align-items: center;
         --color: var(--primary-color);
-        --background-color: var(--color);
+        --re-background-color: var(--color);
         --re-background-stroke-width: 4px;
         --label-lower-color: var(--color);
         --label-upper-color: var(--background-color);

@@ -22,6 +22,15 @@ import './re-icon-button.js'
  * `<re-textarea>` participates in forms just like the stardard HTML
  * `<textarea>`.
  *
+ * @cssproperty --color - The colour of the input text.  Defaults to
+ *    `--foreground-color`.
+ * @cssproperty --re-input-font-family - The font of the input text.  Defaults
+ *    to `--font-sans-family`.
+ * @cssproperty --re-input-background-color -  The background color of input
+ *    control.  Defaults to `--background-color`.
+ * @cssproperty --border-color - While used for border of `<re-input>`, this
+ *    is also the default colour of any icons used as prefixes or suffixes.
+ *
  * @event input - Fires when the value has been changed as a direct result of
  *    a user action.
  * @event change - Fires when the value has been changed and committed by the

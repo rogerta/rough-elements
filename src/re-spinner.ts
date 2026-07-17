@@ -7,10 +7,14 @@ import { ReElement } from './internal/re-element.js'
  * Spinners show progress being made for an operation that will take an
  * indterminate amount of time.
  *
- * @cssproperty --size - The width and height of the spinner. Defaults to `1.5rem`.
- * @cssproperty --track-width - The thickness of the spinner track. Defaults to `2px`.
- * @cssproperty --re-spinner-tracker-color - Color of the background tracker circle. Defaults to `rgb(0 0 0 / 0.1)`.
- * @cssproperty --re-spinner-indicator-color - Color of the spinning indicator. Defaults to `var(--primary-color)`.
+ * @cssproperty --size - The width and height of the spinner.
+ *    Defaults to `1.5rem`.
+ * @cssproperty --track-width - The thickness of the spinner track.
+ *    Defaults to `2px`.
+ * @cssproperty --re-spinner-tracker-color - Color of the background tracker
+ *    circle. Defaults to `rgb(from var(--border-color) R G B / 0.1)`.
+ * @cssproperty --re-spinner-indicator-color - Color of the spinning indicator.
+ *    Defaults to `var(--primary-color)`.
  */
 @customElement('re-spinner')
 export class SpinnerElement extends ReElement {

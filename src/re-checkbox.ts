@@ -10,6 +10,10 @@ import { fire } from './internal/re-element.js'
  * "No" choices.  Checkboxes may be programmatically set to an indeterminate
  * states to indicate that no choice has been made.
  *
+ * The `--border-color` CSS property is used as the default colour of any icons
+ * used as prefixes or suffixes.  See the next paragraph on how to override
+ * this default behaviour.
+ *
  * The checkbox `prefix` slot is used internally to render an icon that
  * represents the yes/no/indeterminate state.  Adding more content to this
  * slot may cause unexpected results.  It's possible to style the icon using
@@ -27,8 +31,12 @@ import { fire } from './internal/re-element.js'
  * `<re-checkbox>` participates in forms just like the stardard HTML
  * `<input type="checkbox"/>`.
  *
- * @cssproperty --color - The colour of the checkbox icon.
- *    Defaults to `--primary-color`.
+ * @cssproperty --color - The colour of the checkbox text.
+ *    Defaults to `--foreground-color`.
+ * @cssproperty --re-input-font-family - The font of the radio button text.
+ *    Defaults to `--font-sans-family`.
+ * @cssproperty --hover-shadow-color - The colour of shadow used when the
+ *    button is hovered.
  *
  * @event input - Fires when the value has been changed as a direct result of
  *    a user action to checking or uncheck the checkbox.

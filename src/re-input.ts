@@ -26,6 +26,15 @@ import './re-icon-button.js'
  *
  * `<re-input>` participates in forms just like the stardard HTML `<input>`.
  *
+ * @cssproperty --color - The colour of the input text.  Defaults to
+ *    `--foreground-color`.
+ * @cssproperty --re-input-font-family - The font of the input text.  Defaults
+ *    to `--font-sans-family`.
+ * @cssproperty --re-input-background-color -  The background color of input
+ *    control.  Defaults to `--background-color`.
+ * @cssproperty --border-color - While used for border of `<re-input>`, this
+ *    is also the default colour of any icons used as prefixes or suffixes.
+ *
  * @event input - Fires when the value has been changed as a direct result of
  *    a user action.
  * @event change - Fires when the value has been changed and committed by the
@@ -284,7 +293,6 @@ export class InputElement extends
         align-items: center;
         color: var(--color);
         padding: 0.25rem 0.5rem;
-        font-family: var(--re-input-font-family);
       }
       :host([disabled]) {
         opacity: 0.5;
@@ -306,7 +314,7 @@ export class InputElement extends
         padding: 0;
         margin: 0;
         height: min-content;
-        background-color: var(--re-input-background-color, ButtonFace);
+        background-color: var(--re-input-background-color);
         color: inherit;
         font-family: var(--re-input-font-family);
       }

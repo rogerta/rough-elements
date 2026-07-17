@@ -32,6 +32,12 @@ import { ItemElement } from './re-item.js'
  *
  * Note that menu items with a submenu will not propagate
  * `click` events as they are consumed the menu item to manage the submenu.
+ *
+ * @cssproperty --color - The foreground colour of the item.  Defaults to
+ *    `--foreground-color`.  When the item is selected, 10% of this colour
+ *    is used as the background.
+ * @cssproperty --hover-shadow-color - The colour of shadow used when the
+ *    button is hovered.
  */
 @customElement('re-menu-item')
 export class MenuItemElement extends ItemElement {

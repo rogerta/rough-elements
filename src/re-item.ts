@@ -28,6 +28,12 @@ import './re-icon.js'
  * The `disabled` property can be set by the caller to prevent this item from
  * reacting to user input.  For example a disabled item in an `<re-menu>` will
  * not fire a `click` event when clicked.
+ *
+ * @cssproperty --color - The foreground colour of the item.  Defaults to
+ *    `--foreground-color`.  When the item is selected, 10% of this colour
+ *    is used as the background.
+ * @cssproperty --hover-shadow-color - The colour of shadow used when the
+ *    button is hovered.
  */
 @customElement('re-item')
 export class ItemElement extends LitElement {
@@ -70,12 +76,6 @@ export class ItemElement extends LitElement {
         cursor: default;
       }
 
-      @media (prefers-color-scheme: dark) {
-        :host([selected]) {
-          background: rgb(from var(--color) R G B / 0.2);
-        }
-      }
-
       slot[name=prefix]::slotted(*),
       slot[name=suffix]::slotted(*), {
         flex: 0 0;
@@ -91,11 +91,9 @@ export class ItemElement extends LitElement {
 
       @media (hover: hover) {
         :host(:hover:not([disabled])) {
-          text-shadow: 0 0 3px var(--button-text-shadow-color);
           filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
         :host(:hover:active:not([disabled])) {
-          text-shadow: 0 0 3px var(--button-text-shadow-color);
           filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
       }

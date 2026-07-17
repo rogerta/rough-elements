@@ -17,11 +17,14 @@ import { FormControlMixin } from './internal/re-form-control-mixin.js'
  *    user. Unlike the input event, the change event is not necessarily fired
  *    for each alteration to an element's value.
  *
- * @cssproperty --knob-fraction - Height fraction of the knob diameter (between 0 and 1). Defaults to 0.66.
- * @cssproperty --re-range-knob-outline-color - Stroke color of the knob circle. Defaults to `--re-range-knob-color`.
- * @cssproperty --re-range-knob-color - Fill color of the knob circle. Defaults to `--color`.
- * @cssproperty --re-range-track-color - Stroke color of the range track line. Defaults to `--color`.
- * @cssproperty --color - Fallback color for knob and track.
+ * @cssproperty --knob-fraction - Height fraction of the knob diameter
+ *    (between 0 and 1). Defaults to 0.66.
+ * @cssproperty --re-range-knob-outline-color - Stroke color of the knob circle.
+ *    Defaults to `--re-range-knob-color`.
+ * @cssproperty --re-range-knob-color - Fill color of the knob circle.
+ *    Defaults to `--primary-color`.
+ * @cssproperty --re-range-track-color - Stroke color of the track line.
+ *    Defaults to `--border-color`.
  */
 @customElement('re-range')
 export class RangeElement extends FormControlMixin(ReElement) {
@@ -75,8 +78,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
       }
 
       #rough .circle {
-        stroke: var(--re-range-knob-outline-color,
-                    var(--re-range-knob-color, var(--primary-color)));
+        stroke: var(--re-range-knob-outline-color, var(--re-range-knob-color));
         fill: var(--re-range-knob-color, var(--primary-color));
       }
 
@@ -155,10 +157,8 @@ export class RangeElement extends FormControlMixin(ReElement) {
         }
         break
       }
-      case 'pointerup': {
+      case 'lostpointercapture': {
         const pe = e as PointerEvent
-        this.releasePointerCapture(pe.pointerId)
-
         const bounds = this.getBoundingClientRect()
         const fraction = pe.offsetX / (bounds.width)
         this.value = this.snap_(fraction * (this.max - this.min) + this.min)
@@ -201,7 +201,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
     super.firstUpdated(props)
     this.addEventListener('pointerdown', this)
     this.addEventListener('pointermove', this)
-    this.addEventListener('pointerup', this)
+    this.addEventListener('lostpointercapture', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
     this.setAttribute('tabindex', '0')

@@ -346,6 +346,7 @@
         --color: green;
       }
       #ta3 {
+        --color: cyan;
         & re-icon[slot=prefix] {
           --color: purple
         }
@@ -354,7 +355,6 @@
         }
       }
       #ta3::part(textarea) {
-        color: cyan;
         font-style: italic;
       }
     </style>
@@ -478,7 +478,8 @@
 
     <div class="demo">
       <h1>re-progress</h1>
-      <re-progress showvalue="true" value="0.5"></re-progress>
+      <re-progress showvalue="true" value="0.4"></re-progress>
+      <re-progress showvalue="true" value="0.6"></re-progress>
       <re-progress id="progress1" showvalue="true"></re-progress>
       <re-button id="toggleProgress">Start</re-button>
     </div>

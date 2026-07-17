@@ -15,6 +15,10 @@ import { IconElement } from './re-icon.js'
  * When a radio button is checked in order to choose that option, all other
  * radio buttons in the same group are automatically unchecked.
  *
+ * The `--border-color` CSS property is used as the default colour of any icons
+ * used as prefixes or suffixes.  See the next paragraph on how to override
+ * this default behaviour.
+ *
  * The radio button `prefix` slot is used internally to render an icon that
  * represents the chosen or not state. Adding more content to this slot may
  * cause unexpected results.  It's possible to style the icon using
@@ -31,6 +35,13 @@ import { IconElement } from './re-icon.js'
  * ```
  * `<re-radio>` participates in forms just like the stardard HTML
  * `<input type="radio"/>`.
+ *
+ * @cssproperty --color - The colour of the radio button text.
+ *    Defaults to `--primary-color`.
+ * @cssproperty --re-input-font-family - The font of the radio button text.
+ *    Defaults to `--font-sans-family`.
+ * @cssproperty --hover-shadow-color - The colour of shadow used when the
+ *    button is hovered.
  *
  * @event change - Fires when the value has been changed and committed by the
  *    user. Unlike the input event, the change event is not necessarily fired
