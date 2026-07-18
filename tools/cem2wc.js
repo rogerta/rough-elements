@@ -1,5 +1,4 @@
 import { mkdir, readFile, writeFile } from 'fs/promises'
-import { marked } from 'marked'
 
 async function writeMixins(cemData) {
   // Find the mixins.  While CEM does find mixins and annotates them as such
@@ -23,7 +22,7 @@ async function writeComponents(cemData) {
       .filter(m => m.kind === 'javascript-module' && m.declarations &&
           !m.path.includes('internal'))
 
-  // Only includes classes that are actully web components.
+  // Only includes classes that are actually web components.
   const classes = modules
       .flatMap(m =>
           m.declarations.filter(d => d.kind === 'class' && d.customElement))

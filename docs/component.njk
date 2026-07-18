@@ -8,11 +8,12 @@ permalink: "component/{{ c.tagName | slugify }}/"
 {% extends "./internal/base.njk" %}
 
 {% block style %}
-h1 a {
-  font-size: 1rem;
+.classmixin {
+  font-size: 0.75rem;
   font-weight: normal;
   font-style: italic;
   vertical-align: top;
+  opacity: 0.5;
 }
 .classnametitle {
   opacity: 0.5;
@@ -33,9 +34,8 @@ h1 {
   {{c.tagName | replace('re-', '') | replace('-', ' ') | title}}
   <span class="classnametitle">{{c.tagName}}</span>
   {% set mixins = c | filterForMixins %}
-  {% for m in mixins %}
-    <a href="../bordersandbackgrounds/"><span class="classmixin"
-        >{{ m.name | replace('Mixin', '') }}</span></a>
+  {% for name in mixins %}
+    <span class="classmixin">{{ name | replace('Mixin', '') }}</span>
   {% endfor %}
 </h1>
 {{c.description | marked | safe }}

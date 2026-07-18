@@ -1,5 +1,19 @@
 import { marked } from 'marked'
 import { HtmlBasePlugin } from '@11ty/eleventy'
+import data from './dist/custom-elements.json' with { type: 'json' }
+
+const modules = data.modules
+    .filter(m => m.kind === 'javascript-module' && m.declarations)
+const classes = modules
+    .flatMap(m =>m.declarations.filter(d => d.kind === 'class'))
+
+function findSuperclass(clazz) {
+  if (!clazz?.superclass?.name) {
+    return undefined
+  }
+
+  return classes.find(c => c.name === clazz.superclass.name)
+}
 
 /** @param {import("@11ty/eleventy/UserConfig")} config */
 export default function(config) {
@@ -81,7 +95,15 @@ export default function(config) {
   })
 
   config.addFilter('filterForMixins', function (clazz) {
-    return clazz?.mixins ?? []
+    console.log(`start looking for mixins for ${clazz.name}`)
+    // Find mixins from superclasses as well.
+    const mixins = new Set()
+    for (let c = clazz; c; c = findSuperclass(c)) {
+      c.mixins?.forEach(m => mixins.add(m.name))
+    }
+    console.log(`    mixins=${[...mixins.keys()]}`)
+
+    return [...mixins.keys()]
   })
 
   config.addFilter('filterForBordered', function (components) {
