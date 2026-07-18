@@ -34,7 +34,7 @@ export const FormControlMixin =
      * Name used when this button is part of a form submission.  This must
      * be a non-empty string.
      */
-    @property({}) name = ''
+    @property({}) accessor name = ''
 
     private internals_?: ElementInternals
 

@@ -43,26 +43,26 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Opens the alert if set to true, closes if set to false.
    */
-  @property({ type: Boolean, reflect: true }) open = false
+  @property({ type: Boolean, reflect: true }) accessor open = false
 
   /**
    * If true the alert will contain an icon button at the top right allowing
    * the user to close the alert.  If false, the alert will close itself after
    * after 3 seconds.
    */
-  @property({ type: Boolean, reflect: true }) closable = false
+  @property({ type: Boolean, reflect: true }) accessor closable = false
 
   /**
    * Specifies the alert variant to use.  Different variants show different
    * icons and use a different colour for the background.
    */
-  @property({ reflect: true }) variant: VARIANTS = 'primary'
+  @property({ reflect: true }) accessor variant: VARIANTS = 'primary'
 
   /**
    * The amount of time the alert will be displayed before it closes itself.
    * By default an alert will be displayed until programmatically closed.
    */
-  @property({ type: Number }) duration: number = Infinity
+  @property({ type: Number }) accessor duration: number = Infinity
 
   private durationTimer_ = 0
 

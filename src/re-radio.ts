@@ -54,21 +54,21 @@ export class RadioElement extends ButtonBaseElement {
   /**
    * True if the radio button is "checked" and false otherwise.
    */
-  @property({ type: Boolean, reflect: true }) checked = false
+  @property({ type: Boolean, reflect: true }) accessor checked = false
 
   /**
    * If true, the radio button must be checked before its form can be submitted.
    * Note that only one radio button of any group with the given name can and
    * needs to be checked.
    */
-  @property({ type: Boolean }) required = false
+  @property({ type: Boolean }) accessor required = false
 
   /**
    * Value to be returned for this radio button when its form is submitted.  If
    * no value is specified, the default value of "on" is used.  If the radio
    * button is not checked, no value is submitted.
    */
-  @property({}) value?: string
+  @property({}) accessor value: string | undefined = undefined
 
   private prefix_?: IconElement
 

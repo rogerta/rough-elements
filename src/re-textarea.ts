@@ -43,14 +43,9 @@ export class TextAreaElement extends
   static formAssociated = true
 
   /**
-   * Name used when this button is part of a form submission.
-   */
-  @property() name = ''
-
-  /**
    * The type of the input.
    */
-  @property() type: 'date' | 'datetime-local' | 'email' | 'number' |
+  @property() accessor type: 'date' | 'datetime-local' | 'email' | 'number' |
       'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
   /**
@@ -58,7 +53,7 @@ export class TextAreaElement extends
    * in what manner. See the [autocapitalize](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocapitalize)
    * global attribute page for more information.
    */
-  @property({ reflect: true }) autocapitalize = ''
+  @property({ reflect: true }) accessor autocapitalize = ''
 
   /**
    * A space-separated string that describes what, if any, type of autocomplete
@@ -66,68 +61,68 @@ export class TextAreaElement extends
    * autocomplete recalls previous values entered in the same input field, but
    * more complex forms of autocomplete can exist.
    */
-  @property({ type: Boolean, reflect: true }) autocomplete = false
+  @property({ type: Boolean, reflect: true }) accessor autocomplete = false
 
   /**
    * Controls whether automatic spelling correction and processing of text is
    * enabled while the user is editing this textarea.
    */
-  @property({ type: Boolean, reflect: true }) autocorrect = true
+  @property({ type: Boolean, reflect: true }) accessor autocorrect = true
 
   /**
    * If present, indicates that the input should automatically have focus when
    * the page has finished loading (or when the `<dialog>` containing the
    * element has been displayed).
    */
-  @property({ type: Boolean, reflect: true }) autofocus = false
+  @property({ type: Boolean, reflect: true }) accessor autofocus = false
 
   /**
    * The visible width of the text control, in average character widths. If it
    * is specified, it must be a positive integer.
    */
-  @property({ type: Number }) cols = 20
+  @property({ type: Number }) accessor cols = 20
 
   /**
    * If true the input does not respond to user actions.  Disabled inputs are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   /**
    * Maximum length (number of characters) of value.
    */
-  @property({ type: Number }) maxlength?: number
+  @property({ type: Number }) accessor maxlength: number | undefined = undefined
 
   /**
    * Minimum length (number of characters) of value.
    */
-  @property({ type: Number }) minlength?: number
+  @property({ type: Number }) accessor minlength: number | undefined = undefined
 
   /**
    * Text that appears in the form control when it has no value set.
    */
-  @property() placeholder = ''
+  @property({}) accessor placeholder = ''
 
   /**
    * Boolean. The value is not editable.
    */
-  @property({ type: Boolean, reflect: true }) readonly = false
+  @property({ type: Boolean, reflect: true }) accessor readonly = false
 
   /**
    * If true, the checkbox must be checked before its form can be submitted.
    */
-  @property({ type: Boolean }) required? = false
+  @property({ type: Boolean }) accessor required: boolean | undefined = false
 
   /**
    * The number of visible text lines for the control. If it is specified, it
    * must be a positive integer.
    */
-  @property({ type: Number }) rows = 2
+  @property({ type: Number }) accessor rows = 2
 
   /**
    * The value of the control.
    */
-  @property({}) value = ''
+  @property({}) accessor value = ''
 
   constructor() {
     super()

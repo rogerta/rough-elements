@@ -58,7 +58,7 @@ export class DropdownElement extends LitElement {
   /**
    * If true the button is disabled and does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   static styles = [
     css`

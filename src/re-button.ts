@@ -55,36 +55,36 @@ export class ButtonElement extends ButtonBaseElement {
    * specified value of `href`.  The default behaviour is to open the link
    * specified by `href` in the target window.
    */
-  @property() href = ''
+  @property() accessor href = ''
 
   /**
    * If `href` is not empty, specifies the target window to open the link.
    */
-  @property() target = ''
+  @property() accessor target = ''
 
   /**
    * If `href` is not empty, the browser will download the linked file to a
    * file named by this property.
    */
-  @property() download = ''
+  @property() accessor download = ''
 
   /**
    * If true, a caret `<re-icon>` will be suffixed to this button.  This is
    * mostly used internally to indicate that the button will open some kind of
    * submenu.  It's color is taken from `--border-color`.
    */
-  @property({ type: Boolean, reflect: true }) caret = false
+  @property({ type: Boolean, reflect: true }) accessor caret = false
 
   /**
    * If true the button will render with a round border instead of a rectangular
    * one.  Usually the default slot is filled with a single `<re-icon>`.
    */
-  @property({ type: Boolean, reflect: true }) circle = false
+  @property({ type: Boolean, reflect: true }) accessor circle = false
 
   /**
    * A theme variant for the button, mostly affectings its colours.
    */
-  @property({ reflect: true }) variant: VARIANTS | 'text' = 'none'
+  @property({ reflect: true }) accessor variant: VARIANTS | 'text' = 'none'
 
   // Form specific properties.
 
@@ -92,43 +92,43 @@ export class ButtonElement extends ButtonBaseElement {
    * The button type for form submissions. Use type `'submit'` to make this
    * button submit its associated form.
    */
-  @property({}) type = 'button'
+  @property({}) accessor type = 'button'
 
   /**
    * If this button is used to submit the form, the form's `action` is
    * overridden with this URL.
    */
-  @property({}) formaction?: string
+  @property({}) accessor formaction: string | undefined = undefined
 
   /**
    * If this button is used to submit the form, the form's `enctype` is
    * overridden with this encoding type.
    */
-  @property({}) formenctype?: string
+  @property({}) accessor formenctype: string | undefined = undefined
 
   /**
    * If this button is used to submit the form, the form's `method` is
    * overridden with this method.
    */
-  @property({}) formmethod = 'post'
+  @property({}) accessor formmethod = 'post'
 
   /**
    * If this button is used to submit the form, the form's `novalidate` is
    * overridden with this value.
    */
-  @property({}) formnovalidate?: string
+  @property({}) accessor formnovalidate: string | undefined = undefined
 
   /**
    * If this button is used to submit the form, the form's `target` is
    * overridden with this value.
    */
-  @property({}) formtarget = '_self'
+  @property({}) accessor formtarget = '_self'
 
   /**
    * If this button is used to submit the form, this buttons `name` and `value`
    * are submitted with the form data.
    */
-  @property({}) value?: string
+  @property({}) accessor value: string | undefined = undefined
 
   constructor() {
     super()

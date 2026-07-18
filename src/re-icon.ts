@@ -27,7 +27,7 @@ export class IconElement extends ReElement {
   /**
    * The name of the icon to display.
    */
-  @property({reflect: true}) name = ''
+  @property({reflect: true}) accessor name = ''
 
   static styles = [
     ...super.styles,

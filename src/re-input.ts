@@ -47,14 +47,9 @@ export class InputElement extends
   static formAssociated = true
 
   /**
-   * Name used when this button is part of a form submission.
-   */
-  @property({}) name = ''
-
-  /**
    * The type of the input.
    */
-  @property({}) type: 'date' | 'datetime-local' | 'email' | 'number' |
+  @property({}) accessor type: 'date' | 'datetime-local' | 'email' | 'number' |
       'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
   /**
@@ -62,7 +57,7 @@ export class InputElement extends
    * in what manner. See the [autocapitalize](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocapitalize)
    * global attribute page for more information.
    */
-  @property({ reflect: true }) autocapitalize = ''
+  @property({ reflect: true }) accessor autocapitalize = ''
 
   /**
    * A space-separated string that describes what, if any, type of autocomplete
@@ -70,90 +65,90 @@ export class InputElement extends
    * autocomplete recalls previous values entered in the same input field, but
    * more complex forms of autocomplete can exist.
    */
-  @property({ type: Boolean, reflect: true }) autocomplete = false
+  @property({ type: Boolean, reflect: true }) accessor autocomplete = false
 
   /**
    * Controls whether automatic spelling correction and processing of text is
    * enabled while the user is editing this textarea.
    */
-  @property({ type: Boolean, reflect: true }) autocorrect = true
+  @property({ type: Boolean, reflect: true }) accessor autocorrect = true
 
   /**
    * If present, indicates that the input should automatically have focus when
    * the page has finished loading (or when the `<dialog>` containing the
    * element has been displayed).
    */
-  @property({ type: Boolean, reflect: true }) autofocus = false
+  @property({ type: Boolean, reflect: true }) accessor autofocus = false
 
   /**
    * If true the input does not respond to user actions.  Disabled inputs are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   /**
    * ID attribute of the `<datalist>` of autocomplete options.  It must be
    * in the same shadow root or light DOM as the `<re-input>` element.
    */
-  @property() list = ''
+  @property() accessor list = ''
 
   /**
    * The input’s maximum value. Only applies to date and number input types.
    */
-  @property({ type: Number }) max?: number
+  @property({ type: Number }) accessor max: number | undefined = undefined
 
   /**
    * Maximum length (number of characters) of value.
    */
-  @property({ type: Number }) maxlength?: number
+  @property({ type: Number }) accessor maxlength: number | undefined = undefined
 
   /**
    * The input’s maximum value. Only applies to date and number input types.
    */
-  @property({ type: Number }) min?: number
+  @property({ type: Number }) accessor min: number | undefined = undefined
 
   /**
    * Minimum length (number of characters) of value.
    */
-  @property({ type: Number }) minlength?: number
+  @property({ type: Number }) accessor minlength: number | undefined = undefined
 
   /**
    * Regular expression pattern that `value` must match to be valid.
    */
-  @property({}) pattern?: string
+  @property({}) accessor pattern: string | undefined = undefined
 
   /**
    * Text that appears in the form control when it has no value set.
    */
-  @property() placeholder = ''
+  @property() accessor placeholder = ''
 
   /**
    * Boolean. Whether to allow multiple values.
    */
-  @property({ type: Boolean, reflect: true }) multiple = ''
+  @property({ type: Boolean, reflect: true }) accessor multiple = ''
 
   /**
    * Boolean. The value is not editable.
    */
-  @property({ type: Boolean, reflect: true }) readonly = false
+  @property({ type: Boolean, reflect: true }) accessor readonly = false
 
   /**
    * If true, the checkbox must be checked before its form can be submitted.
    */
-  @property({ type: Boolean }) required? = false
+  @property({ type: Boolean }) accessor required: boolean | undefined = false
 
   /**
    * Incremental values that are valid.
    */
-  @property({ type: Number }) step? = 1
+  @property({ type: Number }) accessor step: number | undefined = 1
 
   /**
    * The value of the control. When specified in the HTML, corresponds to the
    * initial value.
    */
-  @property() value = ''
+  @property() accessor value = ''
 
-  @property({ state: true }) private showPassword_ = false
+  @property({ state: true }) private accessor showPassword_ = false
 
   constructor() {
     super()

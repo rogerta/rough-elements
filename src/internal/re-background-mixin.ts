@@ -90,11 +90,11 @@ export declare class BackgroundMixinInterface {
 export const BackgroundMixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
-    @property({}) fillStyle: FILLSTYLE = 'none'
-    @property({}) hachureWeight = 6
-    @property({}) hachureGap = 15
-    @property({}) hachureAngle = -75
-    @property({}) fillFraction = 1
+    @property({}) accessor fillStyle: FILLSTYLE = 'none'
+    @property({}) accessor hachureWeight = 6
+    @property({}) accessor hachureGap = 15
+    @property({}) accessor hachureAngle = -75
+    @property({}) accessor fillFraction = 1
 
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,

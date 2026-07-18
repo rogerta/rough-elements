@@ -53,7 +53,7 @@ export declare class BorderMixinInterface {
 export const BorderMixin =
     <T extends Constructor<ReElement>>(superClass: T) => {
   class MixinClass extends superClass {
-    @property({}) borderStyle: BORDERSTYLE = 'rectangle'
+    @property({}) accessor borderStyle: BORDERSTYLE = 'rectangle'
 
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,

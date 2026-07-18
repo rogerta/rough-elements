@@ -33,7 +33,7 @@ export class IconButtonElement extends LitElement {
   /**
    * The name of the icon to display.
    */
-  @property() name = ''
+  @property() accessor name = ''
 
   /**
    * Sets this icon button to be a trigger for a popover element. The popover

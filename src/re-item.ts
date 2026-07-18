@@ -40,12 +40,12 @@ export class ItemElement extends LitElement {
   /**
    * True if the item is selected.
    */
-  @property({ type: Boolean, reflect: true }) selected = false
+  @property({ type: Boolean, reflect: true }) accessor selected = false
 
   /**
    * If true the button is disabled and does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   constructor() {
     super()

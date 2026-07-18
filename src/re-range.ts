@@ -33,28 +33,28 @@ export class RangeElement extends FormControlMixin(ReElement) {
   /**
    * The range’s maximum value.
    */
-  @property({ type: Number }) min = 0
+  @property({ type: Number }) accessor min = 0
 
    /**
    * The range’s maximum value.
    */
-  @property({ type: Number }) max = 100
+  @property({ type: Number }) accessor max = 100
 
   /**
    * Incremental values that are valid.
    */
-  @property({ type: Number }) step = 1
+  @property({ type: Number }) accessor step = 1
 
   /**
    * The value of the control. When specified in the HTML, corresponds to the
    * initial value.
    */
-  @property({ type: Number }) value: number = 50
+  @property({ type: Number }) accessor value = 50
 
   /**
    * If true the button is disabled and does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   static styles = [
     ...super.styles,

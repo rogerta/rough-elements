@@ -55,7 +55,7 @@ export class DialogElement extends LitElement {
    * if set the `'none'` the dialog can only be closed by some caller specific
    * mechanism.
    */
-  @property({}) closedby: 'any' | 'closerequest' | 'none' = 'any'
+  @property({}) accessor closedby: 'any' | 'closerequest' | 'none' = 'any'
 
   /**
    * Returns true if the dialog is open.

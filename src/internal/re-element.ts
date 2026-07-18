@@ -63,7 +63,7 @@ export class ReElement extends LitElement {
    * emtpty.  When enabled, some rough elements will write debgging information
    * to `console.log`.
    */
-  @property({}) enableDebugging?: string
+  @property({}) accessor enableDebugging: string | undefined = undefined
 
   private observer_?: ResizeObserver
   private rough_?: RoughSVG

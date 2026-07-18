@@ -36,12 +36,12 @@ export class PanelGroupElement extends LitElement {
    * The name of the panel group.  It must be unique within a given shadow
    * root or light DOM.
    */
-  @property({}) name = ''
+  @property({}) accessor name = ''
 
   /**
    * The `data-id` of the panel that is currently visible.
    */
-  @property({}) selected = ''
+  @property({}) accessor selected = ''
 
   static styles = [
     css`

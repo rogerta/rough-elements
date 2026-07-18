@@ -26,7 +26,7 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
    * Specifies the variant to use.  Different variants use a different colour
    * for the background.
    */
-  @property({ reflect: true }) variant: VARIANTS = 'none'
+  @property({ reflect: true }) accessor variant: VARIANTS = 'none'
 
   constructor() {
     super()

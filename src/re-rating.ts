@@ -23,28 +23,28 @@ export class RatingElement extends FormControlMixin(LitElement) {
   /**
    * The number of stars to display.  The minimum is 3 and the maximum is 5.
    */
-  @property({ type: Number }) max = 5
+  @property({ type: Number }) accessor max = 5
 
   /**
    * The rating. When specified in the HTML, corresponds to the initial value.
    */
-  @property({ type: Number }) value: number = 0
+  @property({ type: Number }) accessor value = 0
 
   /**
    * If true the input does not respond to user actions.  Disabled inputs are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   /**
    * If true, the rating is not editable.
    */
-  @property({ type: Boolean, reflect: true }) readonly = false
+  @property({ type: Boolean, reflect: true }) accessor readonly = false
 
   /**
    * If true, the checkbox must be checked before its form can be submitted.
    */
-  @property({ type: Boolean, reflect: true }) required = false
+  @property({ type: Boolean, reflect: true }) accessor required = false
 
   static styles = [
     css`

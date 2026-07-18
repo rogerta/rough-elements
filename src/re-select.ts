@@ -56,7 +56,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
    *
    * NOT YET IMPLEMENTED
    */
-  @property({ type: Boolean, reflect: true }) multiple = false
+  @property({ type: Boolean, reflect: true }) accessor multiple = false
 
   /**
    * The index of the currently selected option.  If no option is selected,
@@ -67,7 +67,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
    * a flattened array before the selected index is calculated.  In these cases
    * it's likely easier to depend on the `value` property than this one.
    */
-  @property({ type: Number }) selectedIndex = -1
+  @property({ type: Number }) accessor selectedIndex = -1
 
   /**
    * The currently selected option(s).  If no option is selected, this is an
@@ -75,19 +75,20 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
    *
    * NOT YET IMPLEMENTED
    */
-  @property({ type: Array }) selectedOptions = []
+  @property({ type: Array }) accessor selectedOptions = []
 
   /**
    * If true, an option must be selected before its form can be submitted.
    */
-  @property({ type: Boolean, reflect: true }) required = false
+  @property({ type: Boolean, reflect: true }) accessor required = false
 
   /**
    * The `id` of the item that is currently selected.
    */
-  @property({}) value = ''
+  @property({}) accessor value = ''
 
-  @property({ type: Array, state: true }) private labelNodes_: Node[] = []
+  @property({ type: Array, state: true })
+  private accessor labelNodes_: Node[] = []
 
   private validate_() {
     const validity: ValidityStateFlags = {}

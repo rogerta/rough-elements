@@ -36,12 +36,12 @@ export class TabGroupElement extends LitElement {
    * The name of the panel group.  It must be unique within a given shadow
    * root or light DOM.
    */
-  @property({}) name = ''
+  @property({}) accessor name = ''
 
   /**
    * The `id` of the tab that is currently selected.
    */
-  @property({}) selected = ''
+  @property({}) accessor selected = ''
 
   static styles = [
     css`

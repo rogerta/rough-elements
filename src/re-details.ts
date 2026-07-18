@@ -36,15 +36,15 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * If true the details does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   /**
    * If true the body is visible to the user, otherwise the body is not
    * visible.
    */
-  @property({ type: Boolean, reflect: true }) open = false
+  @property({ type: Boolean, reflect: true }) accessor open = false
 
-    static styles = [
+  static styles = [
     ...super.styles,
     css`
       :host {

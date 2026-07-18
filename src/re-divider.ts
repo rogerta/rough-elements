@@ -20,7 +20,7 @@ export class DividerElement extends ReElement {
    * If true, the divider is displayed vertically.  Otherwise it is displayed
    * horizontally.
    */
-  @property({ type: Boolean, reflect: true }) vertical = false
+  @property({ type: Boolean, reflect: true }) accessor vertical = false
 
   static styles = [
     ...super.styles,

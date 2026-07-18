@@ -24,7 +24,7 @@ export class ButtonBaseElement extends
    * If true the button does not respond to user actions.  Disabled buttons are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) disabled = false
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
 
   handleEvent(e: Event) {
     switch (e.type) {

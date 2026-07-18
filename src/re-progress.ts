@@ -19,24 +19,24 @@ export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * If true the numeric value of the progress is displayed on the progress bar.
    */
-  @property({ type: Boolean, reflect: true }) showvalue = false
+  @property({ type: Boolean, reflect: true }) accessor showvalue = false
 
   /**
    * The lower numeric bound of the measured range. This must be less than
    * `max` if specified.
    */
-  @property({ type: Number }) min = 0
+  @property({ type: Number }) accessor min = 0
 
   /**
    * The upper numeric bound of the measured range. This must be greater than
    * `min` if specified.
    */
-  @property({ type: Number }) max = 1
+  @property({ type: Number }) accessor max = 1
 
   /**
    * The current value of the progress bar.
    */
-  @property({ type: Number }) value?: number
+  @property({ type: Number }) accessor value: number | undefined = undefined
 
   constructor() {
     super()

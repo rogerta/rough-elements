@@ -51,7 +51,7 @@ export class CheckboxElement extends ButtonBaseElement {
   /**
    * True if the checkbox is "checked" and false otherwise.
    */
-  @property({ type: Boolean, reflect: true }) checked = false
+  @property({ type: Boolean, reflect: true }) accessor checked = false
 
   /**
    * When true the checkbox renders in a way to indicate to the user that
@@ -59,19 +59,19 @@ export class CheckboxElement extends ButtonBaseElement {
    * property, and programmtically the checkbox is always either checked
    * or not.
    */
-  @property({ type: Boolean }) indeterminate = false
+  @property({ type: Boolean }) accessor indeterminate = false
 
   /**
    * If true, the checkbox must be checked before its form can be submitted.
    */
-  @property({ type: Boolean }) required = false
+  @property({ type: Boolean }) accessor required = false
 
   /**
    * Value to be returned for this checkbox when its form is submitted.  If
    * no value is specified, the default value of "on" is used.  If the checkbox
    * is not checked, no value is submitted.
    */
-  @property({}) value?: string
+  @property({}) accessor value: string | undefined = undefined
 
   private prefix_?: IconElement
 
