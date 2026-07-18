@@ -239,9 +239,3 @@ export class TabGroupElement extends LitElement {
     `
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-tab-group': TabGroupElement
-  }
-}

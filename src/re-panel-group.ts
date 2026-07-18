@@ -89,9 +89,3 @@ export class PanelGroupElement extends LitElement {
     })
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-panel-group': PanelGroupElement
-  }
-}

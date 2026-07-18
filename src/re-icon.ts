@@ -77,9 +77,3 @@ export class IconElement extends ReElement {
     return [icon]
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-icon': IconElement
-  }
-}

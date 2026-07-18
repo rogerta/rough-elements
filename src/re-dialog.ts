@@ -318,9 +318,3 @@ export class DialogElement extends LitElement {
     ]
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-dialog': DialogElement
-  }
-}

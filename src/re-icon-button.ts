@@ -67,9 +67,3 @@ export class IconButtonElement extends LitElement {
     `
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-icon-button': IconButtonElement
-  }
-}

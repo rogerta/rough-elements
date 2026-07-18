@@ -86,9 +86,3 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
     `
   ]
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-badge': BadgeElement
-  }
-}

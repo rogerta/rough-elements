@@ -146,9 +146,3 @@ export class DropdownElement extends LitElement {
     return []
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-dropdown': DropdownElement
-  }
-}

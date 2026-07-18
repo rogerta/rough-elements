@@ -90,9 +90,3 @@ export class SpinnerElement extends ReElement {
     `
   ]
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-spinner': SpinnerElement
-  }
-}

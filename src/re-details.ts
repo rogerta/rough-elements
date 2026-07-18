@@ -139,9 +139,3 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
     ]
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-details': DetailsElement
-  }
-}

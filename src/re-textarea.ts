@@ -286,9 +286,3 @@ export class TextAreaElement extends
     `,
   ]
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-textarea': TextAreaElement
-  }
-}

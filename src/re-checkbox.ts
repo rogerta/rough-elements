@@ -165,9 +165,3 @@ export class CheckboxElement extends ButtonBaseElement {
     }
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-checkbox': CheckboxElement
-  }
-}

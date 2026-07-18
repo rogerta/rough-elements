@@ -274,9 +274,3 @@ export class RangeElement extends FormControlMixin(ReElement) {
     return roughElements
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-range': RangeElement
-  }
-}

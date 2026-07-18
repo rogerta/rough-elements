@@ -334,9 +334,3 @@ export class InputElement extends
     `,
   ]
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-input': InputElement
-  }
-}

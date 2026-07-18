@@ -48,9 +48,3 @@ export class CardElement extends BorderMixin(BackgroundMixin(ReElement)) {
     `
   ]
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-card': CardElement
-  }
-}

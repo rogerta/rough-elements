@@ -259,9 +259,3 @@ export class ButtonElement extends ButtonBaseElement {
     `,
   ]
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-button': ButtonElement
-  }
-}

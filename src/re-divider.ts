@@ -74,9 +74,3 @@ export class DividerElement extends ReElement {
     return lines
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-divider': DividerElement
-  }
-}

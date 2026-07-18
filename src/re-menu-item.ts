@@ -165,9 +165,3 @@ export class MenuItemElement extends ItemElement {
     ]
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-menu-item': MenuItemElement
-  }
-}

@@ -324,9 +324,3 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     ]
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-menu': MenuElement
-  }
-}

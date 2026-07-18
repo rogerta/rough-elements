@@ -184,9 +184,3 @@ export class RadioElement extends ButtonBaseElement {
     }
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-radio': RadioElement
-  }
-}

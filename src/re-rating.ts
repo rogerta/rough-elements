@@ -232,9 +232,3 @@ export class RatingElement extends FormControlMixin(LitElement) {
     `
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-rating': RatingElement
-  }
-}

@@ -149,12 +149,6 @@ export class ItemElement extends LitElement {
   }
 }
 
-declare global {
-  interface HTMLElementTagNameMap {
-    're-item': ItemElement
-  }
-}
-
 /**
  * Given an Event (usually a `click` event), returns the ID of the closest
  * `<re-item>` that is not disabled.  This function is helpful since clicking

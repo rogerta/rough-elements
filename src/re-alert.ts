@@ -233,9 +233,3 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
     `
   ]
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-alert': AlertElement
-  }
-}

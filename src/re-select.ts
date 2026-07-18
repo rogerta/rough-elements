@@ -164,9 +164,3 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
     return this.labelNodes_
   }
 }
-
-declare global {
-  interface HTMLElementTagNameMap {
-    're-select': SelectElement
-  }
-}
