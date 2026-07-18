@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>rough-elements</title>
+
+    <!-- Load fonts for page. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- Load Rough Elements -->
+    <link href="https://esm.sh/jsr/@rough/rough-elements/public/themes/defaultXXX.css" rel="stylesheet">
+    <script type="module" src="https://esm.sh/jsr/@rough/rough-elementsXXX"></script>
+    <link href="/themes/default.css" rel="stylesheet">
+    <script type="module" src="/src/rough-elements.ts"></script>
+
+    <style>
+      /* Can be 100-900 for weight.  Create a new class for each */
+      .noto-serif-400 {
+        font-family: "Noto Serif", serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+      .noto-sans-400 {
+        font-family: "Noto Sans", sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+      .noto-sans-mono-400 {
+        font-family: "Noto Sans Mono", monospace;
+        font-optical-sizing: auto;
+        font-weight: 400;
+        font-style: normal;
+        font-variation-settings: "wdth" 100;
+      }
+      body {
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+        color: var(--foreground-color);
+        background: var(--background-color);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: stretch;
+      }
+      #header, #footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #footer {
+        --border-width: 0;
+        --background-color: rgb(from var(--foreground-color) R G B / 0.05);
+      }
+
+      re-icon-button[name="search:apps"] {
+        anchor-name: --apps-button;
+      }
+      #appscard {
+        position-anchor: --apps-button;
+      }
+
+      re-icon-button[name="search:account-circle"] {
+        anchor-name: --account-button;
+      }
+      #accountcard {
+        position-anchor: --account-button;
+        --re-background-color: rgb(from var(--foreground-color) R G B / 0.05);
+        & re-icon {
+          --size: 4rem;
+        }
+
+        & re-dropdown {
+          background-color: var(--background-color);
+        }
+
+        & [slot=footer] {
+          font-size: 0.75rem;
+          margin: 0 1rem;
+        }
+      }
+      #accountcard::part(header) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: start;
+        gap: 1rem;
+      }
+      #accountcard::part(body) {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: start;
+      }
+      #accountcard::part(footer) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+      }
+
+      #content {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+      }
+      #content > div {
+        margin-top: 20%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+      re-input {
+        width: 50vw;
+        & [slot=suffix]+[slot=suffix] {
+          margin-left: 1rem;
+        }
+      }
+
+      .invisible {
+        opacity: 0;
+      }
+      .spacer {
+        flex-grow: 1;
+      }
+      .popover {
+        position-area: bottom span-right;
+        position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+      }
+    </style>
+    <script vite-ignore type="module" blocking="render">
+      // When loading user icons that are needed on first render, place the
+      // addUserIcon() calls inside a <script> in <head> and mark it as blocking
+      // render.  Otherwise the <re-icon> element will appear empty.
+      //import { addUserIcon } from 'https://esm.sh/jsr/@rough/rough-elements/iconset'
+      import { addUserIcon } from '/src/re-iconset.ts'
+      addUserIcon('search', 'add', 'M446.67-446.67H200v-66.66h246.67V-760h66.66v246.67H760v66.66H513.33V-200h-66.66v-246.67Z')
+      addUserIcon('search', 'apps', 'M180.5-180.5Q160-201 160-230.67q0-29.66 20.5-50.16 20.5-20.5 50.17-20.5 29.66 0 50.16 20.5 20.5 20.5 20.5 50.16 0 29.67-20.5 50.17T230.67-160q-29.67 0-50.17-20.5Zm249.33 0q-20.5-20.5-20.5-50.17 0-29.66 20.5-50.16 20.5-20.5 50.17-20.5t50.17 20.5q20.5 20.5 20.5 50.16 0 29.67-20.5 50.17T480-160q-29.67 0-50.17-20.5Zm249.34 0q-20.5-20.5-20.5-50.17 0-29.66 20.5-50.16 20.5-20.5 50.16-20.5 29.67 0 50.17 20.5t20.5 50.16q0 29.67-20.5 50.17T729.33-160q-29.66 0-50.16-20.5ZM180.5-429.83Q160-450.33 160-480t20.5-50.17q20.5-20.5 50.17-20.5 29.66 0 50.16 20.5 20.5 20.5 20.5 50.17t-20.5 50.17q-20.5 20.5-50.16 20.5-29.67 0-50.17-20.5Zm249.33 0q-20.5-20.5-20.5-50.17t20.5-50.17q20.5-20.5 50.17-20.5t50.17 20.5q20.5 20.5 20.5 50.17t-20.5 50.17q-20.5 20.5-50.17 20.5t-50.17-20.5Zm249.34 0q-20.5-20.5-20.5-50.17t20.5-50.17q20.5-20.5 50.16-20.5 29.67 0 50.17 20.5T800-480q0 29.67-20.5 50.17t-50.17 20.5q-29.66 0-50.16-20.5ZM180.5-679.17q-20.5-20.5-20.5-50.16 0-29.67 20.5-50.17t50.17-20.5q29.66 0 50.16 20.5 20.5 20.5 20.5 50.17 0 29.66-20.5 50.16-20.5 20.5-50.16 20.5-29.67 0-50.17-20.5Zm249.33 0q-20.5-20.5-20.5-50.16 0-29.67 20.5-50.17T480-800q29.67 0 50.17 20.5t20.5 50.17q0 29.66-20.5 50.16-20.5 20.5-50.17 20.5t-50.17-20.5Zm249.34 0q-20.5-20.5-20.5-50.16 0-29.67 20.5-50.17t50.16-20.5q29.67 0 50.17 20.5t20.5 50.17q0 29.66-20.5 50.16-20.5 20.5-50.17 20.5-29.66 0-50.16-20.5Z')
+      addUserIcon('search', 'mic', 'M403.67-447.61q-31-32.28-31-78.39v-247.33q0-44.45 31.29-75.56 31.3-31.11 76-31.11 44.71 0 76.04 31.11 31.33 31.11 31.33 75.56V-526q0 46.11-31 78.39T480-415.33q-45.33 0-76.33-32.28ZM480-647.33ZM446.67-120v-131.67q-105.34-12-176-90.33Q200-420.33 200-526h66.67q0 88.33 62.36 149.17Q391.38-316 479.86-316q88.47 0 150.97-60.83 62.5-60.84 62.5-149.17H760q0 105.67-70.67 184-70.66 78.33-176 90.33V-120h-66.66Zm62.5-374.83q11.5-12.84 11.5-31.17v-247.33q0-17-11.69-28.5-11.7-11.5-28.98-11.5t-28.98 11.5q-11.69 11.5-11.69 28.5V-526q0 18.33 11.5 31.17Q462.33-482 480-482t29.17-12.83Z')
+      addUserIcon('search', 'photo-camera', 'M479.67-264.67q73.33 0 123.5-50.16 50.16-50.17 50.16-123.5 0-73.34-50.16-123.17-50.17-49.83-123.5-49.83-73.34 0-123.17 49.83t-49.83 123.17q0 73.33 49.83 123.5 49.83 50.16 123.17 50.16Zm0-66.66q-45.67 0-76-30.67-30.34-30.67-30.34-76.33 0-45.67 30.34-76 30.33-30.34 76-30.34 45.66 0 76.33 30.34 30.67 30.33 30.67 76 0 45.66-30.67 76.33t-76.33 30.67ZM146.67-120q-27 0-46.84-19.83Q80-159.67 80-186.67v-502q0-26.33 19.83-46.5 19.84-20.16 46.84-20.16h140L360-840h240l73.33 84.67h140q26.34 0 46.5 20.16Q880-715 880-688.67v502q0 27-20.17 46.84Q839.67-120 813.33-120H146.67Zm0-66.67h666.66v-502H642.67l-73-84.66H390.33l-73 84.66H146.67v502ZM480-438Z')
+      addUserIcon('search', 'account-circle', 'M226-262q59-42.33 121.33-65.5 62.34-23.17 132.67-23.17 70.33 0 133 23.17T734.67-262q41-49.67 59.83-103.67T813.33-480q0-141-96.16-237.17Q621-813.33 480-813.33t-237.17 96.16Q146.67-621 146.67-480q0 60.33 19.16 114.33Q185-311.67 226-262Zm155.83-224.5Q342-526.33 342-584.67q0-58.33 39.83-98.16 39.84-39.84 98.17-39.84t98.17 39.84Q618-643 618-584.67q0 58.34-39.83 98.17-39.84 39.83-98.17 39.83t-98.17-39.83ZM480-80q-82.33 0-155.33-31.5-73-31.5-127.34-85.83Q143-251.67 111.5-324.67T80-480q0-83 31.5-155.67 31.5-72.66 85.83-127Q251.67-817 324.67-848.5T480-880q83 0 155.67 31.5 72.66 31.5 127 85.83 54.33 54.34 85.83 127Q880-563 880-480q0 82.33-31.5 155.33-31.5 73-85.83 127.34-54.34 54.33-127 85.83Q563-80 480-80Zm105-82.5q50.67-15.83 97.67-52.17-47-33.66-98-51.5Q533.67-284 480-284t-104.67 17.83q-51 17.84-98 51.5 47 36.34 97.67 52.17 50.67 15.83 105 15.83t105-15.83Zm-53.67-370.83q20-20 20-51.34 0-31.33-20-51.33T480-656q-31.33 0-51.33 20t-20 51.33q0 31.34 20 51.34 20 20 51.33 20t51.33-20ZM480-584.67Zm0 369.34Z')
+    </script>
+  </head>
+  <body class="noto-sans-400">
+    <div id="header">
+      <re-button variant="text">About</re-button>
+      <re-button variant="text">Store</re-button>
+      <div class="spacer"></div>
+      <re-button variant="text">Mail</re-button>
+      <re-button variant="text">Images</re-button>
+      <re-icon-button name="search:apps"></re-icon-button>
+      <re-icon-button name="search:account-circle"></re-icon-button>
+    </div>
+
+    <re-card popover id="appscard" class="popover" fillStyle="solid">
+      Apps card
+    </re-card>
+
+    <re-card popover id="accountcard" class="popover" fillStyle="solid">
+      <!-- header -->
+      <span slot="header">me@example.com</span>
+      <re-icon name="search:account-circle" slot="header"></re-icon>
+
+      <!-- body -->
+      <re-dropdown>
+        <span slot="label">Show more accounts</span>
+        <re-item id="acc0">myself@example.com</re-item>
+        <re-item id="acc0">i@example.com</re-item>
+      </re-dropdown>
+      <re-button variant="text">Search history</re-button>
+      <re-button variant="text">Delete last 30 min</re-button>
+      <re-divider></re-divider>
+      <re-button variant="text">Saves & collections</re-button>
+      <re-button variant="text">Your search profile</re-button>
+      <re-divider></re-divider>
+      <re-button variant="text">Search personalization</re-button>
+      <re-button variant="text">Safe search</re-button>
+      <re-button variant="text">Language</re-button>
+      <re-button variant="text">More settings</re-button>
+      <re-divider></re-divider>
+
+      <!-- footer -->
+      <span slot="footer">Privacy Policy</span>
+      <span slot="footer">Terms of Service</span>
+    </re-card>
+
+    <div id="content" class="spacer">
+      <div>
+        <svg width="63.810589mm" height="15.211807mm"
+            viewBox="0 0 63.810589 15.211807" version="1.1" id="search"
+            class="invisible"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:svg="http://www.w3.org/2000/svg">
+          <g transform="translate(-40.593556,-51.685126)">
+            <path id="letterS"
+              d="m 49.779911,62.78777 q 0,1.876782 -1.363137,3.002851 -1.34338,1.106314 -3.832586,1.106314 -2.232383,0 -3.990631,-0.849491 v -2.785539 q 1.007535,0.434623 2.074338,0.809979 1.086558,0.355601 2.15336,0.355601 1.106314,0 1.560693,-0.414868 0.474134,-0.434623 0.474134,-1.086558 0,-0.533401 -0.375356,-0.908757 -0.355601,-0.375357 -0.968025,-0.691446 -0.612423,-0.335845 -1.402647,-0.711202 -0.49389,-0.237067 -1.066803,-0.553157 -0.572912,-0.335845 -1.106313,-0.809979 -0.513646,-0.49389 -0.849491,-1.185336 -0.335845,-0.691446 -0.335845,-1.659471 0,-1.896537 1.284114,-2.943584 1.284114,-1.066802 3.496741,-1.066802 1.106313,0 2.094093,0.256822 1.007536,0.256823 2.094094,0.730958 l -0.968024,2.33116 q -0.968025,-0.395112 -1.738493,-0.612423 -0.770469,-0.217312 -1.580448,-0.217312 -0.849491,0 -1.30387,0.395112 -0.454379,0.395112 -0.454379,1.027291 0,0.750713 0.671691,1.185336 0.67169,0.434624 1.995315,1.066803 1.086558,0.513645 1.837271,1.066802 0.770469,0.553157 1.185336,1.30387 0.414868,0.750713 0.414868,1.857026 z"
+              style="fill:#4285f4;fill-opacity:1;stroke-width:0" />
+            <path id="letterE"
+              d="m 56.556093,55.715265 q 2.232383,0 3.536253,1.284114 1.303869,1.264359 1.303869,3.615275 v 1.422403 h -6.953971 q 0.03951,1.244603 0.730957,1.955805 0.711202,0.711201 1.955805,0.711201 1.047047,0 1.896537,-0.197556 0.849491,-0.217311 1.758249,-0.651934 v 2.271894 q -0.790224,0.395112 -1.679226,0.572912 -0.869247,0.197556 -2.113849,0.197556 -1.61996,0 -2.864562,-0.592668 -1.244603,-0.612424 -1.955805,-1.837271 -0.711201,-1.224847 -0.711201,-3.081873 0,-1.896538 0.632179,-3.141141 0.651935,-1.264358 1.797759,-1.896537 1.145825,-0.63218 2.667006,-0.63218 z m 0.01976,2.094094 q -0.849491,0 -1.422403,0.553157 -0.553157,0.553157 -0.651935,1.718737 h 4.12892 q -0.01976,-0.98778 -0.513645,-1.619959 -0.49389,-0.651935 -1.540937,-0.651935 z"
+              style="fill:#ea4335;fill-opacity:1;stroke-width:0" />
+            <path id="letterA"
+              d="m 68.211888,55.69551 q 2.173116,0 3.318941,0.948269 1.16558,0.928513 1.16558,2.864562 v 7.191038 h -2.054582 l -0.572912,-1.461914 h -0.07902 q -0.691446,0.869246 -1.461914,1.264358 -0.770469,0.395112 -2.113849,0.395112 -1.442159,0 -2.390428,-0.829735 -0.948269,-0.849491 -0.948269,-2.587984 0,-1.718737 1.205092,-2.528717 1.205091,-0.829735 3.615275,-0.908757 l 1.876782,-0.05927 v -0.474134 q 0,-0.849491 -0.454379,-1.244603 -0.434623,-0.395112 -1.224847,-0.395112 -0.790224,0 -1.540937,0.237067 -0.750713,0.217312 -1.501426,0.553157 l -0.968024,-1.995316 q 0.869246,-0.454379 1.916293,-0.711201 1.066802,-0.256823 2.212627,-0.256823 z m 0.414868,6.045213 q -1.422403,0.03951 -1.97556,0.513646 -0.553157,0.474134 -0.553157,1.244603 0,0.67169 0.395112,0.968024 0.395112,0.276579 1.027291,0.276579 0.948269,0 1.600204,-0.553157 0.651935,-0.572913 0.651935,-1.600204 v -0.889002 z"
+              style="fill:#fbbc05;fill-opacity:1;stroke-width:0" />
+            <path id="letterR"
+              d="m 81.744476,55.715265 q 0.217312,0 0.513646,0.01976 0.296334,0.01976 0.474134,0.05927 l -0.217311,2.765784 q -0.138289,-0.03951 -0.414868,-0.05927 -0.256823,-0.03951 -0.454379,-0.03951 -0.750712,0 -1.442158,0.276578 -0.691446,0.256823 -1.12607,0.849491 -0.414867,0.592668 -0.414867,1.619959 v 5.492057 H 75.719018 V 55.912821 h 2.232383 l 0.434623,1.817516 h 0.13829 q 0.474134,-0.829736 1.303869,-1.422404 0.829735,-0.592668 1.916293,-0.592668 z"
+              style="fill:#4285f4;fill-opacity:1;stroke-width:0" />
+            <path id="letterC"
+              d="m 88.678694,66.896935 q -2.410183,0 -3.733808,-1.323625 -1.30387,-1.343381 -1.30387,-4.207943 0,-1.97556 0.671691,-3.220163 0.67169,-1.244603 1.857026,-1.837271 1.205092,-0.592668 2.765784,-0.592668 1.106314,0 1.916293,0.217312 0.829735,0.217312 1.442159,0.513646 l -0.869246,2.271894 q -0.691446,-0.276579 -1.30387,-0.454379 -0.592668,-0.177801 -1.185336,-0.177801 -2.29165,0 -2.29165,3.259674 0,1.61996 0.592668,2.390428 0.612424,0.770468 1.698982,0.770468 0.928513,0 1.639715,-0.237067 0.711201,-0.256823 1.382892,-0.691446 v 2.508961 q -0.671691,0.434624 -1.422403,0.612424 -0.730958,0.197556 -1.857027,0.197556 z"
+              style="fill:#34a853;fill-opacity:1;stroke-width:0" />
+            <path id="letterH"
+              d="m 97.390912,54.747241 q 0,0.790224 -0.05927,1.521181 -0.03951,0.730957 -0.07902,1.027291 h 0.158045 q 0.513646,-0.829735 1.323625,-1.205091 0.80998,-0.375357 1.797758,-0.375357 1.75825,0 2.8053,0.948269 1.0668,0.928513 1.0668,3.002851 v 7.032994 h -2.94358 v -6.302036 q 0,-2.331161 -1.738498,-2.331161 -1.323625,0 -1.837271,0.928513 -0.49389,0.908758 -0.49389,2.627495 v 5.077189 H 94.447328 V 51.685123 h 2.943584 z"
+              style="fill:#ea4335;fill-opacity:1;stroke-width:0" />
+          </g>
+        </svg>
+        <script type="module">
+          // The SVG above was created with inkskape and uses smooth lines
+          // for the letter.  Rough up the path of each of the letters here.
+          // `maxRandomnessOffset` tweaked mnaully to make look good.
+          import { generator } from 'https://esm.sh/jsr/@rough/roughjs'
+          const gen = generator()
+          gen.defaultOptions.maxRandomnessOffset = 0.05
+          gen.defaultOptions.fillStyle = 'solid'
+          gen.defaultOptions.fill = 'inherit'
+          gen.defaultOptions.stroke = 'none'
+          document.querySelectorAll('svg path').forEach(letter => {
+            const origD = letter.getAttribute('d')
+            const drawable = gen.path(origD)
+            const pathsinfos = gen.toPaths(drawable)
+            const newD = pathsinfos[0].d
+            letter.setAttribute('d', newD)
+          })
+          document.querySelector('svg')?.classList.remove('invisible')
+
+          {
+            const button =
+                document.querySelector('re-icon-button[name="search:apps"]')
+            const card = document.querySelector('#appscard')
+            button.setPopoverTarget(card)
+          }
+          {
+            const button =
+                document.querySelector('re-icon-button[name="search:account-circle"]')
+            const card = document.querySelector('#accountcard')
+            button.setPopoverTarget(card)
+          }
+        </script>
+        <re-input>
+          <re-icon name="search:add" slot="prefix"></re-icon>
+          <re-icon name="search:mic" slot="suffix"></re-icon>
+          <re-icon name="search:photo-camera" slot="suffix"></re-icon>
+        </re-input>
+        <div>
+          <re-button>Search</re-button>
+          <re-button>I'm Feeling Lucky</re-button>
+        </div>
+      </div>
+    </div>
+
+    <re-card id="footer" borderStyle="none" fillStyle="solid">
+      <div>
+        <re-button variant="text">Advertising</re-button>
+        <re-button variant="text">Business</re-button>
+        <re-button variant="text">How Search works</re-button>
+      </div>
+      <div>
+        <re-button variant="text">Privacy</re-button>
+        <re-button variant="text">Terms</re-button>
+        <re-button variant="text">Settings</re-button>
+      </div>
+    </re-card>
+  </body>
+</html>
