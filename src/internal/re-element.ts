@@ -56,7 +56,7 @@ export function fire<T>(
  * may be used for addiional style if needed.
  */
 export class ReElement extends LitElement {
-  @query('svg#rough', true) private svg_?: SVGSVGElement
+  @query('svg#rough') private svg_?: SVGSVGElement
 
   /**
    * Enables debugging in elements when the string is not undefined and not
