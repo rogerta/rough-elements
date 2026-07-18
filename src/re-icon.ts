@@ -58,7 +58,7 @@ export class IconElement extends ReElement {
       _height: number,
       _cstyles: CSSStyleDeclaration): SVGElement[] {
     const d = getIcon(this.name)
-    if (!d) {
+    if (!d || !this.svg) {
       return []
     }
 

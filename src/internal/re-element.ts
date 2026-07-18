@@ -56,7 +56,7 @@ export function fire<T>(
  * may be used for addiional style if needed.
  */
 export class ReElement extends LitElement {
-  @query('svg#rough') private svg_?: SVGSVGElement
+  @query('svg#rough') private accessor svg_: SVGSVGElement | undefined = undefined
 
   /**
    * Enables debugging in elements when the string is not undefined and not
@@ -69,12 +69,15 @@ export class ReElement extends LitElement {
   private rough_?: RoughSVG
   private options_: Options = { seed: rough.newSeed() }
 
-  protected get svg() { return this.svg_! }
+  protected get svg() { return this.svg_ }
   protected get rough(): RoughSVG {
-    if (!this.rough_) {
-      this.rough_ = rough.svg(this.svg_!)
+    if (!this.svg_) {
+      throw new Error('Missing SVG element for this rough element')
     }
-    return this.rough_!
+    if (!this.rough_) {
+      this.rough_ = rough.svg(this.svg_)
+    }
+    return this.rough_
   }
 
   protected get options(): Options { return this.options_ }
@@ -132,10 +135,10 @@ export class ReElement extends LitElement {
       throw new Error('No rough svg')
     }
 
-    const { width, height } = this.svg.getBoundingClientRect()
+    const { width, height } = this.svg_.getBoundingClientRect()
     const cstyles = getComputedStyle(this)
     const roughElements = this.onResized(width, height, cstyles)
-    this.svg.replaceChildren(...roughElements)
+    this.svg_.replaceChildren(...roughElements)
   }
 
   static styles = [
