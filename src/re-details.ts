@@ -3,7 +3,7 @@ import { customElement, property } from 'lit/decorators.js'
 
 import { BackgroundMixin } from './internal/re-background-mixin.js'
 import { BorderMixin } from './internal/re-border-mixin.js'
-import { fire, ReElement } from './internal/re-element.js'
+import { ReElement } from './internal/re-element.js'
 import './re-icon.js'
 
 /**
