@@ -2,9 +2,37 @@
   "name": "@rough/rough-elements",
   "version": "0.1.0",
   "license": "MIT",
-  "exports": "./src/rough-elements.ts",
+  "exports": {
+     ".": "./src/rough-elements.ts",
+    "./re-alert": "./re-alert.ts",
+    "./re-badge": "./re-badge.ts",
+    "./re-button": "./re-button.ts",
+    "./re-card": "./re-card.ts",
+    "./re-checkbox": "./re-checkbox.ts",
+    "./re-details": "./re-details.ts",
+    "./re-dialog": "./re-dialog.ts",
+    "./re-divider": "./re-divider.ts",
+    "./re-dropdown": "./re-dropdown.ts",
+    "./re-icon-button": "./re-icon-button.ts",
+    "./re-icon": "./re-icon.ts",
+    "./re-iconset": "./re-iconset.ts",
+    "./re-input": "./re-input.ts",
+    "./re-item": "./re-item.ts",
+    "./re-menu-item": "./re-menu-item.ts",
+    "./re-menu": "./re-menu.ts",
+    "./re-panel-group": "./re-panel-group.ts",
+    "./re-progress": "./re-progress.ts",
+    "./re-radio": "./re-radio.ts",
+    "./re-range": "./re-range.ts",
+    "./re-rating": "./re-rating.ts",
+    "./re-select": "./re-select.ts",
+    "./re-spinner": "./re-spinner.ts",
+    "./re-tab-group": "./re-tab-group.ts",
+    "./re-textarea": "./re-textarea.ts"
+  },
   "publish": {
     "include": [
+      "README.md",
       "LICENSE",
       "public/themes/*.css"
     ]

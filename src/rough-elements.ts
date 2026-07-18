@@ -1,3 +1,12 @@
+/**
+ * A robust set of common UI elements with a hand-drawn, sketchy look.
+ *
+ * The elements are drawn with enough randomness that no two renderings will
+ * be exactly the same, just like two separate hand-drawn shapes.
+ *
+ * @module
+ */
+
 import './re-alert.ts'
 import './re-badge.ts'
 import './re-button.ts'
