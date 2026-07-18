@@ -23,7 +23,8 @@
     "docs:cem2wc": "node ./tools/cem2wc.js",
     "docs:data": "npm run docs:cem & npm run docs:cem2wc",
     "docs:11ty": "eleventy",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "pub": "npx jsr publish --allow-slow-types"
   },
   "keywords": [
     "webcomponent",
