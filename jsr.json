@@ -34,7 +34,8 @@
     "include": [
       "README.md",
       "LICENSE",
-      "public/themes/*.css"
+      "public/themes/*.css",
+      "src/**/*.ts"
     ]
   }
 }
