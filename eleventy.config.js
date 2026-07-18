@@ -95,13 +95,11 @@ export default function(config) {
   })
 
   config.addFilter('filterForMixins', function (clazz) {
-    console.log(`start looking for mixins for ${clazz.name}`)
     // Find mixins from superclasses as well.
     const mixins = new Set()
     for (let c = clazz; c; c = findSuperclass(c)) {
       c.mixins?.forEach(m => mixins.add(m.name))
     }
-    console.log(`    mixins=${[...mixins.keys()]}`)
 
     return [...mixins.keys()]
   })
