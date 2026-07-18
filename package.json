@@ -37,18 +37,17 @@
   "author": "Roger Tawa <roger@tawacentral.net>",
   "license": "MIT",
   "dependencies": {
-    "@rough/roughjs": "npm:@jsr/rough__roughjs@6.0.5",
+    "@rough/roughjs": "npm:@jsr/rough__roughjs@6.0.8",
     "lit": "3.3.2"
   },
   "devDependencies": {
-    "@11ty/eleventy": "^3.1.5",
-    "@astrojs/starlight": "^0.39.2",
+    "@11ty/eleventy": "3.1.5",
     "@custom-elements-manifest/analyzer": "0.11.0",
     "@rogerta/cem-plugin-litelement-parts": "1.0.1",
     "@rogerta/cem-plugin-litelement-slots": "1.0.1",
-    "marked": "^18.0.5",
+    "marked": "18.0.5",
     "typescript": "6.0.3",
-    "vite": "8.0.11"
+    "vite": "8.1.5"
   },
   "customElements": "dist/custom-elements.json"
 }
