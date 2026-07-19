@@ -247,17 +247,20 @@ export class TextAreaElement extends
       }
 
       slot[name="prefix"]::slotted(*) {
+        flex-grow: 0;
         margin-left: -0.25rem;
         margin-right: 0.25rem;
         --color: var(--border-color);
       }
       slot[name="suffix"]::slotted(*) {
+        flex-grow: 0;
         margin-left: 0.25rem;
         margin-right: 0.25rem;
         --color: var(--border-color);
       }
 
       textarea {
+        flex-grow: 1;
         border: none;
         padding: 0;
         margin: 0;
