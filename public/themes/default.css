@@ -1,3 +1,9 @@
+@property --border-width {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 8px;  /* Cannot specify 0.5rem */
+}
+
 :root {
   color-scheme: light dark;
 
