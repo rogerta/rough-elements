@@ -19,7 +19,7 @@ td, th {
 code {
   color: rgb(40 66 131);
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: 1em;
   text-wrap: nowrap;
 }
 .slot-name,
