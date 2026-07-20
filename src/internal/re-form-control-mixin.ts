@@ -78,7 +78,9 @@ export const FormControlMixin =
 
     override connectedCallback() {
       super.connectedCallback()
-      this.internals_ = this.attachInternals()
+      if (!this.internals_) {
+        this.internals_ = this.attachInternals()
+      }
     }
   }
   return MixinClass as Constructor<FormControlInterface> & T;
