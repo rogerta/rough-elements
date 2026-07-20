@@ -65,6 +65,16 @@
       }
       #appscard {
         position-anchor: --apps-button;
+        --re-background-color: rgb(from var(--foreground-color) R G B / 0.05);
+
+        & re-button {
+          grid-column: span 3;
+        }
+      }
+      #appscard::part(body) {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 1rem;
       }
 
       re-icon-button[name="search:account-circle"] {
@@ -127,6 +137,16 @@
         }
       }
 
+      .app {
+        background-color: white;
+        font-size: 0.75rem;
+      }
+      .app::part(body) {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
       .invisible {
         opacity: 0;
       }
@@ -163,7 +183,67 @@
     </div>
 
     <re-card popover id="appscard" class="popover" fillStyle="solid">
-      Apps card
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-card class="app">
+        <re-icon name="search:photo-camera"></re-icon>
+        <span>Name</span>
+      </re-card>
+      <re-button>Get more apps</re-button>
     </re-card>
 
     <re-card popover id="accountcard" class="popover" fillStyle="solid">
