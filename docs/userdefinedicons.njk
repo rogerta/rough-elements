@@ -7,34 +7,35 @@
 
 <h1>User Defined Icons</h1>
 <p>
-  Rough Elements are bundled with a small set of vector icons.
+  Rough Elements are bundled with a small set of rough vector icons.
   These can be used by specifying their name when rendering an
   <code>&lt;re-icon&gt;</code> element:
 </p>
 <pre><code>&lt;re-icon name="close"&gt;&lt;/re-icon&gt;
 </code></pre>
 <p>
-  See the file <code>re-iconset.ts</code> for a list of predefined icons.
-  These icons are identical to the <a href="https://fonts.google.com/icons">Google Icons</a> with
-  the same name (with underscores (_) replaced with dashes (-)).
+  See the file <a href="https://github.com/rogerta/rough-elements/blob/main/src/re-iconset.ts">re-iconset.ts</a>
+  for a list of predefined icons.  These icons are rough equivalents of the
+  <a href="https://fonts.google.com/icons">Google Icons</a> with
+  the same name (underscores (_) replaced with dashes (-)).
 </p>
 
 <p>
-  Define new icons by calling <code>addUserIcon()</code> as needed:
+  New rough icons can be defined (from non-rough versions) by calling
+  <code>addUserIcon()</code> as follows:
 </p>
-  <pre><code>import { addUserIcon } from '@rough/rough-elements/re-iconset.js'
-const path = 'path definition as used by SVG path element *'
-addUserIcon('app-name', 'icon-name', path)</code></pre>
+<pre><code>import { addUserIcon } from '@rough/rough-elements/iconset'
+
+addUserIcon('app-name', 'icon-name', 'SVG path commands')</code></pre>
 <p>
-  If the viewbox of the icon is not '0 -960 960 960' then specify it as the
-  last argument to <code>addUserIcon()</code>:
+  If the viewbox of the icon is not <code>'0 -960 960 960'</code> then specify
+  it as the last argument to <code>addUserIcon()</code>:
 </p>
-  <pre><code>addUserIcon('app-name', 'icon-name', path, '0 0 100 100')</code></pre>
+  <pre><code>addUserIcon('app-name', 'icon-name', 'SVG path commands', '0 0 100 100')</code></pre>
 
 <p>
   Both <code>'app-name'</code> and <code>'icon-name'</code> must be non-empty strings.
-  The new icon can then be used with <code>&lt;re-icon&gt;</code> by concatenating
-  the two names with a colon:
+  The new icon can then be used with <code>&lt;re-icon&gt;</code> as follows:
 </p>
 <pre><code>&lt;re-icon name="app-name:icon-name"&gt;&lt;/re-icon&gt;
 </code></pre>
@@ -42,16 +43,44 @@ addUserIcon('app-name', 'icon-name', path)</code></pre>
 <p>
   The easiest way to add new icons is to look through the
   <a href="https://fonts.google.com/icons">Google Icons</a> and find those
-  that suite your needs.  Donwload the icons as SVGfiles and use the
-  <code>d</code> attribute of the <code>path</code> SVG element as the
-  <code>path</code> argument to <code>addUserIcon()</code>.  These icons use a
-  viewbox of '0 -960 960 960' so no viewport argument is needed.  This process
-  maybe automated in the future.
+  that suite your needs.  Donwload the icons as SVG files and use the
+  <code>d</code> attribute of the <code>path</code> element as the
+  'SVG path commands' argument to <code>addUserIcon()</code>.  These icons use a
+  viewbox of <code>'0 -960 960 960'</code> so no viewport argument is needed.
+  This process may be automated in the future.
 </p>
 
 <p>
-  * See the <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d">Mozilla SVG Path definition specification</a>
+  See the <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Reference/Attribute/d#path_commands">Mozilla SVG Path command specification</a>
   for more details.
 </p>
 
+<h2>First Contentful Paint</h2>
+If user defined icons are needed for First Contentful Paint, calls to
+<code>addUserIcon()</code> must happen before the rough components are rendered.
+This can be done using a <code>&lt;script&gt;</code> in the
+<code>&lt;head&gt;</code> of the HTML page and marking it as blocking
+rendering.  For example:
+
+<pre><code>
+&lt;!doctype html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  ...
+  &lt;script vite-ignore type="module" blocking="render"&gt;
+    import { addUserIcon } from '@rough/rough-elements/iconset'
+    addUserIcon('app', 'icon1', 'SVG path commands')
+    addUserIcon('app', 'icon2', 'SVG path commands')
+    addUserIcon('app', 'icon3', 'SVG path commands')
+    addUserIcon('app', 'icon4', 'SVG path commands')
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  ...
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+To prevent the <a href="https://vite.dev/">vite</a> build tool from rewriting
+the script and moving it to an external file, use the <code>vite-ignore</code>
+attribute.  See your build tool documentation for ways to do the same.
 {% endblock %}
