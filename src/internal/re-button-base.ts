@@ -69,7 +69,7 @@ export class ButtonBaseElement extends
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix"></slot>
           <!-- The main label of the button. Typically holds text. -->
-          <slot></slot>
+          <slot id="main"></slot>
           <!-- A suffix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="suffix"></slot>
           ${this.renderCaretIfNeeded_() }
@@ -86,6 +86,7 @@ export class ButtonBaseElement extends
     ...super.styles,
     css`
       :host {
+        position: relative;
         display: inline-block;
         color: var(--color);
         user-select: none;
@@ -99,14 +100,23 @@ export class ButtonBaseElement extends
         opacity: 0.5;
       }
 
+      slot#main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-grow: 1;
+      }
       slot[name=prefix]::slotted(*) {
+        flex-grow: 0;
         --color: var(--border-color);
         margin-left: -0.25rem;
       }
       slot[name=suffix]::slotted(*) {
+        flex-grow: 0;
         --color: var(--border-color);
       }
       re-icon[name=keyboard-arrow-down] {
+        flex-grow: 0;
         margin-right: -0.25rem;
       }
 
@@ -116,11 +126,12 @@ export class ButtonBaseElement extends
       button {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: stretch;
         align-items: center;
         border: none;
         padding: 0;
         margin: 0;
+        width: 100%;
         height: min-content;
         background-color: transparent;
         color: inherit;

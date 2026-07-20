@@ -113,6 +113,7 @@
       #button0, #button91 {
         --color: red;
         --border-color: green;
+        width: 50%;
       }
       #button62 {
         border-width: 0;
@@ -221,6 +222,10 @@
           color: purple;
           margin-left: 1rem;
         }
+      }
+
+      #dd2 {
+        width: 75%;
       }
 
       #dialog2 {
@@ -539,6 +544,38 @@
     <div class="demo">
       <h1>re-dropdown</h1>
       <re-dropdown>
+        <span slot="label">Dropdown</span>
+        <re-item id="item1">
+          <re-icon slot="prefix" name="check"></re-icon>
+          Menu item 1
+        </re-item>
+        <re-item id="item2" disabled>
+          Menu item 2<re-icon slot="suffix" name="close"></re-icon>
+        </re-item>
+        <re-item id="item3">
+          Menu item 3<div slot="suffix" >Ctrl+P</div>
+        </re-item>
+        <re-divider></re-divider>
+        <re-menu-item id="item4">
+          Menu item 4
+          <re-menu popover slot="submenu">
+            <re-item id="item41">
+              <re-icon slot="prefix" name="check"></re-icon>
+              Menu item 1
+            </re-item>
+            <re-item id="item42" disabled>
+              Menu item 2
+              <re-icon slot="suffix" name="close"></re-icon>
+            </re-item>
+            <re-item id="item43">
+              Menu item 3
+              <div slot="suffix" >Ctrl+P</div>
+            </re-item>
+          </re-menu>
+        </re-menu-item>
+      </re-dropdown>
+
+      <re-dropdown id="dd2">
         <span slot="label">Dropdown</span>
         <re-item id="item1">
           <re-icon slot="prefix" name="check"></re-icon>
