@@ -12,9 +12,11 @@ The elements are drawn with enough randomness that no two renderings will be exa
 ## Quick Start
 Add the following to your webpage:
 
-<pre><code class="language-html"><link rel="stylesheet" href="https://esm.sh/jsr/@rough/rough-elements/public/themes/default.css" />
-&lt;script type="module" src="https://esm.sh/jsr/@rough/rough-elements">&lt;/script>
-</code></pre>
+```html
+<link rel="stylesheet"
+    href="https://esm.sh/jsr/@rough/rough-elements/public/themes/default.css" />
+<script type="module" src="https://esm.sh/jsr/@rough/rough-elements"></script>
+```
 
 Now use the elements in your page:
 
