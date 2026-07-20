@@ -32,8 +32,12 @@ export class CardElement extends BorderMixin(BackgroundMixin(ReElement)) {
     ...super.styles,
     css`
       :host {
-        display: inline-block;
         --img-border: calc(-0.5 * var(--border-width));
+        overflow: visible;  /* Makes border visible when used as popover */
+      }
+      :host(:not([popover])),
+      :host([popover]:popover-open) {
+        display: inline-block;
       }
       slot:not([part=image]) {
         padding: 0.5rem 1rem;
