@@ -43,6 +43,21 @@ Now use the elements in your page:
 </re-select>
 ```
 
+## NPM Installation
+Add Rough Elements to your project with the following command.
+```
+npx jsr add @rough/rough-elements
+```
+Load the default style sheet found at `@rough/rough-elements/public/themes/default.css` in your web page before loading the rough elements.  This file should be copied to a location that will be accessible from the web server at run time.  If you are using the `vite` build tool, use the following shortcut to do handle this automatcally:
+```html
+<link rel="stylesheet"
+    href="/@fs/node_modules/@rough/rough-elements/public/themes/default.css" />
+```
+See your build tool documentation for ways to do the same if you don't use vite.
+
+## Documentation
+[Full documentation](https://rogerta.github.io/rough-elements/) is available on github.
+
 ## License
 Rough Elements are available under the [MIT license](https://opensource.org/license/mit).
 
