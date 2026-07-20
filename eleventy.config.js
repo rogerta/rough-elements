@@ -15,6 +15,17 @@ function findSuperclass(clazz) {
   return classes.find(c => c.name === clazz.superclass.name)
 }
 
+function findMixinsOfClass(clazz) {
+  // Find mixins from superclasses as well.
+  const mixins = new Set()
+  for (let c = clazz; c; c = findSuperclass(c)) {
+    c.mixins?.forEach(m => mixins.add(m))
+  }
+
+  //console.log(`class=${clazz.name} mixins=${JSON.stringify([...mixins])}`)
+  return mixins.keys()
+}
+
 /** @param {import("@11ty/eleventy/UserConfig")} config */
 export default function(config) {
   config.addPlugin(HtmlBasePlugin)
@@ -95,23 +106,17 @@ export default function(config) {
   })
 
   config.addFilter('filterForMixins', function (clazz) {
-    // Find mixins from superclasses as well.
-    const mixins = new Set()
-    for (let c = clazz; c; c = findSuperclass(c)) {
-      c.mixins?.forEach(m => mixins.add(m.name))
-    }
-
-    return [...mixins.keys()]
+    return [...findMixinsOfClass(clazz)].map(m => m.name)
   })
 
   config.addFilter('filterForBordered', function (components) {
     return components.filter(
-        c => c.mixins?.some(m => m.name === 'BorderMixin'))
+        c => findMixinsOfClass(c).some(m => m.name === 'BorderMixin'))
   })
 
   config.addFilter('filterForBackgrounded', function (components) {
     return components.filter(
-        c => c.mixins?.some(m => m.name === 'BackgroundMixin'))
+        c => findMixinsOfClass(c).some(m => m.name === 'BackgroundMixin'))
   })
 
   config.addFilter('filterForFormControlled', function (components) {

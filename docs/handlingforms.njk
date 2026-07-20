@@ -14,15 +14,18 @@ th {
 {% block main %}
 
 <h1>Handling Forms</h1>
-The following Rough Elements can be used in HTML forms much like their native
-counterparts.  See the individual component pages for details.  As with any
-form controls, these elements must not be <code>disabled</code> and must
+<p>The following Rough Elements can be used in HTML forms much like their native
+counterparts.  See the individual component pages for complete details.  As
+with any form control, these elements must not be <code>disabled</code> and must
 have a valid <code>name</code> attribute to be included in form submission.
+</p>
 
 <ul>
 {% set formControlled = components | filterForFormControlled %}
 {% for clazz in formControlled %}
-  <li><a href="../component/{{clazz.tagName}}">&lt;{{ clazz.tagName }}&gt;</a></li>
+  <li>
+    <a href="../component/{{clazz.tagName}}"><code>&lt;{{ clazz.tagName }}&gt;</code></a>
+  </li>
 {% endfor %}
 </ul>
 

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Run cem analyze once before starting 11ty since it imports the data
+# in eleventy config.  This dependency is needed to properly determine class
+# hierarchies.  A better fix could be looked into since this it could affect
+# documentation writing.
+npm run docs:cem
+
 eleventy --serve &
 cem analyze --dev --litelement --watch --outdir=./dist --quiet > /dev/null &
 
