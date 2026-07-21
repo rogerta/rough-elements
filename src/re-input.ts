@@ -229,9 +229,9 @@ export class InputElement extends
             autocorrect="${this.autocorrect ? 'on' : 'off'}"
             ?autofocus="${this.autofocus}"
             ?disabled="${this.disabled}"
-            list="${this.list}"
-            max="${this.max}"
-            min="${this.min}"
+            list="${ifDefined(this.list)}"
+            max="${ifDefined(this.max)}"
+            min="${ifDefined(this.min)}"
             maxlength="${ifDefined(this.maxlength)}"
             minlength="${ifDefined(this.minlength)}"
             multiple="${this.multiple}"
@@ -295,12 +295,14 @@ export class InputElement extends
 
       slot[name="prefix"]::slotted(*) {
         flex-grow: 0;
+        flex-shrink: 0;
         margin-left: -0.25rem;
         margin-right: 0.25rem;
         --color: var(--border-color);
       }
       slot[name="suffix"]::slotted(*) {
         flex-grow: 0;
+        flex-shrink: 0;
         margin-left: 0.25rem;
         margin-right: -0.25rem;
         --color: var(--border-color);
@@ -308,6 +310,8 @@ export class InputElement extends
 
       input {
         flex-grow: 1;
+        flex-shrink: 1;
+        min-width: 0;  /* override default of auto, which is ~150px */
         border: none;
         padding: 0;
         margin: 0;
