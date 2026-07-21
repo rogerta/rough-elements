@@ -41,7 +41,7 @@ type Constructor<T = {}> = new (...args: any[]) => T
 export declare class BorderMixinInterface {
   /**
    * Determines the style of border around this element.  Can be `rectangle`
-   * (default) or `circle` or `none`.  The border will be draw in the border
+   * (default) or `circle` or `none`.  The border will be drawn in the border
    * area of the element.
    */
   borderStyle: BORDERSTYLE
