@@ -67,6 +67,38 @@ Now use the elements in your page:
 &lt;/re-select&gt;
 </code></pre>
 
+<h1>NPM Installation</h1>
+<p>Add Rough Elements to your project with the following command.</p>
+
+<p><code>npx jsr add @rough/rough-elements</code></p>
+
+<p>
+Load the default style sheet found at
+<code>@rough/rough-elements/public/themes/default.css</code> in your web page
+before loading the rough elements.  This file should be copied to a location
+that will be accessible from the web server at run time.  If you are using
+the `vite` build tool, use the following shortcut to handle this automatcally:
+</p>
+<pre><code class="language-html">&lt;link rel="stylesheet" href="/@fs/node_modules/@rough/rough-elements/public/themes/default.css" /&gt;
+</code></pre>
+
+<p>
+See your build tool documentation for ways to do the same if you don't use vite.
+</p>
+
+<p>
+  Import the individual components in your javascript files as needed.  An
+  individual component can be imported from a module whose name is
+  <code>@rough/rough-elements/XXX</code>, where XXX is the component's tag name minus the
+  <code>re-</code> prefix.  For example, import <code>&lt;re-button&gt;</code> from the
+  module <code>@rough/rough-elements/button</code>.
+</p>
+<p>
+  Alternatively, import all the rough elements at once with:
+</p>
+<pre><code>import '@rough/rough-elements'
+</code></pre>
+
 <h1>License</h1>
 Rough Elements are available under the <a href="https://opensource.org/license/mit">MIT license</a>.
 

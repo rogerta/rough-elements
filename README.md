@@ -45,15 +45,24 @@ Now use the elements in your page:
 
 ## NPM Installation
 Add Rough Elements to your project with the following command.
-```
+```bash
 npx jsr add @rough/rough-elements
 ```
-Load the default style sheet found at `@rough/rough-elements/public/themes/default.css` in your web page before loading the rough elements.  This file should be copied to a location that will be accessible from the web server at run time.  If you are using the `vite` build tool, use the following shortcut to do handle this automatcally:
+
+Load the default style sheet found at `@rough/rough-elements/public/themes/default.css` in your web page before loading the rough elements.  This file should be copied to a location that will be accessible from the web server at run time.  If you are using the `vite` build tool, use the following shortcut to handle this automatcally:
 ```html
-<link rel="stylesheet"
-    href="/@fs/node_modules/@rough/rough-elements/public/themes/default.css" />
+<link rel="stylesheet" href="/@fs/node_modules/@rough/rough-elements/public/themes/default.css" />
 ```
+
 See your build tool documentation for ways to do the same if you don't use vite.
+
+Import the individual components in your javascript files as needed.  An individual component can be imported from a module whose name is `@rough/rough-elements/XXX`, where XXX is the component's tag name minus the `re-` prefix.  For example, import `<re-button>` from the module `@rough/rough-elements/button`.
+
+Alternatively, import all the rough elements at once with:
+
+```js
+import '@rough/rough-elements'
+```
 
 ## Documentation
 [Full documentation](https://rogerta.github.io/rough-elements/) is available on github.
