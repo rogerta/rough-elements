@@ -33,9 +33,11 @@ body {
   height: 100vh;
 }
 aside {
+  position: relative;
   padding: 2rem;
-  overflow: auto;
-  background-color: rgb(from ButtonText R G B / 0.05);
+  overflow: visible;
+  background-color: ButtonFace;
+  transition: all 0.3s ease;
 }
 aside header {
   margin-bottom: 1rem;
@@ -81,6 +83,38 @@ img.logo {
             hue-rotate(171deg) brightness(94%) contrast(92%);
   }
 }
+
+#drawertoggle {
+  position: absolute;
+  top: 1rem;
+  left: 100%;
+  display: none;
+  border-radius: 0 10rem 10rem 0;
+  padding: 0.35rem 0.5rem 0.5rem 0.25rem;
+  background-color: ButtonFace;
+  transition: all 0.3s ease;
+}
+#drawertoggle:hover,
+#drawertoggle.open {
+  padding: 0.35rem 0.75rem 0.5rem 1rem;
+}
+
+@media (max-width: 900px) {
+  aside {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    z-index: 1;
+  }
+  aside.open {
+    transform: translateX(0);
+  }
+  #drawertoggle {
+    display: block;
+  }
+}
 {% block style %}{% endblock %}
 </style>
 </head>
@@ -120,6 +154,7 @@ img.logo {
         </li>
       </ul>
     </nav>
+    <div id="drawertoggle">&raquo;</div>
   </aside>
   <main>
     {% block main %}{% endblock %}
@@ -136,19 +171,23 @@ hljs.highlightAll();
 // the page reloads.
 const KEY = 'aside-scroll-top'
 const aside = document.querySelector('aside')
-
 window.addEventListener('load', e=> {
   const st = Number.parseFloat(localStorage.getItem(KEY))
   if (!Number.isNaN(st)) {
     console.log(`scrolling to ${st}`)
     aside.scrollTop = st
   }
-
   document.body.classList.remove('invisible')
 })
 aside.addEventListener('scroll', e => {
-  console.log(`st=${e.target.scrollTop}`)
   localStorage.setItem(KEY, e.target.scrollTop.toString())
+})
+
+const drawertoggle = document.querySelector('#drawertoggle')
+drawertoggle.addEventListener('click', e => {
+  const isOpen = aside.classList.toggle('open')
+  e.target.classList.toggle('open', isOpen)
+  e.target.innerHTML = isOpen ? '&laquo;' : '&raquo;'
 })
 </script>
 </body>
