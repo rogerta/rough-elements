@@ -16,9 +16,10 @@ permalink: "component/{{ c.tagName | slugify }}/"
   opacity: 0.5;
 }
 .classnametitle {
-  opacity: 0.5;
-  margin-left: 1rem;
+  font-size: 0.9em;
   margin-right: 1rem;
+  text-wrap: nowrap;
+  color: rgb(0 91 172);
 }
 h1 {
   position: sticky;
@@ -27,6 +28,14 @@ h1 {
   padding: 3rem 0 1rem 0;
   margin: 0;
 }
+
+@media (prefers-color-scheme: dark) {
+  .classnametitle {
+    filter: brightness(0) saturate(100%) invert(54%) sepia(18%) saturate(1963%)
+            hue-rotate(171deg) brightness(94%) contrast(92%);
+  }
+}
+
 {% endblock %}
 
 {% block main %}

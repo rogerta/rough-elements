@@ -45,7 +45,9 @@ aside {
   overflow: visible;
   height: 100vh;
   background-color: ButtonFace;
-  transition: all 0.3s ease;
+  transition-property: left, transform;
+  transition-duration: 0.3s;
+  transition-timing-function: ease;
 }
 aside > div {
   position: relative;
@@ -90,12 +92,6 @@ img.logo {
   filter: brightness(0) saturate(100%) invert(20%) sepia(26%) saturate(3077%)
           hue-rotate(198deg) brightness(99%) contrast(88%);;
 }
-@media (prefers-color-scheme: dark) {
-  img.logo {
-    filter: brightness(0) saturate(100%) invert(54%) sepia(18%) saturate(1963%)
-            hue-rotate(171deg) brightness(94%) contrast(92%);
-  }
-}
 
 #drawertoggle {
   position: absolute;
@@ -110,6 +106,25 @@ img.logo {
 #drawertoggle:hover,
 #drawertoggle.open {
   padding: 0.35rem 0.75rem 0.5rem 1rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  aside {
+    --bg-color: rgb(from ButtonFace
+        calc(0.5 * R) calc(0.5 * G) calc(0.5 * B));
+    background-color: var(--bg-color);
+    & #drawertoggle {
+      background-color: ButtonFace;
+    }
+
+    & #drawertoggle.open {
+      background-color: var(--bg-color);
+    }
+  }
+  img.logo {
+    filter: brightness(0) saturate(100%) invert(54%) sepia(18%) saturate(1963%)
+            hue-rotate(171deg) brightness(94%) contrast(92%);
+  }
 }
 
 @media (max-width: 900px) {

@@ -2,8 +2,9 @@
 
 {% block style %}
 main img {
-  width: 400px;
-  float:right;
+  margin: 1rem 0 0 0;
+  width: 100%;
+  max-width: 360px;
 }
 pre {
   display: flow-root;
@@ -14,8 +15,6 @@ pre {
 {% endblock %}
 
 {% block main %}
-
-<h1>Rough Elements</h1>
 
 <img class="logo" src="/img/rough-elements.svg"/>
 
@@ -76,8 +75,9 @@ Now use the elements in your page:
 Load the default style sheet found at
 <code>@rough/rough-elements/public/themes/default.css</code> in your web page
 before loading the rough elements.  This file should be copied to a location
-that will be accessible from the web server at run time.  If you are using
-the `vite` build tool, use the following shortcut to handle this automatcally:
+that will be accessible from the web server at run time.  If you use the
+<code>vite</code> build tool, use the following shortcut to handle this
+automatcally:
 </p>
 <pre><code class="language-html">&lt;link rel="stylesheet" href="/@fs/node_modules/@rough/rough-elements/public/themes/default.css" /&gt;
 </code></pre>
