@@ -32,12 +32,25 @@ body {
   grid-template-columns: auto 1fr;
   height: 100vh;
 }
+/* Need to nest a div inside the aside to allow for different overflows.
+ * `overflow: visible` in aside is used to make sure the drawwetoggle
+ *  lays out correctly.
+ * `overflow: auto` in the div is used to make sure scrollbars appear on
+ * short displays. */
 aside {
-  position: relative;
-  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  align-items: stretch;
   overflow: visible;
+  height: 100vh;
   background-color: ButtonFace;
   transition: all 0.3s ease;
+}
+aside > div {
+  position: relative;
+  padding: 2rem;
+  overflow: auto;
 }
 aside header {
   margin-bottom: 1rem;
@@ -121,6 +134,7 @@ img.logo {
 <body class="invisible">
 <div id="maingrid">
   <aside>
+  <div>
     <header>
       <a href="/"><img class="logo" src="/img/rough-elements.svg"/></a>
     </header>
@@ -154,7 +168,8 @@ img.logo {
         </li>
       </ul>
     </nav>
-    <div id="drawertoggle">&raquo;</div>
+  </div>
+  <div id="drawertoggle">&raquo;</div>
   </aside>
   <main>
     {% block main %}{% endblock %}
@@ -171,15 +186,15 @@ hljs.highlightAll();
 // the page reloads.
 const KEY = 'aside-scroll-top'
 const aside = document.querySelector('aside')
+const div = document.querySelector('aside > div')
 window.addEventListener('load', e=> {
   const st = Number.parseFloat(localStorage.getItem(KEY))
   if (!Number.isNaN(st)) {
-    console.log(`scrolling to ${st}`)
-    aside.scrollTop = st
+    div.scrollTop = st
   }
   document.body.classList.remove('invisible')
 })
-aside.addEventListener('scroll', e => {
+div.addEventListener('scroll', e => {
   localStorage.setItem(KEY, e.target.scrollTop.toString())
 })
 
