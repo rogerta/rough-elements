@@ -117,26 +117,19 @@ export class DropdownElement extends LitElement {
   }
 
   override firstUpdated(_: PropertyValues) {
-    const button = this.renderRoot.querySelector('re-button')
-    if (button) {
-      const panel = this.renderRoot.querySelector('re-menu')
-      if (panel) {
-        button.setPopoverTarget(panel)
-      }
-    }
-
     this.setAttribute('tabindex', '0')
   }
 
   override render() {
     return html`
       <!-- The \`<re-button>\` that impements the trigger button. -->
-      <re-button autofocus part="trigger" caret ?disabled="${this.disabled}">
+      <re-button autofocus part="trigger" caret ?disabled="${this.disabled}"
+          popovertarget="panel">
         <!-- The label for the trigger button. Usually text. -->
         <slot name="label">${this.renderLabelDefault_()}</slot>
       </re-button>
       <!-- The \`<re-menu>\` that implements the popover panel. -->
-      <re-menu popover part="panel">
+      <re-menu id="panel" popover part="panel">
         <!-- Unslotted children elements appear in the menu panel. -->
         <slot></slot>
       </re-menu>

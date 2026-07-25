@@ -130,6 +130,12 @@ export class ButtonElement extends ButtonBaseElement {
    */
   @property({}) accessor value: string | undefined = undefined
 
+  /**
+   * Turns this button into a popover control button.  The value of is the ID
+   * of the popover element to control.
+   */
+  @property({}) accessor popovertarget: string | undefined = undefined
+
   constructor() {
     super()
     this.fillStyle = 'solid'
@@ -184,6 +190,13 @@ export class ButtonElement extends ButtonBaseElement {
       this.borderStyle = isTextButton ? 'none'
           : (this.circle ? 'circle' : 'rectangle')
       this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
+    }
+
+    if (props.has('popovertarget') && this.popovertarget) {
+      const root = this.getRootNode()
+      if (root instanceof ShadowRoot || root instanceof Document) {
+        this.setPopoverTarget(root.getElementById(this.popovertarget))
+      }
     }
   }
 

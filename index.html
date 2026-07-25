@@ -139,6 +139,16 @@
         --size: 64px;
       }
 
+      #iconbutton6::part(button) {
+        --anchor-name: --anchor-1;
+      }
+      #ibpcard {
+        /* Where to position the menu dropover relative to the trigger */
+        position-anchor: --menu-anchor;
+        position-area: center inline-end;
+        position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+      }
+
       #alert1 {
         width: 100%;
       }
@@ -894,6 +904,10 @@
       <re-icon-button id="iconbutton3" name="close"></re-icon-button>
       <re-icon-button id="iconbutton4" name="warning"></re-icon-button>
       <re-icon-button id="iconbutton5" name="warning" disabled></re-icon-button>
+      <re-icon-button id="iconbutton6" name="info" popovertarget="ibpcard"></re-icon-button>
+      <re-card popover id="ibpcard">
+        Popped open by icon button
+      </re-card>
     </div>
 
     <div class="demo">

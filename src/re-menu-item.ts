@@ -54,7 +54,7 @@ export class MenuItemElement extends ItemElement {
       }
 
       slot[name=submenu]::slotted(*) {
-        /* Where to position the menu dropvoer relative to the trigger */
+        /* Where to position the menu dropover relative to the trigger */
         position-anchor: --menu-anchor;
         position-area: center inline-end;
         position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;

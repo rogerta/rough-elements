@@ -36,6 +36,12 @@ export class IconButtonElement extends LitElement {
   @property() accessor name = ''
 
   /**
+   * Turns this button into a popover control button.  The value of is the ID
+   * of the popover element to control.
+   */
+  @property({}) accessor popovertarget: string | undefined = undefined
+
+  /**
    * Sets this icon button to be a trigger for a popover element. The popover
    * will be displayed once the button finishes it's update cycle (that is, once
    * the `updateComplete` promise resolves).
@@ -57,6 +63,18 @@ export class IconButtonElement extends LitElement {
 
   protected override firstUpdated(_: PropertyValues) {
     this.setAttribute('tabindex', '0')
+  }
+
+  protected override willUpdate(props: PropertyValues) {
+    super.willUpdate(props)
+
+    if (props.has('popovertarget') && this.popovertarget) {
+      const root = this.getRootNode()
+      if (root instanceof ShadowRoot || root instanceof Document) {
+        const target = root.getElementById(this.popovertarget)
+        this.setPopoverTarget(target)
+      }
+    }
   }
 
   protected render() {
