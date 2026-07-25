@@ -155,7 +155,7 @@ export class ButtonElement extends ButtonBaseElement {
     })
   }
 
-  handleEvent(e: Event) {
+  override handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
         // If this is a submit button as part of a form, submit the form.

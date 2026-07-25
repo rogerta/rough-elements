@@ -53,6 +53,7 @@ export class ButtonBaseElement extends
   override firstUpdated(props: PropertyValues) {
     super.firstUpdated(props)
     const button = this.renderRoot.querySelector('button')
+    button?.addEventListener('click', this)
     button?.addEventListener('keydown', this)
     button?.addEventListener('keyup', this)
     button?.addEventListener('blur', this)
@@ -65,7 +66,7 @@ export class ButtonBaseElement extends
       html`
         <!-- The underyling native button representing this element. -->
         <button autofocus ?disabled="${this.disabled}" part="button"
-            name="${ifDefined(this.name)}" @click="${this.handleEvent}">
+            name="${ifDefined(this.name)}">
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix"></slot>
           <!-- The main label of the button. Typically holds text. -->
