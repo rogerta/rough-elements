@@ -37,7 +37,9 @@ export class IconButtonElement extends LitElement {
 
   /**
    * Turns this button into a popover control button.  The value of is the ID
-   * of the popover element to control.
+   * of the popover element to control.  The popover element in expected to be
+   * in the same shadow root or light DOM as this button.  If this is not the
+   * case, use the `setPopoverTarget()` method instead.
    */
   @property({}) accessor popovertarget: string | undefined = undefined
 

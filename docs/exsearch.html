@@ -176,8 +176,10 @@
       <div class="spacer"></div>
       <re-button variant="text">Mail</re-button>
       <re-button variant="text">Images</re-button>
-      <re-icon-button name="search:apps"></re-icon-button>
-      <re-icon-button name="search:account-circle"></re-icon-button>
+      <re-icon-button name="search:apps" popovertarget="appscard">
+      </re-icon-button>
+      <re-icon-button name="search:account-circle" popovertarget="accountcard">
+      </re-icon-button>
     </div>
 
     <re-card popover id="appscard" class="popover" fillStyle="solid">
@@ -303,7 +305,7 @@
         <script type="module">
           // The SVG above was created with inkskape and uses smooth lines
           // for the letter.  Rough up the path of each of the letters here.
-          // `maxRandomnessOffset` tweaked mnaully to make look good.
+          // `maxRandomnessOffset` is tweaked mnaully to make it "look OK".
           import { generator } from 'https://esm.sh/jsr/@rough/roughjs'
           const gen = generator()
           gen.defaultOptions.maxRandomnessOffset = 0.05
@@ -318,19 +320,6 @@
             letter.setAttribute('d', newD)
           })
           document.querySelector('svg')?.classList.remove('invisible')
-
-          {
-            const button =
-                document.querySelector('re-icon-button[name="search:apps"]')
-            const card = document.querySelector('#appscard')
-            button.setPopoverTarget(card)
-          }
-          {
-            const button =
-                document.querySelector('re-icon-button[name="search:account-circle"]')
-            const card = document.querySelector('#accountcard')
-            button.setPopoverTarget(card)
-          }
         </script>
         <re-input>
           <re-icon name="search:add" slot="prefix"></re-icon>
