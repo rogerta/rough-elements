@@ -26,7 +26,8 @@ import { IconElement } from './re-icon.js'
  * ```
  *  re-radio#myid [slot=prefix] {
  *    --color: purple;
- *    transition: transform 0.75s ease;
+ *    transition-property: transform, scale;
+ *    transition-duration: 0.75s;
  *  }
  *  re-radio#myid[checked] [slot=prefix] {
  *    --color: pink;
@@ -35,6 +36,10 @@ import { IconElement } from './re-icon.js'
  * ```
  * `<re-radio>` participates in forms just like the stardard HTML
  * `<input type="radio"/>`.
+ *
+ * NOTE: It's important to include "scale" in the `transition-property` list
+ * since the radio icon is scaled down when the radio button is clicked.  If
+ * scale is not included, the icon will not scale on click.
  *
  * @cssproperty --color - The colour of the radio button text.
  *    Defaults to `--primary-color`.
@@ -84,9 +89,16 @@ export class RadioElement extends ButtonBaseElement {
         text-shadow: 0.5px 0 0 currentcolor, -0.5px 0 0 currentcolor;
       }
 
-      :host(:not([disabled]):active) button,
-      :host(:not([disabled]).is-active) button {
-        transform: scale(0.9);
+      :host slot[name=prefix]::slotted(*),
+      :host slot[name=suffix]::slotted(*) {
+        transition-property: scale;
+        transition-duration: 0.2s;
+        transition-timing-function: ease;
+      }
+
+      :host(:not([disabled]):active) slot[name=prefix]::slotted(*),
+      :host(:not([disabled]).is-active) slot[name=prefix]::slotted(*) {
+        scale: 0.9;
       }
 
       :host([checked]) slot[name=prefix]::slotted(*) {

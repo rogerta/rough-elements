@@ -182,10 +182,11 @@
       }
       #checkbox1 [slot=prefix] {
         --color: purple;
-        transition: transform 0.75s ease;
+        transition-property: transform, scale;
+        transition-duration: 0.75s;
       }
       #checkbox1[checked] [slot=prefix] {
-        --color: pink;
+        --color: green;
         transform: rotate(1turn);
       }
 
@@ -349,7 +350,8 @@
       }
       #radio11 [slot=prefix] {
         --color: purple;
-        transition: transform 0.75s ease;
+        transition-property: transform, scale;
+        transition-duration: 0.75s;
       }
       #radio11[checked] [slot=prefix] {
         --color: pink;
