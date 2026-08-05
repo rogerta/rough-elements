@@ -5,6 +5,7 @@ import type { VARIANTS } from './internal/re-common.js'
 import { ButtonBaseElement } from './internal/re-button-base.js'
 
 import './re-icon.js'
+import { ifDefined } from 'lit/directives/if-defined.js'
 
 /**
  * Buttons are interactive elements activated by the user with a mouse,
@@ -55,18 +56,18 @@ export class ButtonElement extends ButtonBaseElement {
    * specified value of `href`.  The default behaviour is to open the link
    * specified by `href` in the target window.
    */
-  @property() accessor href = ''
+  @property() accessor href: string | undefined = undefined
 
   /**
    * If `href` is not empty, specifies the target window to open the link.
    */
-  @property() accessor target = ''
+  @property() accessor target: string | undefined = undefined
 
   /**
    * If `href` is not empty, the browser will download the linked file to a
    * file named by this property.
    */
-  @property() accessor download = ''
+  @property() accessor download: string | undefined = undefined
 
   /**
    * If true, a caret `<re-icon>` will be suffixed to this button.  This is
@@ -175,6 +176,10 @@ export class ButtonElement extends ButtonBaseElement {
           // TODO: eventually the/a button should be passed to `submitForm()`
           // so that the submitter properties can be used.
           this.submitForm()
+
+        // If this is a "link" style button, click the embedded link.
+        } else if (this.href) {
+          this.renderRoot.querySelector('a')?.click()
         }
         break
       default:
@@ -200,6 +205,19 @@ export class ButtonElement extends ButtonBaseElement {
         this.setPopoverTarget(root.getElementById(this.popovertarget))
       }
     }
+  }
+
+  override render() {
+    const templ = super.render()
+
+    if (this.href) {
+      templ.push(html`<a href="${ifDefined(this.href)}"
+          download="${ifDefined(this.download)}"
+          target="${ifDefined(this.target)}"></a>
+      `)
+    }
+
+    return templ
   }
 
   protected override renderCaretIfNeeded_() {
@@ -253,6 +271,12 @@ export class ButtonElement extends ButtonBaseElement {
        * template whitespace nodes or descender gaps for inline-block. */
       button {
         text-transform: uppercase;
+      }
+
+      /* The link is always hidden if present.  When the user clicks the
+       * button, the link will itself be clicked programmatically. */
+      a {
+        display: none;
       }
 
       re-icon[name=keyboard-arrow-down] {
