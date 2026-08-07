@@ -51,7 +51,7 @@ npx jsr add @rough/rough-elements
 
 Load the default style sheet found at `@rough/rough-elements/public/themes/default.css` in your web page before loading the rough elements.  This file should be copied to a location that will be accessible from the web server at run time.  If you are using the `vite` build tool, use the following shortcut to handle this automatcally:
 ```html
-<link rel="stylesheet" href="/@fs/node_modules/@rough/rough-elements/public/themes/default.css" />
+<link rel="stylesheet" href="./node_modules/@rough/rough-elements/public/themes/default.css" />
 ```
 
 See your build tool documentation for ways to do the same if you don't use vite.

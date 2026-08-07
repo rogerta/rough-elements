@@ -17,7 +17,7 @@ td, th {
   padding: 0 1rem;
 }
 code {
-  color: rgb(40 66 131);
+  color: light-dark(rgb(40 66 131), rgb(88, 118, 193));
   font-weight: bold;
   font-size: 1em;
   text-wrap: nowrap;
@@ -29,7 +29,6 @@ code {
 .property-params,
 .property-type {
   font-family: monospace;
-  xtext-wrap: nowrap;  /* May need to be more selective */
 }
 .readonly {
   color: red;
