@@ -21,7 +21,7 @@ import { ItemElement } from './re-item.js'
  *       <re-item id="item32">...</re-item>
  *       <re-item id="item33">...</re-item>
  *     </re-menu>
- *   </re-item>
+ *   </re-menu-item>
  * </re-dropdown>
  * ```
  * The menu must be assigned to fill the`submenu` slot and have the `popover`

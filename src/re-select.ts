@@ -5,6 +5,7 @@ import { FormControlMixin } from './internal/re-form-control-mixin.js'
 
 import { DropdownElement } from  './re-dropdown.js'
 import { getItemFromEvent, ItemElement } from './re-item.js'
+import { fire } from './internal/re-element.js'
 
 /**
  * Selects expose a menu of options from which the user can choose one or many.
@@ -19,6 +20,12 @@ import { getItemFromEvent, ItemElement } from './re-item.js'
  * These are usually `<re-item>`, `<re-menu-item>` or `<re-divider>` elements,
  * but any content can be placed there.
  *
+ * If `<re-menu-item>`s are used, their children will be flattened with the
+ * other children of `re-select`.  This will make the `selectedIndex` property
+ * tricky to deal with.  In this case, the `value` or `selectedOptions`
+ * properties will be more useful.  Make sure that all children, even those
+ * nested inside `<re-menu-item>`s, have unique IDs.
+ *
  * A typical use of select is as follows:
 * ```
  * <re-select id="sel1"@change="${onChanged}">
@@ -26,6 +33,14 @@ import { getItemFromEvent, ItemElement } from './re-item.js'
  *   <re-item id="item2">...</re-item>
  *   <re-divider></re-divider>
  *   <re-item id="item3">...</re-item>
+ *   <re-menu-item id="item4">
+ *     ...
+ *     <re-menu popover slot="submenu">
+ *       <re-item id="item41">...</re-item>
+ *       <re-item id="item42">...</re-item>
+ *       <re-item id="item43">...</re-item>
+ *     </re-menu>
+ *   </re-menu-item>
  * </re-select>
  * ```
  * ```
@@ -41,11 +56,16 @@ import { getItemFromEvent, ItemElement } from './re-item.js'
  *     case 'item3':
  *        ...
  *        break
+ *     ...
  *   }
  * }
  * ```
  * `<re-select>` participates in forms just like the stardard HTML `<select>`.
-  */
+ *
+ * @event change - Fires when the value has been changed and committed by the
+ *    user. Unlike the input event, the change event is not necessarily fired
+ *    for each alteration to an element's value.
+ */
 @customElement('re-select')
 export class SelectElement extends FormControlMixin(DropdownElement) {
   static formAssociated = true
@@ -63,9 +83,10 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
    * this is -1.  If multiple options are selected, this is the index of the
    * first selected option.
    *
-   * Keep in mind that if `<re-menu-item>`s are used, all items are reduced to
-   * a flattened array before the selected index is calculated.  In these cases
-   * it's likely easier to depend on the `value` property than this one.
+   * Note that if `<re-menu-item>`s are used as children of the `re-select`,
+   * all items are reduced to a flattened array before the selected index is
+   * calculated.  In these cases it's likely easier to depend on the `value`
+   * property than this one.
    */
   @property({ type: Number }) accessor selectedIndex = -1
 
@@ -155,6 +176,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
         const item = getItemFromEvent(e)
         if (item) {
           this.value = item.id !== this.value ? item.id : ''
+          fire(this, 'change', {bubbles: true})
         }
         break
       }

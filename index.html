@@ -1145,10 +1145,11 @@
 
       document.querySelectorAll('re-select').forEach(select => {
         select.addEventListener('change', e => {
-          console.log(`changed re-select ${e.target.value}`)
+          const item = getItemFromEvent(e)
+          console.log(`changed re-select item.id="${item?.id}" e.target.value="${e.target.value}"`)
         })
         select.addEventListener('click', e => {
-          console.log(`clicked re-select ${e.currentTarget.value}`)
+          console.log(`clicked re-select ${getItemFromEvent(e)?.id}`)
         })
       })
 
