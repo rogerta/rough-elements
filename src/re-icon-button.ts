@@ -1,5 +1,6 @@
 import { html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
+import { ifDefined } from 'lit/directives/if-defined.js'
 
 import './re-icon.js'
 
@@ -44,6 +45,12 @@ export class IconButtonElement extends LitElement {
   @property({}) accessor popovertarget: string | undefined = undefined
 
   /**
+   * If true the button does not respond to user actions.  Disabled buttons are
+   * not sumbitted as part of a form.
+   */
+  @property({ type: Boolean, reflect: true }) accessor disabled = false
+
+  /**
    * Sets this icon button to be a trigger for a popover element. The popover
    * will be displayed once the button finishes it's update cycle (that is, once
    * the `updateComplete` promise resolves).
@@ -81,7 +88,8 @@ export class IconButtonElement extends LitElement {
 
   protected render() {
     return html`
-      <re-button autofocus variant="text" circle exportparts="button">
+      <re-button autofocus ?disabled="${ifDefined(this.disabled)}"
+          variant="text" circle exportparts="button">
         <re-icon name="${this.name}"></re-icon>
       </re-button>
     `
