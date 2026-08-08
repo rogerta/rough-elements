@@ -133,10 +133,22 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         position: relative;
         flex-direction: column;
         align-items: stretch;
-        justify-content: start;
+        justify-content: stretch;
         padding: 0.25rem 0;
         background-color: var(--background-color);
         outline: none;
+
+        /* Default maximum height will be six default <re-item>s tall, plus
+         * the default border and padding of the re-menu. */
+        max-height: calc(6 * 1.5rem + 2 * var(--border-width) + 0.5rem);
+      }
+      div {
+        display: inline-flex;
+        position: relative;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: start;
+        overflow: auto;
       }
       :host(:not([popover])),
       :host([popover]:popover-open) {
@@ -317,9 +329,11 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     return [
       super.renderRoughSvg(),
       html`
-        <!-- The main body slot of the menu, representing a single column
-             of items. -->
-        <slot></slot>
+        <div>
+          <!-- The main body slot of the menu, representing a single column
+              of items. -->
+          <slot></slot>
+        </div>
       `,
     ]
   }
