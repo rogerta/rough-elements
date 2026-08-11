@@ -70,6 +70,18 @@ export class IconButtonElement extends LitElement {
     })
   }
 
+  /**
+   * Toggles the popover associated to this button, if any.
+   *
+   * @param force If true, forces the popoverto show.  If false, forces the
+   *    popover to hide.  If not specified, the state of the popover toggles.
+   * @returns true if the popup is open after the call, and false otherwise.
+   */
+  togglePopover(force?: boolean): boolean {
+    const button = this.renderRoot.querySelector('re-button')
+    return button?.togglePopover(force) ?? false
+  }
+
   protected override firstUpdated(_: PropertyValues) {
     this.setAttribute('tabindex', '0')
   }

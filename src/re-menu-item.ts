@@ -95,13 +95,11 @@ export class MenuItemElement extends ItemElement {
     arrow?.classList.toggle('re-hidden', submenu === undefined)
 
     if (submenu) {
-      if (submenu instanceof HTMLElement &&
-          submenu.getAttribute('popover') !== null) {
-        arrow?.setPopoverTarget(submenu)
-        this.renderRoot.addEventListener('click', this)
-      } else {
-        console.error('submenu should have the popover attribute')
-      }
+      // Don't allow the submenu to participate in focus tabbing.
+      submenu.setAttribute('tabindex', '-1')
+
+      arrow?.setPopoverTarget(submenu)
+      this.renderRoot.addEventListener('click', this)
     } else {
       arrow?.setPopoverTarget(null)
       this.renderRoot.removeEventListener('click', this)

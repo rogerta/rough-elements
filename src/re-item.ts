@@ -126,7 +126,8 @@ export class ItemElement extends LitElement {
     }
 
     const nodes = nodes1.map(n => n.cloneNode(true))
-    nodes.forEach(n => n instanceof HTMLElement ? n.removeAttribute('id') : null)
+    nodes.forEach(
+        n => n instanceof HTMLElement ? n.removeAttribute('id') : null)
 
     return nodes
   }

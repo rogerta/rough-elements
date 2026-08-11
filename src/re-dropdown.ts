@@ -60,6 +60,13 @@ export class DropdownElement extends LitElement {
    */
   @property({ type: Boolean, reflect: true }) accessor disabled = false
 
+  /**
+   * Enables debugging in elements when the string is not undefined and not
+   * emtpty.  When enabled, some rough elements will write debgging information
+   * to `console.log`.
+   */
+  @property({}) accessor enableDebugging: string | undefined = undefined
+
   static styles = [
     css`
       :host {
@@ -123,13 +130,14 @@ export class DropdownElement extends LitElement {
   override render() {
     return html`
       <!-- The \`<re-button>\` that impements the trigger button. -->
-      <re-button autofocus part="trigger" caret ?disabled="${this.disabled}"
+      <re-button part="trigger" caret ?disabled="${this.disabled}"
           popovertarget="panel">
         <!-- The label for the trigger button. Usually text. -->
         <slot name="label">${this.renderLabelDefault_()}</slot>
       </re-button>
       <!-- The \`<re-menu>\` that implements the popover panel. -->
-      <re-menu id="panel" popover part="panel">
+      <re-menu id="panel" popover part="panel" tabindex="-1" autofocus
+          .enableDebugging="${this.enableDebugging}">
         <!-- Unslotted children elements appear in the menu panel. -->
         <slot></slot>
       </re-menu>

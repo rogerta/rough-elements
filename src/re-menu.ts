@@ -60,6 +60,10 @@ class KeyboardNavState {
     this.currentIndex = nextIndex
     this.currentItem = this.assignedElements[this.currentIndex] as ItemElement
     this.currentItem!.selected = true
+    this.currentItem.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+    })
   }
 
   private findPrev_(index: number) {
@@ -150,6 +154,9 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         justify-content: start;
         overflow: auto;
       }
+      :host(:not([disabled]):focus-within) {
+        --re-stroke-width: 2px;
+      }
       :host(:not([popover])),
       :host([popover]:popover-open) {
         display: inline-flex;
@@ -178,6 +185,8 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     if (assignedElements.length === 0) {
       return NO_ITEM
     }
+
+    // TODO: filter out things that are not <re-item>s.
 
     const index = assignedElements.findIndex(node => {
       return node instanceof ItemElement && node.id === value
@@ -212,19 +221,19 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         }
         break
 
-      case 'beforetoggle':
-        const te = e as ToggleEvent
-        if(te.newState ===  'open') {
-          const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
-          this.kbNavState_= new KeyboardNavState(
-              slot?.assignedElements({ flatten: true }) ?? [], -1, undefined)
-        } else {
-          this.kbNavState_?.previousActiveElement?.focus()
-        }
+      case 'focus':
+        const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
+        this.kbNavState_= new KeyboardNavState(
+            slot?.assignedElements({ flatten: true }) ?? [], -1, undefined)
         break
 
-      case 'keydown': {
+      case 'blur':
+        //this.kbNavState_?.previousActiveElement?.focus()
+        break
+
+      case 'keyup': {
         const ke = e as KeyboardEvent
+        console.log(`re-menu keyup=${ke.key}`)
         switch (ke.key) {
           case 'ArrowDown':
           case 'ArrowUp':
@@ -239,20 +248,21 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
             // Standard buttons generate a click() event only when the spacebar
             // is pressed, so do nothing here.
             break
-            case 'Enter':
+          case 'Enter':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
-            if(this.kbNavState_?.currentItem) {
-              this.kbNavState_.currentItem.click()
-            }
+
+            // Standard buttons generate a click() event only when the enter key
+            // is released, so do nothing here.
             break
         }
         break
       }
-      case 'keyup': {
+      case 'keydown': {
         const ke = e as KeyboardEvent
+        console.log(`re-menu keydown=${ke.key}`)
         switch (ke.key) {
           case 'ArrowDown':
             // Prevent the default otherwise the page may scroll.
@@ -273,7 +283,6 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
-            console.log(`keyup key=${ke.key}`)
             break
           case 'ArrowRight':
             // Prevent the default otherwise the page may scroll.
@@ -300,8 +309,9 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
             ke.preventDefault()
             ke.stopPropagation()
 
-            // Standard buttons generate a click() event only when the enter key
-            // is released, so do nothing here.
+            if(this.kbNavState_?.currentItem) {
+              this.kbNavState_.currentItem.click()
+            }
             break
         }
         break
@@ -311,25 +321,18 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
 
   firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
+    this.addEventListener('blur', this)
     this.addEventListener('click', this)
-    this.addEventListener('beforetoggle', this)
+    this.addEventListener('focus', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
-
-    // This makes the element focusable.  This depends on delegatesFocus not
-    // being set on the shadow root of this element.
-    // TODO: attributes should never be set in the ctor for web components.
-    // Need to fix all the other classes (which seem to be working right now in
-    // chrome...)
-    this.setAttribute('tabindex', '-1')
-    this.setAttribute('autofocus', '')
   }
 
   override render() {
     return [
       super.renderRoughSvg(),
       html`
-        <div>
+        <div tabindex="-1">
           <!-- The main body slot of the menu, representing a single column
               of items. -->
           <slot></slot>

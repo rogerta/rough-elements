@@ -1,4 +1,4 @@
-import { type PropertyValues } from 'lit'
+import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { FormControlMixin } from './internal/re-form-control-mixin.js'
@@ -91,12 +91,12 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   @property({ type: Number }) accessor selectedIndex = -1
 
   /**
-   * The currently selected option(s).  If no option is selected, this is an
-   * empty array.
-   *
-   * NOT YET IMPLEMENTED
+   * A non-live `NodeList` of currently selected `<re-items>`(s), if any.
+   * An `<re-items>` is selected if it has the `selected` attribute.
    */
-  @property({ type: Array }) accessor selectedOptions = []
+  get selectedOptions() {
+    return this.querySelectorAll('re-item[selected]')
+  }
 
   /**
    * If true, an option must be selected before its form can be submitted.
@@ -106,10 +106,30 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   /**
    * The `id` of the item that is currently selected.
    */
-  @property({}) accessor value = ''
+  get value() {
+    return this.value_
+  }
+
+  set value(v: string) {
+    this.value_ = v
+    this.unselectAllItems_().then(() => this.requestUpdate('value'))
+  }
+
+  private value_: string = ''
 
   @property({ type: Array, state: true })
   private accessor labelNodes_: Node[] = []
+
+  static styles = [
+    ...super.styles,
+    css`
+      :host([multiple]) {
+        & re-button {
+          display: none;
+        }
+      }
+    `,
+  ]
 
   private validate_() {
     const validity: ValidityStateFlags = {}
@@ -147,25 +167,47 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
     }
   }
 
-  override updated(props: PropertyValues) {
+  override async updated(props: PropertyValues) {
     super.updated(props)
 
-     if (props.has('value')) {
-      this.setFormValue(this.value)
-      this.findItemByValue_(this.value).then(({index, item}) => {
-        if (index !== -1) {
-          this.unselectAllItems_().then(() => {
-            item!.selected = true
-            this.selectedIndex = index
-            this.labelNodes_ = item!.getLabelNodes()
-            this.validate_()
-          })
-        } else {
-          this.selectedIndex = -1
-          this.labelNodes_ = []
-        }
+    // TODO: handle `selectedIndex` changes.
 
-        this.validate_()
+    if (props.has('value')) {
+      this.setFormValue(this.value_)
+
+      const { index, item } = await this.findItemByValue_(this.value_)
+      if (index !== -1) {
+        item!.selected = true
+        this.selectedIndex = index
+        this.labelNodes_ = item!.getLabelNodes()
+      } else {
+        this.selectedIndex = -1
+        this.labelNodes_ = [document.createTextNode('-- Nothing selected --')]
+      }
+
+      this.validate_()
+    }
+
+    if (props.has('multiple')) {
+      const button = this.renderRoot.querySelector('re-button')
+      const panel = this.renderRoot.querySelector('re-menu')
+
+      button?.updateComplete.then(() => {
+        if (this.multiple) {
+          button.setAttribute('disabled', '')
+        } else {
+          button.removeAttribute('disabled')
+        }
+      })
+
+      panel?.updateComplete.then(() => {
+        if (this.multiple) {
+          panel.removeAttribute('popover')
+          panel.setAttribute('tabindex', '0')
+        } else {
+          panel.setAttribute('popover', '')  // Equivalent to "auto".
+          panel.setAttribute('tabindex', '-1')
+        }
       })
     }
   }
@@ -173,10 +215,21 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   handleEvent(e: Event) {
     switch (e.type) {
       case 'click': {
+        const me = e as MouseEvent
         const item = getItemFromEvent(e)
         if (item) {
-          this.value = item.id !== this.value ? item.id : ''
-          fire(this, 'change', {bubbles: true})
+          if (this. multiple && me.ctrlKey) {
+            item.selected = !item.selected
+            const first = this.querySelector('re-item[selected]')
+
+            // Set `value_` directly to avoid unselecting all the items.
+            this.value_ = first ? first.id : ''
+            this.requestUpdate('value')
+          } else {
+            this.value = item.id !== this.value ? item.id : ''
+          }
+
+          fire(this, 'change', { bubbles: true })
         }
         break
       }

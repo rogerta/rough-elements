@@ -164,6 +164,22 @@ export class ButtonElement extends ButtonBaseElement {
     })
   }
 
+  /**
+   * Toggles the popover associated to this button, if any.
+   *
+   * @param force If true, forces the popoverto show.  If false, forces the
+   *    popover to hide.  If not specified, the state of the popover toggles.
+   * @returns true if the popup is open after the call, and false otherwise.
+   */
+  togglePopover(force?: boolean): boolean {
+    const button = this.renderRoot.querySelector('button')
+    if (button && button.popoverTargetElement &&
+        button.popoverTargetElement instanceof HTMLElement) {
+      return button.popoverTargetElement.togglePopover(force)
+    }
+    return false
+  }
+
   override handleEvent(e: Event) {
     switch (e.type) {
       case 'click':
