@@ -129,7 +129,7 @@ export class DropdownElement extends LitElement {
 
   override render() {
     return html`
-      <!-- The \`<re-button>\` that impements the trigger button. -->
+      <!-- The \`<re-button>\` that implements the trigger button. -->
       <re-button part="trigger" caret ?disabled="${this.disabled}"
           popovertarget="panel">
         <!-- The label for the trigger button. Usually text. -->

@@ -79,7 +79,7 @@ export class IconButtonElement extends LitElement {
    */
   togglePopover(force?: boolean): boolean {
     const button = this.renderRoot.querySelector('re-button')
-    return button?.togglePopover(force) ?? false
+    return button!.togglePopover(force) ?? false
   }
 
   protected override firstUpdated(_: PropertyValues) {

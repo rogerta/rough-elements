@@ -233,7 +233,6 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
 
       case 'keyup': {
         const ke = e as KeyboardEvent
-        console.log(`re-menu keyup=${ke.key}`)
         switch (ke.key) {
           case 'ArrowDown':
           case 'ArrowUp':
@@ -262,7 +261,6 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
       }
       case 'keydown': {
         const ke = e as KeyboardEvent
-        console.log(`re-menu keydown=${ke.key}`)
         switch (ke.key) {
           case 'ArrowDown':
             // Prevent the default otherwise the page may scroll.
@@ -331,6 +329,8 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
   override render() {
     return [
       super.renderRoughSvg(),
+      // Remove <div> from tab focus so that in the cases where it displays
+      // a scrollbar, it does not try to grab the focus.
       html`
         <div tabindex="-1">
           <!-- The main body slot of the menu, representing a single column
