@@ -2,6 +2,7 @@ import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-icon.js'
+import { MenuElement } from './re-menu.js'
 
 /**
  * Items define elements that are used inside containers such as
@@ -152,11 +153,14 @@ export class ItemElement extends LitElement {
 
 /**
  * Given an Event (usually a `click` event), returns the ID of the closest
- * `<re-item>` that is not disabled.  This function is helpful since clicking
- * the prefix/suffix/body part of the item could cause the target of the event
- * to be that part, complicating item detection.
+ * `<re-item>` that is not disabled.  The search for an `<re-item>` stops at the
+ * first `<re-menu>` encountered to prevent adverse interactions with nested
+ * menus.
  *
- * Note that web components that derive from <re-item> are also detected.
+ * This function is helpful since clicking the prefix/suffix/body part of the
+ * item could cause the target of the event to be that part, complicating item
+ * detection.  Note that web components that derive from <re-item> are also
+ * detected.
  *
  * The intended use of this function is as follows:
  *
@@ -194,6 +198,14 @@ export function getItemFromEvent(e: Event) {
   let target = e.target instanceof HTMLElement ? e.target : null
   while (target && !(target instanceof ItemElement)) {
     target = target.parentElement
+
+    // Since `<re-menu>`s can nest inside each other, don't go past a menu
+    // boundary.
+    if (target instanceof MenuElement) {
+      target = null
+      break
+    }
   }
+
   return target && target.getAttribute('disabled') === null ? target : null
 }
