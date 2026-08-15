@@ -16,7 +16,7 @@ import { ItemElement } from './re-item.js'
  *   <re-item id="item3">...</re-item>
  *   <re-menu-item id="item3">
  *     ...
- *     <re-menu popover slot="submenu">
+ *     <re-menu popover autofocus tabindex="-1" slot="submenu">
  *       <re-item id="item31">...</re-item>
  *       <re-item id="item32">...</re-item>
  *       <re-item id="item33">...</re-item>
@@ -24,14 +24,16 @@ import { ItemElement } from './re-item.js'
  *   </re-menu-item>
  * </re-dropdown>
  * ```
- * The menu must be assigned to fill the`submenu` slot and have the `popover`
- * attribute.  Any element type can be used but `<re-menu>` is the most common.
+ * The menu must be assigned to fill the`submenu` slot and have the `popover`,
+ * autofocus, and tabindex="-1" attributes.  The attributes are required for
+ * proper focus and keyboard handling.  Any element type can be used but
+ * `<re-menu>` is the most common.
  *
  * If a submenu is specified, a right-pointing arrow icon is shown is the
- * `suffix `slot of the menu item.
+ * `suffix` slot of the menu item.
  *
- * Note that menu items with a submenu will not propagate
- * `click` events as they are consumed the menu item to manage the submenu.
+ * Note that menu items with a submenu will not propagate `click` events as
+ * they are consumed the menu item to manage the submenu.
  *
  * @cssproperty --color - The foreground colour of the item.  Defaults to
  *    `--foreground-color`.  When the item is selected, 10% of this colour
@@ -85,6 +87,27 @@ export class MenuItemElement extends ItemElement {
     // if there is a way to make click() work.
     const button = this.renderRoot.querySelector('re-icon-button')
     button?.togglePopover()
+  }
+
+  protected override firstUpdated(props: PropertyValues) {
+    super.firstUpdated(props)
+
+    // Make sure submenu is properly specified if provided.
+    const submenu = this.getSubmenu()
+    if (submenu) {
+      const hasAutofocus = submenu.getAttribute('autofocus') !== null
+      const hasPoppover = submenu.getAttribute('popover') !== null
+      const hasTabIndex = submenu.getAttribute('tabindex') === '-1'
+
+      if (!hasAutofocus || !hasPoppover || !hasTabIndex) {
+        console.log(`%c*** The submenu of %c<re-menu-item id="${this.id}">%c is not properly configured.`,
+            'font-weight: bold;', 'color: red; font-weight: bold;', 'color: ButtonText; font-weight: bold;')
+        console.log('Make sure it has the following attributes: %cpopover autofocus tabindex="-1"',
+            'color: darkblue; font-weight: bold;'
+        )
+      }
+    }
+
   }
 
   protected override updated(props: PropertyValues) {
