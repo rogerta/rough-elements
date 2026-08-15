@@ -1,3 +1,10 @@
+/**
+ * Menus show a list of user selectable options as often seen in a dropdown or
+ * context menu.  Children of the menu are usually `<re-item>`,
+ * `<re-menu-item>` or `<re-divider>` elements but any content can be used.
+ * @module
+ */
+
 import { css, html, type PropertyValues } from 'lit'
 import { customElement } from 'lit/decorators.js'
 

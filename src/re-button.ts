@@ -1,3 +1,10 @@
+/**
+ * Buttons are interactive elements activated by the user with a mouse,
+ * keyboard, finger, voice command, or other mechanism.  Once activated, the
+ * button fires an event that tiggers an application specific action.
+ * @module
+ */
+
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'

@@ -1,3 +1,8 @@
+/**
+ * TextAreas collect multi-line text data entered by the user.
+ * @module
+ */
+
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'

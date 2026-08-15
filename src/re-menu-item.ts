@@ -1,3 +1,10 @@
+/**
+ * Menu items are Items that open up a menu when clicked .  They can be used
+ * anywhere an Item can be used (essentially `<re-menu-item>` extends
+ * `<re-item>`) and a submenu is needed.
+ * @module
+ */
+
 import { css, html, type PropertyValues } from 'lit'
 import { customElement } from 'lit/decorators.js'
 

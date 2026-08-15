@@ -1,3 +1,9 @@
+/**
+ * Icons display hand-drawn rough icons from the Rough Elements iconset
+ * registry.
+ * @module
+ */
+
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

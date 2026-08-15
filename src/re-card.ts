@@ -1,3 +1,10 @@
+/**
+ * Cards are containers used to group related information or actions.
+ * They support optional image, header, body, and footer sections, are
+ * surrounded by a rough border and can paint an optional background.
+ * @module
+ */
+
 import { css, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 

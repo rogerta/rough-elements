@@ -1,3 +1,10 @@
+/**
+ * Alerts display important messages to the user.  They can appear inline or
+ * as toast notifications.  Alerts show an icon on the left, a message in
+ * the middle, and an optional close button on the right.
+ * @module
+ */
+
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

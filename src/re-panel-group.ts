@@ -1,3 +1,9 @@
+/**
+ * Panel Groups manage sets of elements (also called panels) ensuring that
+ * only one is visible at a time.
+ * @module
+ */
+
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

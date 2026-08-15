@@ -1,3 +1,9 @@
+/**
+ * Adds a user defined icon.  User defined icons must have a non-empty
+ * collection and id.
+ * @module
+ */
+
 // See https://fonts.google.com/icons
 
 const icons = new Map<string, string>()

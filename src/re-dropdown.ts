@@ -1,3 +1,9 @@
+/**
+ * Dropdowns expose a menu of actions that the user can perform.
+ * A dropdown consists of a trigger button and a popover menu panel.
+ * @module
+ */
+
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

@@ -1,3 +1,10 @@
+/**
+ * Details are disclosure elements in which more detailed information is
+ * visible only when it is toggled open. A summary, which is always visible,
+ * must be provided in the `summary` slot.
+ * @module
+ */
+
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

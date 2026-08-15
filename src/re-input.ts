@@ -1,3 +1,10 @@
+/**
+ * Inputs collect information from the user like text, numbers, and dates.
+ * The full list of supported information types is listed in the `type`
+ * property.
+ * @module
+ */
+
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { live } from 'lit/directives/live.js'

@@ -1,3 +1,9 @@
+/**
+ * Ranges collect a numeric values from the user that falls within a specific
+ * range.
+ * @module
+ */
+
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

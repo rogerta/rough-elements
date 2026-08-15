@@ -1,3 +1,11 @@
+/**
+ * Radio elements are a control that allows users to choose a single option
+ * from a group of related options.  All radio buttons with the same `name`
+ * (and importantly in the same shadow root or light DOM) are part of the same
+ * group.
+ * @module
+ */
+
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

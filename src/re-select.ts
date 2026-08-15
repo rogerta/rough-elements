@@ -1,3 +1,10 @@
+/**
+ * Selects expose a menu of options from which the user can choose one or many.
+ * A select consists of a trigger button and a popover menu panel with the full
+ * list of options to choose.
+ * @module
+ */
+
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

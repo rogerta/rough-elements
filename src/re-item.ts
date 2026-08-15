@@ -1,3 +1,9 @@
+/**
+ * Items define elements that are used inside containers such as
+ * `<re-dropdown>`, `<re-menu>`, `<re-select>` or `<re-tab-group>`.
+ * @module
+ */
+
 import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

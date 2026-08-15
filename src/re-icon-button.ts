@@ -1,3 +1,9 @@
+/**
+ * Icon buttons implement the no-border "Icon Button" pattern described in
+ * `<re-button>`.
+ * @module
+ */
+
 import { html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'

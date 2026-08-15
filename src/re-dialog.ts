@@ -1,3 +1,12 @@
+/**
+ * Dialogs are shown when immedidate user interaction is required.
+ * Usually dialogs appear in the middle of the page overlaying existing
+ * content, but `<re-dialog>`s can also be pinned along any edge (top, right,
+ * bottom, or left) of the viewport.  When pinned this way dialogs are often
+ * called "drawers".
+ * @module
+ */
+
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

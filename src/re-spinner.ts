@@ -1,3 +1,9 @@
+/**
+ * Spinners show progress being made for an operation that will take an
+ * indterminate amount of time.
+ * @module
+ */
+
 import { css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 

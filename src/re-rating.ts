@@ -1,3 +1,9 @@
+/**
+ * Ratings collect star ratings from (or display them to) the user.  Ratings
+ * can be configured with 3 to 5 stars.
+ * @module
+ */
+
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'

@@ -1,3 +1,9 @@
+/**
+ * Badges display status like information to the user. Generally the body of
+ * a badge is some small amount of text.
+ * @module
+ */
+
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

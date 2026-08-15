@@ -1,3 +1,10 @@
+/**
+ * Checkboxes are toggleable controls that allows the user to make "Yes" or
+ * "No" choices.  Checkboxes may be programmatically set to an indeterminate
+ * states to indicate that no choice has been made.
+ * @module
+ */
+
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

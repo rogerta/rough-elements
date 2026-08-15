@@ -1,3 +1,8 @@
+/**
+ * Progress elements represent the completion progress of a task.
+ * @module
+ */
+
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 

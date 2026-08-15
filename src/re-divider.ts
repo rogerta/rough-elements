@@ -1,3 +1,9 @@
+/**
+ * Dividers are visual separators between groups of content using rough,
+ * hand-drawn lines.
+ * @module
+ */
+
 import { css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
