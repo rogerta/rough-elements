@@ -609,7 +609,7 @@
 
     <div class="demo">
       <h1>re-dropdown</h1>
-      <re-dropdown>
+      <re-dropdown id="dd1">
         <span slot="label">Dropdown</span>
         <re-item id="item1">
           <re-icon slot="prefix" name="check"></re-icon>
@@ -642,7 +642,7 @@
         <re-divider></re-divider>
         <re-menu-item id="item4">
           Menu item 4
-          <re-menu popover slot="submenu">
+          <re-menu id="x1" popover autofocus tabindex="-1" slot="submenu">
             <re-item id="item41">
               <re-icon slot="prefix" name="check"></re-icon>
               Menu item 1
@@ -709,7 +709,7 @@
         <re-divider></re-divider>
         <re-menu-item id="item4">
           Menu item 4
-          <re-menu popover slot="submenu">
+          <re-menu id="x2" popover autofocus tabindex="-1" slot="submenu">
             <re-item id="item41">
               <re-icon slot="prefix" name="check"></re-icon>
               Menu item 1
@@ -761,7 +761,7 @@
         <re-divider></re-divider>
         <re-menu-item id="item4">
           Menu item 4
-          <re-menu id="menu2" popover slot="submenu">
+          <re-menu id="x4" id="menu2" popover tabindex="-1" autofocus slot="submenu">
             <re-item id="item41">
               <re-icon slot="prefix" name="check"></re-icon>
               Menu item 1
@@ -774,7 +774,7 @@
             <re-menu-item id="item43">
               Menu item 3
               <div slot="suffix" >Ctrl+P</div>
-              <re-menu id="menu3" popover slot="submenu">
+              <re-menu id="x5" id="menu3" popover tabindex="-1" autofocus slot="submenu">
                 <re-item id="item431">
                   Menu item 1
                 </re-item>
@@ -1323,6 +1323,17 @@
         const data = new FormData(e.target)
         console.log(Object.fromEntries(data))
       })
+
+      setInterval(() => console.log(document.activeElement), 2000)
     </script>
+
+<button id="bbutton1" popovertarget="mypopover1">Toggle the popover</button>
+<div id="mypopover1" popover xautofocus xtabindex="-1">
+  <button id="bbutton2" popovertarget="mypopover2">Toggle the popover</button>
+  <div id="mypopover2" popover autofocus tabindex="-1">
+      Hi!
+  </div>
+</div>
+
   </body>
 </html>

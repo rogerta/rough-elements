@@ -1,6 +1,8 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
+import { sleep } from './internal/re-common.js'
+
 import './re-button.js'
 import './re-menu.js'
 import { NO_ITEM } from './re-menu.js'
@@ -123,6 +125,18 @@ export class DropdownElement extends LitElement {
     return menu?.unselectAllItems()
   }
 
+  handleEvent(e: Event) {
+    switch (e.type) {
+      case 'toggle':
+        const te = e as ToggleEvent
+        if (te.newState === 'closed') {
+          // Investigate: without the sleep here, the focus goes to <body>.
+          sleep(10).then(() => this.focus())
+        }
+        break
+    }
+  }
+
   override firstUpdated(_: PropertyValues) {
     this.setAttribute('tabindex', '0')
   }
@@ -137,7 +151,8 @@ export class DropdownElement extends LitElement {
       </re-button>
       <!-- The \`<re-menu>\` that implements the popover panel. -->
       <re-menu id="panel" popover part="panel" tabindex="-1" autofocus
-          .enableDebugging="${this.enableDebugging}">
+          .enableDebugging="${this.enableDebugging}"
+          @toggle="${this}">
         <!-- Unslotted children elements appear in the menu panel. -->
         <slot></slot>
       </re-menu>

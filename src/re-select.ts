@@ -211,6 +211,8 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   }
 
   handleEvent(e: Event) {
+    super.handleEvent(e)
+
     switch (e.type) {
       case 'click': {
         const me = e as MouseEvent

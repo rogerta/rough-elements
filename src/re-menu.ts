@@ -7,7 +7,6 @@ import { ReElement } from './internal/re-element.js'
 
 import { getItemFromEvent, ItemElement } from './re-item.js'
 import { MenuItemElement } from './re-menu-item.js'
-import { sleep } from './internal/re-common.js'
 
 // Return value of findItemByValue() when an item cannot be found.
 export const NO_ITEM = {
@@ -15,11 +14,13 @@ export const NO_ITEM = {
   item: null,
 }
 
+// Stack of open <re-menu>s used to restore focus when they close.
+let menuStack: MenuElement[] = []
+
 // State saved by menu during keyboard navigation of the menus.  This state
 // is created when the menu is shown up and discarded once the user makes a
 // selection or dismisses the menu.
 class KeyboardNavState {
-  previousActiveElement = document.activeElement as HTMLElement
   assignedElements: Element[]
   currentIndex: number
   currentItem?: ItemElement  // Must be valid if currentIndex !== -1.
@@ -153,6 +154,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         align-items: stretch;
         justify-content: start;
         overflow: auto;
+        outline: none;
       }
       :host(:not([disabled]):focus-within) {
         --re-stroke-width: 2px;
@@ -214,10 +216,29 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
       case 'click':
         // Only close the menu if the user clicked on an item.  A call to
         // matches() then hidePopover() is used instead of togglePopover(false)
-        // because the latter throws an error is this menu deos not have the
+        // because the latter throws an error if this menu does not have the
         // popover attribute.
         if (this.matches(':popover-open') && getItemFromEvent(e)) {
-          sleep(100).then(() => this.hidePopover())
+          this.hidePopover()
+        }
+        break
+
+      case 'toggle':
+        const te = e as ToggleEvent
+
+        if (te.newState === 'open') {
+          menuStack.push(this)
+        } else {
+          // If this item is at the top of the stack, focus the next menu down.
+          // But only if there are are at least two menus in the stack.  For
+          // menus inside <re-dropdown> and derivatives, the focus will be set
+          // back to that element when the <re-menu> is closed.
+          const setFocus = menuStack.length > 1 &&
+              this === menuStack.at(menuStack.length - 1)
+          menuStack = menuStack.filter(m => m !== this)
+          if (setFocus) {
+            menuStack.at(menuStack.length - 1)?.focus()
+          }
         }
         break
 
@@ -225,10 +246,6 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
         this.kbNavState_= new KeyboardNavState(
             slot?.assignedElements({ flatten: true }) ?? [], -1, undefined)
-        break
-
-      case 'blur':
-        //this.kbNavState_?.previousActiveElement?.focus()
         break
 
       case 'keyup': {
@@ -319,11 +336,11 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
 
   firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
-    this.addEventListener('blur', this)
     this.addEventListener('click', this)
     this.addEventListener('focus', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
+    this.addEventListener('toggle', this)
   }
 
   override render() {

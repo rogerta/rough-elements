@@ -7,7 +7,8 @@ import { ReElement } from './internal/re-element.js'
  * Dividers are visual separators between groups of content using rough,
  * hand-drawn lines.
  *
- * Dividers can be displayed horizontally or vertically.
+ * Dividers can be displayed horizontally or vertically.  When used
+ * horizontally, think of a hand-drawn `<hr/>` element.
  *
  * @cssproperty --border-color - The colour of the divider's lines.
  * @cssproperty --thickness - Controls the number of lines drawn.  The default
