@@ -116,8 +116,8 @@ export class DropdownElement extends LitElement {
 
     // If this methods happens to be called early in dropdown creation, like
     // at firstUpdated() time, it's possible for the menu to not be finished
-    // its own update cycle.  Wait for it to compelete before looking for
-    // the item.
+    // its own update cycle.  Wait for it to compelete before unselecting all
+    // items.
     await menu?.updateComplete
 
     return menu?.unselectAllItems()

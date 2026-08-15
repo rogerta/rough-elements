@@ -73,8 +73,6 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   /**
    * If true, multiple options can be selected simultaneously.  Otherwise only
    * one option can be selected at a time.
-   *
-   * NOT YET IMPLEMENTED
    */
   @property({ type: Boolean, reflect: true }) accessor multiple = false
 
