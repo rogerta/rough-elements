@@ -1251,11 +1251,14 @@
 
       document.querySelectorAll('re-select').forEach(select => {
         select.addEventListener('change', e => {
-          const item = getItemFromEvent(e)
-          console.log(`changed re-select item.id="${item?.id}" e.target.value="${e.target.value}"`)
+          console.log(`changed re-select e.target.value="${e.target.value}"`)
         })
-        select.addEventListener('click', e => {
-          console.log(`clicked re-select ${getItemFromEvent(e)?.id}`)
+      })
+
+      document.querySelectorAll('re-select[multiple]').forEach(select => {
+        select.addEventListener('change', e => {
+          const ids = Array.from(e.target.selectedOptions).map(n => n.id)
+          console.log(`changed re-select e.target.selectedOptions="${ids}"`)
         })
       })
 
@@ -1324,7 +1327,7 @@
         console.log(Object.fromEntries(data))
       })
 
-      setInterval(() => console.log(document.activeElement), 2000)
+      //setInterval(() => console.log(document.activeElement), 2000)
     </script>
 
 <button id="bbutton1" popovertarget="mypopover1">Toggle the popover</button>

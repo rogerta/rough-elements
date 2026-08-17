@@ -2,8 +2,7 @@
  * TabGroups allow users to choose a single option from a group of options that
  * are organized in one row, often called Tabs in this configuration.  Tab
  * groups are mainly used in conjunction with Panel Groups, allowing the use of
- * the former to control which panel is visible in the latter.  See the
- * documentation of panel groups for more details.
+ * the former to control which panel is visible in the latter.
  * @module
  */
 

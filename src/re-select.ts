@@ -104,6 +104,13 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   }
 
   /**
+   * A promise that resolves when all items of the `re-select` are unselected.
+   * When callers wait on `this.updateComplete`, then will also wait for this
+   * promise to resolve.
+   */
+  allItemsUnselectedComplete_: Promise<void> = Promise.resolve()
+
+  /**
    * If true, an option must be selected before its form can be submitted.
    */
   @property({ type: Boolean, reflect: true }) accessor required = false
@@ -117,10 +124,17 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
 
   set value(v: string) {
     this.value_ = v
-    this.unselectAllItems_().then(() => this.requestUpdate('value'))
+    this.allItemsUnselectedComplete_ = this.unselectAllItems_()
+    this.requestUpdate('value')
   }
 
   private value_: string = ''
+
+  protected async getUpdateComplete(): Promise<boolean> {
+    const ret = await super.getUpdateComplete()
+    await this.allItemsUnselectedComplete_
+    return ret
+  }
 
   @property({ type: Array, state: true })
   private accessor labelNodes_: Node[] = []
@@ -227,16 +241,21 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
         if (item) {
           if (this. multiple && me.ctrlKey) {
             item.selected = !item.selected
-            const first = this.querySelector('re-item[selected]')
+            item.updateComplete.then(() => {
+              const first = this.querySelector('re-item[selected]')
 
-            // Set `value_` directly to avoid unselecting all the items.
-            this.value_ = first ? first.id : ''
-            this.requestUpdate('value')
+              // Set `value_` directly to avoid unselecting all the items.
+              const old = this.value_
+              this.value_ = first ? first.id : ''
+              this.requestUpdate('value', old)
+              this.updateComplete.then(
+                  () => fire(this, 'change', { bubbles: true }))
+            })
           } else {
             this.value = item.id !== this.value ? item.id : ''
+            this.updateComplete.then(
+                () => fire(this, 'change', { bubbles: true }))
           }
-
-          fire(this, 'change', { bubbles: true })
         }
         break
       }
