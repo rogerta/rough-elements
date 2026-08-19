@@ -1,6 +1,6 @@
 // Base class for all elements that can submit data as part of a form.
 
-import { LitElement } from 'lit'
+import type { LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
 
 // Typescript requires mixin ctors to use exactly one argument of type

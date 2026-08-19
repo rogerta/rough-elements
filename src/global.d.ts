@@ -4,7 +4,7 @@
 //
 //  /// <reference types="@rough/rough-elements/src/global.d.ts" />
 
-import * as rough from './rough-elements.ts'
+import type * as rough from './rough-elements.ts'
 
 declare global {
   interface HTMLElementTagNameMap {

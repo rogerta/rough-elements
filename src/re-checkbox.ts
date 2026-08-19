@@ -8,7 +8,8 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { IconElement } from './re-icon.ts'
+import type { IconElement } from './re-icon.ts'
+import './re-icon.ts'
 import { ButtonBaseElement } from './internal/re-button-base.ts'
 import { fire } from './internal/re-element.ts'
 

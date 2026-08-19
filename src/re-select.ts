@@ -11,7 +11,7 @@ import { customElement, property } from 'lit/decorators.js'
 import { FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import { DropdownElement } from  './re-dropdown.ts'
-import { getItemFromEvent, ItemElement } from './re-item.ts'
+import { getItemFromEvent, type ItemElement } from './re-item.ts'
 import { fire } from './internal/re-element.ts'
 
 /**
