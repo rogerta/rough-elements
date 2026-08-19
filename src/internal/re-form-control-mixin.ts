@@ -3,6 +3,9 @@
 import { LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
 
+// Typescript requires mixin ctors to use exactly one argument of type
+// `any[]`, so ignore this error from deno lint.
+// deno-lint-ignore no-explicit-any
 type Constructor<T = Record<PropertyKey, never>> = new (...args: any[]) => T
 
 export declare class FormControlInterface {

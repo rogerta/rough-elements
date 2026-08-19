@@ -4,6 +4,9 @@ import type { ReElement } from './re-element.ts'
 import { property } from 'lit/decorators.js'
 import type { FILLSTYLE } from './re-common.ts'
 
+// Typescript requires mixin ctors to use exactly one argument of type
+// `any[]`, so ignore this error from deno lint.
+// deno-lint-ignore no-explicit-any
 type Constructor<T = Record<PropertyKey, never>> = new (...args: any[]) => T
 
 /**
