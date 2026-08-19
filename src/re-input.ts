@@ -10,12 +10,12 @@ import { customElement, property } from 'lit/decorators.js'
 import { live } from 'lit/directives/live.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import { BorderMixin } from './internal/re-border-mixin.js'
-import { fire, ReElement } from './internal/re-element.js'
-import { FormControlMixin } from './internal/re-form-control-mixin.js'
+import { BackgroundMixin } from './internal/re-background-mixin.ts'
+import { BorderMixin } from './internal/re-border-mixin.ts'
+import { fire, ReElement } from './internal/re-element.ts'
+import { FormControlMixin } from './internal/re-form-control-mixin.ts'
 
-import './re-icon-button.js'
+import './re-icon-button.ts'
 
 /**
  * Inputs collect information from the user like text, numbers, and dates.

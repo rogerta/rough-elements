@@ -2,7 +2,7 @@ import { LitElement, css, html, type PropertyValues } from 'lit'
 import { property, query } from 'lit/decorators.js'
 import * as rough from '@rough/roughjs'
 
-import { STYLES } from './re-common.js'
+import { STYLES } from './re-common.ts'
 
 export type Point = [number, number]
 export type RoughCanvas = ReturnType<typeof rough.canvas>
@@ -91,7 +91,7 @@ export class ReElement extends LitElement {
     }
 
     this.observer_ = new ResizeObserver(entries => {
-      for (let _ of entries) {
+      for (const _ of entries) {
         this.requestRoughRender()
       }
     })

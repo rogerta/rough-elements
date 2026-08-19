@@ -1,10 +1,10 @@
 import { css } from 'lit'
 import { property } from 'lit/decorators.js'
 
-import type { ReElement } from './re-element.js'
-import type { BORDERSTYLE } from './re-common.js'
+import type { ReElement } from './re-element.ts'
+import type { BORDERSTYLE } from './re-common.ts'
 
-type Constructor<T = {}> = new (...args: any[]) => T
+type Constructor<T = Record<PropertyKey, never>> = new (...args: any[]) => T
 
 /**
  * A mixin class that draws a border around the element using rough drawing

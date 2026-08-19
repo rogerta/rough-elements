@@ -7,8 +7,8 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ReElement } from './internal/re-element.js'
-import { getIcon, getViewBox } from './re-iconset.js'
+import { ReElement } from './internal/re-element.ts'
+import { getIcon, getViewBox } from './re-iconset.ts'
 
 /**
  * Icons display hand-drawn rough icons from the Rough Elements iconset

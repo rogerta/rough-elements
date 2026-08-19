@@ -7,8 +7,8 @@
 import { css, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import './re-icon.js'
-import { MenuElement } from './re-menu.js'
+import './re-icon.ts'
+import { MenuElement } from './re-menu.ts'
 
 /**
  * Items define elements that are used inside containers such as

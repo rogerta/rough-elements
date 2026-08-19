@@ -1,10 +1,10 @@
 import { css } from 'lit'
 
-import type { ReElement } from './re-element'
+import type { ReElement } from './re-element.ts'
 import { property } from 'lit/decorators.js'
-import type { FILLSTYLE } from './re-common'
+import type { FILLSTYLE } from './re-common.ts'
 
-type Constructor<T = {}> = new (...args: any[]) => T
+type Constructor<T = Record<PropertyKey, never>> = new (...args: any[]) => T
 
 /**
  * A mixin class that fills the background of an element using rough drawing

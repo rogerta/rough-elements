@@ -7,11 +7,11 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { sleep } from './internal/re-common.js'
+import { sleep } from './internal/re-common.ts'
 
-import './re-button.js'
-import './re-menu.js'
-import { NO_ITEM } from './re-menu.js'
+import './re-button.ts'
+import './re-menu.ts'
+import { NO_ITEM } from './re-menu.ts'
 
 /**
  * Dropdowns expose a menu of actions that the user can perform.
@@ -133,13 +133,14 @@ export class DropdownElement extends LitElement {
 
   handleEvent(e: Event) {
     switch (e.type) {
-      case 'toggle':
+      case 'toggle': {
         const te = e as ToggleEvent
         if (te.newState === 'closed') {
           // Investigate: without the sleep here, the focus goes to <body>.
           sleep(10).then(() => this.focus())
         }
         break
+      }
     }
   }
 

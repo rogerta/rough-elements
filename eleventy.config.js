@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 import { marked } from 'marked'
 import { HtmlBasePlugin } from '@11ty/eleventy'
 import data from './dist/custom-elements.json' with { type: 'json' }

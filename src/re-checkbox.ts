@@ -8,9 +8,9 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { IconElement } from './re-icon.js'
-import { ButtonBaseElement } from './internal/re-button-base.js'
-import { fire } from './internal/re-element.js'
+import { IconElement } from './re-icon.ts'
+import { ButtonBaseElement } from './internal/re-button-base.ts'
+import { fire } from './internal/re-element.ts'
 
 /**
  * Checkboxes are toggleable controls that allows the user to make "Yes" or

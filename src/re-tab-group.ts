@@ -9,11 +9,11 @@
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import './re-divider.js'
-import { getItemFromEvent, type ItemElement } from './re-item.js'
-import type { IconElement } from './re-icon.js'
-import type { PanelGroupElement } from './re-panel-group.js'
-import { fire } from './internal/re-element.js'
+import './re-divider.ts'
+import { getItemFromEvent, type ItemElement } from './re-item.ts'
+import type { IconElement } from './re-icon.ts'
+import type { PanelGroupElement } from './re-panel-group.ts'
+import { fire } from './internal/re-element.ts'
 
 /**
  * TabGroups allow users to choose a single option from a group of options that

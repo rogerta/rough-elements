@@ -8,9 +8,9 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import './re-icon.js'
-import './re-icon-button.js'
-import { ItemElement } from './re-item.js'
+import './re-icon.ts'
+import './re-icon-button.ts'
+import { ItemElement } from './re-item.ts'
 
 /**
  * Menu items are Items that open up a menu when clicked .  They can be used
@@ -138,7 +138,7 @@ export class MenuItemElement extends ItemElement {
 
   handleEvent(e: Event) {
     switch (e.type) {
-      case 'click':
+      case 'click': {
         // If there is no submenu, nothing to do here.  Just treat this like
         // a simple <re-item>.
         const submenu = this.getSubmenu()
@@ -177,6 +177,7 @@ export class MenuItemElement extends ItemElement {
 
         submenu.togglePopover()
         break
+      }
     }
   }
 

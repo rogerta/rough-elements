@@ -7,8 +7,8 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { fire, ReElement } from './internal/re-element.js'
-import { FormControlMixin } from './internal/re-form-control-mixin.js'
+import { fire, ReElement } from './internal/re-element.ts'
+import { FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 /**
  * Ranges collect a numeric values from the user that falls within a specific
@@ -153,6 +153,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
         const pe = e as PointerEvent
         this.setPointerCapture(pe.pointerId)
       }
+        /* falls through */
       case 'pointermove': {
         const pe = e as PointerEvent
         if (this.hasPointerCapture(pe.pointerId)) {

@@ -8,12 +8,12 @@
 import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import { BorderMixin } from './internal/re-border-mixin.js'
-import type { VARIANTS } from './internal/re-common.js'
-import { ReElement } from './internal/re-element.js'
-import './re-icon.js'
-import './re-icon-button.js'
+import { BackgroundMixin } from './internal/re-background-mixin.ts'
+import { BorderMixin } from './internal/re-border-mixin.ts'
+import type { VARIANTS } from './internal/re-common.ts'
+import { ReElement } from './internal/re-element.ts'
+import './re-icon.ts'
+import './re-icon-button.ts'
 
 /**
  * Alerts display important messages to the user.  They can appear inline or

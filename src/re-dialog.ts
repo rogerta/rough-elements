@@ -9,11 +9,11 @@
 
 import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
-
-import  './re-button.js'
-import { fire } from './internal/re-element.js'
-import  './re-icon-button.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
+
+import  './re-button.ts'
+import { fire } from './internal/re-element.ts'
+import  './re-icon-button.ts'
 
 /**
  * Dialogs are shown when immedidate user interaction is required.

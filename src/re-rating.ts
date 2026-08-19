@@ -8,10 +8,10 @@ import { css, html, LitElement, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
-import { fire } from './internal/re-element.js'
-import { FormControlMixin } from './internal/re-form-control-mixin.js'
+import { fire } from './internal/re-element.ts'
+import { FormControlMixin } from './internal/re-form-control-mixin.ts'
 
-import { IconElement } from './re-icon.js'
+import { IconElement } from './re-icon.ts'
 
 /**
  * Ratings collect star ratings from (or display them to) the user.  Ratings

@@ -7,7 +7,7 @@
 import { css } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { ReElement } from './internal/re-element.js'
+import { ReElement } from './internal/re-element.ts'
 
 /**
  * Spinners show progress being made for an operation that will take an

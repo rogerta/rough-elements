@@ -9,10 +9,10 @@ import { css, html, nothing, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import type { VARIANTS } from './internal/re-common.js'
-import { ButtonBaseElement } from './internal/re-button-base.js'
+import type { VARIANTS } from './internal/re-common.ts'
+import { ButtonBaseElement } from './internal/re-button-base.ts'
 
-import './re-icon.js'
+import './re-icon.ts'
 
 /**
  * Buttons are interactive elements activated by the user with a mouse,

@@ -9,10 +9,10 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { fire } from './internal/re-element.js'
-import { ButtonBaseElement } from './internal/re-button-base.js'
+import { fire } from './internal/re-element.ts'
+import { ButtonBaseElement } from './internal/re-button-base.ts'
 
-import { IconElement } from './re-icon.js'
+import { IconElement } from './re-icon.ts'
 
 /**
  * Radio elements are a control that allows users to choose a single option

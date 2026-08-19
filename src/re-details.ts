@@ -8,10 +8,11 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import { BorderMixin } from './internal/re-border-mixin.js'
-import { ReElement } from './internal/re-element.js'
-import './re-icon.js'
+import { BackgroundMixin } from './internal/re-background-mixin.ts'
+import { BorderMixin } from './internal/re-border-mixin.ts'
+import { ReElement } from './internal/re-element.ts'
+
+import './re-icon.ts'
 
 /**
  * Details are disclosure elements in which more detailed information is

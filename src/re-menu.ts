@@ -8,12 +8,12 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import { BorderMixin } from './internal/re-border-mixin.js'
-import { ReElement } from './internal/re-element.js'
+import { BackgroundMixin } from './internal/re-background-mixin.ts'
+import { BorderMixin } from './internal/re-border-mixin.ts'
+import { ReElement } from './internal/re-element.ts'
 
-import { getItemFromEvent, ItemElement } from './re-item.js'
-import { MenuItemElement } from './re-menu-item.js'
+import { getItemFromEvent, ItemElement } from './re-item.ts'
+import { MenuItemElement } from './re-menu-item.ts'
 
 // Return value of findItemByValue() when an item cannot be found.
 export const NO_ITEM = {
@@ -230,7 +230,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
         }
         break
 
-      case 'toggle':
+      case 'toggle': {
         const te = e as ToggleEvent
 
         if (te.newState === 'open') {
@@ -248,13 +248,13 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
           }
         }
         break
-
-      case 'focus':
+      }
+      case 'focus': {
         const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
         this.kbNavState_= new KeyboardNavState(
             slot?.assignedElements({ flatten: true }) ?? [], -1, undefined)
         break
-
+      }
       case 'keyup': {
         const ke = e as KeyboardEvent
         switch (ke.key) {
@@ -306,7 +306,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
             ke.preventDefault()
             ke.stopPropagation()
             break
-          case 'ArrowRight':
+          case 'ArrowRight': {
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
@@ -316,6 +316,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
               item.toggleSubmenu()
             }
             break
+          }
           case ' ':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.

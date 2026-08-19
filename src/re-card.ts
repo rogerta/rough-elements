@@ -8,9 +8,9 @@
 import { css, html } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import { BorderMixin } from './internal/re-border-mixin.js'
-import { ReElement } from './internal/re-element.js'
+import { BackgroundMixin } from './internal/re-background-mixin.ts'
+import { BorderMixin } from './internal/re-border-mixin.ts'
+import { ReElement } from './internal/re-element.ts'
 
 /**
  * Cards are containers used to group related information or actions.

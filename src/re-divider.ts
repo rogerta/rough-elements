@@ -7,7 +7,7 @@
 import { css } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { ReElement } from './internal/re-element.js'
+import { ReElement } from './internal/re-element.ts'
 
 /**
  * Dividers are visual separators between groups of content using rough,

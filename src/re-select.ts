@@ -8,11 +8,11 @@
 import { css, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { FormControlMixin } from './internal/re-form-control-mixin.js'
+import { FormControlMixin } from './internal/re-form-control-mixin.ts'
 
-import { DropdownElement } from  './re-dropdown.js'
-import { getItemFromEvent, ItemElement } from './re-item.js'
-import { fire } from './internal/re-element.js'
+import { DropdownElement } from  './re-dropdown.ts'
+import { getItemFromEvent, ItemElement } from './re-item.ts'
+import { fire } from './internal/re-element.ts'
 
 /**
  * Selects expose a menu of options from which the user can choose one or many.

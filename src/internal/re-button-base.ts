@@ -1,13 +1,13 @@
 import { css, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
 import { property } from 'lit/decorators.js'
-
-import { BackgroundMixin } from './re-background-mixin.js'
-import { BorderMixin } from './re-border-mixin.js'
-import { FormControlMixin } from './re-form-control-mixin.js'
-import { ReElement } from './re-element.js'
-
-import '../re-icon.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
+
+import { BackgroundMixin } from './re-background-mixin.ts'
+import { BorderMixin } from './re-border-mixin.ts'
+import { FormControlMixin } from './re-form-control-mixin.ts'
+import { ReElement } from './re-element.ts'
+
+import '../re-icon.ts'
 
 /**
  * This is a base class used to help implement click-style controls such as

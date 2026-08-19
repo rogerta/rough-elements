@@ -7,9 +7,9 @@
 import { css, html, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.js'
-import type { VARIANTS } from './internal/re-common.js'
-import { ReElement } from './internal/re-element.js'
+import { BackgroundMixin } from './internal/re-background-mixin.ts'
+import type { VARIANTS } from './internal/re-common.ts'
+import { ReElement } from './internal/re-element.ts'
 
 /**
  * Badges display status like information to the user. Generally the body of
