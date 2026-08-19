@@ -36,7 +36,9 @@
       "LICENSE",
       "public/themes/*.css",
       "src/**/*.ts"
+    ],
+    "exclude": [
+      "src/global.d.ts"
     ]
   }
 }
-
