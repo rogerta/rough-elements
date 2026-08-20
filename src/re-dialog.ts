@@ -7,7 +7,7 @@
  * @module
  */
 
-import { css, html, LitElement, type PropertyValues } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
@@ -69,11 +69,11 @@ export class DialogElement extends LitElement {
   /**
    * Returns true if the dialog is open.
    */
-  get open() {
+  get open(): boolean {
     return this.renderRoot.querySelector('dialog')?.open ?? false
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     //...super.styles,
     css`
       :host {
@@ -260,14 +260,14 @@ export class DialogElement extends LitElement {
   /**
    * Shows the dialog.
    */
-  showModal() {
+  showModal(): void {
     this.renderRoot.querySelector('dialog')?.showModal()
   }
 
   /**
    * Programmatically requests the dialog to close.
    */
-  requestClose() {
+  requestClose(): void {
     this.renderRoot.querySelector('dialog')?.requestClose()
   }
 
@@ -281,11 +281,11 @@ export class DialogElement extends LitElement {
     }
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     super.updated(props)
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     return [
       html`
         <!-- The native HTML \`<dialog>\` wrapping the \`<re-card>\`. -->

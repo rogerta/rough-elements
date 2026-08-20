@@ -4,15 +4,16 @@
  * @module
  */
 
-import { css, html, LitElement, type PropertyValues } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 import { fire } from './internal/re-element.ts'
-import { FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import { IconElement } from './re-icon.ts'
 
+const RatingElementBase: (new (...args: any[]) => FormControlInterface) & typeof LitElement = FormControlMixin(LitElement)
 /**
  * Ratings collect star ratings from (or display them to) the user.  Ratings
  * can be configured with 3 to 5 stars.
@@ -23,7 +24,7 @@ import { IconElement } from './re-icon.ts'
  * @cssproperty --re-rating-color - Color of the selected rating stars. Defaults to `gold`.
  */
 @customElement('re-rating')
-export class RatingElement extends FormControlMixin(LitElement) {
+export class RatingElement extends RatingElementBase {
   static formAssociated = true
 
   /**
@@ -52,7 +53,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
    */
   @property({ type: Boolean, reflect: true }) accessor required = false
 
-  static styles = [
+  static styles: CSSResult[] = [
     css`
       :host {
         --re-rating-color: gold;
@@ -119,7 +120,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
     return !this.disabled && !this.readonly
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'keydown': {
         const ke = e as KeyboardEvent
@@ -189,7 +190,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
     })
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
@@ -200,7 +201,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
     }
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     super.updated(props)
 
     if (props.has('value')) {
@@ -212,7 +213,7 @@ export class RatingElement extends FormControlMixin(LitElement) {
     }
   }
 
-  override render() {
+  override render(): TemplateResult<1> {
     const classes1 = {selected: this.value > 0 }
     const classes2 = {selected: this.value > 1 }
     const classes3 = {selected: this.value > 2 }

@@ -5,15 +5,16 @@
  * @module
  */
 
-import { css, type PropertyValues } from 'lit'
+import { css, CSSResult, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import { DropdownElement } from  './re-dropdown.ts'
 import { getItemFromEvent, type ItemElement } from './re-item.ts'
 import { fire } from './internal/re-element.ts'
 
+const SelectElementBase: (new (...args: any[]) => FormControlInterface) & typeof DropdownElement = FormControlMixin(DropdownElement)
 /**
  * Selects expose a menu of options from which the user can choose one or many.
  * A select consists of a trigger button and a popover menu panel with the full
@@ -74,7 +75,7 @@ import { fire } from './internal/re-element.ts'
  *    for each alteration to an element's value.
  */
 @customElement('re-select')
-export class SelectElement extends FormControlMixin(DropdownElement) {
+export class SelectElement extends SelectElementBase {
   static formAssociated = true
 
   /**
@@ -93,13 +94,13 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
    * calculated.  In these cases it's likely easier to depend on the `value`
    * property than this one.
    */
-  @property({ type: Number }) accessor selectedIndex = -1
+  @property({ type: Number }) accessor selectedIndex: number = -1
 
   /**
    * A non-live `NodeList` of currently selected `<re-items>`(s), if any.
    * An `<re-items>` is selected if it has the `selected` attribute.
    */
-  get selectedOptions() {
+  get selectedOptions(): NodeListOf<Element> {
     return this.querySelectorAll('re-item[selected]')
   }
 
@@ -118,7 +119,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   /**
    * The `id` of the item that is currently selected.
    */
-  get value() {
+  get value(): string {
     return this.value_
   }
 
@@ -139,7 +140,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
   @property({ type: Array, state: true })
   private accessor labelNodes_: Node[] = []
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host([multiple]) {
@@ -162,7 +163,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
     this.setValidity(validity, message)
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
 
     const menu = this.renderRoot.querySelector('re-menu')
@@ -186,7 +187,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
     }
   }
 
-  override async updated(props: PropertyValues) {
+  override async updated(props: PropertyValues): Promise<void> {
     super.updated(props)
 
     // TODO: handle `selectedIndex` changes.
@@ -231,7 +232,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
     }
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     super.handleEvent(e)
 
     switch (e.type) {
@@ -262,7 +263,7 @@ export class SelectElement extends FormControlMixin(DropdownElement) {
     }
   }
 
-  protected override renderLabelDefault_() {
+  protected override renderLabelDefault_(): Node[] {
     return this.labelNodes_
   }
 }

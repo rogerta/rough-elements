@@ -6,7 +6,7 @@
  * @module
  */
 
-import { css, html, LitElement, type PropertyValues } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-divider.ts'
@@ -51,7 +51,7 @@ export class TabGroupElement extends LitElement {
    */
   @property({}) accessor selected = ''
 
-  static styles = [
+  static styles: CSSResult[] = [
     css`
       :host {
         border-bottom: 1px solid var(--border-color);
@@ -91,7 +91,7 @@ export class TabGroupElement extends LitElement {
     this.setAttribute('tabindex', '0')
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'keydown': {
         const slot = this.renderRoot.querySelector('slot')
@@ -158,7 +158,7 @@ export class TabGroupElement extends LitElement {
     fire(this, 'change', {bubbles: true})
   }
 
-  protected override firstUpdated(_: PropertyValues) {
+  protected override firstUpdated(_: PropertyValues): void {
     if (!this.name) {
       console.error('Tab groups must be named')
     }
@@ -194,7 +194,7 @@ export class TabGroupElement extends LitElement {
   // The work in this function can't be done in willUpdate() because the <slot>
   // element is not populated with the assigned elements until after the first
   // update cycle.
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     let gridColumn = -1
 
     if (props.has('selected')) {
@@ -237,7 +237,7 @@ export class TabGroupElement extends LitElement {
     this.addEventListener('keyup', this)
   }
 
-  override render() {
+  override render(): TemplateResult<1> {
     return html`
       <!-- The default slot representing the tab headers (should be <re-item> elements). -->
       <slot @click="${this.onClick_}"></slot>

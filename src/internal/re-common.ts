@@ -1,4 +1,4 @@
-import { css } from 'lit'
+import { css, CSSResult } from 'lit'
 
 export type VARIANTS = 'primary' | 'success' | 'neutral' | 'warning' | 'danger'| 'none'
 
@@ -11,7 +11,7 @@ export type BORDERSTYLE = 'rectangle' | 'circle' | 'none'
 // No need for --re-<component>-xxx styles because those can always be set
 // using `re-<component> { xxx: ... }`.
 
-export const STYLES = css`
+export const STYLES: CSSResult = css`
   :host {
     --re-input-font-family: var(--font-sans-family);
     --re-help-font-family: var(--font-sans-family);
@@ -29,6 +29,6 @@ export const STYLES = css`
  * @param tmo The amount of time to sleep in msec.
  * @returns A promise tha resolves with void after `tmo` msecs.
  */
-export function sleep(tmo: number) {
+export function sleep(tmo: number): Promise<unknown> {
   return new Promise(resolve => setTimeout(resolve, tmo))
 }

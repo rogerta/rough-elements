@@ -4,13 +4,14 @@
  * @module
  */
 
-import { css, html, type PropertyValues } from 'lit'
+import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
 import type { VARIANTS } from './internal/re-common.ts'
 import { ReElement } from './internal/re-element.ts'
 
+const BadgeElementBase: (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BackgroundMixin(ReElement)
 /**
  * Badges display status like information to the user. Generally the body of
  * a badge is some small amount of text.
@@ -27,7 +28,7 @@ import { ReElement } from './internal/re-element.ts'
  *    `--forground-color` is used.
  */
 @customElement('re-badge')
-export class BadgeElement extends BackgroundMixin(ReElement) {
+export class BadgeElement extends BadgeElementBase {
   /**
    * Specifies the variant to use.  Different variants use a different colour
    * for the background.
@@ -39,7 +40,7 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
     this.fillStyle = 'solid'
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     return [
       super.renderRoughSvg(),
       html`
@@ -49,7 +50,7 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
     ]
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     super.updated(props)
 
     if (props.has('variant')) {
@@ -59,7 +60,7 @@ export class BadgeElement extends BackgroundMixin(ReElement) {
     }
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

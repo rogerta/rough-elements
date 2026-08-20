@@ -4,7 +4,7 @@
  * @module
  */
 
-import { css, type PropertyValues } from 'lit'
+import { css, CSSResult, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { ReElement } from './internal/re-element.ts'
@@ -35,7 +35,7 @@ export class IconElement extends ReElement {
    */
   @property({reflect: true}) accessor name = ''
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {
@@ -51,11 +51,11 @@ export class IconElement extends ReElement {
     `
   ]
 
-  protected override updated(_: PropertyValues) {
+  protected override updated(_: PropertyValues): void {
     this.requestRoughRender()
   }
 
-  override render() {
+  override render(): TemplateResult<1> {
     return super.renderRoughSvg()
   }
 

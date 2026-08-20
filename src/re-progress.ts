@@ -3,13 +3,14 @@
  * @module
  */
 
-import { css, html, type PropertyValues } from 'lit'
+import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
-import { BorderMixin } from './internal/re-border-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
+const ProgressElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
 /**
  * Progress elements represent the completion progress of a task.
  *
@@ -20,7 +21,7 @@ import { ReElement } from './internal/re-element.ts'
  *    is at or above 50%. Defaults to `--background-color`.
  */
 @customElement('re-progress')
-export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
+export class ProgressElement extends ProgressElementBase {
   /**
    * If true the numeric value of the progress is displayed on the progress bar.
    */
@@ -51,7 +52,7 @@ export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
     this.fillFraction = 0
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     return [
       super.renderRoughSvg(),
       html`
@@ -66,7 +67,7 @@ export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
     return this.showvalue && this.value ? this.value.toFixed(1) : ''
   }
 
-  override updated(props: PropertyValues) {
+  override updated(props: PropertyValues): void {
     super.updated(props)
 
     if(props.has('min')) {
@@ -109,7 +110,7 @@ export class ProgressElement extends BorderMixin(BackgroundMixin(ReElement)) {
     this.requestRoughRender()
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

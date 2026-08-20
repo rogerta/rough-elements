@@ -5,11 +5,11 @@
  * @module
  */
 
-import { css, html, type PropertyValues } from 'lit'
+import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
-import { BorderMixin } from './internal/re-border-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
 import { getItemFromEvent, ItemElement } from './re-item.ts'
@@ -97,6 +97,7 @@ class KeyboardNavState {
   }
 }
 
+const MenuElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
 /**
  * Menus show a list of user selectable options as often seen in a dropdown or
  * context menu.  Children of the menu are usually `<re-item>`,
@@ -135,10 +136,10 @@ class KeyboardNavState {
  * `toggle` event.
  */
 @customElement('re-menu')
-export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
+export class MenuElement extends MenuElementBase {
   private kbNavState_?: KeyboardNavState
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {
@@ -181,7 +182,13 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
    * @returns An object with two properties: index and item.  If no item
    *    is found index is -1 and item is `null`.  Otherwise
    */
-  findItemByValue(value: string) {
+  findItemByValue(value: string): {
+    index: number
+    item: null
+  } | {
+    index: number
+    item: ItemElement
+  } {
     if (!value) {
       return NO_ITEM
     }
@@ -207,7 +214,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Unselect all items in the menu.
    */
-  unselectAllItems() {
+  unselectAllItems(): void {
     const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
     if (slot) {
       slot.assignedElements({ flatten: true }).forEach(item => {
@@ -218,7 +225,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     }
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'click':
         // Only close the menu if the user clicked on an item.  A call to
@@ -351,7 +358,7 @@ export class MenuElement extends BorderMixin(BackgroundMixin(ReElement)) {
     this.addEventListener('toggle', this)
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     return [
       super.renderRoughSvg(),
       // Remove <div> from tab focus so that in the cases where it displays

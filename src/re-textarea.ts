@@ -3,17 +3,18 @@
  * @module
  */
 
-import { css, html, type PropertyValues } from 'lit'
+import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
-import { BorderMixin } from './internal/re-border-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { fire, ReElement } from './internal/re-element.ts'
-import { FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import './re-icon-button.ts'
 
+const TextAreaElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & (new (...args: any[]) => FormControlInterface) & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
 /**
  * TextAreas collect multi-line text data entered by the user.
  *
@@ -43,8 +44,7 @@ import './re-icon-button.ts'
  *    for each alteration to an element's value.
  */
 @customElement('re-textarea')
-export class TextAreaElement extends
-    BorderMixin(BackgroundMixin(FormControlMixin(ReElement))) {
+export class TextAreaElement extends TextAreaElementBase {
   static formAssociated = true
 
   /**
@@ -145,7 +145,7 @@ export class TextAreaElement extends
     this.setValidity(validity, message, anchor ?? undefined)
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     const textarea = this.renderRoot.querySelector('textarea')
     textarea?.addEventListener('change', this)
@@ -153,7 +153,7 @@ export class TextAreaElement extends
     this.setInitialValueFromSlot_()
   }
 
-  override updated(props: PropertyValues) {
+  override updated(props: PropertyValues): void {
     super.updated(props)
 
     if (props.has('value')) {
@@ -162,7 +162,7 @@ export class TextAreaElement extends
     }
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'change':
         fire(this, 'change', { bubbles: true })
@@ -198,7 +198,7 @@ export class TextAreaElement extends
     }
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     if (this.enableDebugging) {
       console.log(`render type=${this.type}`)
     }
@@ -233,7 +233,7 @@ export class TextAreaElement extends
     ]
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

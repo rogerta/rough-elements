@@ -6,7 +6,7 @@
  * @module
  */
 
-import { css, type PropertyValues } from 'lit'
+import { css, CSSResult, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { fire } from './internal/re-element.ts'
@@ -86,7 +86,7 @@ export class RadioElement extends ButtonBaseElement {
 
   private prefix_?: IconElement
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {
@@ -147,7 +147,7 @@ export class RadioElement extends ButtonBaseElement {
     this.setValidity(validity, message, anchor ?? undefined)
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
 
     // Insert a prefix to the button by adding an icon to the light DOM.
@@ -190,7 +190,7 @@ export class RadioElement extends ButtonBaseElement {
     }
   }
 
-  protected override updated(props: PropertyValues<this>) {
+  protected override updated(props: PropertyValues<this>): void {
     super.updated(props)
     if (this.prefix_) {
       this.prefix_.name = this.checked ? 'radio-button-checked'

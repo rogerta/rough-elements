@@ -20,6 +20,7 @@
     "outDir": "./dist",  // Put declarations in same location as `vite build` output.
 
     /* Linting */
+    "isolatedDeclarations": true,
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,

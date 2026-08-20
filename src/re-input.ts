@@ -5,18 +5,19 @@
  * @module
  */
 
-import { css, html, nothing, type PropertyValues } from 'lit'
+import { css, CSSResult, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { live } from 'lit/directives/live.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
-import { BorderMixin } from './internal/re-border-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { fire, ReElement } from './internal/re-element.ts'
-import { FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import './re-icon-button.ts'
 
+const InputElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & (new (...args: any[]) => FormControlInterface) & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
 /**
  * Inputs collect information from the user like text, numbers, and dates.
  * The full list of supported information types is listed in the `type`
@@ -49,8 +50,7 @@ import './re-icon-button.ts'
  *    for each alteration to an element's value.
  */
 @customElement('re-input')
-export class InputElement extends
-    BorderMixin(BackgroundMixin(FormControlMixin(ReElement))) {
+export class InputElement extends InputElementBase {
   static formAssociated = true
 
   /**
@@ -162,14 +162,14 @@ export class InputElement extends
     this.fillStyle = 'solid'
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     const input = this.renderRoot.querySelector('input')
     input?.addEventListener('change', this)
     input?.addEventListener('input', this)
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'change':
       case 'input': {
@@ -202,7 +202,7 @@ export class InputElement extends
     return input?.valueAsDate
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     super.updated(props)
     if (props.has('value')) {
       this.setFormValue(this.value)
@@ -213,7 +213,7 @@ export class InputElement extends
     }
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     if (this.enableDebugging) {
       console.log(`render type=${this.type}`)
     }
@@ -285,7 +285,7 @@ export class InputElement extends
     fire(this, 'change')
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

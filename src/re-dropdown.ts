@@ -4,7 +4,7 @@
  * @module
  */
 
-import { css, html, LitElement, type PropertyValues } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { sleep } from './internal/re-common.ts'
@@ -12,6 +12,7 @@ import { sleep } from './internal/re-common.ts'
 import './re-button.ts'
 import './re-menu.ts'
 import { NO_ITEM } from './re-menu.ts'
+import type { ItemElement } from './re-item.ts'
 
 /**
  * Dropdowns expose a menu of actions that the user can perform.
@@ -75,7 +76,7 @@ export class DropdownElement extends LitElement {
    */
   @property({}) accessor enableDebugging: string | undefined = undefined
 
-  static styles = [
+  static styles: CSSResult[] = [
     css`
       :host {
         display: inline-block;
@@ -107,7 +108,13 @@ export class DropdownElement extends LitElement {
    * @returns An object with two properties: index and item.  If no item
    *    is found index is -1 and item is `null`.  Otherwise
    */
-  protected async findItemByValue_(value: string) {
+  protected async findItemByValue_(value: string): Promise<{
+    index: number
+    item: null
+  } | {
+    index: number
+    item: ItemElement
+  }> {
     const menu = this.renderRoot.querySelector('re-menu')
 
     // If this methods happens to be called early in dropdown creation, like
@@ -119,7 +126,7 @@ export class DropdownElement extends LitElement {
     return menu?.findItemByValue(value) ?? NO_ITEM
   }
 
-  protected async unselectAllItems_() {
+  protected async unselectAllItems_(): Promise<void | undefined> {
     const menu = this.renderRoot.querySelector('re-menu')
 
     // If this methods happens to be called early in dropdown creation, like
@@ -131,7 +138,7 @@ export class DropdownElement extends LitElement {
     return menu?.unselectAllItems()
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'toggle': {
         const te = e as ToggleEvent
@@ -144,11 +151,11 @@ export class DropdownElement extends LitElement {
     }
   }
 
-  override firstUpdated(_: PropertyValues) {
+  override firstUpdated(_: PropertyValues): void {
     this.setAttribute('tabindex', '0')
   }
 
-  override render() {
+  override render(): TemplateResult<1> {
     return html`
       <!-- The \`<re-button>\` that implements the trigger button. -->
       <re-button part="trigger" caret ?disabled="${this.disabled}"

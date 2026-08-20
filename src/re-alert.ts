@@ -5,16 +5,17 @@
  * @module
  */
 
-import { css, html, nothing, type PropertyValues } from 'lit'
+import { css, CSSResult, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
-import { BorderMixin } from './internal/re-border-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import type { VARIANTS } from './internal/re-common.ts'
 import { ReElement } from './internal/re-element.ts'
 import './re-icon.ts'
 import './re-icon-button.ts'
 
+const AlertElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
 /**
  * Alerts display important messages to the user.  They can appear inline or
  * as toast notifications.  Alerts show an icon on the left, a message in
@@ -46,7 +47,7 @@ import './re-icon-button.ts'
  *    is used.
  */
 @customElement('re-alert')
-export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
+export class AlertElement extends AlertElementBase {
   /**
    * Opens the alert if set to true, closes if set to false.
    */
@@ -81,7 +82,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
   /**
    * Shows the alert by setting the `open` property to true.
    */
-  show() {
+  show(): void {
     this.open = true
   }
 
@@ -89,7 +90,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
    * Hides the alert.  If the alert is located in the internal alert stack,
    * the alert is removed from the DOM.
    */
-  hide() {
+  hide(): void {
     this.open = false
 
     if (this.parentElement?.id === 'reToastStack') {
@@ -102,7 +103,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
    * Normally this is called when the toast is not open, but the method can
    * be called on an open alert.
    */
-  toast() {
+  toast(): void {
     const stack = this.createToastStackIfNeeded_()
     this.remove()
 
@@ -138,7 +139,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
     this.hide()
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     if (props.has('duration')) {
       if (this.durationTimer_) {
         clearTimeout(this.durationTimer_)
@@ -151,7 +152,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
     }
   }
 
-  override render() {
+  override render(): (symbol | TemplateResult<1>)[] {
     return [
       super.renderRoughSvg(),
       html`
@@ -193,7 +194,7 @@ export class AlertElement extends BorderMixin(BackgroundMixin(ReElement)) {
         @click="${this.onClose_}"></re-icon-button>`
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

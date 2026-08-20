@@ -4,7 +4,7 @@
  * @module
  */
 
-import { css } from 'lit'
+import { css, CSSResult, type TemplateResult } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
 import { ReElement } from './internal/re-element.ts'
@@ -24,14 +24,14 @@ import { ReElement } from './internal/re-element.ts'
  */
 @customElement('re-spinner')
 export class SpinnerElement extends ReElement {
-  override render() {
+  override render(): TemplateResult<1> {
     return super.renderRoughSvg()
   }
 
   protected override onResized(
       width: number,
       height: number,
-      cstyles: CSSStyleDeclaration) {
+      cstyles: CSSStyleDeclaration): SVGElement[] {
     const strokeWidth = cstyles.getPropertyValue('--track-width')
 
     const elements = super.onResized(width, height, cstyles)
@@ -52,7 +52,7 @@ export class SpinnerElement extends ReElement {
     return elements
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

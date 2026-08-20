@@ -4,7 +4,7 @@
  * @module
  */
 
-import { css } from 'lit'
+import { css, CSSResult, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { ReElement } from './internal/re-element.ts'
@@ -29,7 +29,7 @@ export class DividerElement extends ReElement {
    */
   @property({ type: Boolean, reflect: true }) accessor vertical = false
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {
@@ -53,7 +53,7 @@ export class DividerElement extends ReElement {
     `
   ]
 
-  override render() {
+  override render(): TemplateResult<1> {
     return super.renderRoughSvg()
   }
 

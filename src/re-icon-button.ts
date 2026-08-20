@@ -4,7 +4,7 @@
  * @module
  */
 
-import { html, LitElement, type PropertyValues } from 'lit'
+import { html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
@@ -67,7 +67,7 @@ export class IconButtonElement extends LitElement {
    * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
    */
-  setPopoverTarget(target: HTMLElement| null) {
+  setPopoverTarget(target: HTMLElement| null): void {
     this.updateComplete.then(() => {
       const button = this.renderRoot.querySelector('re-button')
       if (button) {
@@ -88,11 +88,11 @@ export class IconButtonElement extends LitElement {
     return button!.togglePopover(force) ?? false
   }
 
-  protected override firstUpdated(_: PropertyValues) {
+  protected override firstUpdated(_: PropertyValues): void {
     this.setAttribute('tabindex', '0')
   }
 
-  protected override willUpdate(props: PropertyValues) {
+  protected override willUpdate(props: PropertyValues): void {
     super.willUpdate(props)
 
     if (props.has('popovertarget') && this.popovertarget) {
@@ -104,7 +104,7 @@ export class IconButtonElement extends LitElement {
     }
   }
 
-  protected render() {
+  protected render(): TemplateResult<1> {
     return html`
       <re-button autofocus ?disabled="${ifDefined(this.disabled)}"
           variant="text" circle exportparts="button">

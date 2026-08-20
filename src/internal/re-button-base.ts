@@ -1,20 +1,20 @@
-import { css, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
 import { property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { BackgroundMixin } from './re-background-mixin.ts'
-import { BorderMixin } from './re-border-mixin.ts'
-import { FormControlMixin } from './re-form-control-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './re-border-mixin.ts'
+import { type FormControlInterface, FormControlMixin } from './re-form-control-mixin.ts'
 import { ReElement } from './re-element.ts'
 
 import '../re-icon.ts'
 
+const ButtonBaseElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & (new (...args: any[]) => FormControlInterface) & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
 /**
  * This is a base class used to help implement click-style controls such as
  * buttons, links, checkboxes and radio buttons.
  */
-export class ButtonBaseElement extends
-    BorderMixin(BackgroundMixin(FormControlMixin(ReElement))) {
+export class ButtonBaseElement extends ButtonBaseElementBase {
   static shadowRootOptions: ShadowRootInit = {
     ...super.shadowRootOptions,
     delegatesFocus: true,
@@ -26,7 +26,7 @@ export class ButtonBaseElement extends
    */
   @property({ type: Boolean, reflect: true }) accessor disabled = false
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'keydown': {
         const ke = e as KeyboardEvent
@@ -50,7 +50,7 @@ export class ButtonBaseElement extends
     }
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     const button = this.renderRoot.querySelector('button')
     button?.addEventListener('click', this)
@@ -60,7 +60,7 @@ export class ButtonBaseElement extends
     this.setAttribute('tabindex', '0')
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     return [
       this.renderRoughSvg(),
       html`
@@ -83,7 +83,7 @@ export class ButtonBaseElement extends
     return nothing
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

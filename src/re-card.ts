@@ -5,21 +5,22 @@
  * @module
  */
 
-import { css, html } from 'lit'
+import { css, CSSResult, html, type TemplateResult } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
-import { BorderMixin } from './internal/re-border-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
+const CardElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
 /**
  * Cards are containers used to group related information or actions.
  * They support optional image, header, body, and footer sections, are
  * surrounded by a rough border and can paint an optional background.
  */
 @customElement('re-card')
-export class CardElement extends BorderMixin(BackgroundMixin(ReElement)) {
-  override render() {
+export class CardElement extends CardElementBase {
+  override render(): TemplateResult<1>[] {
     return [
       super.renderRoughSvg(),
       html`
@@ -35,7 +36,7 @@ export class CardElement extends BorderMixin(BackgroundMixin(ReElement)) {
     ]
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {

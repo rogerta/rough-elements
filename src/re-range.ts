@@ -4,12 +4,13 @@
  * @module
  */
 
-import { css, type PropertyValues } from 'lit'
+import { css, CSSResult, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { fire, ReElement } from './internal/re-element.ts'
-import { FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
 
+const RangeElementBase: (new (...args: any[]) => FormControlInterface) & typeof ReElement = FormControlMixin(ReElement)
 /**
  * Ranges collect a numeric values from the user that falls within a specific
  * range.
@@ -33,7 +34,7 @@ import { FormControlMixin } from './internal/re-form-control-mixin.ts'
  *    Defaults to `--border-color`.
  */
 @customElement('re-range')
-export class RangeElement extends FormControlMixin(ReElement) {
+export class RangeElement extends RangeElementBase {
   static formAssociated = true
 
   /**
@@ -62,7 +63,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
    */
   @property({ type: Boolean, reflect: true }) accessor disabled = false
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {
@@ -142,7 +143,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
     this.setValidity(validity, message)
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     if (this.disabled) {
       return
     }
@@ -204,7 +205,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
 
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
     this.addEventListener('pointerdown', this)
     this.addEventListener('pointermove', this)
@@ -216,7 +217,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
 
   // Note: this function always fixes `value` to make it valid.  So in no
   // case will the state be invalid for form purposes.
-  override updated(props: PropertyValues) {
+  override updated(props: PropertyValues): void {
     super.updated(props)
 
     let revalidate = false
@@ -246,7 +247,7 @@ export class RangeElement extends FormControlMixin(ReElement) {
     }
   }
 
-  override render() {
+  override render(): TemplateResult<1> {
     return super.renderRoughSvg()
   }
 

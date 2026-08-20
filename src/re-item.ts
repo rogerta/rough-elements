@@ -4,7 +4,7 @@
  * @module
  */
 
-import { css, html, LitElement } from 'lit'
+import { css, CSSResult, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-icon.ts'
@@ -64,7 +64,7 @@ export class ItemElement extends LitElement {
     })
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     css`
       :host {
         display: inline-flex;
@@ -113,7 +113,7 @@ export class ItemElement extends LitElement {
    *
    * @returns An array of Nodes that can be used to determine the label.
    */
-  getLabelNodes() {
+  getLabelNodes(): Node[] {
     let nodes1: Node[] = []
     const prefix =
         this.shadowRoot?.querySelector<HTMLSlotElement>('[name=prefix]')
@@ -200,7 +200,7 @@ export class ItemElement extends LitElement {
  * @returns The <re-item>, or null if something other than an <re-item> was
  *    clicked.
  */
-export function getItemFromEvent(e: Event) {
+export function getItemFromEvent(e: Event): ItemElement | null {
   let target = e.target instanceof HTMLElement ? e.target : null
   while (target && !(target instanceof ItemElement)) {
     target = target.parentElement

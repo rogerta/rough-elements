@@ -5,15 +5,16 @@
  * @module
  */
 
-import { css, html, type PropertyValues } from 'lit'
+import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin } from './internal/re-background-mixin.ts'
-import { BorderMixin } from './internal/re-border-mixin.ts'
+import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
 import './re-icon.ts'
 
+const DetailsElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
 /**
  * Details are disclosure elements in which more detailed information is
  * visible only when it is toggled open. A summary, which is always visible,
@@ -40,7 +41,7 @@ import './re-icon.ts'
  *    the value of the states is reversed.
  */
 @customElement('re-details')
-export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
+export class DetailsElement extends DetailsElementBase {
   /**
    * If true the details does not respond to user actions.
    */
@@ -52,7 +53,7 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
    */
   @property({ type: Boolean, reflect: true }) accessor open = false
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {
@@ -107,7 +108,7 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
     `
   ]
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     super.updated(props)
     if (props.has('open')) {
       const details = this.renderRoot.querySelector('details')
@@ -127,7 +128,7 @@ export class DetailsElement extends BorderMixin(BackgroundMixin(ReElement)) {
     this.dispatchEvent(te)
   }
 
-  protected render() {
+  protected render(): TemplateResult<1>[] {
     return [
       this.renderRoughSvg(),
       html`

@@ -4,7 +4,7 @@
  * @module
  */
 
-import { css, html, LitElement, type PropertyValues } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 /**
@@ -49,7 +49,7 @@ export class PanelGroupElement extends LitElement {
    */
   @property({}) accessor selected = ''
 
-  static styles = [
+  static styles: CSSResult[] = [
     css`
       :host {
         position: relative;
@@ -62,20 +62,20 @@ export class PanelGroupElement extends LitElement {
     `
   ]
 
-  protected override firstUpdated(_: PropertyValues) {
+  protected override firstUpdated(_: PropertyValues): void {
     if (!this.name) {
       console.error('Panel groups must be named')
     }
     this.hideAllPanelsExceptSelected_()
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     if (props.has('selected')) {
       this.hideAllPanelsExceptSelected_()
     }
   }
 
-  override render() {
+  override render(): TemplateResult<1> {
     return html`
       <!-- The default slot representing the panel elements. -->
       <slot></slot>

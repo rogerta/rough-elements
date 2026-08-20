@@ -5,7 +5,7 @@
  * @module
  */
 
-import { css, type PropertyValues } from 'lit'
+import { css, CSSResult, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import type { IconElement } from './re-icon.ts'
@@ -88,7 +88,7 @@ export class CheckboxElement extends ButtonBaseElement {
 
   private prefix_?: IconElement
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host {
@@ -143,7 +143,7 @@ export class CheckboxElement extends ButtonBaseElement {
     this.setValidity(validity, message, anchor ?? undefined)
   }
 
-  override firstUpdated(props: PropertyValues) {
+  override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
 
     // Insert a prefix to the button by adding an icon to the light DOM.
@@ -172,7 +172,7 @@ export class CheckboxElement extends ButtonBaseElement {
     })
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     super.updated(props)
     if (this.prefix_) {
       this.prefix_.name = this.indeterminate ? 'checkbox-indeterminate'

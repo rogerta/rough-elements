@@ -1,4 +1,4 @@
-import { LitElement, css, html, type PropertyValues } from 'lit'
+import { CSSResult, LitElement, css, html, type PropertyValues, type TemplateResult } from 'lit'
 import { property, query } from 'lit/decorators.js'
 import * as rough from '@rough/roughjs'
 
@@ -26,7 +26,7 @@ export type ResolvedOptions = Required<Options>
 export function fire<T>(
     target: EventTarget,
     type: string,
-    options: CustomEventInit<T>={}) {
+    options: CustomEventInit<T>={}): boolean {
   return target.dispatchEvent(new CustomEvent(type, options))
 }
 
@@ -69,7 +69,7 @@ export class ReElement extends LitElement {
   private rough_?: RoughSVG
   private options_: Options = { seed: rough.newSeed() }
 
-  protected get svg() { return this.svg_ }
+  protected get svg(): SVGSVGElement | undefined { return this.svg_ }
   protected get rough(): RoughSVG {
     if (!this.svg_) {
       throw new Error('Missing SVG element for this rough element')
@@ -82,7 +82,7 @@ export class ReElement extends LitElement {
 
   protected get options(): Options { return this.options_ }
 
-  override firstUpdated(_: PropertyValues) {
+  override firstUpdated(_: PropertyValues): void {
     if (!this.svg_) {
       throw new Error('No rough svg')
     }
@@ -98,7 +98,7 @@ export class ReElement extends LitElement {
     this.observer_.observe(this, {box: 'border-box'})
   }
 
-  protected renderRoughSvg() {
+  protected renderRoughSvg(): TemplateResult<1> {
     return html`
       <!-- The SVG element that contains the rough rendering of this
            element. -->
@@ -130,7 +130,7 @@ export class ReElement extends LitElement {
    * Forces the element to immediately re-render its roughness.  The contents
    * of the rough SVG element are replaced.
    */
-  protected requestRoughRender() {
+  protected requestRoughRender(): void {
     if (!this.svg_) {
       throw new Error('No rough svg')
     }
@@ -141,7 +141,7 @@ export class ReElement extends LitElement {
     this.svg_.replaceChildren(...roughElements)
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     STYLES,
     css`
       :host {

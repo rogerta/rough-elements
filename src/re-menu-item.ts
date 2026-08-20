@@ -5,7 +5,7 @@
  * @module
  */
 
-import { css, html, type PropertyValues } from 'lit'
+import { css, CSSResult, html, type PropertyValues } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
 import './re-icon.ts'
@@ -55,7 +55,7 @@ export class MenuItemElement extends ItemElement {
     this.addEventListener('click', this)
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       re-icon-button::part(button) {
@@ -75,7 +75,7 @@ export class MenuItemElement extends ItemElement {
    * Returns this menu item's associated submenu, if any and if valid. A valid
    * submenu is an `HTMLElement` with the `popover` attribute.
    */
-  getSubmenu() {
+  getSubmenu(): HTMLElement | undefined {
     const slot =
         this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name=submenu]')
     const menu = slot && slot.assignedElements().length > 0
@@ -88,7 +88,7 @@ export class MenuItemElement extends ItemElement {
   /**
    * Toggles the visible state of the submenu.
    */
-  toggleSubmenu() {
+  toggleSubmenu(): void {
     // Note: calling button.click() does not seem to show the popover.  To
     // make this work togglePopover() was exposed from <re-icon-button>.  See
     // if there is a way to make click() work.
@@ -96,7 +96,7 @@ export class MenuItemElement extends ItemElement {
     button?.togglePopover()
   }
 
-  protected override firstUpdated(props: PropertyValues) {
+  protected override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
 
     // Make sure submenu is properly specified if provided.
@@ -117,7 +117,7 @@ export class MenuItemElement extends ItemElement {
 
   }
 
-  protected override updated(props: PropertyValues) {
+  protected override updated(props: PropertyValues): void {
     super.updated(props)
 
     const submenu = this.getSubmenu()
@@ -136,7 +136,7 @@ export class MenuItemElement extends ItemElement {
     }
   }
 
-  handleEvent(e: Event) {
+  handleEvent(e: Event): void {
     switch (e.type) {
       case 'click': {
         // If there is no submenu, nothing to do here.  Just treat this like
@@ -181,7 +181,7 @@ export class MenuItemElement extends ItemElement {
     }
   }
 
-  override render() {
+  override render(): unknown[] {
     return [
       super.render(),
       html`

@@ -5,7 +5,7 @@
  * @module
  */
 
-import { css, html, nothing, type PropertyValues } from 'lit'
+import { css, CSSResult, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
@@ -162,7 +162,7 @@ export class ButtonElement extends ButtonBaseElement {
    * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
    */
-  setPopoverTarget(target: HTMLElement | null) {
+  setPopoverTarget(target: HTMLElement | null): void {
     this.updateComplete.then(() => {
       const button = this.renderRoot.querySelector('button')
       if (button) {
@@ -187,7 +187,7 @@ export class ButtonElement extends ButtonBaseElement {
     return false
   }
 
-  override handleEvent(e: Event) {
+  override handleEvent(e: Event): void {
     switch (e.type) {
       case 'click':
         // If this is a submit button as part of a form, submit the form.
@@ -212,7 +212,7 @@ export class ButtonElement extends ButtonBaseElement {
   }
 
   // Using willUpdate() instead of updated() to avoid a double update cycle.
-  protected override willUpdate(props: PropertyValues) {
+  protected override willUpdate(props: PropertyValues): void {
     super.willUpdate(props)
 
     if (props.has('variant') || props.has('circle')) {
@@ -230,7 +230,7 @@ export class ButtonElement extends ButtonBaseElement {
     }
   }
 
-  override render() {
+  override render(): TemplateResult<1>[] {
     const templ = super.render()
 
     if (this.href) {
@@ -243,7 +243,7 @@ export class ButtonElement extends ButtonBaseElement {
     return templ
   }
 
-  protected override renderCaretIfNeeded_() {
+  protected override renderCaretIfNeeded_(): TemplateResult<1> | typeof nothing {
     return this.caret
         ? html`
           <!-- The \`<re-icon>\` used for the caret, if any. See the
@@ -253,7 +253,7 @@ export class ButtonElement extends ButtonBaseElement {
         : nothing
   }
 
-  static styles = [
+  static styles: CSSResult[] = [
     ...super.styles,
     css`
       :host(:not([variant=text])) {

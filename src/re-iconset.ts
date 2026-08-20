@@ -34,11 +34,11 @@ icons.set('warning', 'm40-120 440-760 440 760H40Zm115.33-66.67h649.34L480-746.67
 // sumplify things.
 const viewboxes = new Map<string, string>()
 
-export function getIcon(id: string) {
+export function getIcon(id: string): string | undefined {
   return icons.get(id)
 }
 
-export function getViewBox(id: string) {
+export function getViewBox(id: string): string {
   return viewboxes.get(id) ?? '0 -960 960 960'
 }
 
@@ -61,7 +61,7 @@ export function addUserIcon(
     collection: string,
     id: string,
     d: string,
-    viewbox?: string) {
+    viewbox?: string): void {
   if (!collection || !id) {
     throw new Error('collection and id must be non-empty strings')
   }
