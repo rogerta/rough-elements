@@ -22,6 +22,7 @@
     "docs:cem": "cem analyze --dev --litelement --outdir=./dist --quiet",
     "docs:cem2wc": "node ./tools/cem2wc.js",
     "docs:11ty": "eleventy",
+    "fmt": "dprint fmt",
     "preview": "vite preview",
     "pub": "npx jsr publish --allow-slow-types"
   },
