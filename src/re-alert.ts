@@ -5,17 +5,24 @@
  * @module
  */
 
-import { css, CSSResult, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, nothing, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
-import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin,
+  type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import type { VARIANTS } from './internal/re-common.ts'
 import { ReElement } from './internal/re-element.ts'
 import './re-icon.ts'
 import './re-icon-button.ts'
 
-const AlertElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+const AlertElementBase:
+  & (new(...args: any[]) => BorderMixinInterface)
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+
 /**
  * Alerts display important messages to the user.  They can appear inline or
  * as toast notifications.  Alerts show an icon on the left, a message in
@@ -51,26 +58,30 @@ export class AlertElement extends AlertElementBase {
   /**
    * Opens the alert if set to true, closes if set to false.
    */
-  @property({ type: Boolean, reflect: true }) accessor open = false
+  @property({ type: Boolean, reflect: true })
+  accessor open = false
 
   /**
    * If true the alert will contain an icon button at the top right allowing
    * the user to close the alert.  If false, the alert will close itself after
    * after 3 seconds.
    */
-  @property({ type: Boolean, reflect: true }) accessor closable = false
+  @property({ type: Boolean, reflect: true })
+  accessor closable = false
 
   /**
    * Specifies the alert variant to use.  Different variants show different
    * icons and use a different colour for the background.
    */
-  @property({ reflect: true }) accessor variant: VARIANTS = 'primary'
+  @property({ reflect: true })
+  accessor variant: VARIANTS = 'primary'
 
   /**
    * The amount of time the alert will be displayed before it closes itself.
    * By default an alert will be displayed until programmatically closed.
    */
-  @property({ type: Number }) accessor duration: number = Infinity
+  @property({ type: Number })
+  accessor duration: number = Infinity
 
   private durationTimer_ = 0
 
@@ -144,11 +155,12 @@ export class AlertElement extends AlertElementBase {
       if (this.durationTimer_) {
         clearTimeout(this.durationTimer_)
       }
-      if (Number.isFinite(this.duration))
-      this.durationTimer_ = setTimeout(() => {
-        this.hide()
-        this.durationTimer_ = 0
-      }, this.duration)
+      if (Number.isFinite(this.duration)) {
+        this.durationTimer_ = setTimeout(() => {
+          this.hide()
+          this.durationTimer_ = 0
+        }, this.duration)
+      }
     }
   }
 
@@ -238,6 +250,6 @@ export class AlertElement extends AlertElementBase {
         display: block;
         flex-grow: 1;
       }
-    `
+    `,
   ]
 }

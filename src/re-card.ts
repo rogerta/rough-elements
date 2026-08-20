@@ -8,11 +8,17 @@
 import { css, CSSResult, html, type TemplateResult } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
-import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin,
+  type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
-const CardElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+const CardElementBase:
+  & (new(...args: any[]) => BorderMixinInterface)
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+
 /**
  * Cards are containers used to group related information or actions.
  * They support optional image, header, body, and footer sections, are
@@ -57,6 +63,6 @@ export class CardElement extends CardElementBase {
         margin-left: var(--img-border);
         margin-right: var(--img-border);
       }
-    `
+    `,
   ]
 }

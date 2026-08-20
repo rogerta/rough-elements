@@ -1,65 +1,68 @@
 {% extends "./internal/base.njk" %}
 
 {% block main %}
+  <h1>Borders & Backgrounds</h1>
+  <p>
+    Rough Elements provides a set of mixins that are used to add rough borders
+    and backgrounds to the custom elements. These mixins are designed to be
+    flexible and to easily create visually appealing components with minimal
+    effort.
+  </p>
+  <p>
+    Elements that support borders and/or backgrounds have a corrsponding badge
+    to the right of the tag name on their individual documentation pages.
+  </p>
 
-<h1>Borders & Backgrounds</h1>
-<p>
-Rough Elements provides a set of mixins that are used to add rough borders and
-backgrounds to the custom elements. These mixins are designed to be flexible
-and to easily create visually appealing components with minimal effort.
-</p>
-<p>
-Elements that support borders and/or backgrounds have a corrsponding badge to
-the right of the tag name on their individual documentation pages.
-</p>
+  <h1>Borders</h1>
+  The following elements make use of a rough border:
+  <ul>
+    {% set bordered = components | filterForBordered %}
+    {% for clazz in bordered %}
+      <li>
+        <a href="../component/{{clazz.tagName}}"><code>&lt;{{
+              clazz.tagName
+            }}&gt;</code></a>
+      </li>
+    {% endfor %}
+  </ul>
 
-<h1>Borders</h1>
-The following elements make use of a rough border:
-<ul>
-{% set bordered = components | filterForBordered %}
-{% for clazz in bordered %}
-  <li>
-    <a href="../component/{{clazz.tagName}}"><code>&lt;{{ clazz.tagName }}&gt;</code></a>
-  </li>
-{% endfor %}
-</ul>
+  A rough border is defined as a pair of non-straight and non-parallel lines
+  that outline the element and fill the "border box" of the elements CSS box
+  model. Each of the elements above has the following properties and CSS
+  properties in addition to the ones listed on their individual documentation
+  pages. The CSS properties whose names begin with <code>re-</code> are lower
+  level and tricker to work with. Generally speaking their default values should
+  be good enough for most cases.
 
-A rough border is defined as a pair of non-straight and non-parallel lines that
-outline the element and fill the "border box" of the elements CSS box model.
+  {% set c = mixins | findMixin('BorderMixinInterface') %}
+  {% include "./internal/properties.njk" %}
+  {% include "./internal/css-properties.njk" %}
 
-Each of the elements above has the following properties and CSS properties in
-addition to the ones listed on their individual documentation pages.  The CSS
-properties whose names begin with <code>re-</code> are lower level and tricker
-to work with.  Generally speaking their default values should be good enough
-for most cases.
+  <h1>Backgrounds</h1>
+  The following elements make use of a rough background:
+  <ul>
+    {% set backgrounded = components | filterForBackgrounded %}
+    {% for clazz in backgrounded %}
+      <li>
+        <a href="../component/{{clazz.tagName}}"><code>&lt;{{
+              clazz.tagName
+            }}&gt;</code></a>
+      </li>
+    {% endfor %}
+  </ul>
 
-{% set c = mixins | findMixin('BorderMixinInterface') %}
-{% include "./internal/properties.njk" %}
-{% include "./internal/css-properties.njk" %}
+  A rough background can be a quadrilateral of non-parallel opposide sides that
+  mostly fills the border and content boxes of the element. A rough background
+  can also be a sequence of connected (zigzag) or unconencted (hachure) lines
+  that fill the same boxes that appear to be drawn with a pencil, pen, or thick
+  highlighter. See the <code>fillStyle</code> property for more details. Each of
+  the elements above has the following properties and CSS properties in addition
+  to the ones listed on their individual documentation pages. The CSS properties
+  whose names begin with <code>re-</code> are lower level and tricker to work
+  with. Generally speaking their default values should be good enough for most
+  cases.
 
-<h1>Backgrounds</h1>
-The following elements make use of a rough background:
-<ul>
-{% set backgrounded = components | filterForBackgrounded %}
-{% for clazz in backgrounded %}
-  <li><a href="../component/{{clazz.tagName}}"><code>&lt;{{ clazz.tagName }}&gt;</code></a></li>
-{% endfor %}
-</ul>
-
-A rough background can be a quadrilateral of non-parallel opposide sides that
-mostly fills the border and content boxes of the element.  A rough background
-can also be a sequence of connected (zigzag) or unconencted (hachure) lines
-that fill the same boxes that appear to be drawn with a pencil, pen, or thick
-highlighter.  See the <code>fillStyle</code> property for more details.
-
-Each of the elements above has the following properties and CSS properties in
-addition to the ones listed on their individual documentation pages.  The CSS
-properties whose names begin with <code>re-</code> are lower level and tricker
-to work with.  Generally speaking their default values should be good enough
-for most cases.
-
-{% set c = mixins | findMixin('BackgroundMixinInterface') %}
-{% include "./internal/properties.njk" %}
-{% include "./internal/css-properties.njk" %}
-
+  {% set c = mixins | findMixin('BackgroundMixinInterface') %}
+  {% include "./internal/properties.njk" %}
+  {% include "./internal/css-properties.njk" %}
 {% endblock %}

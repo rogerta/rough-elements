@@ -8,9 +8,13 @@ import { css, CSSResult, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { fire, ReElement } from './internal/re-element.ts'
-import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface,
+  FormControlMixin } from './internal/re-form-control-mixin.ts'
 
-const RangeElementBase: (new (...args: any[]) => FormControlInterface) & typeof ReElement = FormControlMixin(ReElement)
+const RangeElementBase:
+  & (new(...args: any[]) => FormControlInterface)
+  & typeof ReElement = FormControlMixin(ReElement)
+
 /**
  * Ranges collect a numeric values from the user that falls within a specific
  * range.
@@ -40,28 +44,33 @@ export class RangeElement extends RangeElementBase {
   /**
    * The range’s maximum value.
    */
-  @property({ type: Number }) accessor min = 0
+  @property({ type: Number })
+  accessor min = 0
 
-   /**
+  /**
    * The range’s maximum value.
    */
-  @property({ type: Number }) accessor max = 100
+  @property({ type: Number })
+  accessor max = 100
 
   /**
    * Incremental values that are valid.
    */
-  @property({ type: Number }) accessor step = 1
+  @property({ type: Number })
+  accessor step = 1
 
   /**
    * The value of the control. When specified in the HTML, corresponds to the
    * initial value.
    */
-  @property({ type: Number }) accessor value = 50
+  @property({ type: Number })
+  accessor value = 50
 
   /**
    * If true the button is disabled and does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -116,7 +125,7 @@ export class RangeElement extends RangeElementBase {
           filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
       }
-    `
+    `,
   ]
 
   private validate_() {
@@ -154,14 +163,14 @@ export class RangeElement extends RangeElementBase {
         const pe = e as PointerEvent
         this.setPointerCapture(pe.pointerId)
       }
-        /* falls through */
+      /* falls through */
       case 'pointermove': {
         const pe = e as PointerEvent
         if (this.hasPointerCapture(pe.pointerId)) {
           const bounds = this.getBoundingClientRect()
           const fraction = pe.offsetX / (bounds.width)
           this.value = this.snap_(fraction * (this.max - this.min) + this.min)
-          fire(this, 'input', {bubbles: true, composed: true})
+          fire(this, 'input', { bubbles: true, composed: true })
         }
         break
       }
@@ -170,7 +179,7 @@ export class RangeElement extends RangeElementBase {
         const bounds = this.getBoundingClientRect()
         const fraction = pe.offsetX / (bounds.width)
         this.value = this.snap_(fraction * (this.max - this.min) + this.min)
-        this.updateComplete.then(() => fire(this, 'change', {bubbles: true}))
+        this.updateComplete.then(() => fire(this, 'change', { bubbles: true }))
         break
       }
       case 'keydown': {
@@ -193,7 +202,7 @@ export class RangeElement extends RangeElementBase {
         break
       }
       case 'keyup': {
-        fire(this, 'change', {bubbles: true})
+        fire(this, 'change', { bubbles: true })
         break
       }
     }
@@ -202,7 +211,6 @@ export class RangeElement extends RangeElementBase {
   private snap_(value: number) {
     const diff = value - this.min
     return this.min + Math.round(diff / this.step) * this.step
-
   }
 
   override firstUpdated(props: PropertyValues): void {
@@ -223,16 +231,16 @@ export class RangeElement extends RangeElementBase {
     let revalidate = false
     let requestRoughRender = false
 
-    if(props.has('min') || props.has('max')) {
+    if (props.has('min') || props.has('max')) {
       revalidate = true
       requestRoughRender = true
     }
 
-    if(props.has('step')) {
+    if (props.has('step')) {
       revalidate = true
     }
 
-    if(props.has('value')) {
+    if (props.has('value')) {
       this.setFormValue(this.value.toString())
       revalidate = true
       requestRoughRender = true
@@ -252,20 +260,22 @@ export class RangeElement extends RangeElementBase {
   }
 
   protected override onResized(
-      width: number,
-      height: number,
-      cstyles: CSSStyleDeclaration): SVGElement[] {
+    width: number,
+    height: number,
+    cstyles: CSSStyleDeclaration,
+  ): SVGElement[] {
     const roughElements = super.onResized(width, height, cstyles)
 
     const options = Object.assign({
-       stroke: 'inherit',
+      stroke: 'inherit',
     }, this.options)
 
     const half = height / 2
     roughElements.push(this.rough.line(0, half, width, half, options))
 
-    let fraction =
-        Number.parseFloat(cstyles.getPropertyValue('--knob-fraction'))
+    let fraction = Number.parseFloat(
+      cstyles.getPropertyValue('--knob-fraction'),
+    )
     if (Number.isNaN(fraction)) {
       fraction = 2 / 3
     } else {

@@ -8,7 +8,7 @@ import type * as rough from './rough-elements.ts'
 
 declare global {
   interface HTMLElementTagNameMap {
-    're-alert': rough.AlertElement,
+    're-alert': rough.AlertElement
     're-badge': rough.BadgeElement
     're-button': rough.ButtonElement
     're-card': rough.CardElement
@@ -28,9 +28,9 @@ declare global {
     're-radio': rough.RadioElement
     're-range': rough.RangeElement
     're-rating': rough.RatingElement
-    're-select': rough.SelectElement,
-    're-spinner': rough.SpinnerElement,
-    're-tab-group': rough.TabGroupElement,
-    're-textarea': rough.TextAreaElement,
+    're-select': rough.SelectElement
+    're-spinner': rough.SpinnerElement
+    're-tab-group': rough.TabGroupElement
+    're-textarea': rough.TextAreaElement
   }
 }

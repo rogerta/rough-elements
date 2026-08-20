@@ -1,5 +1,5 @@
-import slotPlugin from '@rogerta/cem-plugin-litelement-slots'
 import partPlugin from '@rogerta/cem-plugin-litelement-parts'
+import slotPlugin from '@rogerta/cem-plugin-litelement-slots'
 
 export default {
   globs: ['src/**/*.ts'],
@@ -8,5 +8,5 @@ export default {
   litelement: true,
   fast: false,
   stencil: false,
-  plugins: [slotPlugin(), partPlugin()]
+  plugins: [slotPlugin(), partPlugin()],
 }

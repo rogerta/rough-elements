@@ -9,8 +9,8 @@
 import { css, CSSResult, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { fire } from './internal/re-element.ts'
 import { ButtonBaseElement } from './internal/re-button-base.ts'
+import { fire } from './internal/re-element.ts'
 
 import type { IconElement } from './re-icon.ts'
 import './re-icon.ts'
@@ -68,21 +68,24 @@ export class RadioElement extends ButtonBaseElement {
   /**
    * True if the radio button is "checked" and false otherwise.
    */
-  @property({ type: Boolean, reflect: true }) accessor checked = false
+  @property({ type: Boolean, reflect: true })
+  accessor checked = false
 
   /**
    * If true, the radio button must be checked before its form can be submitted.
    * Note that only one radio button of any group with the given name can and
    * needs to be checked.
    */
-  @property({ type: Boolean }) accessor required = false
+  @property({ type: Boolean })
+  accessor required = false
 
   /**
    * Value to be returned for this radio button when its form is submitted.  If
    * no value is specified, the default value of "on" is used.  If the radio
    * button is not checked, no value is submitted.
    */
-  @property({}) accessor value: string | undefined = undefined
+  @property({})
+  accessor value: string | undefined = undefined
 
   private prefix_?: IconElement
 
@@ -121,7 +124,7 @@ export class RadioElement extends ButtonBaseElement {
       button {
         background-color: transparent;
       }
-    `
+    `,
   ]
 
   constructor() {
@@ -165,7 +168,7 @@ export class RadioElement extends ButtonBaseElement {
       }
 
       this.checked = true
-      fire(this, 'change', {bubbles: true})
+      fire(this, 'change', { bubbles: true })
     })
 
     if (this.checked) {
@@ -193,8 +196,9 @@ export class RadioElement extends ButtonBaseElement {
   protected override updated(props: PropertyValues<this>): void {
     super.updated(props)
     if (this.prefix_) {
-      this.prefix_.name = this.checked ? 'radio-button-checked'
-          : 'radio-button-unchecked'
+      this.prefix_.name = this.checked
+        ? 'radio-button-checked'
+        : 'radio-button-unchecked'
     }
 
     if (props.has('checked') && this.checked) {

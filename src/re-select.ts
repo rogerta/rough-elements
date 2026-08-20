@@ -8,13 +8,17 @@
 import { css, CSSResult, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface,
+  FormControlMixin } from './internal/re-form-control-mixin.ts'
 
-import { DropdownElement } from  './re-dropdown.ts'
-import { getItemFromEvent, type ItemElement } from './re-item.ts'
 import { fire } from './internal/re-element.ts'
+import { DropdownElement } from './re-dropdown.ts'
+import { getItemFromEvent, type ItemElement } from './re-item.ts'
 
-const SelectElementBase: (new (...args: any[]) => FormControlInterface) & typeof DropdownElement = FormControlMixin(DropdownElement)
+const SelectElementBase:
+  & (new(...args: any[]) => FormControlInterface)
+  & typeof DropdownElement = FormControlMixin(DropdownElement)
+
 /**
  * Selects expose a menu of options from which the user can choose one or many.
  * A select consists of a trigger button and a popover menu panel with the full
@@ -35,7 +39,7 @@ const SelectElementBase: (new (...args: any[]) => FormControlInterface) & typeof
  * nested inside `<re-menu-item>`s, have unique IDs.
  *
  * A typical use of select is as follows:
-* ```
+ * ```
  * <re-select id="sel1"@change="${onChanged}">
  *   <re-item id="item1">...</re-item>
  *   <re-item id="item2">...</re-item>
@@ -82,7 +86,8 @@ export class SelectElement extends SelectElementBase {
    * If true, multiple options can be selected simultaneously.  Otherwise only
    * one option can be selected at a time.
    */
-  @property({ type: Boolean, reflect: true }) accessor multiple = false
+  @property({ type: Boolean, reflect: true })
+  accessor multiple = false
 
   /**
    * The index of the currently selected option.  If no option is selected,
@@ -94,7 +99,8 @@ export class SelectElement extends SelectElementBase {
    * calculated.  In these cases it's likely easier to depend on the `value`
    * property than this one.
    */
-  @property({ type: Number }) accessor selectedIndex: number = -1
+  @property({ type: Number })
+  accessor selectedIndex: number = -1
 
   /**
    * A non-live `NodeList` of currently selected `<re-items>`(s), if any.
@@ -114,7 +120,8 @@ export class SelectElement extends SelectElementBase {
   /**
    * If true, an option must be selected before its form can be submitted.
    */
-  @property({ type: Boolean, reflect: true }) accessor required = false
+  @property({ type: Boolean, reflect: true })
+  accessor required = false
 
   /**
    * The `id` of the item that is currently selected.
@@ -179,8 +186,8 @@ export class SelectElement extends SelectElementBase {
     // To handle this, if the `value` is not set but an item has the
     // `selected` attribute, set the `value` to that item's `id`.
     if (!this.value) {
-      const item = this.querySelector<ItemElement>('re-item[selected]') ??
-          this.querySelector<ItemElement>('re-item')
+      const item = this.querySelector<ItemElement>('re-item[selected]')
+        ?? this.querySelector<ItemElement>('re-item')
       if (item) {
         this.value = item.id
       }
@@ -225,7 +232,7 @@ export class SelectElement extends SelectElementBase {
           panel.removeAttribute('popover')
           panel.setAttribute('tabindex', '0')
         } else {
-          panel.setAttribute('popover', '')  // Equivalent to "auto".
+          panel.setAttribute('popover', '') // Equivalent to "auto".
           panel.setAttribute('tabindex', '-1')
         }
       })
@@ -240,7 +247,7 @@ export class SelectElement extends SelectElementBase {
         const me = e as MouseEvent
         const item = getItemFromEvent(e)
         if (item) {
-          if (this. multiple && me.ctrlKey) {
+          if (this.multiple && me.ctrlKey) {
             item.selected = !item.selected
             item.updateComplete.then(() => {
               const first = this.querySelector('re-item[selected]')
@@ -250,12 +257,14 @@ export class SelectElement extends SelectElementBase {
               this.value_ = first ? first.id : ''
               this.requestUpdate('value', old)
               this.updateComplete.then(
-                  () => fire(this, 'change', { bubbles: true }))
+                () => fire(this, 'change', { bubbles: true }),
+              )
             })
           } else {
             this.value = item.id !== this.value ? item.id : ''
             this.updateComplete.then(
-                () => fire(this, 'change', { bubbles: true }))
+              () => fire(this, 'change', { bubbles: true }),
+            )
           }
         }
         break

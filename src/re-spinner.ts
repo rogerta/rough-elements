@@ -29,16 +29,17 @@ export class SpinnerElement extends ReElement {
   }
 
   protected override onResized(
-      width: number,
-      height: number,
-      cstyles: CSSStyleDeclaration): SVGElement[] {
+    width: number,
+    height: number,
+    cstyles: CSSStyleDeclaration,
+  ): SVGElement[] {
     const strokeWidth = cstyles.getPropertyValue('--track-width')
 
     const elements = super.onResized(width, height, cstyles)
 
     const options = Object.assign({
-       stroke: 'inherit',
-       strokeWidth,
+      stroke: 'inherit',
+      strokeWidth,
     }, this.options)
 
     const cx = width / 2
@@ -93,6 +94,6 @@ export class SpinnerElement extends ReElement {
           transform: rotateY(180deg) rotateZ(-360deg);
         }
       }
-    `
+    `,
   ]
 }

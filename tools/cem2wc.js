@@ -6,9 +6,11 @@ async function writeMixins(cemData) {
   // workaround is to document the correspond ???MixinInterface class instead,
   // which is what get extracted and written here.
   const mixins = cemData.modules
-      .flatMap(m =>
-          m.declarations.filter(
-              d => d.kind === 'class' && d.name.endsWith('MixinInterface')))
+    .flatMap(m =>
+      m.declarations.filter(
+        d => d.kind === 'class' && d.name.endsWith('MixinInterface'),
+      )
+    )
 
   // Save the output.
   await mkdir('./docs/_data', { recursive: true })
@@ -19,18 +21,21 @@ async function writeComponents(cemData) {
   // Only include modules that contain actually web components and that are
   // not internal.
   const modules = cemData.modules
-      .filter(m => m.kind === 'javascript-module' && m.declarations &&
-          !m.path.includes('internal'))
+    .filter(m =>
+      m.kind === 'javascript-module' && m.declarations
+      && !m.path.includes('internal')
+    )
 
   // Only includes classes that are actually web components.
   const classes = modules
-      .flatMap(m =>
-          m.declarations.filter(d => d.kind === 'class' && d.customElement))
+    .flatMap(m =>
+      m.declarations.filter(d => d.kind === 'class' && d.customElement)
+    )
 
   // Save the output.
   await mkdir('./docs/_data', { recursive: true })
   await writeFile('./docs/_data/components.json',
-      JSON.stringify(classes, null, 2))
+    JSON.stringify(classes, null, 2))
 }
 
 async function main() {

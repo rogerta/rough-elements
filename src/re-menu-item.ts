@@ -68,7 +68,7 @@ export class MenuItemElement extends ItemElement {
         position-area: center inline-end;
         position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
       }
-    `
+    `,
   ]
 
   /**
@@ -76,13 +76,17 @@ export class MenuItemElement extends ItemElement {
    * submenu is an `HTMLElement` with the `popover` attribute.
    */
   getSubmenu(): HTMLElement | undefined {
-    const slot =
-        this.shadowRoot?.querySelector<HTMLSlotElement>('slot[name=submenu]')
+    const slot = this.shadowRoot?.querySelector<HTMLSlotElement>(
+      'slot[name=submenu]',
+    )
     const menu = slot && slot.assignedElements().length > 0
-        ? slot.assignedElements()[0] : undefined
+      ? slot.assignedElements()[0]
+      : undefined
     return (
-        menu instanceof HTMLElement && menu.getAttribute('popover') !== null)
-            ? menu : undefined
+        menu instanceof HTMLElement && menu.getAttribute('popover') !== null
+      )
+      ? menu
+      : undefined
   }
 
   /**
@@ -107,14 +111,18 @@ export class MenuItemElement extends ItemElement {
       const hasTabIndex = submenu.getAttribute('tabindex') === '-1'
 
       if (!hasAutofocus || !hasPoppover || !hasTabIndex) {
-        console.log(`%c*** The submenu of %c<re-menu-item id="${this.id}">%c is not properly configured.`,
-            'font-weight: bold;', 'color: red; font-weight: bold;', 'color: ButtonText; font-weight: bold;')
-        console.log('Make sure it has the following attributes: %cpopover autofocus tabindex="-1"',
-            'color: darkblue; font-weight: bold;'
+        console.log(
+          `%c*** The submenu of %c<re-menu-item id="${this.id}">%c is not properly configured.`,
+          'font-weight: bold;',
+          'color: red; font-weight: bold;',
+          'color: ButtonText; font-weight: bold;',
+        )
+        console.log(
+          'Make sure it has the following attributes: %cpopover autofocus tabindex="-1"',
+          'color: darkblue; font-weight: bold;',
         )
       }
     }
-
   }
 
   protected override updated(props: PropertyValues): void {
@@ -153,13 +161,13 @@ export class MenuItemElement extends ItemElement {
         // user clicks inside a submenu.
         const root = target.getRootNode()
         const parent = target.parentNode
-        if ((target !== this) && (root !== this.renderRoot) &&
-            (parent !== this)) {
+        if ((target !== this) && (root !== this.renderRoot)
+          && (parent !== this)) {
           // // If the target is an <re-menu-item> (for example, the user did not
           // // clicked on a re-divider), then ignore the click here so it
           // // propgates up the tree.
           // if (target.tagName === 'RE-MENU-ITEM') {
-            break
+          break
           // }
         }
 
@@ -190,7 +198,7 @@ export class MenuItemElement extends ItemElement {
             name="keyboard-arrow-right"></re-icon-button>
         <!-- Slot containing the popover menu to use as a submenu. -->
         <slot name="submenu"></slot>
-      `
+      `,
     ]
   }
 }

@@ -1,0 +1,38 @@
+{
+  "typescript": {
+    "arrowFunction.useParentheses": "preferNone",
+    "bracePosition": "sameLine",
+    "indentWidth": 2,
+    "lineWidth": 80,
+    "newLineKind": "lf",
+    "nextControlFlowPosition": "sameLine",
+    "operatorPosition": "nextLine",
+    "preferHanging": true,
+    "quoteProps": "asNeeded",
+    "quoteStyle": "preferSingle",
+    "semiColons": "asi",
+    "singleBodyPosition": "nextLine",
+    "spaceAround": false,
+    "spaceSurroundingProperties": true,
+    "trailingCommas": "onlyMultiLine",
+    "typeLiteral.separatorKind": "semiColon",
+    "useBraces": "always",
+    "useTabs": false
+  },
+  "json": {
+  },
+  "markdown": {
+  },
+  "markup": {
+  },
+  "excludes": [
+    "**/node_modules",
+    "**/*-lock.json"
+  ],
+  "plugins": [
+    "npm:@dprint/typescript@0.96.1",
+    "npm:@dprint/json@0.23.0",
+    "npm:@dprint/markdown@0.22.1",
+    "npm:dprint-plugin-markup@0.27.3"
+  ]
+}

@@ -1,6 +1,7 @@
-import { CSSResult, LitElement, css, html, type PropertyValues, type TemplateResult } from 'lit'
-import { property, query } from 'lit/decorators.js'
 import * as rough from '@rough/roughjs'
+import { css, CSSResult, html, LitElement, type PropertyValues,
+  type TemplateResult } from 'lit'
+import { property, query } from 'lit/decorators.js'
 
 import { STYLES } from './re-common.ts'
 
@@ -24,9 +25,10 @@ export type ResolvedOptions = Required<Options>
  *    true.
  */
 export function fire<T>(
-    target: EventTarget,
-    type: string,
-    options: CustomEventInit<T>={}): boolean {
+  target: EventTarget,
+  type: string,
+  options: CustomEventInit<T> = {},
+): boolean {
   return target.dispatchEvent(new CustomEvent(type, options))
 }
 
@@ -56,20 +58,24 @@ export function fire<T>(
  * may be used for addiional style if needed.
  */
 export class ReElement extends LitElement {
-  @query('svg#rough') private accessor svg_: SVGSVGElement | undefined = undefined
+  @query('svg#rough')
+  private accessor svg_: SVGSVGElement | undefined = undefined
 
   /**
    * Enables debugging in elements when the string is not undefined and not
    * emtpty.  When enabled, some rough elements will write debgging information
    * to `console.log`.
    */
-  @property({}) accessor enableDebugging: string | undefined = undefined
+  @property({})
+  accessor enableDebugging: string | undefined = undefined
 
   private observer_?: ResizeObserver
   private rough_?: RoughSVG
   private options_: Options = { seed: rough.newSeed() }
 
-  protected get svg(): SVGSVGElement | undefined { return this.svg_ }
+  protected get svg(): SVGSVGElement | undefined {
+    return this.svg_
+  }
   protected get rough(): RoughSVG {
     if (!this.svg_) {
       throw new Error('Missing SVG element for this rough element')
@@ -80,7 +86,9 @@ export class ReElement extends LitElement {
     return this.rough_
   }
 
-  protected get options(): Options { return this.options_ }
+  protected get options(): Options {
+    return this.options_
+  }
 
   override firstUpdated(_: PropertyValues): void {
     if (!this.svg_) {
@@ -95,7 +103,7 @@ export class ReElement extends LitElement {
         this.requestRoughRender()
       }
     })
-    this.observer_.observe(this, {box: 'border-box'})
+    this.observer_.observe(this, { box: 'border-box' })
   }
 
   protected renderRoughSvg(): TemplateResult<1> {
@@ -120,9 +128,10 @@ export class ReElement extends LitElement {
    * with newly returned elements.
    */
   protected onResized(
-      _width: number,
-      _height: number,
-      _cstyles: CSSStyleDeclaration): SVGElement[] {
+    _width: number,
+    _height: number,
+    _cstyles: CSSStyleDeclaration,
+  ): SVGElement[] {
     return []
   }
 
@@ -183,5 +192,6 @@ export class ReElement extends LitElement {
         overflow: visible;
         z-index: var(--rough-z-index, -1);
       }
-    `]
+    `,
+  ]
 }

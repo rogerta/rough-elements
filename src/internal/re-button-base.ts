@@ -1,15 +1,22 @@
-import { css, CSSResult, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, nothing, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './re-background-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './re-background-mixin.ts'
 import { BorderMixin, type BorderMixinInterface } from './re-border-mixin.ts'
-import { type FormControlInterface, FormControlMixin } from './re-form-control-mixin.ts'
 import { ReElement } from './re-element.ts'
+import { type FormControlInterface,
+  FormControlMixin } from './re-form-control-mixin.ts'
 
 import '../re-icon.ts'
 
-const ButtonBaseElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & (new (...args: any[]) => FormControlInterface) & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
+const ButtonBaseElementBase:
+  & (new(...args: any[]) => BorderMixinInterface)
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & (new(...args: any[]) => FormControlInterface)
+  & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
 /**
  * This is a base class used to help implement click-style controls such as
  * buttons, links, checkboxes and radio buttons.
@@ -24,7 +31,8 @@ export class ButtonBaseElement extends ButtonBaseElementBase {
    * If true the button does not respond to user actions.  Disabled buttons are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   handleEvent(e: Event): void {
     switch (e.type) {
@@ -73,7 +81,7 @@ export class ButtonBaseElement extends ButtonBaseElementBase {
           <slot id="main"></slot>
           <!-- A suffix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="suffix"></slot>
-          ${this.renderCaretIfNeeded_() }
+          ${this.renderCaretIfNeeded_()}
         </button>
       `,
     ]

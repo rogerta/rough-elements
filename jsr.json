@@ -3,7 +3,7 @@
   "version": "3.0.15",
   "license": "MIT",
   "exports": {
-     ".": "./src/rough-elements.ts",
+    ".": "./src/rough-elements.ts",
     "./alert": "./src/re-alert.ts",
     "./badge": "./src/re-badge.ts",
     "./button": "./src/re-button.ts",

@@ -5,16 +5,23 @@
  * @module
  */
 
-import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
-import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin,
+  type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
 import './re-icon.ts'
 
-const DetailsElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+const DetailsElementBase:
+  & (new(...args: any[]) => BorderMixinInterface)
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+
 /**
  * Details are disclosure elements in which more detailed information is
  * visible only when it is toggled open. A summary, which is always visible,
@@ -45,13 +52,15 @@ export class DetailsElement extends DetailsElementBase {
   /**
    * If true the details does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   /**
    * If true the body is visible to the user, otherwise the body is not
    * visible.
    */
-  @property({ type: Boolean, reflect: true }) accessor open = false
+  @property({ type: Boolean, reflect: true })
+  accessor open = false
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -105,7 +114,7 @@ export class DetailsElement extends DetailsElementBase {
           pointer-events: none;
         }
       }
-    `
+    `,
   ]
 
   protected override updated(props: PropertyValues): void {
@@ -144,7 +153,7 @@ export class DetailsElement extends DetailsElementBase {
         </summary>
         <!-- The content of the expandable/collapsible body. -->
         <slot part="content"></slot>
-      </details>`
+      </details>`,
     ]
   }
 }

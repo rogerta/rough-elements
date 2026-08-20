@@ -6,14 +6,15 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-divider.ts'
-import { getItemFromEvent, type ItemElement } from './re-item.ts'
-import type { IconElement } from './re-icon.ts'
-import type { PanelGroupElement } from './re-panel-group.ts'
 import { fire } from './internal/re-element.ts'
+import type { IconElement } from './re-icon.ts'
+import { getItemFromEvent, type ItemElement } from './re-item.ts'
+import type { PanelGroupElement } from './re-panel-group.ts'
 
 /**
  * TabGroups allow users to choose a single option from a group of options that
@@ -44,12 +45,14 @@ export class TabGroupElement extends LitElement {
    * The name of the panel group.  It must be unique within a given shadow
    * root or light DOM.
    */
-  @property({}) accessor name = ''
+  @property({})
+  accessor name = ''
 
   /**
    * The `id` of the tab that is currently selected.
    */
-  @property({}) accessor selected = ''
+  @property({})
+  accessor selected = ''
 
   static styles: CSSResult[] = [
     css`
@@ -81,7 +84,7 @@ export class TabGroupElement extends LitElement {
         grid-column: 1;
         margin: 0;
       }
-    `
+    `,
   ]
 
   constructor() {
@@ -118,7 +121,7 @@ export class TabGroupElement extends LitElement {
               }
 
               this.selected = tab.id
-              fire(this, 'input', {bubbles: true, composed: true})
+              fire(this, 'input', { bubbles: true, composed: true })
               break
             }
             break
@@ -135,7 +138,7 @@ export class TabGroupElement extends LitElement {
               }
 
               this.selected = tab.id
-              fire(this, 'input', {bubbles: true, composed: true})
+              fire(this, 'input', { bubbles: true, composed: true })
               break
             }
             break
@@ -155,7 +158,7 @@ export class TabGroupElement extends LitElement {
     }
 
     this.selected = item.id
-    fire(this, 'change', {bubbles: true})
+    fire(this, 'change', { bubbles: true })
   }
 
   protected override firstUpdated(_: PropertyValues): void {
@@ -178,13 +181,15 @@ export class TabGroupElement extends LitElement {
       }
 
       const item = t as ItemElement
-      const prefix =
-          item.shadowRoot?.querySelector('[part=prefix]') as IconElement
+      const prefix = item.shadowRoot?.querySelector(
+        '[part=prefix]',
+      ) as IconElement
       if (prefix && !prefix.name) {
         prefix.style.setProperty('--size', '0')
       }
-      const suffix =
-          item.shadowRoot?.querySelector('[part=suffix]') as IconElement
+      const suffix = item.shadowRoot?.querySelector(
+        '[part=suffix]',
+      ) as IconElement
       if (suffix && !suffix.name) {
         suffix.style.setProperty('--size', '0')
       }
@@ -221,7 +226,8 @@ export class TabGroupElement extends LitElement {
         const root = this.getRootNode()
         if (root instanceof ShadowRoot || root instanceof Document) {
           root.querySelectorAll<PanelGroupElement>(
-              `re-panel-group[name=${this.name}]`).forEach(panel => {
+            `re-panel-group[name=${this.name}]`,
+          ).forEach(panel => {
             panel.selected = this.selected
           })
         }

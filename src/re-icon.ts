@@ -33,7 +33,8 @@ export class IconElement extends ReElement {
   /**
    * The name of the icon to display.
    */
-  @property({reflect: true}) accessor name = ''
+  @property({ reflect: true })
+  accessor name = ''
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -48,7 +49,7 @@ export class IconElement extends ReElement {
         stroke: none;
         fill: var(--color);
       }
-    `
+    `,
   ]
 
   protected override updated(_: PropertyValues): void {
@@ -60,9 +61,10 @@ export class IconElement extends ReElement {
   }
 
   protected override onResized(
-      _width: number,
-      _height: number,
-      _cstyles: CSSStyleDeclaration): SVGElement[] {
+    _width: number,
+    _height: number,
+    _cstyles: CSSStyleDeclaration,
+  ): SVGElement[] {
     const d = getIcon(this.name)
     if (!d || !this.svg) {
       return []

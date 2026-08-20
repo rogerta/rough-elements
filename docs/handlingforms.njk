@@ -1,38 +1,35 @@
 {% extends "./internal/base.njk" %}
 
 {% block style %}
-table {
-  border-top: 1px solid rgb(0 0 0 / 0.2);
-  border-bottom: 1px solid rgb(0 0 0 / 0.2);
-  margin: 1rem 0;
-}
-th {
-  padding-top: 1rem;
-}
+  table { border-top: 1px solid rgb(0 0 0 / 0.2); border-bottom: 1px solid rgb(0
+  0 0 / 0.2); margin: 1rem 0; } th { padding-top: 1rem; }
 {% endblock %}
 
 {% block main %}
+  <h1>Handling Forms</h1>
+  <p>
+    The following Rough Elements can be used in HTML forms much like their
+    native counterparts. See the individual component pages for complete
+    details. As with any form control, these elements must not be <code
+    >disabled</code> and must have a valid <code>name</code> attribute to be
+    included in form submission.
+  </p>
 
-<h1>Handling Forms</h1>
-<p>The following Rough Elements can be used in HTML forms much like their native
-counterparts.  See the individual component pages for complete details.  As
-with any form control, these elements must not be <code>disabled</code> and must
-have a valid <code>name</code> attribute to be included in form submission.
-</p>
+  <ul>
+    {% set formControlled = components | filterForFormControlled %}
+    {% for clazz in formControlled %}
+      <li>
+        <a href="../component/{{clazz.tagName}}"><code>&lt;{{
+              clazz.tagName
+            }}&gt;</code></a>
+      </li>
+    {% endfor %}
+  </ul>
 
-<ul>
-{% set formControlled = components | filterForFormControlled %}
-{% for clazz in formControlled %}
-  <li>
-    <a href="../component/{{clazz.tagName}}"><code>&lt;{{ clazz.tagName }}&gt;</code></a>
-  </li>
-{% endfor %}
-</ul>
-
-These elements do not support the <code>form</code> attribute and must be
-nested within a <code>&lt;form&gt;</code> element to be included.  For example,
-here is a simple form that includes these elements:
-<pre><code>&lt;form&gt;
+  These elements do not support the <code>form</code> attribute and must be
+  nested within a <code>&lt;form&gt;</code> element to be included. For example,
+  here is a simple form that includes these elements:
+  <pre><code>&lt;form&gt;
   &lt;re-checkbox required name="checkbox"&gt;Checkbox&lt;/re-checkbox&gt;
 
   &lt;re-input required name="input" pattern="a\d+z"&gt;&lt;/re-input&gt;
@@ -56,6 +53,5 @@ here is a simple form that includes these elements:
 
   &lt;re-button name="button" type="submit"&gt;Submit&lt;/re-button&gt;
 &lt;/form&gt;</code></pre>
-</code></pre>
-
+  </code></pre>
 {% endblock %}

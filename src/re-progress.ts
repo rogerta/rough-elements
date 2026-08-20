@@ -3,14 +3,21 @@
  * @module
  */
 
-import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
-import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin,
+  type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
-const ProgressElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+const ProgressElementBase:
+  & (new(...args: any[]) => BorderMixinInterface)
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+
 /**
  * Progress elements represent the completion progress of a task.
  *
@@ -25,24 +32,28 @@ export class ProgressElement extends ProgressElementBase {
   /**
    * If true the numeric value of the progress is displayed on the progress bar.
    */
-  @property({ type: Boolean, reflect: true }) accessor showvalue = false
+  @property({ type: Boolean, reflect: true })
+  accessor showvalue = false
 
   /**
    * The lower numeric bound of the measured range. This must be less than
    * `max` if specified.
    */
-  @property({ type: Number }) accessor min = 0
+  @property({ type: Number })
+  accessor min = 0
 
   /**
    * The upper numeric bound of the measured range. This must be greater than
    * `min` if specified.
    */
-  @property({ type: Number }) accessor max = 1
+  @property({ type: Number })
+  accessor max = 1
 
   /**
    * The current value of the progress bar.
    */
-  @property({ type: Number }) accessor value: number | undefined = undefined
+  @property({ type: Number })
+  accessor value: number | undefined = undefined
 
   constructor() {
     super()
@@ -70,13 +81,13 @@ export class ProgressElement extends ProgressElementBase {
   override updated(props: PropertyValues): void {
     super.updated(props)
 
-    if(props.has('min')) {
+    if (props.has('min')) {
       if (this.min > this.max) {
         this.min = 0
       }
     }
 
-    if(props.has('max')) {
+    if (props.has('max')) {
       if (this.max < this.min) {
         this.max = 1
       }
@@ -90,7 +101,7 @@ export class ProgressElement extends ProgressElementBase {
       }
     }
 
-    if(props.has('value')) {
+    if (props.has('value')) {
       const value = this.value ?? this.min
       this.fillFraction = (value - this.min) / (this.max - this.min)
       const label = this.renderRoot.querySelector('div')
@@ -132,6 +143,6 @@ export class ProgressElement extends ProgressElementBase {
         text-align: center;
         font-weight: bold;
       }
-    `
+    `,
   ]
 }

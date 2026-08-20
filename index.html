@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,390 +7,410 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Mono:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Noto+Serif:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    >
 
     <link href="/themes/default.css" rel="stylesheet">
     <script type="module" src="/src/rough-elements.ts"></script>
     <style>
-      @font-face {
-        font-family: 'BackIssuesBB_reg';
-        src: url('/fonts/BackIssuesBB_reg.otf');
-        font-weight: normal;
-        font-style: normal;
-      }
-      .backissue-bb {
-        font-family: "BackIssuesBB_reg", serif;
-      }
+    @font-face {
+      font-family: 'BackIssuesBB_reg';
+      src: url('/fonts/BackIssuesBB_reg.otf');
+      font-weight: normal;
+      font-style: normal;
+    }
+    .backissue-bb {
+      font-family: "BackIssuesBB_reg", serif;
+    }
 
-      /* Can be 100-900 for weight.  Create a new class for each */
-      .noto-serif-400 {
-        font-family: "Noto Serif", serif;
-        font-optical-sizing: auto;
-        font-weight: 400;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-      }
-      .noto-sans-400 {
-        font-family: "Noto Sans", sans-serif;
-        font-optical-sizing: auto;
-        font-weight: 400;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-      }
-      .noto-sans-mono-400 {
-        font-family: "Noto Sans Mono", monospace;
-        font-optical-sizing: auto;
-        font-weight: 400;
-        font-style: normal;
-        font-variation-settings: "wdth" 100;
-      }
+    /* Can be 100-900 for weight.  Create a new class for each */
+    .noto-serif-400 {
+      font-family: "Noto Serif", serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+    .noto-sans-400 {
+      font-family: "Noto Sans", sans-serif;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
+    .noto-sans-mono-400 {
+      font-family: "Noto Sans Mono", monospace;
+      font-optical-sizing: auto;
+      font-weight: 400;
+      font-style: normal;
+      font-variation-settings: "wdth" 100;
+    }
 
+    body {
+      color: var(--foreground-color);
+      background: repeating-linear-gradient(
+        -45deg,
+        rgb(from var(--background-color) calc(R * 0.95) calc(G * 0.95) calc(B * 0.95)),
+        rgb(from var(--background-color) calc(R * 0.95) calc(G * 0.95) calc(B * 0.95)) 8px,
+        var(--background-color) 8px,
+        var(--background-color) 24px
+      );
+    }
+    @media (prefers-color-scheme: dark) {
       body {
-        color: var(--foreground-color);
         background: repeating-linear-gradient(
           -45deg,
-          rgb(from var(--background-color) calc(R * 0.95) calc(G * 0.95) calc(B * 0.95)),
-          rgb(from var(--background-color) calc(R * 0.95) calc(G * 0.95) calc(B * 0.95)) 8px,
+          rgb(from var(--background-color) calc(R * 1.1) calc(G * 1.1) calc(B * 1.1)),
+        rgb(from var(--background-color) calc(R * 1.1) calc(G * 1.1) calc(B * 1.1)) 8px,
           var(--background-color) 8px,
           var(--background-color) 24px
         );
       }
-      @media (prefers-color-scheme: dark) {
-        body {
-          background: repeating-linear-gradient(
-            -45deg,
-            rgb(from var(--background-color) calc(R * 1.1) calc(G * 1.1) calc(B * 1.1)),
-          rgb(from var(--background-color) calc(R * 1.1) calc(G * 1.1) calc(B * 1.1)) 8px,
-            var(--background-color) 8px,
-            var(--background-color) 24px
-          );
-        }
+    }
+
+    .demo {
+      display: flex;
+      flex-direction: column;
+      align-items: start;
+      justify-content: start;
+      gap: 1rem;
+    }
+    .demo > h1 {
+      margin-top: 2rem;
+      margin-bottom: 0;
+    }
+    re-card [slot=header], re-card [slot=footer] {
+      font-weight: bold;
+    }
+
+    #card1 {
+      --border-color: brown;
+      --background-color: rgb(from var(--border-color) R G B / 0.1);
+      padding: 0.5rem 1rem;
+    }
+    #card2 {
+      --border-color: blue;
+      --border-width: 1rem;
+      padding: 0.5rem 1rem;
+    }
+    #card3 {
+      max-width: 512px;
+
+      & [slot=header] {
+        padding: 0.5rem;
+        border-bottom: solid 1px rgb(160 160 160);
       }
 
-      .demo {
-        display: flex;
-        flex-direction: column;
-        align-items: start;
-        justify-content: start;
-        gap: 1rem;
-      }
-      .demo > h1 {
-        margin-top: 2rem;
-        margin-bottom: 0;
-      }
-      re-card [slot=header], re-card [slot=footer] {
-        font-weight: bold;
-      }
-
-      #card1 {
-        --border-color: brown;
-        --background-color: rgb(from var(--border-color) R G B / 0.1);
+      & .body {
         padding: 0.5rem 1rem;
       }
-      #card2 {
-        --border-color: blue;
-        --border-width: 1rem;
-        padding: 0.5rem 1rem;
-      }
-      #card3 {
-        max-width: 512px;
 
-        & [slot=header] {
-          padding: 0.5rem;
-          border-bottom: solid 1px rgb(160 160 160);
-        }
+      & [slot=footer] {
+        padding: 2rem;
+        border-top: solid 1px rgb(160 160 160);
+      }
+    }
 
-        & .body {
-          padding: 0.5rem 1rem;
-        }
+    #button0, #button91 {
+      --color: red;
+      --border-color: green;
+      width: 50%;
+    }
+    #button62 {
+      border-width: 0;
+      --size: 64px;
+    }
+    #button91 [slot=prefix] {
+      --color: blue;
+    }
 
-        & [slot=footer] {
-          padding: 2rem;
-          border-top: solid 1px rgb(160 160 160);
-        }
-      }
+    #icon1 {
+      --color: brown;
+      background-color: rgb(from currentcolor R G B / 0.1);
+    }
+    #icon2 {
+      color: green;
+      --size: 64px;
+    }
 
-      #button0, #button91 {
-        --color: red;
-        --border-color: green;
-        width: 50%;
-      }
-      #button62 {
-        border-width: 0;
-        --size: 64px;
-      }
-      #button91 [slot=prefix] {
-        --color: blue;
-      }
+    #iconbutton1 {
+      --color: brown;
+    }
+    #iconbutton2 {
+      --size: 64px;
+    }
 
-      #icon1 {
-        --color: brown;
-        background-color: rgb(from currentcolor R G B / 0.1);
-      }
-      #icon2 {
-        color: green;
-        --size: 64px;
-      }
+    #iconbutton6::part(button) {
+      --anchor-name: --anchor-1;
+    }
+    #ibpcard {
+      /* Where to position the menu dropover relative to the trigger */
+      position-anchor: --menu-anchor;
+      position-area: center inline-end;
+      position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    }
 
-      #iconbutton1 {
-        --color: brown;
-      }
-      #iconbutton2 {
-        --size: 64px;
-      }
+    #alert1 {
+      width: 100%;
+    }
 
-      #iconbutton6::part(button) {
-        --anchor-name: --anchor-1;
-      }
-      #ibpcard {
-        /* Where to position the menu dropover relative to the trigger */
-        position-anchor: --menu-anchor;
-        position-area: center inline-end;
-        position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
-      }
+    #alert2::part(icon) {
+      --size: 48px;
+      --color: goldenrod;
+    }
 
-      #alert1 {
-        width: 100%;
-      }
-
-      #alert2::part(icon) {
-        --size: 48px;
-        --color: goldenrod;
+    :not(form) > re-details:not(#details1) {
+      width: 100%;
+    }
+    #details1 {
+      min-width: 150px;
+    }
+    :not(form) > re-details::part(summary) {
+        font-family: monospace;
+    }
+    :not(form) > re-details {
+      & [slot=marker] {
+        rotate: none;
       }
 
-      :not(form) > re-details:not(#details1) {
-        width: 100%;
+      & div {
+        background-color: ButtonFace;
       }
-      #details1 {
-        min-width: 150px;
-      }
-      :not(form) > re-details::part(summary) {
-          font-family: monospace;
-      }
-      :not(form) > re-details {
-        & [slot=marker] {
-          rotate: none;
-        }
+    }
 
-        & div {
-          background-color: ButtonFace;
-        }
-      }
+    #checkbox1 {
+      --color: brown;
+    }
+    #checkbox1 [slot=prefix] {
+      --color: purple;
+      transition-property: transform, scale;
+      transition-duration: 0.75s;
+    }
+    #checkbox1[checked] [slot=prefix] {
+      --color: green;
+      transform: rotate(1turn);
+    }
 
-      #checkbox1 {
-        --color: brown;
-      }
-      #checkbox1 [slot=prefix] {
-        --color: purple;
-        transition-property: transform, scale;
-        transition-duration: 0.75s;
-      }
-      #checkbox1[checked] [slot=prefix] {
+    :not(form) > re-select {
+      --color: darkgreen;
+    }
+    :not(form) > re-select #item1 {
+      --color: magenta;
+      font-weight: bold;
+    }
+
+    re-input#i1 {
+      --border-color: red;
+      width: 50%;
+
+      & re-icon[slot=prefix] {
         --color: green;
-        transform: rotate(1turn);
       }
+    }
 
-      :not(form) > re-select {
-        --color: darkgreen;
-      }
-      :not(form) > re-select #item1 {
-        --color: magenta;
-        font-weight: bold;
-      }
+    re-input#i3 {
+      --border-color: red;
 
-      re-input#i1 {
-        --border-color: red;
-        width: 50%;
-
-        & re-icon[slot=prefix] {
-          --color: green;
-        }
-      }
-
-      re-input#i3 {
-        --border-color: red;
-
-        & re-icon[slot=suffix] {
-          --color: orange;
-        }
-      }
-
-      re-input#i5 {
-        width: 40%;
-        --border-color: orange;
-      }
-      re-input#i5::part(password-icon) {
+      & re-icon[slot=suffix] {
         --color: orange;
       }
+    }
 
-      re-menu#menu1 {
-        --border-color: orange;
+    re-input#i5 {
+      width: 40%;
+      --border-color: orange;
+    }
+    re-input#i5::part(password-icon) {
+      --color: orange;
+    }
 
-        & re-divider {
-          --color: green;
-        }
+    re-menu#menu1 {
+      --border-color: orange;
 
-        & re-menu-item [slot=suffix] {
-          color: purple;
-          margin-left: 1rem;
-        }
-      }
-
-      #dd2 {
-        width: 75%;
-      }
-
-      #dialog2 {
-        & [slot=title] {
-          color: red;
-          font-weight: bold;
-        }
-        & .body {
-          font-style: italic;
-          color: light-dark(darkblue, lightblue);
-        }
-      }
-
-      #dialogRight::part(dialog) {
-        max-width: 15rem;
-      }
-
-      #dividerDemo {
-        position: relative;
-        width: 50%;
-        height: 20rem;
-
-        & div {
-          position: relative;
-          height: 20rem;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          gap: 1rem;
-        }
-      }
-
-      #divider2::part(rough) {
-        stroke-width: 2px;
-      }
-      :not(form) > re-menu-item [slot=suffix] {
-        font-size: 0.75rem;
-        font-family: monospace;
-      }
-
-      [name=group2]::part(indicator) {
-        --thickness: 10px;
-      }
-
-      re-progress {
-        width: 80%;
-      }
-
-      #progress1 {
-        --color: goldenrod;
-        --border-color: red;
-        --label-lower-color: var(--color);
-        --label-upper-color: darkblue;
-      }
-
-      #toggleProgress::part(button) {
-        min-width: 3rem;
-      }
-
-      #rating1container {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-      }
-
-      #rating2 {
-        --re-rating-color: blue;
-      }
-      #rating3 {
-        --re-rating-color: green;
-      }
-
-      #spinner2 {
-        --size: 3rem;
-      }
-      #spinner3 {
-        --size: 6rem;
-        --track-width: 16px;
-        --re-spinner-tracker-color: cyan;
-        --re-spinner-indicator-color: magenta;
-      }
-
-      :not(form) > re-tab-group[name=group1] re-item.selected {
-        --color: red;
-      }
-      :not(form) > re-tab-group[name=group1] re-item.selected::part(body) {
+      & re-divider {
         --color: green;
       }
-      :not(form) > re-tab-group[name=group1]::part(indicator) {
-        --color: red;
-      }
 
-      .panel {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 400px;
-        height: 300px;
+      & re-menu-item [slot=suffix] {
+        color: purple;
+        margin-left: 1rem;
       }
+    }
 
-      #range1 {
-        --re-range-knob-color: green;
-        --re-range-knob-outline-color: blue;
-        --re-range-track-color: magenta;
-      }
+    #dd2 {
+      width: 75%;
+    }
 
-      #radio11 {
-        --color: brown;
+    #dialog2 {
+      & [slot=title] {
+        color: red;
+        font-weight: bold;
       }
-      #radio11 [slot=prefix] {
-        --color: purple;
-        transition-property: transform, scale;
-        transition-duration: 0.75s;
-      }
-      #radio11[checked] [slot=prefix] {
-        --color: pink;
-        transform: rotate(1turn);
-      }
-
-      #ta1 {
-        --border-color: red;
-        width: 50%;
-      }
-      #ta2 re-icon {
-        --color: green;
-      }
-      #ta3 {
-        --color: cyan;
-        & re-icon[slot=prefix] {
-          --color: purple
-        }
-        & re-icon[slot=suffix] {
-          --color: pink;
-        }
-      }
-      #ta3::part(textarea) {
+      & .body {
         font-style: italic;
+        color: light-dark(darkblue, lightblue);
       }
+    }
+
+    #dialogRight::part(dialog) {
+      max-width: 15rem;
+    }
+
+    #dividerDemo {
+      position: relative;
+      width: 50%;
+      height: 20rem;
+
+      & div {
+        position: relative;
+        height: 20rem;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+    }
+
+    #divider2::part(rough) {
+      stroke-width: 2px;
+    }
+    :not(form) > re-menu-item [slot=suffix] {
+      font-size: 0.75rem;
+      font-family: monospace;
+    }
+
+    [name=group2]::part(indicator) {
+      --thickness: 10px;
+    }
+
+    re-progress {
+      width: 80%;
+    }
+
+    #progress1 {
+      --color: goldenrod;
+      --border-color: red;
+      --label-lower-color: var(--color);
+      --label-upper-color: darkblue;
+    }
+
+    #toggleProgress::part(button) {
+      min-width: 3rem;
+    }
+
+    #rating1container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    #rating2 {
+      --re-rating-color: blue;
+    }
+    #rating3 {
+      --re-rating-color: green;
+    }
+
+    #spinner2 {
+      --size: 3rem;
+    }
+    #spinner3 {
+      --size: 6rem;
+      --track-width: 16px;
+      --re-spinner-tracker-color: cyan;
+      --re-spinner-indicator-color: magenta;
+    }
+
+    :not(form) > re-tab-group[name=group1] re-item.selected {
+      --color: red;
+    }
+    :not(form) > re-tab-group[name=group1] re-item.selected::part(body) {
+      --color: green;
+    }
+    :not(form) > re-tab-group[name=group1]::part(indicator) {
+      --color: red;
+    }
+
+    .panel {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 400px;
+      height: 300px;
+    }
+
+    #range1 {
+      --re-range-knob-color: green;
+      --re-range-knob-outline-color: blue;
+      --re-range-track-color: magenta;
+    }
+
+    #radio11 {
+      --color: brown;
+    }
+    #radio11 [slot=prefix] {
+      --color: purple;
+      transition-property: transform, scale;
+      transition-duration: 0.75s;
+    }
+    #radio11[checked] [slot=prefix] {
+      --color: pink;
+      transform: rotate(1turn);
+    }
+
+    #ta1 {
+      --border-color: red;
+      width: 50%;
+    }
+    #ta2 re-icon {
+      --color: green;
+    }
+    #ta3 {
+      --color: cyan;
+      & re-icon[slot=prefix] {
+        --color: purple
+      }
+      & re-icon[slot=suffix] {
+        --color: pink;
+      }
+    }
+    #ta3::part(textarea) {
+      font-style: italic;
+    }
     </style>
   </head>
   <body class="noto-sans-400 xbackissue-bb xhb-pencil xbic-muted">
     <div class="demo">
       <h1>Form Example</h1>
       <form id="form1" action="/" name="form1">
-        <re-button id="formbutton" name="button" type="submit">Submit</re-button>
-        <re-checkbox id="formcheckbox" required name="checkbox">Checkbox</re-checkbox>
-        <re-input id="forminput" required name="input" pattern="a\d+z"></re-input>
-        <re-radio id="formradio1" required name="radio" value="1" checkedx>One</re-radio>
-        <re-radio id="formradio2" required name="radio" value="2" checkedx>Two</re-radio>
-        <re-radio id="formradio3" required name="radio" value="3">Three</re-radio>
-        <re-range id="formrange" required name="range"
-            min="0" max="100" step="5" value="3"></re-range>
+        <re-button id="formbutton" name="button" type="submit"
+        >Submit</re-button>
+        <re-checkbox id="formcheckbox" required name="checkbox"
+        >Checkbox</re-checkbox>
+        <re-input
+          id="forminput"
+          required
+          name="input"
+          pattern="a\d+z"
+        ></re-input>
+        <re-radio id="formradio1" required name="radio" value="1" checkedx
+        >One</re-radio>
+        <re-radio id="formradio2" required name="radio" value="2" checkedx
+        >Two</re-radio>
+        <re-radio id="formradio3" required name="radio" value="3"
+        >Three</re-radio>
+        <re-range
+          id="formrange"
+          required
+          name="range"
+          min="0"
+          max="100"
+          step="5"
+          value="3"
+        ></re-range>
         <re-rating id="formrating" required name="rating"></re-rating>
         <re-select id="formselect" required name="select">
           <re-item id="formitem0">Menu item 1</re-item>
@@ -481,7 +501,10 @@
       </re-panel-group>
 
       <re-tab-group name="group2">
-        <re-item id="g21"><re-icon slot="prefix" name="check"></re-icon>A</re-item>
+        <re-item id="g21"><re-icon
+            slot="prefix"
+            name="check"
+          ></re-icon>A</re-item>
         <re-item id="g22">
           <re-icon slot="prefix" name="check"></re-icon>
           BBBBBBBBBB
@@ -637,7 +660,7 @@
           Menu item 8<re-icon slot="suffix" name="close"></re-icon>
         </re-item>
         <re-item id="item9">
-          Menu item 9<div slot="suffix" >Ctrl+P</div>
+          Menu item 9<div slot="suffix">Ctrl+P</div>
         </re-item>
         <re-divider></re-divider>
         <re-menu-item id="item4">
@@ -688,7 +711,7 @@
             </re-item>
             <re-item id="item412">
               Menu item 12
-              <div slot="suffix" >Ctrl+P</div>
+              <div slot="suffix">Ctrl+P</div>
             </re-item>
           </re-menu>
         </re-menu-item>
@@ -704,7 +727,7 @@
           Menu item 2<re-icon slot="suffix" name="close"></re-icon>
         </re-item>
         <re-item id="item3">
-          Menu item 3<div slot="suffix" >Ctrl+P</div>
+          Menu item 3<div slot="suffix">Ctrl+P</div>
         </re-item>
         <re-divider></re-divider>
         <re-menu-item id="item4">
@@ -720,7 +743,7 @@
             </re-item>
             <re-item id="item43">
               Menu item 3
-              <div slot="suffix" >Ctrl+P</div>
+              <div slot="suffix">Ctrl+P</div>
             </re-item>
           </re-menu>
         </re-menu-item>
@@ -738,7 +761,7 @@
         </re-item>
         <re-item id="item3">
           Menu item 3
-          <div slot="suffix" >Ctrl+P</div>
+          <div slot="suffix">Ctrl+P</div>
         </re-item>
       </re-dropdown>
     </div>
@@ -761,7 +784,14 @@
         <re-divider></re-divider>
         <re-menu-item id="item4">
           Menu item 4
-          <re-menu id="x4" id="menu2" popover tabindex="-1" autofocus slot="submenu">
+          <re-menu
+            id="x4"
+            id="menu2"
+            popover
+            tabindex="-1"
+            autofocus
+            slot="submenu"
+          >
             <re-item id="item41">
               <re-icon slot="prefix" name="check"></re-icon>
               Menu item 1
@@ -773,8 +803,15 @@
             <re-divider></re-divider>
             <re-menu-item id="item43">
               Menu item 3
-              <div slot="suffix" >Ctrl+P</div>
-              <re-menu id="x5" id="menu3" popover tabindex="-1" autofocus slot="submenu">
+              <div slot="suffix">Ctrl+P</div>
+              <re-menu
+                id="x5"
+                id="menu3"
+                popover
+                tabindex="-1"
+                autofocus
+                slot="submenu"
+              >
                 <re-item id="item431">
                   Menu item 1
                 </re-item>
@@ -787,7 +824,7 @@
 
     <div class="demo" id="dividerDemo">
       <h1>re-divider</h1>
-      <re-divider id="divider1" ></re-divider>
+      <re-divider id="divider1"></re-divider>
       <re-divider id="divider2" style="--thickness: 10px;"></re-divider>
       <re-divider id="divider3" style="--thickness: 15px;"></re-divider>
 
@@ -800,80 +837,77 @@
 
     <div class="demo">
       <h1>re-dialog</h1>
-        <re-dialog id="dialog0" closedby="none">
-          <span slot="title">Manual close</span>
-          This dialog body needs to be long to make it a more
-          realistic example.
-        </re-dialog>
+      <re-dialog id="dialog0" closedby="none">
+        <span slot="title">Manual close</span>
+        This dialog body needs to be long to make it a more realistic example.
+      </re-dialog>
 
-        <re-dialog id="dialog1">
-          <span slot="title">Simple</span>
-          This dialog body needs to be long to make it a more
-          realistic example.
-        </re-dialog>
+      <re-dialog id="dialog1">
+        <span slot="title">Simple</span>
+        This dialog body needs to be long to make it a more realistic example.
+      </re-dialog>
 
-        <re-dialog id="dialog2">
-          <span slot="title">Fancy Dialog</span>
-          <re-icon-button slot="actions" name="check"></re-icon-button>
-          <re-icon-button slot="actions" name="dangerous"></re-icon-button>
-          <div class="body">
-            <re-button id="dialogbutton" name="button">Button</re-button>
-            <re-checkbox id="dialogcheckbox" required name="checkbox">Checkbox</re-checkbox>
-            <re-input id="dialoginput" required name="input"></re-input>
-            <re-radio id="dialogradio1" required name="radio" value="1" checkedx>One</re-radio>
-            <re-radio id="dialogradio2" required name="radio" value="2" checkedx>Two</re-radio>
-            <re-radio id="dialogradio3" required name="radio" value="3">Three</re-radio>
-            <re-range id="dialogrange" required name="range"></re-range>
-            <re-rating id="dialograting" required name="rating"></re-rating>
-            <re-select id="dialogselect" required name="select">
-              <re-item id="dialogitem1">Menu item 1</re-item>
-              <re-item id="dialogitem2">Menu item 2</re-item>
-              <re-item id="dialogitem3">Menu item 3</re-item>
-            </re-select>
-            <re-textarea id="formtextarea" required name="textarea"></re-textarea>
-          </div>
-          <re-button slot="footer">Previous</re-button>
-          <re-button variant="primary" slot="footer">Next</re-button>
-        </re-dialog>
+      <re-dialog id="dialog2">
+        <span slot="title">Fancy Dialog</span>
+        <re-icon-button slot="actions" name="check"></re-icon-button>
+        <re-icon-button slot="actions" name="dangerous"></re-icon-button>
+        <div class="body">
+          <re-button id="dialogbutton" name="button">Button</re-button>
+          <re-checkbox id="dialogcheckbox" required name="checkbox"
+          >Checkbox</re-checkbox>
+          <re-input id="dialoginput" required name="input"></re-input>
+          <re-radio id="dialogradio1" required name="radio" value="1" checkedx
+          >One</re-radio>
+          <re-radio id="dialogradio2" required name="radio" value="2" checkedx
+          >Two</re-radio>
+          <re-radio id="dialogradio3" required name="radio" value="3"
+          >Three</re-radio>
+          <re-range id="dialogrange" required name="range"></re-range>
+          <re-rating id="dialograting" required name="rating"></re-rating>
+          <re-select id="dialogselect" required name="select">
+            <re-item id="dialogitem1">Menu item 1</re-item>
+            <re-item id="dialogitem2">Menu item 2</re-item>
+            <re-item id="dialogitem3">Menu item 3</re-item>
+          </re-select>
+          <re-textarea id="formtextarea" required name="textarea"></re-textarea>
+        </div>
+        <re-button slot="footer">Previous</re-button>
+        <re-button variant="primary" slot="footer">Next</re-button>
+      </re-dialog>
 
-        <re-dialog id="dialog3" closedby="none">
-          <span slot="title">Can't close</span>
-          This dialog body needs to be long to make it a more
-          realistic example.
-        </re-dialog>
+      <re-dialog id="dialog3" closedby="none">
+        <span slot="title">Can't close</span>
+        This dialog body needs to be long to make it a more realistic example.
+      </re-dialog>
 
-        <re-dialog id="dialogTop" class="top drawer">
-          <span slot="title">Top</span>
-          This dialog body needs to be long to make it a more
-          realistic example.
-        </re-dialog>
+      <re-dialog id="dialogTop" class="top drawer">
+        <span slot="title">Top</span>
+        This dialog body needs to be long to make it a more realistic example.
+      </re-dialog>
 
-        <re-dialog id="dialogRight" class="right drawer">
-          <span slot="title">Right</span>
-          This dialog body needs to be long to make it a more
-          realistic example.
-        </re-dialog>
+      <re-dialog id="dialogRight" class="right drawer">
+        <span slot="title">Right</span>
+        This dialog body needs to be long to make it a more realistic example.
+      </re-dialog>
 
-        <re-dialog id="dialogBottom" class="bottom drawer">
-          <span slot="title">Bottom</span>
-          This dialog body needs to be long to make it a more
-          realistic example.
-        </re-dialog>
+      <re-dialog id="dialogBottom" class="bottom drawer">
+        <span slot="title">Bottom</span>
+        This dialog body needs to be long to make it a more realistic example.
+      </re-dialog>
 
-        <re-dialog id="dialogLeft" class="left drawer">
-          <span slot="title">Left</span>
-          This dialog body needs to be long to make it a more
-          realistic example.
-        </re-dialog>
+      <re-dialog id="dialogLeft" class="left drawer">
+        <span slot="title">Left</span>
+        This dialog body needs to be long to make it a more realistic example.
+      </re-dialog>
 
-        <re-button id="dialog0Button">Open manual dialog</re-button>
-        <re-button id="dialog1Button">Open simple dialog</re-button>
-        <re-button id="dialog2Button">Open fancy dialog</re-button>
-        <re-button id="dialog3Button">Can't close dialog</re-button>
-        <re-button id="dialogTopButton">Open top drawer</re-button>
-        <re-button id="dialogRightButton">Open right drawer</re-button>
-        <re-button id="dialogBottomButton">Open bottom drawer</re-button>
-        <re-button id="dialogLeftButton">Open left drawer</re-button>
+      <re-button id="dialog0Button">Open manual dialog</re-button>
+      <re-button id="dialog1Button">Open simple dialog</re-button>
+      <re-button id="dialog2Button">Open fancy dialog</re-button>
+      <re-button id="dialog3Button">Can't close dialog</re-button>
+      <re-button id="dialogTopButton">Open top drawer</re-button>
+      <re-button id="dialogRightButton">Open right drawer</re-button>
+      <re-button id="dialogBottomButton">Open bottom drawer</re-button>
+      <re-button id="dialogLeftButton">Open left drawer</re-button>
     </div>
 
     <div class="demo">
@@ -890,13 +924,13 @@
         <span slot="summary">Summary 2</span>
         <re-icon name="check" slot="marker"></re-icon>
         <div>
-          Details 2<br/>
-          Details 2<br/>
-          Details 2<br/>
-          Details 2<br/>
-          Details 2<br/>
-          Details 2<br/>
-          Details 2<br/>
+          Details 2<br />
+          Details 2<br />
+          Details 2<br />
+          Details 2<br />
+          Details 2<br />
+          Details 2<br />
+          Details 2<br />
         </div>
       </re-details>
 
@@ -912,7 +946,8 @@
       <re-checkbox id="checkbox2" checked>Checked</re-checkbox>
       <re-checkbox id="checkbox3" indeterminate>Indeterminate</re-checkbox>
       <re-checkbox id="checkbox4" disabled>Disabled</re-checkbox>
-      <re-checkbox id="checkbox5" checked disabled>Checked Disabled</re-checkbox>
+      <re-checkbox id="checkbox5" checked disabled
+      >Checked Disabled</re-checkbox>
     </div>
 
     <div class="demo">
@@ -925,14 +960,20 @@
       <re-button id="button5" disabled variant="danger">Disabled</re-button>
       <re-button id="button51" variant="danger">Danger</re-button>
 
-      <re-button id="button6" circle><re-icon name="arrow-back"></re-icon></re-button>
+      <re-button id="button6" circle><re-icon
+          name="arrow-back"
+        ></re-icon></re-button>
 
       <span>
-        <re-button id="button61" circle variant="text"><re-icon name="info"></re-icon></re-button>
+        <re-button id="button61" circle variant="text"><re-icon
+            name="info"
+          ></re-icon></re-button>
         Simulation of icon button
       </span>
       <span>
-        <re-button id="button62" circle variant="text"><re-icon name="dangerous"></re-icon></re-button>
+        <re-button id="button62" circle variant="text"><re-icon
+            name="dangerous"
+          ></re-icon></re-button>
         Simulation of large icon button
       </span>
 
@@ -973,7 +1014,8 @@
         <re-icon name="arrow-forward" slot="suffix"></re-icon>
       </re-button>
 
-      <re-button id="button11" href="/themes/default.css" download="default.css">Download</re-button>
+      <re-button id="button11" href="/themes/default.css" download="default.css"
+      >Download</re-button>
     </div>
 
     <div class="demo">
@@ -989,14 +1031,19 @@
     <div class="demo">
       <h1>re-alert</h1>
       <re-alert id="alert1" open closable variant="primary">
-        This is a primary alert. This is a primary alert. This is a primary alert.
-        This is a primary alert. This is a primary alert. This is a primary alert.
-        This is a primary alert. This is a primary alert. This is a primary alert.
+        This is a primary alert. This is a primary alert. This is a primary
+        alert. This is a primary alert. This is a primary alert. This is a
+        primary alert. This is a primary alert. This is a primary alert. This is
+        a primary alert.
       </re-alert>
-      <re-alert id="alert2" open variant="success">This is a STYLED success alert.</re-alert>
-      <re-alert id="alert21" open variant="success">This is a success alert.</re-alert>
-      <re-alert id="alert3" open variant="neutral">This is a neutral alert.</re-alert>
-      <re-alert id="alert4" open variant="warning">This is a warning alert.</re-alert>
+      <re-alert id="alert2" open variant="success"
+      >This is a STYLED success alert.</re-alert>
+      <re-alert id="alert21" open variant="success"
+      >This is a success alert.</re-alert>
+      <re-alert id="alert3" open variant="neutral"
+      >This is a neutral alert.</re-alert>
+      <re-alert id="alert4" open variant="warning"
+      >This is a warning alert.</re-alert>
       <re-alert id="alert5" open variant="danger">
         This is a danger alert. This is a danger alert. This is a danger alert.
         This is a danger alert. This is a danger alert. This is a danger alert.
@@ -1014,7 +1061,11 @@
       <re-icon-button id="iconbutton3" name="close"></re-icon-button>
       <re-icon-button id="iconbutton4" name="warning"></re-icon-button>
       <re-icon-button id="iconbutton5" name="warning" disabled></re-icon-button>
-      <re-icon-button id="iconbutton6" name="info" popovertarget="ibpcard"></re-icon-button>
+      <re-icon-button
+        id="iconbutton6"
+        name="info"
+        popovertarget="ibpcard"
+      ></re-icon-button>
       <re-card popover id="ibpcard">
         Popped open by icon button
       </re-card>
@@ -1037,7 +1088,10 @@
         Card 2
       </re-card>
       <re-card id="card3">
-        <img slot="image" src="https://images.unsplash.com/photo-1559209172-0ff8f6d49ff7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"/>
+        <img
+          slot="image"
+          src="https://images.unsplash.com/photo-1559209172-0ff8f6d49ff7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
+        />
         <div slot="header">Header</div>
         <div class="body">
           The svg element is positioned to covers the padding box of the host
@@ -1049,240 +1103,249 @@
       </re-card>
     </div>
     <script type="module">
-      import { getItemFromEvent } from '/src/re-item.ts'
+    import { getItemFromEvent } from '/src/re-item.ts'
 
-      export function sleep(tmo) {
-        return new Promise(resolve => setTimeout(resolve, tmo))
-      }
+    export function sleep(tmo) {
+      return new Promise(resolve => setTimeout(resolve, tmo))
+    }
 
-      let handle = 0
-      const MIN = 10
-      const MAX = 400
-      let inc = (MAX - MIN) * 0.0125
+    let handle = 0
+    const MIN = 10
+    const MAX = 400
+    let inc = (MAX - MIN) * 0.0125
 
-      document.querySelectorAll('re-details').forEach(button => {
-        button.addEventListener('click', e => {
-          console.log(`clicked inside details, maybe summary ${e.target.id}`)
-        })
+    document.querySelectorAll('re-details').forEach(button => {
+      button.addEventListener('click', e => {
+        console.log(`clicked inside details, maybe summary ${e.target.id}`)
       })
+    })
 
-      document.querySelectorAll('re-dialog').forEach(button => {
-        button.addEventListener('close', e => {
-          console.log(`dialog closed ${e.target.id}`)
-        })
-        button.addEventListener('cancel', e => {
-          console.log(`dialog canceled ${e.target.id}`)
-        })
+    document.querySelectorAll('re-dialog').forEach(button => {
+      button.addEventListener('close', e => {
+        console.log(`dialog closed ${e.target.id}`)
       })
+      button.addEventListener('cancel', e => {
+        console.log(`dialog canceled ${e.target.id}`)
+      })
+    })
 
-      document.querySelectorAll('re-icon-button').forEach(button => {
-        button.addEventListener('click', e => {
-          console.log(`clicked icon button ${e.target.id}`)
-        })
+    document.querySelectorAll('re-icon-button').forEach(button => {
+      button.addEventListener('click', e => {
+        console.log(`clicked icon button ${e.target.id}`)
       })
+    })
 
-      document.querySelectorAll('re-button').forEach(button => {
-        button.addEventListener('click', e => {
-          console.log(`clicked button ${e.target.id}`)
-        })
+    document.querySelectorAll('re-button').forEach(button => {
+      button.addEventListener('click', e => {
+        console.log(`clicked button ${e.target.id}`)
       })
+    })
 
-      document.querySelectorAll('re-checkbox').forEach(button => {
-        button.addEventListener('click', e => {
-          console.log(`clicked checkbox ${e.target.id}`)
-        })
-        button.addEventListener('input', e => {
-          console.log(`inputed checkbox ${e.target.id}`)
-        })
-        button.addEventListener('change', e => {
-          console.log(`changed checkbox ${e.target.id}`)
-        })
+    document.querySelectorAll('re-checkbox').forEach(button => {
+      button.addEventListener('click', e => {
+        console.log(`clicked checkbox ${e.target.id}`)
       })
+      button.addEventListener('input', e => {
+        console.log(`inputed checkbox ${e.target.id}`)
+      })
+      button.addEventListener('change', e => {
+        console.log(`changed checkbox ${e.target.id}`)
+      })
+    })
 
-      document.querySelectorAll('re-input').forEach(button => {
-        button.addEventListener('input', e => {
-          console.log(`inputed input ${e.target.id}`)
-        })
-        button.addEventListener('change', e => {
-          console.log(`changed input ${e.target.id}`)
-        })
+    document.querySelectorAll('re-input').forEach(button => {
+      button.addEventListener('input', e => {
+        console.log(`inputed input ${e.target.id}`)
       })
+      button.addEventListener('change', e => {
+        console.log(`changed input ${e.target.id}`)
+      })
+    })
 
-      document.querySelectorAll('re-radio').forEach(button => {
-        button.addEventListener('input', e => {
-          console.log(`inputed radio ${e.target.id}`)
-        })
-        button.addEventListener('change', e => {
-          console.log(`changed radio ${e.target.id}`)
-        })
+    document.querySelectorAll('re-radio').forEach(button => {
+      button.addEventListener('input', e => {
+        console.log(`inputed radio ${e.target.id}`)
       })
+      button.addEventListener('change', e => {
+        console.log(`changed radio ${e.target.id}`)
+      })
+    })
 
-      document.querySelectorAll('re-rating').forEach(rating => {
-        rating.addEventListener('input', e => {
-          console.log(`inputed rating ${e.detail}`)
-        })
-        rating.addEventListener('change', e => {
-          console.log(`changed rating ${e.target.value}`)
-        })
+    document.querySelectorAll('re-rating').forEach(rating => {
+      rating.addEventListener('input', e => {
+        console.log(`inputed rating ${e.detail}`)
       })
-      document.querySelector('#rating1')
-          .addEventListener('input', e => {
+      rating.addEventListener('change', e => {
+        console.log(`changed rating ${e.target.value}`)
+      })
+    })
+    document.querySelector('#rating1')
+      .addEventListener('input', e => {
         const label = document.querySelector('#rating1label')
         const value = e.detail
-        label.textContent = value === 1 ? 'Bad' :
-                            value === 2 ? 'Poor' :
-                            value === 3 ? 'OK' :
-                            value === 4 ? 'Good' :
-                            'Great'
+        label.textContent = value === 1
+          ? 'Bad'
+          : value === 2
+          ? 'Poor'
+          : value === 3
+          ? 'OK'
+          : value === 4
+          ? 'Good'
+          : 'Great'
       })
-      document.querySelector('#rating1')
-          .addEventListener('pointerleave', e => {
+    document.querySelector('#rating1')
+      .addEventListener('pointerleave', e => {
         const label = document.querySelector('#rating1label')
         const value = e.target.value
-        label.textContent = value === 0 ? '' :
-                            value === 1 ? 'Bad' :
-                            value === 2 ? 'Poor' :
-                            value === 3 ? 'OK' :
-                            value === 4 ? 'Good' :
-                            'Great'
+        label.textContent = value === 0
+          ? ''
+          : value === 1
+          ? 'Bad'
+          : value === 2
+          ? 'Poor'
+          : value === 3
+          ? 'OK'
+          : value === 4
+          ? 'Good'
+          : 'Great'
       })
 
-      document.querySelectorAll('re-tab-group').forEach(group => {
-        group.addEventListener('change', e => {
-          console.log(`changed tab group ${e.target.selected}`)
-        })
+    document.querySelectorAll('re-tab-group').forEach(group => {
+      group.addEventListener('change', e => {
+        console.log(`changed tab group ${e.target.selected}`)
       })
+    })
 
-      document.querySelector('#alert5 re-icon-button')
-          .addEventListener('click', e => {
+    document.querySelector('#alert5 re-icon-button')
+      .addEventListener('click', e => {
         const alert = e.target.parentElement
         alert.toast()
-      }, { once: true})
+      }, { once: true })
 
-      document.querySelectorAll('re-details').forEach(details => {
-        details.addEventListener('toggle', e => {
-          console.log('Details toggled, newState=' + e.newState)
-        })
+    document.querySelectorAll('re-details').forEach(details => {
+      details.addEventListener('toggle', e => {
+        console.log('Details toggled, newState=' + e.newState)
       })
+    })
 
-      document.querySelector('#details3Button')
-          .addEventListener('click', e => {
+    document.querySelector('#details3Button')
+      .addEventListener('click', e => {
         const details = document.querySelector('#details3')
         details.disabled = !details.disabled
       })
 
-      document.querySelector('#details1 re-button')
-          .addEventListener('click', e => {
+    document.querySelector('#details1 re-button')
+      .addEventListener('click', e => {
         const details = document.querySelector('#details1 div')
         const div = details.ownerDocument.createElement('div')
         div.innerText = 'More text'
         details.append(div)
       })
 
-      document.querySelector('#dialog0Button')
-          .addEventListener('click', e => {
+    document.querySelector('#dialog0Button')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialog0')
         dialog.showModal()
       })
 
-      document.querySelector('#dialog1Button')
-          .addEventListener('click', e => {
+    document.querySelector('#dialog1Button')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialog1')
         dialog.showModal()
       })
 
-      document.querySelector('#dialog2Button')
-          .addEventListener('click', e => {
+    document.querySelector('#dialog2Button')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialog2')
         dialog.showModal()
       })
 
-      document.querySelector('#dialog3Button')
-          .addEventListener('click', e => {
+    document.querySelector('#dialog3Button')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialog3')
         dialog.showModal()
       })
-      document.querySelector('#dialog3')
-          .addEventListener('cancel', e => {
+    document.querySelector('#dialog3')
+      .addEventListener('cancel', e => {
         e.preventDefault()
       })
 
-      document.querySelector('#dialogTopButton')
-          .addEventListener('click', e => {
+    document.querySelector('#dialogTopButton')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialogTop')
         dialog.showModal()
       })
 
-      document.querySelector('#dialogRightButton')
-          .addEventListener('click', e => {
+    document.querySelector('#dialogRightButton')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialogRight')
         dialog.showModal()
       })
 
-      document.querySelector('#dialogBottomButton')
-          .addEventListener('click', e => {
+    document.querySelector('#dialogBottomButton')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialogBottom')
         dialog.showModal()
       })
 
-      document.querySelector('#dialogLeftButton')
-          .addEventListener('click', e => {
+    document.querySelector('#dialogLeftButton')
+      .addEventListener('click', e => {
         const dialog = document.querySelector('#dialogLeft')
         dialog.showModal()
       })
 
-      document.querySelector('#toggleInputs')
-          .addEventListener('click', e => {
+    document.querySelector('#toggleInputs')
+      .addEventListener('click', e => {
         document.querySelectorAll('re-input').forEach(input => {
           input.disabled = !input.disabled
         })
       })
 
-      document.querySelectorAll('re-dropdown').forEach(dropdown => {
-        dropdown.addEventListener('click', e => {
-          console.log(`clicked menu item ${getItemFromEvent(e)?.id}`)
-        })
+    document.querySelectorAll('re-dropdown').forEach(dropdown => {
+      dropdown.addEventListener('click', e => {
+        console.log(`clicked menu item ${getItemFromEvent(e)?.id}`)
       })
+    })
 
-      document.querySelector('#menu1')
-          .addEventListener('click', e => {
+    document.querySelector('#menu1')
+      .addEventListener('click', e => {
         console.log(`clicked menu item ${getItemFromEvent(e)?.id}`)
       })
 
-      document.querySelectorAll('re-select').forEach(select => {
-        select.addEventListener('change', e => {
-          console.log(`changed re-select e.target.value="${e.target.value}"`)
-        })
+    document.querySelectorAll('re-select').forEach(select => {
+      select.addEventListener('change', e => {
+        console.log(`changed re-select e.target.value="${e.target.value}"`)
       })
+    })
 
-      document.querySelectorAll('re-select[multiple]').forEach(select => {
-        select.addEventListener('change', e => {
-          const ids = Array.from(e.target.selectedOptions).map(n => n.id)
-          console.log(`changed re-select e.target.selectedOptions="${ids}"`)
-        })
+    document.querySelectorAll('re-select[multiple]').forEach(select => {
+      select.addEventListener('change', e => {
+        const ids = Array.from(e.target.selectedOptions).map(n => n.id)
+        console.log(`changed re-select e.target.selectedOptions="${ids}"`)
       })
+    })
 
-      document.querySelectorAll('re-textarea').forEach(ta => {
-        ta.addEventListener('input', e => {
-          console.log(`input re-textarea ${e.target.value}`)
-        })
-        ta.addEventListener('change', e => {
-          console.log(`change re-textarea ${e.target.value}`)
-        })
-        ta.addEventListener('select', e => {
-          console.log(`select re-textarea ${e.target.value}`)
-        })
-        ta.addEventListener('selectionchange', e => {
-          console.log(`selectionchange re-textarea ${e.target.value}`)
-        })
+    document.querySelectorAll('re-textarea').forEach(ta => {
+      ta.addEventListener('input', e => {
+        console.log(`input re-textarea ${e.target.value}`)
       })
+      ta.addEventListener('change', e => {
+        console.log(`change re-textarea ${e.target.value}`)
+      })
+      ta.addEventListener('select', e => {
+        console.log(`select re-textarea ${e.target.value}`)
+      })
+      ta.addEventListener('selectionchange', e => {
+        console.log(`selectionchange re-textarea ${e.target.value}`)
+      })
+    })
 
-      const progress = document.querySelector('#progress1')
-      progress.min = MIN
-      progress.max = MAX
-      //progress.value = MIN
-      document.querySelector('#toggleProgress')
-          .addEventListener('click', e => {
+    const progress = document.querySelector('#progress1')
+    progress.min = MIN
+    progress.max = MAX
+    // progress.value = MIN
+    document.querySelector('#toggleProgress')
+      .addEventListener('click', e => {
         if (handle === 0) {
           e.target.innerText = 'Stop'
           handle = setInterval(() => {
@@ -1298,26 +1361,26 @@
         }
       })
 
-      document.querySelector('#range1')
-          .addEventListener('input', e => {
+    document.querySelector('#range1')
+      .addEventListener('input', e => {
         console.log(`range inputed value=${e.target.value}`)
       })
-      document.querySelector('#range1')
-          .addEventListener('change', e => {
+    document.querySelector('#range1')
+      .addEventListener('change', e => {
         console.log(`range changed value=${e.target.value}`)
       })
 
-      document.querySelector('#ta1')
-          .addEventListener('input', e => {
+    document.querySelector('#ta1')
+      .addEventListener('input', e => {
         console.log(`textarea inputed value=${e.target.value}`)
       })
-      document.querySelector('#ta1')
-          .addEventListener('change', e => {
+    document.querySelector('#ta1')
+      .addEventListener('change', e => {
         console.log(`textarea changed value=${e.target.value}`)
       })
 
-      document.querySelector('#form1')
-          .addEventListener('submit', e => {
+    document.querySelector('#form1')
+      .addEventListener('submit', e => {
         console.log(`form submit attempted`)
         // Prevent actual submission. But get a FormData() object to
         // trigger data collection.
@@ -1327,16 +1390,17 @@
         console.log(Object.fromEntries(data))
       })
 
-      //setInterval(() => console.log(document.activeElement), 2000)
+    // setInterval(() => console.log(document.activeElement), 2000)
     </script>
 
-<button id="bbutton1" popovertarget="mypopover1">Toggle the popover</button>
-<div id="mypopover1" popover xautofocus xtabindex="-1">
-  <button id="bbutton2" popovertarget="mypopover2">Toggle the popover</button>
-  <div id="mypopover2" popover autofocus tabindex="-1">
-      Hi!
-  </div>
-</div>
-
+    <button id="bbutton1" popovertarget="mypopover1">Toggle the popover</button>
+    <div id="mypopover1" popover xautofocus xtabindex="-1">
+      <button id="bbutton2" popovertarget="mypopover2">
+        Toggle the popover
+      </button>
+      <div id="mypopover2" popover autofocus tabindex="-1">
+        Hi!
+      </div>
+    </div>
   </body>
 </html>

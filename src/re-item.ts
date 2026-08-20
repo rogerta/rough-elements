@@ -47,12 +47,14 @@ export class ItemElement extends LitElement {
   /**
    * True if the item is selected.
    */
-  @property({ type: Boolean, reflect: true }) accessor selected = false
+  @property({ type: Boolean, reflect: true })
+  accessor selected = false
 
   /**
    * If true the button is disabled and does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   constructor() {
     super()
@@ -104,7 +106,7 @@ export class ItemElement extends LitElement {
           filter: drop-shadow(0px 0px 4px rgb(from var(--hover-shadow-color) R G B / 0.8));
         }
       }
-    `
+    `,
   ]
 
   /**
@@ -115,12 +117,13 @@ export class ItemElement extends LitElement {
    */
   getLabelNodes(): Node[] {
     let nodes1: Node[] = []
-    const prefix =
-        this.shadowRoot?.querySelector<HTMLSlotElement>('[name=prefix]')
-    const suffix =
-        this.shadowRoot?.querySelector<HTMLSlotElement>('[name=suffix]')
-    const body =
-        this.shadowRoot?.querySelector<HTMLSlotElement>('[part=body]')
+    const prefix = this.shadowRoot?.querySelector<HTMLSlotElement>(
+      '[name=prefix]',
+    )
+    const suffix = this.shadowRoot?.querySelector<HTMLSlotElement>(
+      '[name=suffix]',
+    )
+    const body = this.shadowRoot?.querySelector<HTMLSlotElement>('[part=body]')
 
     if (prefix) {
       nodes1 = nodes1.concat(prefix.assignedNodes())
@@ -134,7 +137,8 @@ export class ItemElement extends LitElement {
 
     const nodes = nodes1.map(n => n.cloneNode(true))
     nodes.forEach(
-        n => n instanceof HTMLElement ? n.removeAttribute('id') : null)
+      n => n instanceof HTMLElement ? n.removeAttribute('id') : null,
+    )
 
     return nodes
   }

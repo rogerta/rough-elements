@@ -4,7 +4,8 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 /**
@@ -42,12 +43,14 @@ export class PanelGroupElement extends LitElement {
    * The name of the panel group.  It must be unique within a given shadow
    * root or light DOM.
    */
-  @property({}) accessor name = ''
+  @property({})
+  accessor name = ''
 
   /**
    * The `data-id` of the panel that is currently visible.
    */
-  @property({}) accessor selected = ''
+  @property({})
+  accessor selected = ''
 
   static styles: CSSResult[] = [
     css`
@@ -59,7 +62,7 @@ export class PanelGroupElement extends LitElement {
       ::slotted(*) {
         grid-area: main;
       }
-    `
+    `,
   ]
 
   protected override firstUpdated(_: PropertyValues): void {

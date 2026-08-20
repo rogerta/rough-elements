@@ -64,7 +64,8 @@ export class CheckboxElement extends ButtonBaseElement {
   /**
    * True if the checkbox is "checked" and false otherwise.
    */
-  @property({ type: Boolean, reflect: true }) accessor checked = false
+  @property({ type: Boolean, reflect: true })
+  accessor checked = false
 
   /**
    * When true the checkbox renders in a way to indicate to the user that
@@ -72,19 +73,22 @@ export class CheckboxElement extends ButtonBaseElement {
    * property, and programmtically the checkbox is always either checked
    * or not.
    */
-  @property({ type: Boolean }) accessor indeterminate = false
+  @property({ type: Boolean })
+  accessor indeterminate = false
 
   /**
    * If true, the checkbox must be checked before its form can be submitted.
    */
-  @property({ type: Boolean }) accessor required = false
+  @property({ type: Boolean })
+  accessor required = false
 
   /**
    * Value to be returned for this checkbox when its form is submitted.  If
    * no value is specified, the default value of "on" is used.  If the checkbox
    * is not checked, no value is submitted.
    */
-  @property({}) accessor value: string | undefined = undefined
+  @property({})
+  accessor value: string | undefined = undefined
 
   private prefix_?: IconElement
 
@@ -123,7 +127,7 @@ export class CheckboxElement extends ButtonBaseElement {
       button {
         background-color: transparent;
       }
-    `
+    `,
   ]
 
   constructor() {
@@ -166,8 +170,8 @@ export class CheckboxElement extends ButtonBaseElement {
       // TODO: from the outside these events should be fired after the click
       // event, but it seems they are fired first.  Need to investigate.
       this.updateComplete.then(() => {
-        fire(this, 'input', {bubbles: true, composed: true})
-        fire(this, 'change', {bubbles: true})
+        fire(this, 'input', { bubbles: true, composed: true })
+        fire(this, 'change', { bubbles: true })
       })
     })
   }
@@ -175,8 +179,9 @@ export class CheckboxElement extends ButtonBaseElement {
   protected override updated(props: PropertyValues): void {
     super.updated(props)
     if (this.prefix_) {
-      this.prefix_.name = this.indeterminate ? 'checkbox-indeterminate'
-          : (this.checked ? 'checkbox' : 'checkbox-outline-blank')
+      this.prefix_.name = this.indeterminate
+        ? 'checkbox-indeterminate'
+        : (this.checked ? 'checkbox' : 'checkbox-outline-blank')
     }
 
     if (props.has('checked')) {

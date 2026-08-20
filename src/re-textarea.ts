@@ -3,18 +3,27 @@
  * @module
  */
 
-import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
-import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin,
+  type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { fire, ReElement } from './internal/re-element.ts'
-import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlInterface,
+  FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import './re-icon-button.ts'
 
-const TextAreaElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & (new (...args: any[]) => FormControlInterface) & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
+const TextAreaElementBase:
+  & (new(...args: any[]) => BorderMixinInterface)
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & (new(...args: any[]) => FormControlInterface)
+  & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
+
 /**
  * TextAreas collect multi-line text data entered by the user.
  *
@@ -50,15 +59,17 @@ export class TextAreaElement extends TextAreaElementBase {
   /**
    * The type of the input.
    */
-  @property() accessor type: 'date' | 'datetime-local' | 'email' | 'number' |
-      'password' | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
+  @property()
+  accessor type: 'date' | 'datetime-local' | 'email' | 'number' | 'password'
+    | 'search' | 'tel' | 'text' | 'time' | 'url' = 'text'
 
   /**
    * Controls whether inputted text is automatically capitalized and, if so,
    * in what manner. See the [autocapitalize](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocapitalize)
    * global attribute page for more information.
    */
-  @property({ reflect: true }) accessor autocapitalize = ''
+  @property({ reflect: true })
+  accessor autocapitalize = ''
 
   /**
    * A space-separated string that describes what, if any, type of autocomplete
@@ -66,68 +77,80 @@ export class TextAreaElement extends TextAreaElementBase {
    * autocomplete recalls previous values entered in the same input field, but
    * more complex forms of autocomplete can exist.
    */
-  @property({ type: Boolean, reflect: true }) accessor autocomplete = false
+  @property({ type: Boolean, reflect: true })
+  accessor autocomplete = false
 
   /**
    * Controls whether automatic spelling correction and processing of text is
    * enabled while the user is editing this textarea.
    */
-  @property({ type: Boolean, reflect: true }) accessor autocorrect = true
+  @property({ type: Boolean, reflect: true })
+  accessor autocorrect = true
 
   /**
    * If present, indicates that the input should automatically have focus when
    * the page has finished loading (or when the `<dialog>` containing the
    * element has been displayed).
    */
-  @property({ type: Boolean, reflect: true }) accessor autofocus = false
+  @property({ type: Boolean, reflect: true })
+  accessor autofocus = false
 
   /**
    * The visible width of the text control, in average character widths. If it
    * is specified, it must be a positive integer.
    */
-  @property({ type: Number }) accessor cols = 20
+  @property({ type: Number })
+  accessor cols = 20
 
   /**
    * If true the input does not respond to user actions.  Disabled inputs are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   /**
    * Maximum length (number of characters) of value.
    */
-  @property({ type: Number }) accessor maxlength: number | undefined = undefined
+  @property({ type: Number })
+  accessor maxlength: number | undefined = undefined
 
   /**
    * Minimum length (number of characters) of value.
    */
-  @property({ type: Number }) accessor minlength: number | undefined = undefined
+  @property({ type: Number })
+  accessor minlength: number | undefined = undefined
 
   /**
    * Text that appears in the form control when it has no value set.
    */
-  @property({}) accessor placeholder = ''
+  @property({})
+  accessor placeholder = ''
 
   /**
    * Boolean. The value is not editable.
    */
-  @property({ type: Boolean, reflect: true }) accessor readonly = false
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false
 
   /**
    * If true, the checkbox must be checked before its form can be submitted.
    */
-  @property({ type: Boolean }) accessor required: boolean | undefined = false
+  @property({ type: Boolean })
+  accessor required: boolean | undefined = false
 
   /**
    * The number of visible text lines for the control. If it is specified, it
    * must be a positive integer.
    */
-  @property({ type: Number }) accessor rows = 2
+  @property({ type: Number })
+  accessor rows = 2
 
   /**
    * The value of the control.
    */
-  @property({}) accessor value = ''
+  @property({})
+  accessor value = ''
 
   constructor() {
     super()
@@ -185,12 +208,15 @@ export class TextAreaElement extends TextAreaElementBase {
   }
 
   private setInitialValueFromSlot_() {
-    const slot =
-        this.renderRoot.querySelector<HTMLSlotElement>('#hiddenslot slot')
+    const slot = this.renderRoot.querySelector<HTMLSlotElement>(
+      '#hiddenslot slot',
+    )
     const nodes = slot?.assignedNodes()
     if (nodes) {
       const text = nodes.reduce(
-          (acc, node) => acc + (node.textContent?.trim() ?? ''), '')
+        (acc, node) => acc + (node.textContent?.trim() ?? ''),
+        '',
+      )
       const ta = this.renderRoot.querySelector('textarea')
       if (ta) {
         ta.value = text

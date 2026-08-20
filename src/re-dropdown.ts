@@ -4,15 +4,16 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { sleep } from './internal/re-common.ts'
 
 import './re-button.ts'
 import './re-menu.ts'
-import { NO_ITEM } from './re-menu.ts'
 import type { ItemElement } from './re-item.ts'
+import { NO_ITEM } from './re-menu.ts'
 
 /**
  * Dropdowns expose a menu of actions that the user can perform.
@@ -67,14 +68,16 @@ export class DropdownElement extends LitElement {
   /**
    * If true the button is disabled and does not respond to user actions.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   /**
    * Enables debugging in elements when the string is not undefined and not
    * emtpty.  When enabled, some rough elements will write debgging information
    * to `console.log`.
    */
-  @property({}) accessor enableDebugging: string | undefined = undefined
+  @property({})
+  accessor enableDebugging: string | undefined = undefined
 
   static styles: CSSResult[] = [
     css`
@@ -98,7 +101,7 @@ export class DropdownElement extends LitElement {
         position-area: bottom span-right;
         position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
       }
-    `
+    `,
   ]
 
   /**

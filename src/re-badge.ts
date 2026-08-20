@@ -4,14 +4,19 @@
  * @module
  */
 
-import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
 import type { VARIANTS } from './internal/re-common.ts'
 import { ReElement } from './internal/re-element.ts'
 
-const BadgeElementBase: (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BackgroundMixin(ReElement)
+const BadgeElementBase:
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & typeof ReElement = BackgroundMixin(ReElement)
+
 /**
  * Badges display status like information to the user. Generally the body of
  * a badge is some small amount of text.
@@ -33,7 +38,8 @@ export class BadgeElement extends BadgeElementBase {
    * Specifies the variant to use.  Different variants use a different colour
    * for the background.
    */
-  @property({ reflect: true }) accessor variant: VARIANTS = 'none'
+  @property({ reflect: true })
+  accessor variant: VARIANTS = 'none'
 
   constructor() {
     super()
@@ -90,6 +96,6 @@ export class BadgeElement extends BadgeElementBase {
       :host([variant=danger]) {
         --re-background-color: var(--danger-color);
       }
-    `
+    `,
   ]
 }

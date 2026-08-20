@@ -14,10 +14,10 @@
     "verbatimModuleSyntax": true,
     "moduleDetection": "force",
     "declaration": true,
-    "removeComments": false,  // Make JSDoc comments appear in declarations.
+    "removeComments": false, // Make JSDoc comments appear in declarations.
     "emitDeclarationOnly": true,
     "rootDir": "./src",
-    "outDir": "./dist",  // Put declarations in same location as `vite build` output.
+    "outDir": "./dist", // Put declarations in same location as `vite build` output.
 
     /* Linting */
     "isolatedDeclarations": true,
