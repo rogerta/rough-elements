@@ -115,7 +115,7 @@ export class SelectElement extends SelectElementBase {
    * When callers wait on `this.updateComplete`, then will also wait for this
    * promise to resolve.
    */
-  allItemsUnselectedComplete_: Promise<void> = Promise.resolve()
+  private allItemsUnselectedComplete_: Promise<void> = Promise.resolve()
 
   /**
    * If true, an option must be selected before its form can be submitted.
