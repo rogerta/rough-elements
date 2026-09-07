@@ -103,7 +103,7 @@ export default function isolatedMixinsPlugin() {
             chain: chain.map(name => resolve(moduleDoc, context, name)),
           }
 
-          console.log('isolated-mixins: possible base class', item)
+          // console.log('isolated-mixins: possible base class', item.name.name)
           context.isolatedMixins = context.isolatedMixins || []
           context.isolatedMixins.push(item)
         }
@@ -153,16 +153,18 @@ export default function isolatedMixinsPlugin() {
       // resolving mixin and base class modules.
       files[moduleDoc.path] = context.imports || [];
 
-      console.log('isolated-mixins: moduleLinkPhase files', moduleDoc.path, Object.keys(files))
+      // console.log('isolated-mixins: moduleLinkPhase files', moduleDoc.path)
 
       // Get list of all known mixins.
       const mixins = manifest.modules.flatMap(module =>
         module.declarations.filter(d => d.kind === 'mixin')
         .map(d => { return { path: module.path, name: d.name }})
       )
+      // console.log('isolated-mixins:     known mixins', mixins)
 
       const toDel = []
-      context.isolatedMixins?.forEach(({ name, chain, index }) => {
+      context.isolatedMixins?.forEach(({ name, chain }, index) => {
+        // console.log('isolated-mixins:     checking for ', name)
         // Make sure that all items in the chain can be resolved to a module or
         // package specifier.  If not, try again after the next moddule.
         const allResolved = chain.every(item => {
@@ -171,36 +173,33 @@ export default function isolatedMixinsPlugin() {
           } else if (item.module) {
             // Remove leading '/' added by URL().pathname in
             // resolveModuleOrPackageSpecifier().
-            const imports = files[item.module.substring(1)]
-            console.log('isolated-mixins:     imports for', item.module, imports)
-            return imports && imports.some(i => i.name === item.name)
+            const path = item.module.substring(1)
+            const imports = files[path]
+            // console.log('isolated-mixins:         imports for', item.module, path, !!imports)
+            return !!imports
           } else {
+            // console.log('isolated-mixins:         ***BUG***')
             // Error, should have either package or module.
             return false
           }
         })
         if (!allResolved) {
-          console.log('isolated-mixins:     skipping unresolved class', name.name)
+          // console.log('isolated-mixins:         skipping unresolved class', name.name)
           return
         }
+
+        // When reaching this point, the item is either a base class or not.
+        // In either case it should no longer be processed.
+        toDel.push(index)
 
         // If the first item in the chain is not a mixin, then this is not a
         // class derived from mixins.
         const first = chain[0]
-        if (first.package) {
-          console.log('isolated-mixins:     skipping package mixin', first.name)
-          return
-        }
-
-        const imports = files[first.module]
-        const isMixin = imports && imports.some(i => i.name === first.name)
+        const isMixin = mixins.some(i => i.name === first.name)
         if (!isMixin) {
-          console.log('isolated-mixins:     ignoring non-class', name.name)
-          toDel.push(index)
+          // console.log('isolated-mixins:         ignoring non-class', name.name, first.name)
           return
         }
-
-        console.log('isolated-mixins:     adding class', name.name)
 
         const classTemplate = {
           kind: 'class',
@@ -222,7 +221,16 @@ export default function isolatedMixinsPlugin() {
           delete classTemplate.superclass.module
         }
 
-        manifest.modules[name.module].declarations.push(classTemplate)
+        console.log('cem-plugin-isolated-mixins:adding class', name.module, classTemplate)
+
+        const modDoc = manifest.modules.find(m => m.path === name.module)
+        if (!modDoc) {
+          if (context.dev) {
+            console.log('cem-plugin-isolated-mixins: module not found', name.module)
+          }
+          return
+        }
+        modDoc.declarations.push(classTemplate)
       })
 
       toDel.reverse().forEach(i => context.isolatedMixins.splice(i, 1))
@@ -232,8 +240,10 @@ export default function isolatedMixinsPlugin() {
       // Anything left in context.isolatedMixins after the moduleLinkPhase is a
       // class that could not be resolved to a module or package specifier.
       // This could be a bug in the web component.
-      context.isolatedMixins?.forEach(({ name, chain }) => {
-        console.log('isolated-mixins: unresolved class', name.name)
+      context.isolatedMixins?.forEach(({ name }) => {
+        if (context.dev) {
+          console.log('isolated-mixins: unresolved class', name.name)
+        }
       })
     },
   }
