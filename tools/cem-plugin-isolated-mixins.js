@@ -221,8 +221,6 @@ export default function isolatedMixinsPlugin() {
           delete classTemplate.superclass.module
         }
 
-        console.log('cem-plugin-isolated-mixins:adding class', name.module, classTemplate)
-
         const modDoc = manifest.modules.find(m => m.path === name.module)
         if (!modDoc) {
           if (context.dev) {
@@ -230,7 +228,15 @@ export default function isolatedMixinsPlugin() {
           }
           return
         }
+
+        // Remove the variable statement from the moduleDoc, since it is now
+        // represented as a class.
+        modDoc.declarations = modDoc.declarations.filter(d => d.name !== name.name)
+
+        console.log('cem-plugin-isolated-mixins:adding class', name.module, classTemplate)
+
         modDoc.declarations.push(classTemplate)
+        console.log('cem-plugin-isolated-mixins: module', modDoc)
       })
 
       toDel.reverse().forEach(i => context.isolatedMixins.splice(i, 1))
