@@ -12,7 +12,7 @@ import { type FormControlMixinInterface,
 
 import '../re-icon.ts'
 
-const ButtonBaseElementBase:
+export const ButtonBaseElementBase:
   & (new(...args: any[]) => BorderMixinInterface)
   & (new(...args: any[]) => BackgroundMixinInterface)
   & (new(...args: any[]) => FormControlMixinInterface)
