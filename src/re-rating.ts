@@ -10,13 +10,13 @@ import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 import { fire } from './internal/re-element.ts'
-import { type FormControlInterface,
+import { type FormControlMixinInterface,
   FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import { IconElement } from './re-icon.ts'
 
-const RatingElementBase:
-  & (new(...args: any[]) => FormControlInterface)
+export const RatingElementBase:
+  & (new(...args: any[]) => FormControlMixinInterface)
   & typeof LitElement = FormControlMixin(LitElement)
 
 /**

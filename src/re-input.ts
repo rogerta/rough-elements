@@ -16,15 +16,15 @@ import { BackgroundMixin,
 import { BorderMixin,
   type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { fire, ReElement } from './internal/re-element.ts'
-import { type FormControlInterface,
+import { type FormControlMixinInterface,
   FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import './re-icon-button.ts'
 
-const InputElementBase:
+export const InputElementBase:
   & (new(...args: any[]) => BorderMixinInterface)
   & (new(...args: any[]) => BackgroundMixinInterface)
-  & (new(...args: any[]) => FormControlInterface)
+  & (new(...args: any[]) => FormControlMixinInterface)
   & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
 
 /**

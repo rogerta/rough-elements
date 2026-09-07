@@ -7,7 +7,7 @@ import { BackgroundMixin,
   type BackgroundMixinInterface } from './re-background-mixin.ts'
 import { BorderMixin, type BorderMixinInterface } from './re-border-mixin.ts'
 import { ReElement } from './re-element.ts'
-import { type FormControlInterface,
+import { type FormControlMixinInterface,
   FormControlMixin } from './re-form-control-mixin.ts'
 
 import '../re-icon.ts'
@@ -15,7 +15,7 @@ import '../re-icon.ts'
 const ButtonBaseElementBase:
   & (new(...args: any[]) => BorderMixinInterface)
   & (new(...args: any[]) => BackgroundMixinInterface)
-  & (new(...args: any[]) => FormControlInterface)
+  & (new(...args: any[]) => FormControlMixinInterface)
   & typeof ReElement = BorderMixin(BackgroundMixin(FormControlMixin(ReElement)))
 /**
  * This is a base class used to help implement click-style controls such as

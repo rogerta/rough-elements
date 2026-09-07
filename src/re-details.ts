@@ -17,7 +17,7 @@ import { ReElement } from './internal/re-element.ts'
 
 import './re-icon.ts'
 
-const DetailsElementBase:
+export const DetailsElementBase:
   & (new(...args: any[]) => BorderMixinInterface)
   & (new(...args: any[]) => BackgroundMixinInterface)
   & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))

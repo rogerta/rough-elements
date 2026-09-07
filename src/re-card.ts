@@ -14,7 +14,7 @@ import { BorderMixin,
   type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
-const CardElementBase:
+export const CardElementBase:
   & (new(...args: any[]) => BorderMixinInterface)
   & (new(...args: any[]) => BackgroundMixinInterface)
   & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))

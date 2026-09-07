@@ -8,7 +8,7 @@
 import { css, CSSResult, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { type FormControlInterface,
+import { type FormControlMixinInterface,
   FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import { fire } from './internal/re-element.ts'
@@ -16,7 +16,7 @@ import { DropdownElement } from './re-dropdown.ts'
 import { getItemFromEvent, type ItemElement } from './re-item.ts'
 
 const SelectElementBase:
-  & (new(...args: any[]) => FormControlInterface)
+  & (new(...args: any[]) => FormControlMixinInterface)
   & typeof DropdownElement = FormControlMixin(DropdownElement)
 
 /**

@@ -8,7 +8,7 @@ import { property } from 'lit/decorators.js'
 // deno-lint-ignore no-explicit-any
 type Constructor<T = Record<PropertyKey, never>> = new(...args: any[]) => T
 
-export declare class FormControlInterface {
+export declare class FormControlMixinInterface {
   name: string
   setFormValue(
     value: string | File | FormData | null,
@@ -102,5 +102,5 @@ export const FormControlMixin = <T extends Constructor<LitElement>>(
       }
     }
   }
-  return MixinClass as Constructor<FormControlInterface> & T
+  return MixinClass as Constructor<FormControlMixinInterface> & T
 }

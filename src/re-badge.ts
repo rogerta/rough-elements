@@ -13,7 +13,7 @@ import { BackgroundMixin,
 import type { VARIANTS } from './internal/re-common.ts'
 import { ReElement } from './internal/re-element.ts'
 
-const BadgeElementBase:
+export const BadgeElementBase:
   & (new(...args: any[]) => BackgroundMixinInterface)
   & typeof ReElement = BackgroundMixin(ReElement)
 
