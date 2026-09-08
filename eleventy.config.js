@@ -32,6 +32,15 @@ function findMixinsOfClass(clazz) {
 export default function(config) {
   config.addPlugin(HtmlBasePlugin)
 
+  // Batch rapid file changes into a single rebuild execution (in msec).
+  config.setWatchThrottleWaitTime(300);
+  config.setChokidarConfig({
+    awaitWriteFinish: {
+      stabilityThreshold: 300,
+      pollInterval: 100,
+    },
+  })
+
   config.setInputDirectory('./docs')
   config.setOutputDirectory('./dist/docs')
 

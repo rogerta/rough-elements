@@ -11,7 +11,7 @@ npm run docs:cem:watch | tee cem.out.txt > /dev/null &
 
 # Watch for the output of `cem analyze` and re-convert the wc file.  This itself
 # will trigger 11ty..
-inotifywait -m -e modify -e create -e delete -e moved_to --format '%w%f' \
+inotifywait -m -e close_write -e moved_to --format '%w%f' \
     "./dist/custom-elements.json" | while read -r CHANGED_FILE
 do
   echo "Changed: $CHANGED_FILE"
