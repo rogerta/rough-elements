@@ -18,7 +18,7 @@ import { type FormControlMixinInterface,
 
 import './re-icon-button.ts'
 
-const TextAreaElementBase:
+export const TextAreaElementBase:
   & (new(...args: any[]) => BorderMixinInterface)
   & (new(...args: any[]) => BackgroundMixinInterface)
   & (new(...args: any[]) => FormControlMixinInterface)

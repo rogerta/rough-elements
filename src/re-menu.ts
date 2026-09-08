@@ -101,7 +101,7 @@ class KeyboardNavState {
   }
 }
 
-const MenuElementBase:
+export const MenuElementBase:
   & (new(...args: any[]) => BorderMixinInterface)
   & (new(...args: any[]) => BackgroundMixinInterface)
   & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
