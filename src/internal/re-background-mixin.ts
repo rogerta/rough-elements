@@ -1,13 +1,13 @@
 import { css } from 'lit'
 
-import type { ReElement } from './re-element.ts'
 import { property } from 'lit/decorators.js'
 import type { FILLSTYLE } from './re-common.ts'
+import type { ReElement } from './re-element.ts'
 
 // Typescript requires mixin ctors to use exactly one argument of type
 // `any[]`, so ignore this error from deno lint.
 // deno-lint-ignore no-explicit-any
-type Constructor<T = Record<PropertyKey, never>> = new (...args: any[]) => T
+type Constructor<T = Record<PropertyKey, never>> = new(...args: any[]) => T
 
 /**
  * A mixin class that fills the background of an element using rough drawing
@@ -90,14 +90,20 @@ export declare class BackgroundMixinInterface {
 /**
  * See description of `BackgroundMixinInterface` for details.
  */
-export const BackgroundMixin =
-    <T extends Constructor<ReElement>>(superClass: T) => {
+export const BackgroundMixin = <T extends Constructor<ReElement>>(
+  superClass: T,
+) => {
   class MixinClass extends superClass {
-    @property({}) accessor fillStyle: FILLSTYLE = 'none'
-    @property({}) accessor hachureWeight = 6
-    @property({}) accessor hachureGap = 15
-    @property({}) accessor hachureAngle = -75
-    @property({}) accessor fillFraction = 1
+    @property({})
+    accessor fillStyle: FILLSTYLE = 'none'
+    @property({})
+    accessor hachureWeight = 6
+    @property({})
+    accessor hachureGap = 15
+    @property({})
+    accessor hachureAngle = -75
+    @property({})
+    accessor fillFraction = 1
 
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,
@@ -128,12 +134,14 @@ export const BackgroundMixin =
           stroke-opacity: var(--re-fill-opacity, inherit);
           stroke-width: var(--re-background-stroke-width, inherit);
         }
-      `]
+      `,
+    ]
 
     protected override onResized(
-        width: number,
-        height: number,
-        cstyles: CSSStyleDeclaration): SVGElement[] {
+      width: number,
+      height: number,
+      cstyles: CSSStyleDeclaration,
+    ): SVGElement[] {
       const roughElements = super.onResized(width, height, cstyles)
       if (this.fillStyle === 'none') {
         return roughElements
@@ -163,9 +171,12 @@ export const BackgroundMixin =
         const finalWidth = this.fillFraction * (width + borderWidth)
 
         const el = this.rough.rectangle(
-            -halfBorderWidth, -halfBorderWidth,
-            finalWidth, height + borderWidth,
-            options)
+          -halfBorderWidth,
+          -halfBorderWidth,
+          finalWidth,
+          height + borderWidth,
+          options,
+        )
         el.classList.add('background')
         roughElements.push(el)
       }
@@ -173,5 +184,5 @@ export const BackgroundMixin =
       return roughElements
     }
   }
-  return MixinClass as Constructor<BackgroundMixinInterface> & T;
+  return MixinClass as Constructor<BackgroundMixinInterface> & T
 }

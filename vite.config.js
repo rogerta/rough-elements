@@ -8,7 +8,7 @@ export default defineConfig({
       name: 'rough',
       fileName: 'rough-elements',
     },
-    minify: 'oxc'
+    minify: 'oxc',
   },
   server: {
     host: '0.0.0.0',
@@ -16,4 +16,3 @@ export default defineConfig({
     allowedHosts: ['titanium.tailb25bc6.ts.net'],
   },
 })
-

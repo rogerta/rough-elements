@@ -4,16 +4,21 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 import { fire } from './internal/re-element.ts'
-import { type FormControlInterface, FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { type FormControlMixinInterface,
+  FormControlMixin } from './internal/re-form-control-mixin.ts'
 
 import { IconElement } from './re-icon.ts'
 
-const RatingElementBase: (new (...args: any[]) => FormControlInterface) & typeof LitElement = FormControlMixin(LitElement)
+export const RatingElementBase:
+  & (new(...args: any[]) => FormControlMixinInterface)
+  & typeof LitElement = FormControlMixin(LitElement)
+
 /**
  * Ratings collect star ratings from (or display them to) the user.  Ratings
  * can be configured with 3 to 5 stars.
@@ -30,28 +35,33 @@ export class RatingElement extends RatingElementBase {
   /**
    * The number of stars to display.  The minimum is 3 and the maximum is 5.
    */
-  @property({ type: Number }) accessor max = 5
+  @property({ type: Number })
+  accessor max = 5
 
   /**
    * The rating. When specified in the HTML, corresponds to the initial value.
    */
-  @property({ type: Number }) accessor value = 0
+  @property({ type: Number })
+  accessor value = 0
 
   /**
    * If true the input does not respond to user actions.  Disabled inputs are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   /**
    * If true, the rating is not editable.
    */
-  @property({ type: Boolean, reflect: true }) accessor readonly = false
+  @property({ type: Boolean, reflect: true })
+  accessor readonly = false
 
   /**
    * If true, the checkbox must be checked before its form can be submitted.
    */
-  @property({ type: Boolean, reflect: true }) accessor required = false
+  @property({ type: Boolean, reflect: true })
+  accessor required = false
 
   static styles: CSSResult[] = [
     css`
@@ -96,7 +106,7 @@ export class RatingElement extends RatingElementBase {
           transform: scale(1.5);
         }
       }
-    `
+    `,
   ]
 
   private validate_() {
@@ -131,7 +141,7 @@ export class RatingElement extends RatingElementBase {
             // Prevent the default otherwise the page may scroll.
             ke.preventDefault()
             if (this.value > 0 && this.isEditable_()) {
-            --this.value
+              --this.value
             }
             break
           case 'ArrowUp':
@@ -139,14 +149,14 @@ export class RatingElement extends RatingElementBase {
             // Prevent the default otherwise the page may scroll.
             ke.preventDefault()
             if (this.value < this.max && this.isEditable_()) {
-            ++this.value
+              ++this.value
             }
             break
         }
         break
       }
       case 'keyup': {
-        fire(this, 'change', {bubbles: true})
+        fire(this, 'change', { bubbles: true })
         break
       }
     }
@@ -170,7 +180,7 @@ export class RatingElement extends RatingElementBase {
 
     this.value = this.value === value ? 0 : value
 
-    this.updateComplete.then(() => fire(this, 'change', {bubbles: true}))
+    this.updateComplete.then(() => fire(this, 'change', { bubbles: true }))
   }
 
   private onPointerMove_(e: Event) {
@@ -186,7 +196,7 @@ export class RatingElement extends RatingElementBase {
     fire(this, 'input', {
       bubbles: true,
       composed: true,
-      detail: Number.parseInt(value)
+      detail: Number.parseInt(value),
     })
   }
 
@@ -214,23 +224,33 @@ export class RatingElement extends RatingElementBase {
   }
 
   override render(): TemplateResult<1> {
-    const classes1 = {selected: this.value > 0 }
-    const classes2 = {selected: this.value > 1 }
-    const classes3 = {selected: this.value > 2 }
-    const classes4 = {selected: this.value > 3, hidden: this.max < 4 }
-    const classes5 = {selected: this.value > 4, hidden: this.max < 5 }
+    const classes1 = { selected: this.value > 0 }
+    const classes2 = { selected: this.value > 1 }
+    const classes3 = { selected: this.value > 2 }
+    const classes4 = { selected: this.value > 3, hidden: this.max < 4 }
+    const classes5 = { selected: this.value > 4, hidden: this.max < 5 }
 
     return html`
       <div @click="${this.onClick_}" @pointermove="${this.onPointerMove_}">
-        <re-icon class="${classMap(classes1)}" data-value="1" name="star-rate"></re-icon>
+        <re-icon class="${
+      classMap(classes1)
+    }" data-value="1" name="star-rate"></re-icon>
         <div>
-          <re-icon class="${classMap(classes2)}" data-value="2" name="star-rate"></re-icon>
+          <re-icon class="${
+      classMap(classes2)
+    }" data-value="2" name="star-rate"></re-icon>
           <div>
-            <re-icon class="${classMap(classes3)}" data-value="3" name="star-rate"></re-icon>
+            <re-icon class="${
+      classMap(classes3)
+    }" data-value="3" name="star-rate"></re-icon>
             <div>
-              <re-icon class="${classMap(classes4)}" data-value="4" name="star-rate"></re-icon>
+              <re-icon class="${
+      classMap(classes4)
+    }" data-value="4" name="star-rate"></re-icon>
               <div>
-                <re-icon class="${classMap(classes5)}" data-value="5" name="star-rate"></re-icon>
+                <re-icon class="${
+      classMap(classes5)
+    }" data-value="5" name="star-rate"></re-icon>
               </div>
             </div>
           </div>

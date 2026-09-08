@@ -5,11 +5,14 @@
  * @module
  */
 
-import { css, CSSResult, html, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement } from 'lit/decorators.js'
 
-import { BackgroundMixin, type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
-import { BorderMixin, type BorderMixinInterface } from './internal/re-border-mixin.ts'
+import { BackgroundMixin,
+  type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
+import { BorderMixin,
+  type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { ReElement } from './internal/re-element.ts'
 
 import { getItemFromEvent, ItemElement } from './re-item.ts'
@@ -30,7 +33,7 @@ let menuStack: MenuElement[] = []
 class KeyboardNavState {
   assignedElements: Element[]
   currentIndex: number
-  currentItem?: ItemElement  // Must be valid if currentIndex !== -1.
+  currentItem?: ItemElement // Must be valid if currentIndex !== -1.
 
   constructor(
     assignedElements: Element[],
@@ -43,7 +46,7 @@ class KeyboardNavState {
 
     // Update the current fields with the selected item, if any.
     this.assignedElements.forEach((el, index) => {
-      if (el instanceof ItemElement){
+      if (el instanceof ItemElement) {
         if (el.selected) {
           this.currentIndex = index
           this.currentItem = el
@@ -53,8 +56,9 @@ class KeyboardNavState {
   }
 
   move(up: boolean) {
-    const nextIndex = up ? this.findPrev_(this.currentIndex)
-        : this.findNext_(this.currentIndex)
+    const nextIndex = up
+      ? this.findPrev_(this.currentIndex)
+      : this.findNext_(this.currentIndex)
     if (nextIndex === -1) {
       return false
     }
@@ -97,7 +101,11 @@ class KeyboardNavState {
   }
 }
 
-const MenuElementBase: (new (...args: any[]) => BorderMixinInterface) & (new (...args: any[]) => BackgroundMixinInterface) & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+export const MenuElementBase:
+  & (new(...args: any[]) => BorderMixinInterface)
+  & (new(...args: any[]) => BackgroundMixinInterface)
+  & typeof ReElement = BorderMixin(BackgroundMixin(ReElement))
+
 /**
  * Menus show a list of user selectable options as often seen in a dropdown or
  * context menu.  Children of the menu are usually `<re-item>`,
@@ -172,7 +180,7 @@ export class MenuElement extends MenuElementBase {
         display: inline-flex;
         overflow: visible;  /* Needed so that menu border is visible */
       }
-    `
+    `,
   ]
 
   /**
@@ -247,8 +255,8 @@ export class MenuElement extends MenuElementBase {
           // But only if there are are at least two menus in the stack.  For
           // menus inside <re-dropdown> and derivatives, the focus will be set
           // back to that element when the <re-menu> is closed.
-          const setFocus = menuStack.length > 1 &&
-              this === menuStack.at(menuStack.length - 1)
+          const setFocus = menuStack.length > 1
+            && this === menuStack.at(menuStack.length - 1)
           menuStack = menuStack.filter(m => m !== this)
           if (setFocus) {
             menuStack.at(menuStack.length - 1)?.focus()
@@ -258,8 +266,11 @@ export class MenuElement extends MenuElementBase {
       }
       case 'focus': {
         const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
-        this.kbNavState_= new KeyboardNavState(
-            slot?.assignedElements({ flatten: true }) ?? [], -1, undefined)
+        this.kbNavState_ = new KeyboardNavState(
+          slot?.assignedElements({ flatten: true }) ?? [],
+          -1,
+          undefined,
+        )
         break
       }
       case 'keyup': {
@@ -319,7 +330,7 @@ export class MenuElement extends MenuElementBase {
             ke.preventDefault()
             ke.stopPropagation()
             const item = this.kbNavState_?.currentItem
-            if(item && item instanceof MenuItemElement) {
+            if (item && item instanceof MenuItemElement) {
               item.toggleSubmenu()
             }
             break
@@ -329,7 +340,7 @@ export class MenuElement extends MenuElementBase {
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
-            if(this.kbNavState_?.currentItem) {
+            if (this.kbNavState_?.currentItem) {
               this.kbNavState_.currentItem.click()
             }
             break
@@ -339,7 +350,7 @@ export class MenuElement extends MenuElementBase {
             ke.preventDefault()
             ke.stopPropagation()
 
-            if(this.kbNavState_?.currentItem) {
+            if (this.kbNavState_?.currentItem) {
               this.kbNavState_.currentItem.click()
             }
             break

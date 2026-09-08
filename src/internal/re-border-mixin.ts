@@ -1,13 +1,13 @@
 import { css } from 'lit'
 import { property } from 'lit/decorators.js'
 
-import type { ReElement } from './re-element.ts'
 import type { BORDERSTYLE } from './re-common.ts'
+import type { ReElement } from './re-element.ts'
 
 // Typescript requires mixin ctors to use exactly one argument of type
 // `any[]`, so ignore this error from deno lint.
 // deno-lint-ignore no-explicit-any
-type Constructor<T = Record<PropertyKey, never>> = new (...args: any[]) => T
+type Constructor<T = Record<PropertyKey, never>> = new(...args: any[]) => T
 
 /**
  * A mixin class that draws a border around the element using rough drawing
@@ -53,10 +53,12 @@ export declare class BorderMixinInterface {
 /**
  * See description of `BorderMixinInterface` for details.
  */
-export const BorderMixin =
-    <T extends Constructor<ReElement>>(superClass: T) => {
+export const BorderMixin = <T extends Constructor<ReElement>>(
+  superClass: T,
+) => {
   class MixinClass extends superClass {
-    @property({}) accessor borderStyle: BORDERSTYLE = 'rectangle'
+    @property({})
+    accessor borderStyle: BORDERSTYLE = 'rectangle'
 
     static styles = [
       ...(superClass as unknown as typeof ReElement).styles,
@@ -78,12 +80,14 @@ export const BorderMixin =
           stroke-opacity: var(--re-stroke-opacity, inherit);
           stroke-width: var(--re-stroke-width, inherit);
         }
-      `]
+      `,
+    ]
 
     protected override onResized(
-        width: number,
-        height: number,
-        cstyles: CSSStyleDeclaration): SVGElement[] {
+      width: number,
+      height: number,
+      cstyles: CSSStyleDeclaration,
+    ): SVGElement[] {
       const roughElements = super.onResized(width, height, cstyles)
       const borderWidth = parseFloat(cstyles.borderWidth)
       const halfBorderWidth = borderWidth / 2
@@ -100,14 +104,20 @@ export const BorderMixin =
         let el = undefined
         if (this.borderStyle === 'rectangle') {
           el = this.rough.rectangle(
-              -halfBorderWidth, -halfBorderWidth,
-              width + borderWidth, height + borderWidth,
-              options)
+            -halfBorderWidth,
+            -halfBorderWidth,
+            width + borderWidth,
+            height + borderWidth,
+            options,
+          )
         } else if (this.borderStyle === 'circle') {
           el = this.rough.ellipse(
-              (width) / 2, (height) / 2,
-              width + borderWidth, height + borderWidth,
-              options)
+            width / 2,
+            height / 2,
+            width + borderWidth,
+            height + borderWidth,
+            options,
+          )
         }
         if (el) {
           el.classList.add('border')
@@ -118,5 +128,5 @@ export const BorderMixin =
       return roughElements
     }
   }
-  return MixinClass as Constructor<BorderMixinInterface> & T;
+  return MixinClass as Constructor<BorderMixinInterface> & T
 }

@@ -40,7 +40,8 @@ export class IconButtonElement extends LitElement {
   /**
    * The name of the icon to display.
    */
-  @property() accessor name = ''
+  @property()
+  accessor name = ''
 
   /**
    * Turns this button into a popover control button.  The value of is the ID
@@ -48,13 +49,15 @@ export class IconButtonElement extends LitElement {
    * in the same shadow root or light DOM as this button.  If this is not the
    * case, use the `setPopoverTarget()` method instead.
    */
-  @property({}) accessor popovertarget: string | undefined = undefined
+  @property({})
+  accessor popovertarget: string | undefined = undefined
 
   /**
    * If true the button does not respond to user actions.  Disabled buttons are
    * not sumbitted as part of a form.
    */
-  @property({ type: Boolean, reflect: true }) accessor disabled = false
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false
 
   /**
    * Sets this icon button to be a trigger for a popover element. The popover
@@ -67,7 +70,7 @@ export class IconButtonElement extends LitElement {
    * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
    */
-  setPopoverTarget(target: HTMLElement| null): void {
+  setPopoverTarget(target: HTMLElement | null): void {
     this.updateComplete.then(() => {
       const button = this.renderRoot.querySelector('re-button')
       if (button) {

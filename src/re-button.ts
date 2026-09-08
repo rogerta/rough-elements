@@ -5,12 +5,13 @@
  * @module
  */
 
-import { css, CSSResult, html, nothing, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, nothing, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import type { VARIANTS } from './internal/re-common.ts'
 import { ButtonBaseElement } from './internal/re-button-base.ts'
+import type { VARIANTS } from './internal/re-common.ts'
 
 import './re-icon.ts'
 
@@ -63,36 +64,42 @@ export class ButtonElement extends ButtonBaseElement {
    * specified value of `href`.  The default behaviour is to open the link
    * specified by `href` in the target window.
    */
-  @property() accessor href: string | undefined = undefined
+  @property()
+  accessor href: string | undefined = undefined
 
   /**
    * If `href` is not empty, specifies the target window to open the link.
    */
-  @property() accessor target: string | undefined = undefined
+  @property()
+  accessor target: string | undefined = undefined
 
   /**
    * If `href` is not empty, the browser will download the linked file to a
    * file named by this property.
    */
-  @property() accessor download: string | undefined = undefined
+  @property()
+  accessor download: string | undefined = undefined
 
   /**
    * If true, a caret `<re-icon>` will be suffixed to this button.  This is
    * mostly used internally to indicate that the button will open some kind of
    * submenu.  It's color is taken from `--border-color`.
    */
-  @property({ type: Boolean, reflect: true }) accessor caret = false
+  @property({ type: Boolean, reflect: true })
+  accessor caret = false
 
   /**
    * If true the button will render with a round border instead of a rectangular
    * one.  Usually the default slot is filled with a single `<re-icon>`.
    */
-  @property({ type: Boolean, reflect: true }) accessor circle = false
+  @property({ type: Boolean, reflect: true })
+  accessor circle = false
 
   /**
    * A theme variant for the button, mostly affectings its colours.
    */
-  @property({ reflect: true }) accessor variant: VARIANTS | 'text' = 'none'
+  @property({ reflect: true })
+  accessor variant: VARIANTS | 'text' = 'none'
 
   // Form specific properties.
 
@@ -100,43 +107,50 @@ export class ButtonElement extends ButtonBaseElement {
    * The button type for form submissions. Use type `'submit'` to make this
    * button submit its associated form.
    */
-  @property({}) accessor type = 'button'
+  @property({})
+  accessor type = 'button'
 
   /**
    * If this button is used to submit the form, the form's `action` is
    * overridden with this URL.
    */
-  @property({}) accessor formaction: string | undefined = undefined
+  @property({})
+  accessor formaction: string | undefined = undefined
 
   /**
    * If this button is used to submit the form, the form's `enctype` is
    * overridden with this encoding type.
    */
-  @property({}) accessor formenctype: string | undefined = undefined
+  @property({})
+  accessor formenctype: string | undefined = undefined
 
   /**
    * If this button is used to submit the form, the form's `method` is
    * overridden with this method.
    */
-  @property({}) accessor formmethod = 'post'
+  @property({})
+  accessor formmethod = 'post'
 
   /**
    * If this button is used to submit the form, the form's `novalidate` is
    * overridden with this value.
    */
-  @property({}) accessor formnovalidate: string | undefined = undefined
+  @property({})
+  accessor formnovalidate: string | undefined = undefined
 
   /**
    * If this button is used to submit the form, the form's `target` is
    * overridden with this value.
    */
-  @property({}) accessor formtarget = '_self'
+  @property({})
+  accessor formtarget = '_self'
 
   /**
    * If this button is used to submit the form, this buttons `name` and `value`
    * are submitted with the form data.
    */
-  @property({}) accessor value: string | undefined = undefined
+  @property({})
+  accessor value: string | undefined = undefined
 
   /**
    * Turns this button into a popover control button.  The value of is the ID
@@ -144,7 +158,8 @@ export class ButtonElement extends ButtonBaseElement {
    * in the same shadow root or light DOM as this button.  If this is not the
    * case, use the `setPopoverTarget()` method instead.
    */
-  @property({}) accessor popovertarget: string | undefined = undefined
+  @property({})
+  accessor popovertarget: string | undefined = undefined
 
   constructor() {
     super()
@@ -180,8 +195,8 @@ export class ButtonElement extends ButtonBaseElement {
    */
   togglePopover(force?: boolean): boolean {
     const button = this.renderRoot.querySelector('button')
-    if (button && button.popoverTargetElement &&
-        button.popoverTargetElement instanceof HTMLElement) {
+    if (button && button.popoverTargetElement
+      && button.popoverTargetElement instanceof HTMLElement) {
       return button.popoverTargetElement.togglePopover(force)
     }
     return false
@@ -200,7 +215,7 @@ export class ButtonElement extends ButtonBaseElement {
           // so that the submitter properties can be used.
           this.submitForm()
 
-        // If this is a "link" style button, click the embedded link.
+          // If this is a "link" style button, click the embedded link.
         } else if (this.href) {
           this.renderRoot.querySelector('a')?.click()
         }
@@ -217,8 +232,9 @@ export class ButtonElement extends ButtonBaseElement {
 
     if (props.has('variant') || props.has('circle')) {
       const isTextButton = this.variant === 'text'
-      this.borderStyle = isTextButton ? 'none'
-          : (this.circle ? 'circle' : 'rectangle')
+      this.borderStyle = isTextButton
+        ? 'none'
+        : (this.circle ? 'circle' : 'rectangle')
       this.fillStyle = isTextButton || this.circle ? 'none' : 'solid'
     }
 
@@ -243,14 +259,16 @@ export class ButtonElement extends ButtonBaseElement {
     return templ
   }
 
-  protected override renderCaretIfNeeded_(): TemplateResult<1> | typeof nothing {
+  protected override renderCaretIfNeeded_():
+    | TemplateResult<1>
+    | typeof nothing {
     return this.caret
-        ? html`
+      ? html`
           <!-- The \`<re-icon>\` used for the caret, if any. See the
                \`caret\` property. -->
           <re-icon part="caret" name="keyboard-arrow-down"></re-icon>
         `
-        : nothing
+      : nothing
   }
 
   static styles: CSSResult[] = [

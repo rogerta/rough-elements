@@ -8,124 +8,117 @@ permalink: "component/{{ c.tagName | slugify }}/"
 {% extends "./internal/base.njk" %}
 
 {% block style %}
-.classmixin {
-  font-size: 0.75rem;
-  font-weight: normal;
-  font-style: italic;
-  vertical-align: top;
-  opacity: 0.5;
-}
-.classnametitle {
-  font-size: 0.9em;
-  margin-right: 1rem;
-  text-wrap: nowrap;
-  color: rgb(0 91 172);
-}
-h1 {
-  position: sticky;
-  top: 0;
-  background: Canvas;
-  padding: 3rem 0 1rem 0;
-  margin: 0;
-}
-
-@media (prefers-color-scheme: dark) {
-  .classnametitle {
-    filter: brightness(0) saturate(100%) invert(54%) sepia(18%) saturate(1963%)
-            hue-rotate(171deg) brightness(94%) contrast(92%);
-  }
-}
-
+  .classmixin { font-size: 0.75rem; font-weight: normal; font-style: italic;
+  vertical-align: top; opacity: 0.5; } .classnametitle { font-size: 0.9em;
+  margin-right: 1rem; text-wrap: nowrap; color: rgb(0 91 172); } h1 { position:
+  sticky; top: 0; background: Canvas; padding: 3rem 0 1rem 0; margin: 0; }
+  @media (prefers-color-scheme: dark) { .classnametitle { filter: brightness(0)
+  saturate(100%) invert(54%) sepia(18%) saturate(1963%) hue-rotate(171deg)
+  brightness(94%) contrast(92%); } }
 {% endblock %}
 
 {% block main %}
-<h1>
-  {{c.tagName | replace('re-', '') | replace('-', ' ') | title}}
-  <span class="classnametitle">{{c.tagName}}</span>
-  {% set mixins = c | filterForMixins %}
-  {% for name in mixins %}
-    <span class="classmixin">{{ name | replace('Mixin', '') }}</span>
-  {% endfor %}
-</h1>
-{{c.description | marked | safe }}
-
-<h2>Slots</h2>
-  <table>
-  <thead>
-    <tr><th>Name</th><th>Description</th></tr>
-  </thead>
-  <tbody>
-    {% for slot in c.slots %}
-    <tr>
-      <td class="slot-name">{{slot.name | d('[default]', true)}}</td>
-      <td>{{slot.description | marked | safe }}</td>
-    </tr>
+  <h1>
+    {{ c.tagName | replace('re-', '') | replace('-', ' ') | title }}
+    <span class="classnametitle">{{ c.tagName }}</span>
+    {% set mixins = c | filterForMixins %}
+    {% for name in mixins %}
+      <span class="classmixin">{{ name | replace('Mixin', '') }}</span>
     {% endfor %}
-  </tbody>
+  </h1>
+  {{ c.description | marked | safe }}
+
+  <h2>Slots</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for slot in c.slots %}
+        <tr>
+          <td class="slot-name">{{ slot.name | d('[default]', true) }}</td>
+          <td>{{ slot.description | marked | safe }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
   </table>
 
-{% include "./internal/properties.njk" %}
-{% include "./internal/css-properties.njk" %}
+  {% include "./internal/properties.njk" %}
+  {% include "./internal/css-properties.njk" %}
 
-<h2>Events</h2>
+  <h2>Events</h2>
   {% set events = c | filterForEvents %}
   {% if events | length %}
     <table>
-    <thead>
-      <tr><th>Name</th><th>Description</th></tr>
-    </thead>
-    <tbody>
-      {% for event in events %}
-      <tr>
-        <td class="part-name">{{event.name | d('[default]', true)}}</td>
-        <td>{{event.description | marked | safe }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for event in events %}
+          <tr>
+            <td class="part-name">{{ event.name | d('[default]', true) }}</td>
+            <td>{{ event.description | marked | safe }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   {% else %}
     No events.
   {% endif %}
 
-<h2>Methods</h2>
+  <h2>Methods</h2>
   {% set methods = c | filterForMethods %}
   {% if methods | length %}
     <table>
-    <thead>
-      <tr><th>Name</th><th>Description</th><th>Arguments</th></tr>
-    </thead>
-    <tbody>
-    {% for m in methods %}
-    <tr>
-      <td class="property-name">{{m.name}}</td>
-      <td>{{m.description | marked | safe }}</td>
-      <td class="property-params">({{m.parameters | mapParam() | join(', ')}})</td>
-    </tr>
-    {% endfor %}
-    </tbody>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Arguments</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in methods %}
+          <tr>
+            <td class="property-name">{{ m.name }}</td>
+            <td>{{ m.description | marked | safe }}</td>
+            <td class="property-params">
+              ({{ m.parameters | mapParam() | join(', ') }})
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   {% else %}
     No methods.
   {% endif %}
 
-<h2>Parts</h2>
+  <h2>Parts</h2>
   {% set parts = c | filterForParts %}
   {% if parts | length %}
     <table>
-    <thead>
-      <tr><th>Name</th><th>Description</th></tr>
-    </thead>
-    <tbody>
-      {% for part in parts %}
-      <tr>
-        <td class="part-name">{{part.name | d('[default]', true)}}</td>
-        <td>{{part.description | marked | safe }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for part in parts %}
+          <tr>
+            <td class="part-name">{{ part.name | d('[default]', true) }}</td>
+            <td>{{ part.description | marked | safe }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
     </table>
   {% else %}
     No parts.
   {% endif %}
-
-  {% endblock %}
+{% endblock %}

@@ -7,13 +7,14 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
+import { css, CSSResult, html, LitElement, type PropertyValues,
+  type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
-import  './re-button.ts'
+import './re-button.ts'
 import { fire } from './internal/re-element.ts'
-import  './re-icon-button.ts'
+import './re-icon-button.ts'
 
 /**
  * Dialogs are shown when immedidate user interaction is required.
@@ -49,7 +50,6 @@ import  './re-icon-button.ts'
  * @event close - Fired when the `<dialog>` has been closed.
  * @event cancel - Fires when the user triggers a close request.  This event
  *    is cancelable.
- *
  */
 @customElement('re-dialog')
 export class DialogElement extends LitElement {
@@ -64,7 +64,8 @@ export class DialogElement extends LitElement {
    * if set the `'none'` the dialog can only be closed by some caller specific
    * mechanism.
    */
-  @property({}) accessor closedby: 'any' | 'closerequest' | 'none' = 'any'
+  @property({})
+  accessor closedby: 'any' | 'closerequest' | 'none' = 'any'
 
   /**
    * Returns true if the dialog is open.
@@ -74,7 +75,7 @@ export class DialogElement extends LitElement {
   }
 
   static styles: CSSResult[] = [
-    //...super.styles,
+    // ...super.styles,
     css`
       :host {
         position: absolute;
@@ -255,7 +256,8 @@ export class DialogElement extends LitElement {
           xbackground-color: rgb(255 255 255 / 0.1);
         }
       }
-  `]
+  `,
+  ]
 
   /**
    * Shows the dialog.
@@ -323,7 +325,7 @@ export class DialogElement extends LitElement {
             </footer>
           </re-card>
         </dialog>
-      `
+      `,
     ]
   }
 }

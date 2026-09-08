@@ -1,21 +1,18 @@
 {% extends "./internal/base.njk" %}
 
 {% block style %}
-ul {
-  list-style-type: none;
-}
+  ul { list-style-type: none; }
 {% endblock %}
 
 {% block main %}
+  <h1>Themes</h1>
+  <p>
+    Rough Elements support both light and dark themes and will follow the system
+    theme automatically. An HTML page must link to the Rough Elements default
+    stylesheet before importing any elements as follows:
+  </p>
 
-<h1>Themes</h1>
-<p>
-Rough Elements support both light and dark themes and will follow the system
-theme automatically.  An HTML page must link to the Rough Elements default
-stylesheet before importing any elements as follows:
-</p>
-
-<pre><code>&lt;!doctype html&gt;
+  <pre><code>&lt;!doctype html&gt;
 &lt;html lang="en"&gt;
   &lt;head&gt;
     &lt;link href="https://esm.sh/jsr/@rough/rough-elements/public/themes/default.css" rel="stylesheet"&gt;
@@ -27,31 +24,31 @@ stylesheet before importing any elements as follows:
 &lt;/html&gt;
 </code></pre>
 
-<p>
-A theme consists of a small number of CSS properties that must be set.  The
-simplest way to create a new theme is to copy the <code>default.css</code> file
-and change as needed.  Then load this file instead of <code>default.css</code>.
-</p>
-<p>
-IMPORTANT: DON'T REMOVE OR RENAME ANY OF THE CLASSES, MEDIA QUERIES, CSS
-SELECTORS OR CSS PROPERTIES.  SIMPLY SET THE VALUE OF THE FOLLOWING CSS
-PROPERTIES TO THE DESIRED VALUES:
+  <p>
+    A theme consists of a small number of CSS properties that must be set. The
+    simplest way to create a new theme is to copy the <code>default.css</code>
+    file and change as needed. Then load this file instead of <code
+    >default.css</code>.
+  </p>
+  <p>
+    IMPORTANT: DON'T REMOVE OR RENAME ANY OF THE CLASSES, MEDIA QUERIES, CSS
+    SELECTORS OR CSS PROPERTIES. SIMPLY SET THE VALUE OF THE FOLLOWING CSS
+    PROPERTIES TO THE DESIRED VALUES:
 
-<ul>
-<li>--primary-color</li>
-<li>--success-color</li>
-<li>--neutral-color</li>
-<li>--warning-color</li>
-<li>--danger-color</li>
-<li>--foreground-color</li>
-<li>--background-color</li>
-<li>--border-color</li>
-<li>--border-width</li>
-<li>--hover-shadow-color</li>
-<li>--font-sans-family</li>
-<li>--font-serif-family</li>
-<li>--font-mono-family</li>
-</ul>
-</p>
-
+    <ul>
+      <li>--primary-color</li>
+      <li>--success-color</li>
+      <li>--neutral-color</li>
+      <li>--warning-color</li>
+      <li>--danger-color</li>
+      <li>--foreground-color</li>
+      <li>--background-color</li>
+      <li>--border-color</li>
+      <li>--border-width</li>
+      <li>--hover-shadow-color</li>
+      <li>--font-sans-family</li>
+      <li>--font-serif-family</li>
+      <li>--font-mono-family</li>
+    </ul>
+  </p>
 {% endblock %}

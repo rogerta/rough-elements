@@ -1,6 +1,7 @@
 import { css, CSSResult } from 'lit'
 
-export type VARIANTS = 'primary' | 'success' | 'neutral' | 'warning' | 'danger'| 'none'
+export type VARIANTS = 'primary' | 'success' | 'neutral' | 'warning' | 'danger'
+  | 'none'
 
 export type FILLSTYLE = 'hachure' | 'zigzag' | 'solid' | 'none'
 
