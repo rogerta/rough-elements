@@ -2,6 +2,13 @@ import process from 'node:process'
 
 import { HtmlBasePlugin } from '@11ty/eleventy'
 import { marked } from 'marked'
+
+// TODO: the side effect of importing the custom-elements.json here is that
+// any change to the class hierarchy will not be picked up by `11ty --serve`
+//  until the process is restarted.  This is done as an optimization to prevent
+// recalculating the `classes` global each time `findSuperclass()` (or
+// `findMixinsOfClass()`) is called.  These methods are called at least once per
+// component (~27 as of this writing).
 import data from './dist/custom-elements.json' with { type: 'json' }
 
 const modules = data.modules
