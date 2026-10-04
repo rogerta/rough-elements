@@ -25,9 +25,9 @@
     "docs:11ty": "eleventy",
     "fmt": "dprint fmt",
     "preview": "vite preview",
-    "pub": "npx jsr publish --allow-slow-types",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "type-check": "tsc --noEmit -p tests/tsconfig.json"
   },
   "keywords": [
     "webcomponent",
