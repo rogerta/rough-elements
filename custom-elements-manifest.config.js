@@ -4,7 +4,13 @@ import isolatedMixinsPlugin from './tools/cem-plugin-isolated-mixins.js'
 
 export default {
   globs: ['src/**/*.ts'],
-  exclude: ['src/**/*.test.js', 'src/**/*.spec.js', 'node_modules'],
+  exclude: [
+    'src/**/*.test.js',
+    'src/**/*.spec.js',
+    'src/**/*.test.ts',
+    'src/**/*.spec.ts',
+    'node_modules',
+  ],
   outdir: '.',
   litelement: true,
   fast: false,

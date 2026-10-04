@@ -19,13 +19,15 @@
     "build": "vite build && tsc",
     "docs": "./tools/serve-docs.sh",
     "docs:build": "npm run docs:cem && npm run docs:cem2wc && npm run docs:11ty",
-    "docs:cem":       "cem analyze --dev --litelement --outdir=./dist",
+    "docs:cem": "cem analyze --dev --litelement --outdir=./dist",
     "docs:cem:watch": "cem analyze --dev --litelement --outdir=./dist --watch",
     "docs:cem2wc": "node ./tools/cem2wc.js",
     "docs:11ty": "eleventy",
     "fmt": "dprint fmt",
     "preview": "vite preview",
-    "pub": "npx jsr publish --allow-slow-types"
+    "pub": "npx jsr publish --allow-slow-types",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "keywords": [
     "webcomponent",
@@ -48,9 +50,11 @@
     "@rogerta/cem-plugin-litelement-parts": "1.0.1",
     "@rogerta/cem-plugin-litelement-slots": "1.0.1",
     "dprint": "^0.56.0",
+    "happy-dom": "^20.14.5",
     "marked": "18.0.5",
     "typescript": "7.0.2",
-    "vite": "8.2.2"
+    "vite": "8.2.2",
+    "vitest": "^5.0.3"
   },
   "customElements": "dist/custom-elements.json"
 }
