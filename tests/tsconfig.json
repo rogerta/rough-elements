@@ -1,0 +1,27 @@
+// Configuration for test files in the tests/ directory.
+//
+// The root tsconfig.json is configured specifically for building and publishing
+// library declaration files (`rootDir: "./src"`, `outDir: "./dist"`,
+// `emitDeclarationOnly: true`, `isolatedDeclarations: true`).
+//
+// Including test files in the root config would trigger `rootDir` errors (TS6059),
+// emit unwanted `.d.ts` files for tests into `dist/`, and enforce library-level
+// `isolatedDeclarations` rules on test code.
+//
+// This config extends the root options while disabling declaration emit (`noEmit: true`),
+// relaxing `isolatedDeclarations`, and expanding `rootDir` so IDEs and `tsc --noEmit`
+// can type-check tests cleanly.
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "..",
+    "outDir": null,
+    "emitDeclarationOnly": false,
+    "noEmit": true,
+    "isolatedDeclarations": false
+  },
+  "include": [
+    "./**/*",
+    "../src/**/*"
+  ]
+}

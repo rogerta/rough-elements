@@ -39,7 +39,9 @@
     ],
     "exclude": [
       "src/global.d.ts",
-      "src/vite-env.d.ts"
+      "src/vite-env.d.ts",
+      "src/**/*.test.ts",
+      "src/**/*.spec.ts"
     ]
   }
 }
