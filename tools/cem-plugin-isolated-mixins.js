@@ -1,5 +1,5 @@
-// Creates class declarations from variable declations that are classes defined
-// as mixins of other classes.
+// Creates class declarations from variable declations that are  mixins of
+// other classes.
 //
 // When building component that use mixins, the typical syntax is as follows
 // (example code based on Lit):
@@ -96,7 +96,6 @@ function resolve(moduleDoc, context, name) {
 export default function isolatedMixinsPlugin() {
   const files = {}
   let manifest = null
-
   return {
     name: 'cem-plugin-isolated-mixins',
 
@@ -198,7 +197,6 @@ export default function isolatedMixinsPlugin() {
           .filter(d => d.kind === 'mixin')
           .map(d => { return { path: module.path, name: d.name }})
       )
-
       // Acculmulates the indices of items in `context.isolatedMixins`
       // that have been processed and should be removed from future
       // consideration in subsequent modules.
@@ -213,7 +211,7 @@ export default function isolatedMixinsPlugin() {
           } else if (item.module) {
             // Remove leading '/' added by URL().pathname in
             // resolveModuleOrPackageSpecifier().
-            const path = item.module.substring(1)
+            const path = item.module[0] === '/' ? item.module.substring(1) : item.module
             return !!files[path]
           } else {
             // Error, should have either package or module.
