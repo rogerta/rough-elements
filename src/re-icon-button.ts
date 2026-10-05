@@ -8,6 +8,7 @@ import { html, LitElement, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
 
+import './re-button.ts'
 import './re-icon.ts'
 
 /**
