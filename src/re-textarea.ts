@@ -212,14 +212,13 @@ export class TextAreaElement extends TextAreaElementBase {
       '#hiddenslot slot',
     )
     const nodes = slot?.assignedNodes()
-    if (nodes) {
+    if (nodes && nodes.length > 0) {
       const text = nodes.reduce(
         (acc, node) => acc + (node.textContent?.trim() ?? ''),
         '',
       )
-      const ta = this.renderRoot.querySelector('textarea')
-      if (ta) {
-        ta.value = text
+      if (text) {
+        this.value = text
       }
     }
   }
@@ -242,6 +241,8 @@ export class TextAreaElement extends TextAreaElementBase {
             autocorrect="${this.autocorrect ? 'on' : 'off'}"
             ?autofocus="${this.autofocus}"
             cols="${this.cols}"
+            rows="${this.rows}"
+            .value="${this.value}"
             ?disabled="${this.disabled}"
             maxlength="${ifDefined(this.maxlength)}"
             minlength="${ifDefined(this.minlength)}"
