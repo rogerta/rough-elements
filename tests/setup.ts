@@ -47,6 +47,7 @@ if (typeof ToggleEvent === 'undefined') {
   class ToggleEventPolyfill extends Event {
     oldState: string
     newState: string
+    source: Element | null
     constructor(
       type: string,
       eventInitDict?: { oldState?: string; newState?: string; bubbles?: boolean; cancelable?: boolean },
@@ -54,9 +55,9 @@ if (typeof ToggleEvent === 'undefined') {
       super(type, eventInitDict)
       this.oldState = eventInitDict?.oldState ?? 'closed'
       this.newState = eventInitDict?.newState ?? 'open'
+      this.source = null
     }
   }
-  // @@ts-expect-error polyfill
   globalThis.ToggleEvent = ToggleEventPolyfill
 }
 
@@ -107,13 +108,14 @@ if (typeof HTMLElement !== 'undefined') {
   }
 
   const origMatches = HTMLElement.prototype.matches
-  // @@ts-expect-error polyfill for :popover-open
-  HTMLElement.prototype.matches = function(selectors: string) {
+  HTMLElement.prototype.matches = function(
+      this: HTMLElement,
+      selectors: string) {
     if (selectors === ':popover-open') {
       return popoverOpenSet.has(this)
     }
     return origMatches.call(this, selectors)
-  }
+  } as typeof HTMLElement.prototype.matches
 }
 
 // When using happy-dom, the document object belongs to the mocked window
