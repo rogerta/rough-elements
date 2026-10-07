@@ -1,6 +1,6 @@
 import partPlugin from '@rogerta/cem-plugin-litelement-parts'
 import slotPlugin from '@rogerta/cem-plugin-litelement-slots'
-import isolatedMixinsPlugin from './tools/cem-plugin-isolated-mixins.js'
+import isolatedMixinsPlugin from '@rogerta/cem-plugin-isolated-mixins'
 
 export default {
   globs: ['src/**/*.ts'],
