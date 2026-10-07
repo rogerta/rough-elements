@@ -61,9 +61,8 @@ export class IconButtonElement extends LitElement {
   accessor disabled = false
 
   /**
-   * Sets this icon button to be a trigger for a popover element. The popover
-   * will be displayed once the button finishes it's update cycle (that is, once
-   * the `updateComplete` promise resolves).
+   * Sets this icon button to be a trigger for a popover element. The popover will
+   * be attached once the returned promise resolves.
    *
    * `setPopoverTarget` is needed to allow targets from different shawdow root
    * boundaries to be used.
@@ -71,11 +70,11 @@ export class IconButtonElement extends LitElement {
    * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
    */
-  setPopoverTarget(target: HTMLElement | null): void {
-    this.updateComplete.then(() => {
+  setPopoverTarget(target: HTMLElement | null): Promise<void> {
+    return this.updateComplete.then(async () => {
       const button = this.renderRoot.querySelector('re-button')
       if (button) {
-        button.setPopoverTarget(target)
+        await button.setPopoverTarget(target)
       }
     })
   }

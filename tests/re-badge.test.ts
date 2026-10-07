@@ -19,6 +19,9 @@ describe('re-badge', () => {
     const roughSvg = el.shadowRoot?.querySelector('svg#rough')
     expect(roughSvg).not.toBeNull()
 
+    const body = el.shadowRoot?.querySelector('slot[part=body]')
+    expect(body).not.toBeNull()
+
     el.remove()
   })
 
