@@ -167,18 +167,27 @@ export class ButtonElement extends ButtonBaseElement {
   }
 
   /**
+   * Simulates a mouse click on the button.  The click event has been
+   * dispatched and handled once the returned promise resolves.
+   */
+  click(): Promise<void> {
+    return this.updateComplete.then(() => {
+      this.renderRoot.querySelector('button')?.click()
+    })
+  }
+
+  /**
    * Sets this button to be a trigger for a popover element. The popover will
-   * be displayed once the button finishes it's update cycle (that is, once
-   * the `updateComplete` promise resolves).
+   * be attached once the returned promise resolves.
    *
-   * `setPopoverTarget` is needed to allow targets from different shawdow root
+   * `setPopoverTarget` is needed to allow targets from different shadow root
    * boundaries to be used.
    *
    * @param target The popover element.  This element is expected to
    *    have the `popover` attribute.  It's anchor will be set this button.
    */
-  setPopoverTarget(target: HTMLElement | null): void {
-    this.updateComplete.then(() => {
+  setPopoverTarget(target: HTMLElement | null): Promise<void> {
+    return this.updateComplete.then(() => {
       const button = this.renderRoot.querySelector('button')
       if (button) {
         button.popoverTargetElement = target

@@ -69,6 +69,7 @@ if (typeof HTMLElement !== 'undefined') {
     HTMLElement.prototype.showPopover = function() {
       if (!popoverOpenSet.has(this)) {
         popoverOpenSet.add(this)
+        this.style.display = 'block'
         this.dispatchEvent(
           new ToggleEvent('toggle', {
             oldState: 'closed',
@@ -83,6 +84,7 @@ if (typeof HTMLElement !== 'undefined') {
     HTMLElement.prototype.hidePopover = function() {
       if (popoverOpenSet.has(this)) {
         popoverOpenSet.delete(this)
+        this.style.display = 'none'
         this.dispatchEvent(
           new ToggleEvent('toggle', {
             oldState: 'open',
