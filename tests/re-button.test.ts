@@ -7,13 +7,51 @@ describe('re-button', () => {
     expect(customElements.get('re-button')).toBeDefined()
   })
 
-  it('default fill style is solid', async () => {
+  it('renders with default properties', async () => {
     const btn = document.createElement('re-button') as ButtonElement
-    btn.textContent = 'Click me'
     document.body.appendChild(btn)
     await btn.updateComplete
 
+    expect(btn.disabled).toBe(false)
+    expect(btn.name).toBe('')
+    expect(btn.href).toBeUndefined()
+    expect(btn.target).toBeUndefined()
+    expect(btn.download).toBeUndefined()
+    expect(btn.caret).toBe(false)
+    expect(btn.circle).toBe(false)
+    expect(btn.variant).toBe('none')
+    expect(btn.type).toBe('button')
+    expect(btn.formaction).toBeUndefined()
+    expect(btn.formenctype).toBeUndefined()
+    expect(btn.formmethod).toBe('post')
+    expect(btn.formnovalidate).toBeUndefined()
+    expect(btn.formtarget).toBe('_self')
+    expect(btn.value).toBeUndefined()
+    expect(btn.popovertarget).toBeUndefined()
     expect(btn.fillStyle).toBe('solid')
+
+    const roughSvg = btn.shadowRoot?.querySelector('svg#rough')
+    expect(roughSvg).not.toBeNull()
+
+    const innerButton = btn.shadowRoot?.querySelector('button[part="button"]')
+    expect(innerButton).not.toBeNull()
+
+    const prefixSlot = btn.shadowRoot?.querySelector('slot[name="prefix"]')
+    expect(prefixSlot).not.toBeNull()
+
+    const mainSlot = btn.shadowRoot?.querySelector('slot#main')
+    expect(mainSlot).not.toBeNull()
+
+    const suffixSlot = btn.shadowRoot?.querySelector('slot[name="suffix"]')
+    expect(suffixSlot).not.toBeNull()
+
+    // No caret by default
+    const caretIcon = btn.shadowRoot?.querySelector('re-icon[part="caret"]')
+    expect(caretIcon).toBeNull()
+
+    // No link by default
+    const link = btn.shadowRoot?.querySelector('a')
+    expect(link).toBeNull()
 
     btn.remove()
   })
