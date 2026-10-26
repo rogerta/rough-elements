@@ -10,8 +10,8 @@ import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
 import { fire } from './internal/re-element.ts'
-import { type FormControlMixinInterface,
-  FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { FormControlMixin,
+  type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
 import { IconElement } from './re-icon.ts'
 
