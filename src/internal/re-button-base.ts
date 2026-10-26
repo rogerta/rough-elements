@@ -7,8 +7,8 @@ import { BackgroundMixin,
   type BackgroundMixinInterface } from './re-background-mixin.ts'
 import { BorderMixin, type BorderMixinInterface } from './re-border-mixin.ts'
 import { ReElement } from './re-element.ts'
-import { type FormControlMixinInterface,
-  FormControlMixin } from './re-form-control-mixin.ts'
+import { FormControlMixin,
+  type FormControlMixinInterface } from './re-form-control-mixin.ts'
 
 import '../re-icon.ts'
 
