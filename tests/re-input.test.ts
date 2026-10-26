@@ -36,7 +36,9 @@ describe('re-input', () => {
     input.addEventListener('input', inputSpy)
     input.addEventListener('change', changeSpy)
 
-    innerInput?.dispatchEvent(new Event('input', { bubbles: true, composed: true }))
+    innerInput?.dispatchEvent(
+      new Event('input', { bubbles: true, composed: true }),
+    )
     innerInput?.dispatchEvent(new Event('change', { bubbles: true }))
 
     expect(inputSpy).toHaveBeenCalledTimes(1)
@@ -69,7 +71,9 @@ describe('re-input', () => {
 
     // The toggle button has part="password-icon" inside the suffix slot
     const slot = input.shadowRoot?.querySelector('slot[name="suffix"]')
-    const toggleBtn = slot?.querySelector('re-icon-button[part="password-icon"]')
+    const toggleBtn = slot?.querySelector(
+      're-icon-button[part="password-icon"]',
+    )
     expect(toggleBtn).not.toBeNull()
 
     input.remove()

@@ -66,7 +66,6 @@ describe('re-checkbox', () => {
     cb.remove()
   })
 
-
   it('updates icon when indeterminate is true', async () => {
     const cb = document.createElement('re-checkbox') as CheckboxElement
     document.body.appendChild(cb)

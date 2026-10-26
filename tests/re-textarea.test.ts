@@ -35,7 +35,9 @@ describe('re-textarea', () => {
     ta.addEventListener('input', inputSpy)
     ta.addEventListener('change', changeSpy)
 
-    innerTextarea?.dispatchEvent(new Event('input', { bubbles: true, composed: true }))
+    innerTextarea?.dispatchEvent(
+      new Event('input', { bubbles: true, composed: true }),
+    )
     innerTextarea?.dispatchEvent(new Event('change', { bubbles: true }))
 
     expect(inputSpy).toHaveBeenCalledTimes(1)
