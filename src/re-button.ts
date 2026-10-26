@@ -226,6 +226,9 @@ export class ButtonElement extends ButtonBaseElement {
 
           // If this is a "link" style button, click the embedded link.
         } else if (this.href) {
+          e.preventDefault()
+          e.stopPropagation()
+          e.stopImmediatePropagation()
           this.renderRoot.querySelector('a')?.click()
         }
         break

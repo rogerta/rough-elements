@@ -42,6 +42,38 @@ if (typeof HTMLElement !== 'undefined'
   }
 }
 
+if (typeof HTMLDialogElement !== 'undefined'
+  && !(HTMLDialogElement.prototype as any).requestClose) {
+  ;(HTMLDialogElement.prototype as any).requestClose = function(
+    this: HTMLDialogElement,
+  ) {
+    const cancelEvent = new Event('cancel', { cancelable: true })
+    if (this.dispatchEvent(cancelEvent)) {
+      this.close()
+    }
+  }
+}
+
+// In happy-dom, HTMLDetailsElement dispatches a generic Event('toggle') instead of
+// standard ToggleEvent with newState and oldState. Wrap dispatchEvent to emit ToggleEvent.
+if (typeof HTMLDetailsElement !== 'undefined') {
+  const origDispatch = HTMLDetailsElement.prototype.dispatchEvent
+  HTMLDetailsElement.prototype.dispatchEvent = function(
+    this: HTMLDetailsElement,
+    event: Event,
+  ) {
+    if (event.type === 'toggle' && (event as any).newState === undefined) {
+      const isOpen = this.open
+      const toggleEvent = new ToggleEvent('toggle', {
+        oldState: isOpen ? 'closed' : 'open',
+        newState: isOpen ? 'open' : 'closed',
+      })
+      return origDispatch.call(this, toggleEvent)
+    }
+    return origDispatch.call(this, event)
+  }
+}
+
 if (typeof ToggleEvent !== 'undefined') {
   console.warn('ToggleEvent is already defined. Skipping ToggleEvent polyfill.')
 }
