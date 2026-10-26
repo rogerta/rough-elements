@@ -50,9 +50,13 @@ describe('re-button', () => {
   })
 
   it('supports popover target via togglePopover', async () => {
+    // console.log(`*** rogerta doc=${document?.constructor?.toString()}`)
+    // console.log(`*** rogerta win=${window?.constructor?.toString()}`)
+    // console.log(`*** rogerta glob=${globalThis?.constructor?.toString()}`)
+    // console.log(`*** rogerta globdoc=${globalThis?.Document?.constructor?.toString()}`)
+
     const target = document.createElement('div')
-    target.setAttribute('popover', '')
-    target.style.display = 'none'
+    target.setAttribute('popover', 'auto')
     document.body.appendChild(target)
     const styles1 = getComputedStyle(target)
     expect(styles1.getPropertyValue('display')).toBe('none')
@@ -73,35 +77,33 @@ describe('re-button', () => {
   })
 
   it('supports popover target via click', async () => {
-console.log('rogerta supports popover target via click')
     const target = document.createElement('div')
-    target.setAttribute('popover', '')
-    target.style.display = 'none'
+    target.setAttribute('popover', 'auto')
     document.body.appendChild(target)
+    const styles1 = getComputedStyle(target)
+    expect(styles1.display).toBe('none')
 
     const btn = document.createElement('re-button') as ButtonElement
     document.body.appendChild(btn)
     await btn.setPopoverTarget(target)
 
     await btn.click()
-console.log('rogerta after')
     const styles = getComputedStyle(target)
-    //expect(styles.getPropertyValue('display')).toBe('block')
+    expect(styles.getPropertyValue('display')).toBe('block')
 
     btn.remove()
     target.remove()
   })
 
   it('supports popover target via attribute', async () => {
-console.log('rogerta supports popover target via attribute')
     const target = document.createElement('div')
-    target.setAttribute('popover', '')
-    target.style.display = 'none'
+    target.setAttribute('popover', 'auto')
     target.id = 'testPopover'
     document.body.appendChild(target)
 
     const btn = document.createElement('re-button') as ButtonElement
     document.body.appendChild(btn)
+    btn.setAttribute('popovertarget', target.id)
     await btn.updateComplete
 
     btn.popovertarget = target.id
@@ -109,9 +111,8 @@ console.log('rogerta supports popover target via attribute')
 
     const isOpen = btn.togglePopover()
     expect(typeof isOpen).toBe('boolean')
-console.log('rogerta after')
     const styles = getComputedStyle(target)
-    //expect(styles.getPropertyValue('display')).toBe('block')
+    expect(styles.getPropertyValue('display')).toBe('block')
 
     btn.remove()
     target.remove()

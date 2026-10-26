@@ -184,7 +184,6 @@ export class RadioElement extends ButtonBaseElement {
 
   private forEachOtherRadio_(cb: (radio: RadioElement) => void) {
     const root = this.getRootNode()
-    console.log(`*** radio got sr=${root instanceof ShadowRoot} doc=${root instanceof Document}`)
     if (root instanceof ShadowRoot || root instanceof Document) {
       root.querySelectorAll('re-radio').forEach(radio => {
         if (radio !== this && radio.name === this.name) {
