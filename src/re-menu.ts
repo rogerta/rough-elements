@@ -22,7 +22,7 @@ import { MenuItemElement } from './re-menu-item.ts'
 export const NO_ITEM = {
   index: -1,
   item: null,
-}
+} as const
 
 // Stack of open <re-menu>s used to restore focus when they close.
 let menuStack: MenuElement[] = []
@@ -192,22 +192,19 @@ export class MenuElement extends MenuElementBase {
    */
   findItemByValue(value: string): {
     index: number
-    item: null
-  } | {
-    index: number
-    item: ItemElement
+    item: ItemElement | null
   } {
     if (!value) {
-      return NO_ITEM
+      return structuredClone(NO_ITEM)
     }
     const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
     if (!slot) {
-      return NO_ITEM
+      return structuredClone(NO_ITEM)
     }
 
     const assignedElements = slot.assignedElements({ flatten: true })
     if (assignedElements.length === 0) {
-      return NO_ITEM
+      return structuredClone(NO_ITEM)
     }
 
     // TODO: filter out things that are not <re-item>s.
@@ -216,7 +213,9 @@ export class MenuElement extends MenuElementBase {
       return node instanceof ItemElement && node.id === value
     })
 
-    return { index, item: assignedElements[index] as ItemElement }
+    return index === -1
+      ? structuredClone(NO_ITEM)
+      : { index, item: assignedElements[index] as ItemElement }
   }
 
   /**

@@ -8,7 +8,6 @@ import { css, CSSResult, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-icon.ts'
-import { MenuElement } from './re-menu.ts'
 
 /**
  * Items define elements that are used inside containers such as
@@ -211,7 +210,7 @@ export function getItemFromEvent(e: Event): ItemElement | null {
 
     // Since `<re-menu>`s can nest inside each other, don't go past a menu
     // boundary.
-    if (target instanceof MenuElement) {
+    if (target?.localName === 're-menu') {
       target = null
       break
     }
