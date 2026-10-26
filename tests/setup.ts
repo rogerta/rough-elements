@@ -42,6 +42,14 @@ if (typeof HTMLElement !== 'undefined'
   }
 }
 
+if (typeof ToggleEvent !== 'undefined') {
+  console.warn('ToggleEvent is already defined. Skipping ToggleEvent polyfill.')
+}
+
+/* The follow code is commented out because the linked copy has my mods for
+ * the popover API in happy-dom.  Put the code back in when using offical
+ * happy-dom.
+
 // Polyfill ToggleEvent for happy-dom if undefined
 if (typeof ToggleEvent === 'undefined') {
   class ToggleEventPolyfill extends Event {
@@ -120,6 +128,8 @@ if (typeof HTMLElement !== 'undefined') {
   } as typeof HTMLElement.prototype.matches
 }
 
+*/
+
 // When using happy-dom, the document object belongs to the mocked window
 // instance created by Happy DOM.  However, code that does
 // `document instanceof Document` evaluates Document against Node's global
@@ -128,3 +138,4 @@ if (typeof HTMLElement !== 'undefined') {
 // Document constructor.
 // @ts-expect-error Deprecated
 globalThis.Document = window.HTMLDocument
+globalThis.HTMLElement = window.HTMLElement
