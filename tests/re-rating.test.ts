@@ -15,7 +15,9 @@ describe('re-rating', () => {
     expect(rating.max).toBe(5)
     expect(rating.value).toBe(0)
 
-    const stars = rating.shadowRoot?.querySelectorAll('re-icon[name="star-rate"]')
+    const stars = rating.shadowRoot?.querySelectorAll(
+      're-icon[name="star-rate"]',
+    )
     expect(stars?.length).toBe(5)
 
     rating.remove()
@@ -29,7 +31,9 @@ describe('re-rating', () => {
     const changeSpy = vi.fn()
     rating.addEventListener('change', changeSpy)
 
-    const thirdStar = rating.shadowRoot?.querySelector('re-icon[data-value="3"]') as HTMLElement
+    const thirdStar = rating.shadowRoot?.querySelector(
+      're-icon[data-value="3"]',
+    ) as HTMLElement
     thirdStar?.click()
     await rating.updateComplete
 
@@ -73,7 +77,9 @@ describe('re-rating', () => {
     document.body.appendChild(rating)
     await rating.updateComplete
 
-    const thirdStar = rating.shadowRoot?.querySelector('re-icon[data-value="3"]') as HTMLElement
+    const thirdStar = rating.shadowRoot?.querySelector(
+      're-icon[data-value="3"]',
+    ) as HTMLElement
     thirdStar?.click()
     await rating.updateComplete
     expect(rating.value).toBe(0)

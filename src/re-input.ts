@@ -16,8 +16,8 @@ import { BackgroundMixin,
 import { BorderMixin,
   type BorderMixinInterface } from './internal/re-border-mixin.ts'
 import { fire, ReElement } from './internal/re-element.ts'
-import { type FormControlMixinInterface,
-  FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { FormControlMixin,
+  type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
 import './re-icon-button.ts'
 

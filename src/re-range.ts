@@ -8,8 +8,8 @@ import { css, CSSResult, type PropertyValues, type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { fire, ReElement } from './internal/re-element.ts'
-import { type FormControlMixinInterface,
-  FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { FormControlMixin,
+  type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
 export const RangeElementBase:
   & (new(...args: any[]) => FormControlMixinInterface)

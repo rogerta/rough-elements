@@ -8,8 +8,8 @@
 import { css, CSSResult, type PropertyValues } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
-import { type FormControlMixinInterface,
-  FormControlMixin } from './internal/re-form-control-mixin.ts'
+import { FormControlMixin,
+  type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
 import { fire } from './internal/re-element.ts'
 import { DropdownElement } from './re-dropdown.ts'
