@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import '../src/re-button.ts'
+import '../src/re-icon.ts'
 import type { ButtonElement } from '../src/re-button.ts'
 
 describe('re-button', () => {
@@ -181,5 +182,83 @@ describe('re-button', () => {
 
     btn.remove()
     form.remove()
+  })
+
+  it('renders an <a> in shadow DOM when href is set, and click() fires exactly one click event', async () => {
+    const btn = document.createElement('re-button') as ButtonElement
+    btn.href = 'https://example.com'
+    document.body.appendChild(btn)
+    await btn.updateComplete
+
+    // An <a> element should now exist in the shadow DOM.
+    const link = btn.shadowRoot?.querySelector('a')
+    expect(link).not.toBeNull()
+    expect(link?.getAttribute('href')).toBe('https://example.com')
+
+    // Intercept clicks on the inner <a> so the browser does not navigate,
+    // and count how many times the outer <re-button> receives a click event.
+    link?.addEventListener('click', (e) => e.preventDefault())
+
+    const clickSpy = vi.fn()
+    btn.addEventListener('click', clickSpy)
+
+    await btn.click()
+
+    // Exactly one click event should bubble up to the <re-button> host —
+    // not two (one from the inner <button> and another retargeted from the <a>).
+    expect(clickSpy).toHaveBeenCalledTimes(1)
+
+    btn.remove()
+  })
+
+  it('renders a caret icon when the caret property is true', async () => {
+    const btn = document.createElement('re-button') as ButtonElement
+    btn.caret = true
+    document.body.appendChild(btn)
+    await btn.updateComplete
+
+    const caretIcon = btn.shadowRoot?.querySelector('re-icon[part="caret"]')
+    expect(caretIcon).not.toBeNull()
+    expect(caretIcon?.getAttribute('name')).toBe('keyboard-arrow-down')
+
+    btn.remove()
+  })
+
+  it('clicking a prefix slot <re-icon> fires a click event on <re-button>', async () => {
+    const btn = document.createElement('re-button') as ButtonElement
+    const icon = document.createElement('re-icon')
+    icon.setAttribute('slot', 'prefix')
+    icon.setAttribute('name', 'star')
+    btn.appendChild(icon)
+    document.body.appendChild(btn)
+    await btn.updateComplete
+
+    const clickSpy = vi.fn()
+    btn.addEventListener('click', clickSpy)
+
+    icon.click()
+
+    expect(clickSpy).toHaveBeenCalledTimes(1)
+
+    btn.remove()
+  })
+
+  it('clicking a suffix slot <re-icon> fires a click event on <re-button>', async () => {
+    const btn = document.createElement('re-button') as ButtonElement
+    const icon = document.createElement('re-icon')
+    icon.setAttribute('slot', 'suffix')
+    icon.setAttribute('name', 'star')
+    btn.appendChild(icon)
+    document.body.appendChild(btn)
+    await btn.updateComplete
+
+    const clickSpy = vi.fn()
+    btn.addEventListener('click', clickSpy)
+
+    icon.click()
+
+    expect(clickSpy).toHaveBeenCalledTimes(1)
+
+    btn.remove()
   })
 })
