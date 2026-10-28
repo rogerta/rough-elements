@@ -88,9 +88,7 @@ describe('re-dialog', () => {
     document.body.appendChild(dialog)
     await dialog.updateComplete
 
-    dialog.addEventListener('cancel', e => {
-      e.preventDefault()
-    })
+    dialog.addEventListener('cancel', e => e.preventDefault())
 
     dialog.showModal()
     await dialog.updateComplete

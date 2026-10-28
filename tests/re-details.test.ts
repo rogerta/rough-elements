@@ -71,13 +71,10 @@ describe('re-details', () => {
     document.body.appendChild(details)
     await details.updateComplete
 
-    const innerDetails = details.shadowRoot?.querySelector(
-      'details',
-    ) as HTMLDetailsElement
     const toggleSpy = vi.fn()
     details.addEventListener('toggle', toggleSpy)
 
-    innerDetails.open = true
+    details.open = true
     await details.updateComplete
 
     expect(toggleSpy).toHaveBeenCalledTimes(1)
@@ -86,7 +83,7 @@ describe('re-details', () => {
     expect(event.oldState).toBe('closed')
     expect(details.open).toBe(true)
 
-    innerDetails.open = false
+    details.open = false
     await details.updateComplete
 
     expect(toggleSpy).toHaveBeenCalledTimes(2)
