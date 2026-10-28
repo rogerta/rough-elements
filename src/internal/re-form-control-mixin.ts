@@ -20,11 +20,13 @@ export declare class FormControlMixinInterface {
     anchor?: HTMLElement,
   ): void
   submitForm(submitter?: HTMLElement): void
+  setFormForTesting(form: HTMLFormElement): void
 }
 
 /**
  * All rough elements that can submit values as part of a form derive from
- * this class.
+ * this class.  It's expected that these element define the static
+ * `formAssociated` boolean as `true`.
  *
  * When deriving from this class it is important to call the base class methods
  * `firstUdated()`, `updated()`, and `disconnectedCallback()` as needed.
@@ -44,6 +46,13 @@ export const FormControlMixin = <T extends Constructor<LitElement>>(
     accessor name = ''
 
     private internals_?: ElementInternals
+
+    private forForTesting_?: HTMLFormElement
+
+    constructor(...args: any[]) {
+      super(...args)
+      this.internals_ = this.attachInternals()
+    }
 
     setFormValue(
       value: string | File | FormData | null,
@@ -85,6 +94,10 @@ export const FormControlMixin = <T extends Constructor<LitElement>>(
       }
     }
 
+    setFormForTesting(form: HTMLFormElement) {
+      this.forForTesting_ = form
+    }
+
     /**
      * Submits the form if any.
      *
@@ -92,14 +105,8 @@ export const FormControlMixin = <T extends Constructor<LitElement>>(
      * @returns True if there was a from to submit.
      */
     submitForm(submitter?: HTMLElement) {
-      this.internals_?.form?.requestSubmit(submitter)
-    }
-
-    override connectedCallback() {
-      super.connectedCallback()
-      if (!this.internals_) {
-        this.internals_ = this.attachInternals()
-      }
+      const form = this.forForTesting_ ?? this.internals_?.form
+      form?.requestSubmit(submitter)
     }
   }
   return MixinClass as Constructor<FormControlMixinInterface> & T

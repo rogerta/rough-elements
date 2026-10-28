@@ -88,11 +88,6 @@ describe('re-button', () => {
   })
 
   it('supports popover target via togglePopover', async () => {
-    // console.log(`*** rogerta doc=${document?.constructor?.toString()}`)
-    // console.log(`*** rogerta win=${window?.constructor?.toString()}`)
-    // console.log(`*** rogerta glob=${globalThis?.constructor?.toString()}`)
-    // console.log(`*** rogerta globdoc=${globalThis?.Document?.constructor?.toString()}`)
-
     const target = document.createElement('div')
     target.setAttribute('popover', 'auto')
     document.body.appendChild(target)
@@ -154,5 +149,37 @@ describe('re-button', () => {
 
     btn.remove()
     target.remove()
+  })
+
+  it('submits the form when type is "submit"', async () => {
+    const form = document.createElement('form')
+    // Prevent actual navigation on submit.
+    form.addEventListener('submit', (e) => e.preventDefault())
+    document.body.appendChild(form)
+
+    const btn = document.createElement('re-button') as ButtonElement
+    btn.type = 'submit'
+    btn.name = 'name'
+    btn.value = 'value'
+
+    // Normally, the browser would associate the button with the form at DOM
+    // insertion time.  What this means for web components is that the `form`
+    // field of the `ElementInternals` object is set as needed.  jsdom does
+    // not do this, this do it manually here.
+    btn.setFormForTesting(form)
+
+    form.appendChild(btn)
+
+    await btn.updateComplete
+
+    const submitSpy = vi.fn()
+    form.addEventListener('submit', submitSpy)
+
+    await btn.click()
+
+    expect(submitSpy).toHaveBeenCalledTimes(1)
+
+    btn.remove()
+    form.remove()
   })
 })
