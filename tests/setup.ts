@@ -74,10 +74,6 @@ if (typeof HTMLDetailsElement !== 'undefined') {
   }
 }
 
-if (typeof ToggleEvent !== 'undefined') {
-  console.warn('ToggleEvent is already defined. Skipping ToggleEvent polyfill.')
-}
-
 /* The follow code is commented out because the linked copy has my mods for
  * the popover API in happy-dom.  Put the code back in when using offical
  * happy-dom.
