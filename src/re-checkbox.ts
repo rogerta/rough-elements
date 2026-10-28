@@ -159,20 +159,38 @@ export class CheckboxElement extends ButtonBaseElement {
     }
 
     this.renderRoot.addEventListener('click', e => {
+      // This click event is canceled and a new one fired below to ensure the
+      // proper ordering of click, input, and change events.
+      e.preventDefault()
+      e.stopPropagation()
+
       if (this.disabled) {
-        e.preventDefault()
         return
       }
 
+      // Change the current state of the checkbox for purposes of the click
+      // event.  Should processing of that event cause the click to prevent
+      // the default aciton, restore the state.
+      const oldChecked = this.checked
+      const oldInderterminate = this.indeterminate
       this.checked = !this.checked
       this.indeterminate = false
 
-      // TODO: from the outside these events should be fired after the click
-      // event, but it seems they are fired first.  Need to investigate.
-      this.updateComplete.then(() => {
-        fire(this, 'input', { bubbles: true, composed: true })
-        fire(this, 'change', { bubbles: true })
-      })
+      const pe = e as PointerEvent
+      if (fire<number>(this, 'click', {
+        bubbles: e.bubbles,
+        cancelable: true,
+        composed: e.composed,
+        detail: pe.detail,
+      })) {
+        this.updateComplete.then(() => {
+          fire(this, 'input', { bubbles: true, composed: true })
+          fire(this, 'change', { bubbles: true })
+        })
+      } else {
+        this.checked = oldChecked
+        this.indeterminate = oldInderterminate
+      }
     })
   }
 

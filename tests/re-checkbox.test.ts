@@ -81,4 +81,50 @@ describe('re-checkbox', () => {
 
     cb.remove()
   })
+
+  it('order of events fired should match html spec', async () => {
+    const cb = document.createElement('re-checkbox') as CheckboxElement
+    document.body.appendChild(cb)
+    await cb.updateComplete
+
+    const events: string[] = []
+    cb.addEventListener('click', e => events.push(e.type))
+    cb.addEventListener('input', e => events.push(e.type))
+    cb.addEventListener('change', e => events.push(e.type))
+
+    const btn = cb.shadowRoot?.querySelector('button')
+    btn?.click()
+    await cb.updateComplete
+
+    expect(events).toEqual(['click', 'input', 'change'])
+
+    cb.remove()
+  })
+
+  it('preventing default on the click event cancels the state change', async () => {
+    const cb = document.createElement('re-checkbox') as CheckboxElement
+    document.body.appendChild(cb)
+    await cb.updateComplete
+
+    const inputSpy = vi.fn()
+    const changeSpy = vi.fn()
+    cb.indeterminate = true
+    cb.addEventListener('click', e => e.preventDefault())
+    cb.addEventListener('input', inputSpy)
+    cb.addEventListener('change', changeSpy)
+
+    const btn = cb.shadowRoot?.querySelector('button')
+    btn?.click()
+    await cb.updateComplete
+
+    // State must not have changed.
+    expect(cb.checked).toBe(false)
+    expect(cb.indeterminate).toBe(true)
+
+    // input and change must not have fired.
+    expect(inputSpy).not.toHaveBeenCalled()
+    expect(changeSpy).not.toHaveBeenCalled()
+
+    cb.remove()
+  })
 })
