@@ -88,6 +88,21 @@ describe('re-button', () => {
     btn.remove()
   })
 
+  it('does not click when disabled', async () => {
+    const btn = document.createElement('re-button') as ButtonElement
+    btn.disabled = true
+    document.body.appendChild(btn)
+    await btn.updateComplete
+
+    const clickSpy = vi.fn()
+    btn.addEventListener('click', clickSpy)
+
+    await btn.click()
+    expect(clickSpy).toHaveBeenCalledTimes(0)
+
+    btn.remove()
+  })
+
   it('supports popover target via togglePopover', async () => {
     const target = document.createElement('div')
     target.setAttribute('popover', 'auto')

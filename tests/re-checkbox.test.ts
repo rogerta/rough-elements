@@ -47,6 +47,8 @@ describe('re-checkbox', () => {
 
     expect(cb.checked).toBe(false)
     expect(cb.hasAttribute('checked')).toBe(false)
+    expect(inputSpy).toHaveBeenCalledTimes(2)
+    expect(changeSpy).toHaveBeenCalledTimes(2)
 
     cb.remove()
   })
