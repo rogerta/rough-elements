@@ -273,6 +273,9 @@ export class DialogElement extends LitElement {
     this.renderRoot.querySelector('dialog')?.requestClose()
   }
 
+  // The native close and cancel events don't bubble and are not composed.
+  // They need to be re-fired here.
+
   private onDialogClose_() {
     fire(this, 'close')
   }
@@ -281,10 +284,6 @@ export class DialogElement extends LitElement {
     if (!fire(this, 'cancel', { cancelable: true })) {
       e.preventDefault()
     }
-  }
-
-  protected override updated(props: PropertyValues): void {
-    super.updated(props)
   }
 
   override render(): TemplateResult<1>[] {
