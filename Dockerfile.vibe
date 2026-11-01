@@ -1,0 +1,35 @@
+# Dockerfile.vibe
+#
+# Build using this command: docker build -t mistral-vibe-sandbox -f Dockerfile.vibe .
+
+FROM ubuntu:24.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install core utilities, python, and git
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    ca-certificates \
+    python3 \
+    python3-pip \
+    python3-venv \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Astral 'uv' cleanly using the correct official URL
+ADD https://astral.sh/uv/install.sh /install.sh
+RUN chmod +x /install.sh && /install.sh && rm /install.sh
+ENV PATH="/root/.local/bin:${PATH}"
+
+# Install mistral-vibe CLI agent
+RUN uv tool install mistral-vibe
+
+# Explicitly link the mounted NVM Node binaries to a standard container path
+RUN ln -s /root/.nvm/versions/node/v24.15.0/bin/node /usr/local/bin/node && \
+    ln -s /root/.nvm/versions/node/v24.15.0/bin/npm /usr/local/bin/npm && \
+    ln -s /root/.nvm/versions/node/v24.15.0/bin/npx /usr/local/bin/npx
+
+WORKDIR /workspace
+
+ENTRYPOINT ["vibe", "--trust", "--yolo"]
+
