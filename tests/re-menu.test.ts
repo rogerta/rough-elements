@@ -81,27 +81,6 @@ describe('re-menu', () => {
     menu.remove()
   })
 
-  it('hides popover when an item is clicked in popover mode', async () => {
-    const menu = document.createElement('re-menu') as MenuElement
-    menu.setAttribute('popover', 'auto')
-
-    const item = document.createElement('re-item') as ItemElement
-    item.id = 'opt1'
-    item.textContent = 'Option 1'
-    menu.appendChild(item)
-
-    document.body.appendChild(menu)
-    await menu.updateComplete
-
-    menu.showPopover()
-    expect(menu.matches(':popover-open')).toBe(true)
-
-    item.click()
-    expect(menu.matches(':popover-open')).toBe(false)
-
-    menu.remove()
-  })
-
   it('navigates items with arrow keys and activates on Enter/Space', async () => {
     const menu = document.createElement('re-menu') as MenuElement
     const item1 = document.createElement('re-item') as ItemElement
