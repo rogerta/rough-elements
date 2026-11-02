@@ -11,6 +11,12 @@
 // This config extends the root options while disabling declaration emit (`noEmit: true`),
 // relaxing `isolatedDeclarations`, and expanding `rootDir` so IDEs and `tsc --noEmit`
 // can type-check tests cleanly.
+//
+// `exclude` must be overridden: the root tsconfig.json excludes `**/*.test.ts`
+// and `**/*.spec.ts` so test files never reach the published declarations, and
+// `exclude` is inherited through `extends` when not overridden.  Without this
+// override, every `.test.ts` file was silently dropped from this project and
+// never type-checked.
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
@@ -20,6 +26,7 @@
     "noEmit": true,
     "isolatedDeclarations": false
   },
+  "exclude": [],
   "include": [
     "./**/*",
     "../src/**/*"
