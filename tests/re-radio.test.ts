@@ -12,6 +12,8 @@ describe('re-radio', () => {
     document.body.appendChild(radio)
     await radio.updateComplete
 
+    expect(radio.fillStyle).toBe('none')
+    expect(radio.borderStyle).toBe('none')
     expect(radio.checked).toBe(false)
     expect(radio.hasAttribute('checked')).toBe(false)
 
@@ -54,10 +56,29 @@ describe('re-radio', () => {
     radio2.name = 'groupB'
     radio2.value = '2'
 
+    // Radio buttons with a different name belong to a different group and
+    // must not be unchecked when the groupB radio buttons are checked.
+    const otherRadio1 = document.createElement('re-radio') as RadioElement
+    otherRadio1.name = 'groupA'
+    otherRadio1.value = '1'
+
+    const otherRadio2 = document.createElement('re-radio') as RadioElement
+    otherRadio2.name = 'groupA'
+    otherRadio2.value = '2'
+
     document.body.appendChild(radio1)
     document.body.appendChild(radio2)
+    document.body.appendChild(otherRadio1)
+    document.body.appendChild(otherRadio2)
     await radio1.updateComplete
     await radio2.updateComplete
+    await otherRadio1.updateComplete
+    await otherRadio2.updateComplete
+
+    // Check one of the groupA radio buttons first.
+    otherRadio1.checked = true
+    await otherRadio1.updateComplete
+    expect(otherRadio1.checked).toBe(true)
 
     // Setting checked programmatically triggers updated() -> forEachOtherRadio_
     radio1.checked = true
@@ -66,15 +87,21 @@ describe('re-radio', () => {
     // radio2 should be unchecked since radio1 is now checked
     await radio2.updateComplete
     expect(radio2.checked).toBe(false)
+    // The checked groupA radio button must be unaffected.
+    expect(otherRadio1.checked).toBe(true)
 
     radio2.checked = true
     await radio2.updateComplete
     expect(radio2.checked).toBe(true)
     await radio1.updateComplete
     expect(radio1.checked).toBe(false)
+    // The checked groupA radio button must still be unaffected.
+    expect(otherRadio1.checked).toBe(true)
 
     radio1.remove()
     radio2.remove()
+    otherRadio1.remove()
+    otherRadio2.remove()
   })
 
   it('does not check when disabled', async () => {
