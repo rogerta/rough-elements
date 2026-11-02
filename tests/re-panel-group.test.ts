@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
 import '../src/re-panel-group.ts'
 import type { PanelGroupElement } from '../src/re-panel-group.ts'
 
@@ -66,6 +66,29 @@ describe('re-panel-group', () => {
     expect(p2.classList.contains('re-hidden')).toBe(true)
     expect(p3.classList.contains('re-hidden')).toBe(true)
 
+    pg.remove()
+  })
+
+  it('logs an error if a child panel is not an HTMLElement', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const pg = document.createElement('re-panel-group') as PanelGroupElement
+
+    const p1 = document.createElement('div')
+    p1.dataset.id = 'panel1'
+    pg.appendChild(p1)
+
+    // An SVG element is an Element but not an HTMLElement subclass so it
+    // cannot be a panel.
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+    pg.appendChild(svg)
+
+    document.body.appendChild(pg)
+    await pg.updateComplete
+
+    expect(consoleSpy).toHaveBeenCalledWith('Panels should be HTML elements')
+
+    consoleSpy.mockRestore()
     pg.remove()
   })
 })
