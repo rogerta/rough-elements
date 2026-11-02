@@ -79,6 +79,38 @@ describe('re-input', () => {
     input.remove()
   })
 
+  it('reflects inner input value changes to the value property', async () => {
+    const cases = [
+      { type: 'text', value: 'typed text' },
+      { type: 'number', value: '123' },
+      { type: 'date', value: '2024-06-15' },
+    ] as const
+
+    for (const { type, value } of cases) {
+      const input = document.createElement('re-input') as InputElement
+      input.type = type
+      document.body.appendChild(input)
+      await input.updateComplete
+
+      const innerInput = input.shadowRoot?.querySelector('input')
+      expect(innerInput).not.toBeNull()
+      expect(input.value).toBe('')
+
+      // Programmatically setting the inner input's value does not fire an
+      // input event, and re-input only syncs its own value property in
+      // response to input/change events from the inner input.  So an input
+      // event must be dispatched to simulate user typing.
+      innerInput!.value = value
+      innerInput!.dispatchEvent(
+        new Event('input', { bubbles: true, composed: true }),
+      )
+
+      expect(input.value).toBe(value)
+
+      input.remove()
+    }
+  })
+
   it('exposes valueAsNumber for numeric inputs', async () => {
     const input = document.createElement('re-input') as InputElement
     input.type = 'number'
@@ -91,6 +123,22 @@ describe('re-input', () => {
     input.value = '7'
     await input.updateComplete
     expect(input.valueAsNumber).toBe(7)
+
+    input.remove()
+  })
+
+  it('exposes valueAsDate for date inputs', async () => {
+    const input = document.createElement('re-input') as InputElement
+    input.type = 'date'
+    input.value = '2024-06-15'
+    document.body.appendChild(input)
+    await input.updateComplete
+
+    expect(input.valueAsDate).toEqual(new Date(Date.UTC(2024, 5, 15)))
+
+    input.value = '2025-01-31'
+    await input.updateComplete
+    expect(input.valueAsDate).toEqual(new Date(Date.UTC(2025, 0, 31)))
 
     input.remove()
   })
