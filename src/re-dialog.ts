@@ -7,7 +7,7 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues,
+import { css, CSSResult, html, LitElement,
   type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { ifDefined } from 'lit/directives/if-defined.js'
