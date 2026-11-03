@@ -1,0 +1,3 @@
+allowBuilds:
+  dprint: true
+  rs-module-lexer: true
