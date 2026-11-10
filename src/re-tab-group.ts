@@ -162,6 +162,11 @@ export class TabGroupElement extends LitElement {
   }
 
   protected override firstUpdated(_: PropertyValues): void {
+    // Listen for keyboard events to allow the user to move between tabs with
+    // the arrow keys.
+    this.addEventListener('keydown', this)
+    this.addEventListener('keyup', this)
+
     if (!this.name) {
       console.error('Tab groups must be named')
     }
@@ -238,9 +243,6 @@ export class TabGroupElement extends LitElement {
     if (divider && gridColumn !== -1) {
       divider.style.setProperty('grid-column', gridColumn.toString())
     }
-
-    this.addEventListener('keydown', this)
-    this.addEventListener('keyup', this)
   }
 
   override render(): TemplateResult<1> {

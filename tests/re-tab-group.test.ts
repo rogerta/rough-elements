@@ -152,6 +152,58 @@ describe('re-tab-group', () => {
     panelGroup.remove()
   })
 
+  it('logs a console error for children that are not <re-item>s', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const tabGroup = document.createElement('re-tab-group') as TabGroupElement
+    tabGroup.name = 'bad-children'
+
+    const tab1 = document.createElement('re-item') as ItemElement
+    tab1.id = 'tab1'
+    tab1.textContent = 'Tab 1'
+    const notAnItem = document.createElement('div')
+    notAnItem.textContent = 'Not a tab'
+
+    tabGroup.appendChild(tab1)
+    tabGroup.appendChild(notAnItem)
+
+    document.body.appendChild(tabGroup)
+    await tabGroup.updateComplete
+
+    expect(consoleSpy).toHaveBeenCalledTimes(1)
+    expect(consoleSpy).toHaveBeenCalledWith(
+      'An tab in tab group "bad-children" is not an <re-item>',
+    )
+
+    tabGroup.remove()
+    consoleSpy.mockRestore()
+  })
+
+  it('logs no console errors when all children are <re-item>s', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
+
+    const tabGroup = document.createElement('re-tab-group') as TabGroupElement
+    tabGroup.name = 'good-children'
+
+    const tab1 = document.createElement('re-item') as ItemElement
+    tab1.id = 'tab1'
+    tab1.textContent = 'Tab 1'
+    const tab2 = document.createElement('re-item') as ItemElement
+    tab2.id = 'tab2'
+    tab2.textContent = 'Tab 2'
+
+    tabGroup.appendChild(tab1)
+    tabGroup.appendChild(tab2)
+
+    document.body.appendChild(tabGroup)
+    await tabGroup.updateComplete
+
+    expect(consoleSpy).not.toHaveBeenCalled()
+
+    tabGroup.remove()
+    consoleSpy.mockRestore()
+  })
+
   it('navigates tabs with keyboard arrow keys and fires input event', async () => {
     const tabGroup = document.createElement('re-tab-group') as TabGroupElement
     tabGroup.name = 'keyboard-group'

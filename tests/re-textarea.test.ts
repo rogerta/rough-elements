@@ -46,6 +46,26 @@ describe('re-textarea', () => {
     ta.remove()
   })
 
+  it('uses child text as the default value', async () => {
+    const ta = document.createElement('re-textarea') as TextAreaElement
+    ta.appendChild(document.createTextNode('  Hello, World!  '))
+    document.body.appendChild(ta)
+    await ta.updateComplete
+
+    // The value is picked up from the slot inside `firstUpdated()`, which
+    // schedules a second update cycle to re-render the inner textarea.
+    await ta.updateComplete
+
+    // The surrounding whitespace is trimmed away.
+    expect(ta.value).toBe('Hello, World!')
+
+    // The initial value is visible in the rendered textarea.
+    const innerTextarea = ta.shadowRoot?.querySelector('textarea')
+    expect(innerTextarea?.value).toBe('Hello, World!')
+
+    ta.remove()
+  })
+
   it('supports rows, cols and disabled properties', async () => {
     const ta = document.createElement('re-textarea') as TextAreaElement
     ta.rows = 4
