@@ -1,7 +1,7 @@
 {
   "name": "rough-elements",
   "description": "Collection of hand-drawn sketchy web components",
-  "version": "3.0.15",
+  "version": "3.0.16",
   "engines": {
     "node": "24"
   },
