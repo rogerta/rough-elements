@@ -52,10 +52,6 @@ describe('re-textarea', () => {
     document.body.appendChild(ta)
     await ta.updateComplete
 
-    // The value is picked up from the slot inside `firstUpdated()`, which
-    // schedules a second update cycle to re-render the inner textarea.
-    await ta.updateComplete
-
     // The surrounding whitespace is trimmed away.
     expect(ta.value).toBe('Hello, World!')
 

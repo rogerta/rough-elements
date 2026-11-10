@@ -173,7 +173,20 @@ export class TextAreaElement extends TextAreaElementBase {
     const textarea = this.renderRoot.querySelector('textarea')
     textarea?.addEventListener('change', this)
     textarea?.addEventListener('input', this)
-    this.setInitialValueFromSlot_()
+  }
+
+  protected override willUpdate(props: PropertyValues): void {
+    super.willUpdate(props)
+
+    // Pick up the initial value from the light-DOM children before the first
+    // render is committed, so the inner <textarea> is rendered with the
+    // correct value and no second update cycle is needed.  The shadow <slot>
+    // can't be used for this because it isn't rendered until after the first
+    // update commits everything to the DOM.  Writing `value` here only marks
+    // it as changed in the update cycle already in progress.
+    if (!this.hasUpdated) {
+      this.setInitialValueFromChildren_()
+    }
   }
 
   override updated(props: PropertyValues): void {
@@ -207,19 +220,20 @@ export class TextAreaElement extends TextAreaElementBase {
     }
   }
 
-  private setInitialValueFromSlot_() {
-    const slot = this.renderRoot.querySelector<HTMLSlotElement>(
-      '#hiddenslot slot',
+  private setInitialValueFromChildren_() {
+    // The children assigned to the default slot are those that don't have a
+    // `slot` attribute of their own.
+    const text = Array.from(this.childNodes).reduce(
+      (acc, node) => {
+        if (node instanceof Element && node.hasAttribute('slot')) {
+          return acc
+        }
+        return acc + (node.textContent?.trim() ?? '')
+      },
+      '',
     )
-    const nodes = slot?.assignedNodes()
-    if (nodes && nodes.length > 0) {
-      const text = nodes.reduce(
-        (acc, node) => acc + (node.textContent?.trim() ?? ''),
-        '',
-      )
-      if (text) {
-        this.value = text
-      }
+    if (text) {
+      this.value = text
     }
   }
 
