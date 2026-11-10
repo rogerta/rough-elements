@@ -1,4 +1,4 @@
-name: Deploy 11ty Docs to Pages
+name: Deploy Documentation
 
 on:
   push:
@@ -25,12 +25,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: 'package.json'
           cache: 'npm'
 
       - name: Install Dependencies
