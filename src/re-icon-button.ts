@@ -61,6 +61,14 @@ export class IconButtonElement extends LitElement {
   accessor disabled = false
 
   /**
+   * If present, indicates that the button should automatically have focus
+   * when the page has finished loading (or when the `<dialog>` or popover
+   * containing the element has been shown).
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor autofocus = false
+
+  /**
    * Sets this icon button to be a trigger for a popover element. The popover will
    * be attached once the returned promise resolves.
    *
@@ -113,7 +121,7 @@ export class IconButtonElement extends LitElement {
 
   protected render(): TemplateResult<1> {
     return html`
-      <re-button autofocus ?disabled="${ifDefined(this.disabled)}"
+      <re-button ?autofocus="${this.autofocus}" ?disabled="${ifDefined(this.disabled)}"
           variant="text" circle exportparts="button">
         <re-icon name="${this.name}"></re-icon>
       </re-button>

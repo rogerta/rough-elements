@@ -34,6 +34,14 @@ export class ButtonBaseElement extends ButtonBaseElementBase {
   @property({ type: Boolean, reflect: true })
   accessor disabled = false
 
+  /**
+   * If present, indicates that the button should automatically have focus
+   * when the page has finished loading (or when the `<dialog>` or popover
+   * containing the element has been shown).
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor autofocus = false
+
   handleEvent(e: Event): void {
     switch (e.type) {
       case 'keydown': {
@@ -77,7 +85,7 @@ export class ButtonBaseElement extends ButtonBaseElementBase {
       this.renderRoughSvg(),
       html`
         <!-- The underyling native button representing this element. -->
-        <button autofocus ?disabled="${this.disabled}" part="button"
+        <button type="button" ?autofocus="${this.autofocus}" ?disabled="${this.disabled}" part="button"
             name="${ifDefined(this.name)}">
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix"></slot>
