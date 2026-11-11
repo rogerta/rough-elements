@@ -87,13 +87,6 @@ export class TabGroupElement extends LitElement {
     `,
   ]
 
-  constructor() {
-    super()
-
-    // This makes the element focusable.
-    this.setAttribute('tabindex', '0')
-  }
-
   handleEvent(e: Event): void {
     switch (e.type) {
       case 'keydown': {
@@ -162,6 +155,12 @@ export class TabGroupElement extends LitElement {
   }
 
   protected override firstUpdated(_: PropertyValues): void {
+    // This makes the element focusable, unless the author already set the
+    // `tabindex` attribute explicitly in the HTML.
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0')
+    }
+
     // Listen for keyboard events to allow the user to move between tabs with
     // the arrow keys.
     this.addEventListener('keydown', this)

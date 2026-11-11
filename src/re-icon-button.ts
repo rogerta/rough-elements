@@ -92,7 +92,11 @@ export class IconButtonElement extends LitElement {
   }
 
   protected override firstUpdated(_: PropertyValues): void {
-    this.setAttribute('tabindex', '0')
+    // Make the element focusable, unless the author already set the `tabindex`
+    // attribute explicitly in the HTML.
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0')
+    }
   }
 
   protected override willUpdate(props: PropertyValues): void {

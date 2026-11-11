@@ -220,7 +220,11 @@ export class RangeElement extends RangeElementBase {
     this.addEventListener('lostpointercapture', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
-    this.setAttribute('tabindex', '0')
+    // Make the element focusable, unless the author already set the `tabindex`
+    // attribute explicitly in the HTML.
+    if (!this.hasAttribute('tabindex')) {
+      this.setAttribute('tabindex', '0')
+    }
   }
 
   // Note: this function always fixes `value` to make it valid.  So in no
