@@ -1,3 +1,9 @@
+<div align="right">
+
+![GitHub package.json version](https://img.shields.io/github/package-json/v/rogerta/rough-elements?filename=package.json) [![Deploy Documentation](https://github.com/rogerta/rough-elements/actions/workflows/deploy.yml/badge.svg)](https://github.com/rogerta/rough-elements/actions/workflows/deploy.yml) [![Publish to jsr.io](https://github.com/rogerta/rough-elements/actions/workflows/publish.yml/badge.svg)](https://github.com/rogerta/rough-elements/actions/workflows/publish.yml) [![Run tests](https://github.com/rogerta/rough-elements/actions/workflows/test.yml/badge.svg)](https://github.com/rogerta/rough-elements/actions/workflows/test.yml)
+
+</div>
+
 # Rough Elements
 
 A robust set of common UI elements with a hand-drawn, sketchy look.
