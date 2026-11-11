@@ -39,10 +39,21 @@ export const FormControlMixin = <T extends Constructor<LitElement>>(
 ) => {
   class MixinClass extends superClass {
     /**
-     * Name used when this button is part of a form submission.  This must
+     * Name used when this element is part of a form submission.  This must
      * be a non-empty string.
+     *
+     * The property is reflected to the `name` attribute of the element
+     * because the browser takes the entry name of a form-associated custom
+     * element from that attribute.  An empty name is not reflected so that
+     * unnamed elements don't carry a `name` attribute.
      */
-    @property({})
+    @property({
+      reflect: true,
+      converter: {
+        toAttribute: (value: unknown): string | null =>
+          typeof value === 'string' && value !== '' ? value : null,
+      },
+    })
     accessor name = ''
 
     private internals_?: ElementInternals

@@ -168,4 +168,32 @@ describe('form', () => {
 
     form.remove()
   })
+
+  it('reflects the name property to the element attribute', async () => {
+    // A browser takes the entry name of a form-associated custom element
+    // from the element's `name` content attribute, so the `name` property
+    // has to be reflected when set programmatically.
+    const tags = ['re-button', 're-checkbox', 're-input', 're-radio',
+      're-range', 're-rating', 're-select', 're-textarea']
+
+    for (const tag of tags) {
+      const el = document.createElement(tag) as FormControl
+      document.body.appendChild(el)
+      await el.updateComplete
+
+      // Unnamed elements do not carry a `name` attribute.
+      expect(el.getAttribute('name')).toBeNull()
+
+      el.name = `form-${tag}`
+      await el.updateComplete
+      expect(el.getAttribute('name')).toBe(`form-${tag}`)
+
+      // An empty name is not reflected at all.
+      el.name = ''
+      await el.updateComplete
+      expect(el.getAttribute('name')).toBeNull()
+
+      el.remove()
+    }
+  })
 })
