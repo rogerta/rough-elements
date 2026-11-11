@@ -1,7 +1,6 @@
 import { css, CSSResult, html, nothing, type PropertyValues,
   type TemplateResult } from 'lit'
 import { property } from 'lit/decorators.js'
-import { ifDefined } from 'lit/directives/if-defined.js'
 
 import { BackgroundMixin,
   type BackgroundMixinInterface } from './re-background-mixin.ts'
@@ -85,8 +84,7 @@ export class ButtonBaseElement extends ButtonBaseElementBase {
       this.renderRoughSvg(),
       html`
         <!-- The underyling native button representing this element. -->
-        <button type="button" ?autofocus="${this.autofocus}" ?disabled="${this.disabled}" part="button"
-            name="${ifDefined(this.name)}">
+        <button type="button" ?autofocus="${this.autofocus}" ?disabled="${this.disabled}" part="button">
           <!-- A prefix for the label.  An \`<re-icon>\` is often used here. -->
           <slot name="prefix"></slot>
           <!-- The main label of the button. Typically holds text. -->

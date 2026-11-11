@@ -78,4 +78,18 @@ describe('re-textarea', () => {
 
     ta.remove()
   })
+
+  it('does not leak the form name to the inner control', async () => {
+    const ta = document.createElement('re-textarea') as TextAreaElement
+    ta.name = 'q'
+    document.body.appendChild(ta)
+    await ta.updateComplete
+
+    // The inner textarea must not participate in form submission; only the
+    // host element does through the form control mixin.
+    const innerTextarea = ta.shadowRoot?.querySelector('textarea')
+    expect(innerTextarea?.getAttribute('name')).toBeNull()
+
+    ta.remove()
+  })
 })

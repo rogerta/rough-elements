@@ -164,6 +164,11 @@ export class TextAreaElement extends TextAreaElementBase {
       validity.valueMissing = true
       message = 'Text cannot be empty'
     }
+    // The error bubble is anchored to the inner textarea, and not the host,
+    // because the host is not focusable.  The browser uses the anchor as both
+    // the target of the bubble and of the focus when interactive validation
+    // fails.  As required by the spec, the anchor is within this element's
+    // shadow tree, so the encapsulation of the form identity is maintained.
     const anchor = this.renderRoot.querySelector('textarea')
     this.setValidity(validity, message, anchor ?? undefined)
   }
@@ -249,7 +254,6 @@ export class TextAreaElement extends TextAreaElementBase {
 
         <!-- The native HTML textarea control. -->
         <textarea part="textarea"
-            name="${ifDefined(this.name)}"
             autocapitalize="${this.autocapitalize}"
             autocomplete="${this.autocomplete}"
             autocorrect="${this.autocorrect ? 'on' : 'off'}"

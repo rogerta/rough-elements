@@ -146,6 +146,11 @@ export class RadioElement extends ButtonBaseElement {
       }
     }
 
+    // The error bubble is anchored to the inner button, and not the host,
+    // because the host is not focusable.  The browser uses the anchor as both
+    // the target of the bubble and of the focus when interactive validation
+    // fails.  As required by the spec, the anchor is within this element's
+    // shadow tree, so the encapsulation of the form identity is maintained.
     const anchor = this.renderRoot.querySelector('button')
     this.setValidity(validity, message, anchor ?? undefined)
   }

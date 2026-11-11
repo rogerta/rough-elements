@@ -276,4 +276,18 @@ describe('re-button', () => {
 
     btn.remove()
   })
+
+  it('does not leak the form name to the inner control', async () => {
+    const btn = document.createElement('re-button') as ButtonElement
+    btn.name = 'q'
+    document.body.appendChild(btn)
+    await btn.updateComplete
+
+    // The inner button must not participate in form submission; only the
+    // host element does through the form control mixin.
+    const innerButton = btn.shadowRoot?.querySelector('button')
+    expect(innerButton?.getAttribute('name')).toBeNull()
+
+    btn.remove()
+  })
 })

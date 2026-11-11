@@ -258,7 +258,6 @@ export class InputElement extends InputElementBase {
 
         <!-- The native HTML \`<input>\` control. -->
         <input part="input" type="${this.renderInputType_()}"
-            name="${ifDefined(this.name)}"
             autocapitalize="${this.autocapitalize}"
             autocomplete="${this.autocomplete}"
             autocorrect="${this.autocorrect ? 'on' : 'off'}"

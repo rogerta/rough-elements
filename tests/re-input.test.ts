@@ -142,4 +142,18 @@ describe('re-input', () => {
 
     input.remove()
   })
+
+  it('does not leak the form name to the inner control', async () => {
+    const input = document.createElement('re-input') as InputElement
+    input.name = 'q'
+    document.body.appendChild(input)
+    await input.updateComplete
+
+    // The inner input must not participate in form submission; only the
+    // host element does through the form control mixin.
+    const innerInput = input.shadowRoot?.querySelector('input')
+    expect(innerInput?.getAttribute('name')).toBeNull()
+
+    input.remove()
+  })
 })
