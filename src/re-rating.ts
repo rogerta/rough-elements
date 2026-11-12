@@ -4,12 +4,12 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues,
+import { css, CSSResult, html, type PropertyValues,
   type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 import { classMap } from 'lit/directives/class-map.js'
 
-import { fire } from './internal/re-element.ts'
+import { fire, LitElementWithStylesArray } from './internal/re-element.ts'
 import { FormControlMixin,
   type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
@@ -17,7 +17,9 @@ import { IconElement } from './re-icon.ts'
 
 export const RatingElementBase:
   & (new(...args: any[]) => FormControlMixinInterface)
-  & typeof LitElement = FormControlMixin(LitElement)
+  & typeof LitElementWithStylesArray = FormControlMixin(
+    LitElementWithStylesArray,
+  )
 
 /**
  * Ratings collect star ratings from (or display them to) the user.  Ratings
@@ -28,6 +30,10 @@ export const RatingElementBase:
  *
  * @cssproperty --re-rating-color - Color of the selected rating stars. Defaults to `gold`.
  */
+// The default of the `value` property and of the initial value captured on
+// first render must always be the same.
+const DEFAULT_VALUE = 0
+
 @customElement('re-rating')
 export class RatingElement extends RatingElementBase {
   static formAssociated = true
@@ -42,7 +48,7 @@ export class RatingElement extends RatingElementBase {
    * The rating. When specified in the HTML, corresponds to the initial value.
    */
   @property({ type: Number })
-  accessor value = 0
+  accessor value: number = DEFAULT_VALUE
 
   /**
    * If true the input does not respond to user actions.  Disabled inputs are
@@ -62,6 +68,9 @@ export class RatingElement extends RatingElementBase {
    */
   @property({ type: Boolean, reflect: true })
   accessor required = false
+
+  /** The value of the element when it was first rendered. */
+  private initialValue_ = DEFAULT_VALUE
 
   static styles: CSSResult[] = [
     css`
@@ -204,6 +213,11 @@ export class RatingElement extends RatingElementBase {
     super.firstUpdated(props)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
+
+    // Capture the initial value before it can be changed, so the form reset
+    // lifecycle callback can restore it later.
+    this.initialValue_ = this.value
+
     // Make the element focusable, unless the author already set the `tabindex`
     // attribute explicitly in the HTML.
     if (!this.hasAttribute('tabindex')) {
@@ -212,6 +226,19 @@ export class RatingElement extends RatingElementBase {
 
     if (!Number.isInteger(this.max) || this.max < 3 || this.max > 5) {
       console.error(`Invalid max value ${this.max}.  Must be between 3 and 5.`)
+    }
+  }
+
+  protected override onFormReset_(): void {
+    this.value = this.initialValue_
+  }
+
+  protected override onFormStateRestore_(
+    state: FormData | File | string | null,
+  ): void {
+    const value = Number(state)
+    if (Number.isFinite(value)) {
+      this.value = value
     }
   }
 

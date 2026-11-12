@@ -37,6 +37,10 @@ export const RangeElementBase:
  * @cssproperty --re-range-track-color - Stroke color of the track line.
  *    Defaults to `--border-color`.
  */
+// The default of the `value` property and of the initial value captured on
+// first render must always be the same.
+const DEFAULT_VALUE = 50
+
 @customElement('re-range')
 export class RangeElement extends RangeElementBase {
   static formAssociated = true
@@ -64,13 +68,16 @@ export class RangeElement extends RangeElementBase {
    * initial value.
    */
   @property({ type: Number })
-  accessor value = 50
+  accessor value: number = DEFAULT_VALUE
 
   /**
    * If true the button is disabled and does not respond to user actions.
    */
   @property({ type: Boolean, reflect: true })
   accessor disabled = false
+
+  /** The value of the element when it was first rendered. */
+  private initialValue_ = DEFAULT_VALUE
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -220,10 +227,28 @@ export class RangeElement extends RangeElementBase {
     this.addEventListener('lostpointercapture', this)
     this.addEventListener('keydown', this)
     this.addEventListener('keyup', this)
+
+    // Capture the initial value before it can be changed, so the form reset
+    // lifecycle callback can restore it later.
+    this.initialValue_ = this.value
+
     // Make the element focusable, unless the author already set the `tabindex`
     // attribute explicitly in the HTML.
     if (!this.hasAttribute('tabindex')) {
       this.setAttribute('tabindex', '0')
+    }
+  }
+
+  protected override onFormReset_(): void {
+    this.value = this.initialValue_
+  }
+
+  protected override onFormStateRestore_(
+    state: FormData | File | string | null,
+  ): void {
+    const value = Number(state)
+    if (Number.isFinite(value)) {
+      this.value = value
     }
   }
 

@@ -38,6 +38,32 @@ export function fire<T>(
 //
 // --rough-z-index CSS prop sets the ordering of the rough elements.
 /**
+ * A LitElement whose class guarantees that its static `styles` member is a
+ * `CSSResult[]` array.
+ *
+ * Lit itself only declares `static styles` as the optionally-present and
+ * loosely typed `CSSResultGroup`, which can be a single `CSSResult` or a
+ * nested array of them.  And Lit leaves `static styles` undefined for
+ * classes that declare no styles at all, which is not iterable.  The base
+ * classes that the rough element mixins are applied to instead all declare
+ * their styles as a plain `CSSResult[]` array, so that a mixin can compose
+ * the styles of the class it is applied to by spreading them:
+ *
+ *   `static styles: CSSResult[] = [...superClass.styles, css\`...\`]`
+ *
+ * This class makes that house guarantee explicit in the type hierarchy.
+ * Deriving from it, instead of from LitElement directly, gives the mixins'
+ * generic constraints type-safe access to the static `styles` member, with
+ * no casts needed.  TypeScript then rejects any subclass that declares
+ * styles in a form that is not an array, and, because static members are
+ * inherited in JavaScript, subclasses that declare no styles at all inherit
+ * an empty array instead of `undefined`.
+ */
+export class LitElementWithStylesArray extends LitElement {
+  static styles: CSSResult[] = []
+}
+
+/**
  * The base class for many rough elements.
  *
  * This class creates and manages the rough rendering of the element using
@@ -57,7 +83,7 @@ export function fire<T>(
  * The SVG element is exposed as the "rough" part of the web component.  This
  * may be used for addiional style if needed.
  */
-export class ReElement extends LitElement {
+export class ReElement extends LitElementWithStylesArray {
   @query('svg#rough')
   private accessor svg_: SVGSVGElement | undefined = undefined
 

@@ -78,6 +78,11 @@ export const SelectElementBase:
  *    user. Unlike the input event, the change event is not necessarily fired
  *    for each alteration to an element's value.
  */
+// The default of the value and of the initially selected item captured on
+// first render must always be the same.  Note that `firstUpdated()` usually
+// changes the value right away by auto-selecting an item.
+const DEFAULT_VALUE = ''
+
 @customElement('re-select')
 export class SelectElement extends SelectElementBase {
   static formAssociated = true
@@ -136,7 +141,7 @@ export class SelectElement extends SelectElementBase {
     this.requestUpdate('value')
   }
 
-  private value_: string = ''
+  private value_: string = DEFAULT_VALUE
 
   protected async getUpdateComplete(): Promise<boolean> {
     const ret = await super.getUpdateComplete()
@@ -146,6 +151,9 @@ export class SelectElement extends SelectElementBase {
 
   @property({ type: Array, state: true })
   private accessor labelNodes_: Node[] = []
+
+  /** The `id` of the selected item when the element was first rendered. */
+  private initialValue_ = DEFAULT_VALUE
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -198,6 +206,23 @@ export class SelectElement extends SelectElementBase {
       if (item) {
         this.value = item.id
       }
+    }
+
+    // Capture the initially selected item before the selection can change,
+    // so the form reset lifecycle callback can restore it later.
+    this.initialValue_ = this.value
+  }
+
+  protected override onFormReset_(): void {
+    this.value = this.initialValue_
+  }
+
+  protected override onFormStateRestore_(
+    state: FormData | File | string | null,
+  ): void {
+    // The value submitted by this element is the `id` of the selected item.
+    if (typeof state === 'string') {
+      this.value = state
     }
   }
 

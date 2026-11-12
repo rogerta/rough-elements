@@ -61,6 +61,10 @@ import './re-icon.ts'
  *    user. Unlike the input event, the change event is not necessarily fired
  *    for each alteration to an element's value.
  */
+// The default of the `checked` property and of the initial checked state
+// captured on first render must always be the same.
+const DEFAULT_CHECKED = false
+
 @customElement('re-radio')
 export class RadioElement extends ButtonBaseElement {
   static formAssociated = true
@@ -69,7 +73,7 @@ export class RadioElement extends ButtonBaseElement {
    * True if the radio button is "checked" and false otherwise.
    */
   @property({ type: Boolean, reflect: true })
-  accessor checked = false
+  accessor checked: boolean = DEFAULT_CHECKED
 
   /**
    * If true, the radio button must be checked before its form can be submitted.
@@ -88,6 +92,9 @@ export class RadioElement extends ButtonBaseElement {
   accessor value: string | undefined = undefined
 
   private prefix_?: IconElement
+
+  /** The checked state of the element when it was first rendered. */
+  private initialChecked_ = DEFAULT_CHECKED
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -158,6 +165,10 @@ export class RadioElement extends ButtonBaseElement {
   override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
 
+    // Capture the initial checked state before it can be changed, so the
+    // form reset lifecycle callback can restore it later.
+    this.initialChecked_ = this.checked
+
     // Insert a prefix to the button by adding an icon to the light DOM.
     this.prefix_ = this.ownerDocument.createElement('re-icon')
     if (this.prefix_) {
@@ -206,11 +217,38 @@ export class RadioElement extends ButtonBaseElement {
         : 'radio-button-unchecked'
     }
 
-    if (props.has('checked') && this.checked) {
-      this.forEachOtherRadio_(radio => radio.checked = false)
-      this.setFormValue(this.value ?? 'on')
+    if (props.has('checked')) {
+      // Only a radio that becomes checked makes the other radios in its
+      // group unchecked and revalidates them directly.  Unchecked radios
+      // take care of themselves below: otherwise a radio that becomes
+      // unchecked would keep the form value it had while it was checked,
+      // and the group would submit multiple entries under the same name.
+      if (this.checked) {
+        this.forEachOtherRadio_(radio => radio.checked = false)
+      }
+
+      this.setFormValue(this.checked ? (this.value ?? 'on') : null)
       this.validate_()
-      this.forEachOtherRadio_(radio => radio.validate_())
+
+      if (this.checked) {
+        this.forEachOtherRadio_(radio => radio.validate_())
+      }
     }
+  }
+
+  protected override onFormReset_(): void {
+    // The updated() method restores the form value when the checked property
+    // changes, whether it is checked or unchecked.
+    this.checked = this.initialChecked_
+  }
+
+  protected override onFormStateRestore_(
+    state: FormData | File | string | null,
+  ): void {
+    // The state saved by the browser for a radio button is the value
+    // submitted when it is checked, or null when it is not checked.  The
+    // updated() method restores the form value when the checked property
+    // changes.
+    this.checked = state === (this.value ?? 'on')
   }
 }

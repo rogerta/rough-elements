@@ -53,6 +53,10 @@ export const TextAreaElementBase:
  *    user. Unlike the input event, the change event is not necessarily fired
  *    for each alteration to an element's value.
  */
+// The default of the `value` property and of the initial value captured on
+// first render must always be the same.
+const DEFAULT_VALUE = ''
+
 @customElement('re-textarea')
 export class TextAreaElement extends TextAreaElementBase {
   static formAssociated = true
@@ -151,7 +155,10 @@ export class TextAreaElement extends TextAreaElementBase {
    * The value of the control.
    */
   @property({})
-  accessor value = ''
+  accessor value: string = DEFAULT_VALUE
+
+  /** The value of the element when it was first rendered. */
+  private initialValue_ = DEFAULT_VALUE
 
   constructor() {
     super()
@@ -176,9 +183,26 @@ export class TextAreaElement extends TextAreaElementBase {
 
   override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
+
+    // Capture the initial value before it can be changed, so the form reset
+    // lifecycle callback can restore it later.
+    this.initialValue_ = this.value
+
     const textarea = this.renderRoot.querySelector('textarea')
     textarea?.addEventListener('change', this)
     textarea?.addEventListener('input', this)
+  }
+
+  protected override onFormReset_(): void {
+    this.value = this.initialValue_
+  }
+
+  protected override onFormStateRestore_(
+    state: FormData | File | string | null,
+  ): void {
+    if (typeof state === 'string') {
+      this.value = state
+    }
   }
 
   protected override willUpdate(props: PropertyValues): void {

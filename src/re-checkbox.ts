@@ -57,6 +57,10 @@ import { fire } from './internal/re-element.ts'
  *    user. Unlike the input event, the change event is not necessarily fired
  *    for each alteration to an element's value.
  */
+// The default of the `checked` property and of the initial checked state
+// captured on first render must always be the same.
+const DEFAULT_CHECKED = false
+
 @customElement('re-checkbox')
 export class CheckboxElement extends ButtonBaseElement {
   static formAssociated = true
@@ -65,7 +69,7 @@ export class CheckboxElement extends ButtonBaseElement {
    * True if the checkbox is "checked" and false otherwise.
    */
   @property({ type: Boolean, reflect: true })
-  accessor checked = false
+  accessor checked: boolean = DEFAULT_CHECKED
 
   /**
    * When true the checkbox renders in a way to indicate to the user that
@@ -91,6 +95,9 @@ export class CheckboxElement extends ButtonBaseElement {
   accessor value: string | undefined = undefined
 
   private prefix_?: IconElement
+
+  /** The checked state of the element when it was first rendered. */
+  private initialChecked_ = DEFAULT_CHECKED
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -155,6 +162,10 @@ export class CheckboxElement extends ButtonBaseElement {
   override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
 
+    // Capture the initial checked state before it can be changed, so the
+    // form reset lifecycle callback can restore it later.
+    this.initialChecked_ = this.checked
+
     // Insert a prefix to the button by adding an icon to the light DOM.
     this.prefix_ = this.ownerDocument.createElement('re-icon')
     if (this.prefix_) {
@@ -211,5 +222,20 @@ export class CheckboxElement extends ButtonBaseElement {
       this.setFormValue(this.checked ? (this.value ?? 'on') : null)
       this.validate_()
     }
+  }
+
+  protected override onFormReset_(): void {
+    // The updated() method restores the form value when the checked property
+    // changes, whether it is checked or unchecked.
+    this.checked = this.initialChecked_
+  }
+
+  protected override onFormStateRestore_(
+    state: FormData | File | string | null,
+  ): void {
+    // The state saved by the browser for a checkbox is the value submitted
+    // when it is checked, or null when it is not checked.  The updated()
+    // method restores the form value when the checked property changes.
+    this.checked = state === (this.value ?? 'on')
   }
 }

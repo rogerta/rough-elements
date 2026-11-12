@@ -4,11 +4,12 @@
  * @module
  */
 
-import { css, CSSResult, html, LitElement, type PropertyValues,
+import { css, CSSResult, html, type PropertyValues,
   type TemplateResult } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import { sleep } from './internal/re-common.ts'
+import { LitElementWithStylesArray } from './internal/re-element.ts'
 
 import './re-button.ts'
 import './re-menu.ts'
@@ -59,7 +60,7 @@ import { NO_ITEM } from './re-menu.ts'
  *    trigger button.  Defaults to `transparent`.
  */
 @customElement('re-dropdown')
-export class DropdownElement extends LitElement {
+export class DropdownElement extends LitElementWithStylesArray {
   static shadowRootOptions: ShadowRootInit = {
     ...super.shadowRootOptions,
     delegatesFocus: true,
