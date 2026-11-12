@@ -92,4 +92,38 @@ describe('re-textarea', () => {
 
     ta.remove()
   })
+
+  it('reflects autocomplete and autocapitalize only when set', async () => {
+    const ta = document.createElement('re-textarea') as TextAreaElement
+    document.body.appendChild(ta)
+    await ta.updateComplete
+
+    // Neither attribute is specified when the platform defaults are wanted.
+    const innerTextarea = ta.shadowRoot?.querySelector('textarea')
+    expect(ta.getAttribute('autocomplete')).toBeNull()
+    expect(ta.getAttribute('autocapitalize')).toBeNull()
+    expect(innerTextarea?.getAttribute('autocomplete')).toBeNull()
+    expect(innerTextarea?.getAttribute('autocapitalize')).toBeNull()
+
+    // Values set programmatically are reflected and passed through as is.
+    ta.autocomplete = 'off'
+    ta.autocapitalize = 'none'
+    await ta.updateComplete
+    expect(ta.getAttribute('autocomplete')).toBe('off')
+    expect(ta.getAttribute('autocapitalize')).toBe('none')
+    expect(innerTextarea?.getAttribute('autocomplete')).toBe('off')
+    expect(innerTextarea?.getAttribute('autocapitalize')).toBe('none')
+
+    // Setting the properties back to the empty string removes the
+    // attributes everywhere.
+    ta.autocomplete = ''
+    ta.autocapitalize = ''
+    await ta.updateComplete
+    expect(ta.getAttribute('autocomplete')).toBeNull()
+    expect(ta.getAttribute('autocapitalize')).toBeNull()
+    expect(innerTextarea?.getAttribute('autocomplete')).toBeNull()
+    expect(innerTextarea?.getAttribute('autocapitalize')).toBeNull()
+
+    ta.remove()
+  })
 })

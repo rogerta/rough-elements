@@ -156,4 +156,38 @@ describe('re-input', () => {
 
     input.remove()
   })
+
+  it('reflects autocomplete and autocapitalize only when set', async () => {
+    const input = document.createElement('re-input') as InputElement
+    document.body.appendChild(input)
+    await input.updateComplete
+
+    // Neither attribute is specified when the platform defaults are wanted.
+    const innerInput = input.shadowRoot?.querySelector('input')
+    expect(input.getAttribute('autocomplete')).toBeNull()
+    expect(input.getAttribute('autocapitalize')).toBeNull()
+    expect(innerInput?.getAttribute('autocomplete')).toBeNull()
+    expect(innerInput?.getAttribute('autocapitalize')).toBeNull()
+
+    // Values set programmatically are reflected and passed through as is.
+    input.autocomplete = 'off'
+    input.autocapitalize = 'none'
+    await input.updateComplete
+    expect(input.getAttribute('autocomplete')).toBe('off')
+    expect(input.getAttribute('autocapitalize')).toBe('none')
+    expect(innerInput?.getAttribute('autocomplete')).toBe('off')
+    expect(innerInput?.getAttribute('autocapitalize')).toBe('none')
+
+    // Setting the properties back to the empty string removes the
+    // attributes everywhere.
+    input.autocomplete = ''
+    input.autocapitalize = ''
+    await input.updateComplete
+    expect(input.getAttribute('autocomplete')).toBeNull()
+    expect(input.getAttribute('autocapitalize')).toBeNull()
+    expect(innerInput?.getAttribute('autocomplete')).toBeNull()
+    expect(innerInput?.getAttribute('autocapitalize')).toBeNull()
+
+    input.remove()
+  })
 })

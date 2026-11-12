@@ -15,6 +15,7 @@ import { BackgroundMixin,
   type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
 import { BorderMixin,
   type BorderMixinInterface } from './internal/re-border-mixin.ts'
+import { omitEmptyString } from './internal/re-common.ts'
 import { fire, ReElement } from './internal/re-element.ts'
 import { FormControlMixin,
   type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
@@ -74,7 +75,7 @@ export class InputElement extends InputElementBase {
    * in what manner. See the [autocapitalize](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/autocapitalize)
    * global attribute page for more information.
    */
-  @property({ reflect: true })
+  @property({ reflect: true, converter: omitEmptyString })
   accessor autocapitalize = ''
 
   /**
@@ -83,8 +84,8 @@ export class InputElement extends InputElementBase {
    * autocomplete recalls previous values entered in the same input field, but
    * more complex forms of autocomplete can exist.
    */
-  @property({ type: Boolean, reflect: true })
-  accessor autocomplete = false
+  @property({ reflect: true, converter: omitEmptyString })
+  accessor autocomplete = ''
 
   /**
    * Controls whether automatic spelling correction and processing of text is
@@ -258,8 +259,8 @@ export class InputElement extends InputElementBase {
 
         <!-- The native HTML \`<input>\` control. -->
         <input part="input" type="${this.renderInputType_()}"
-            autocapitalize="${this.autocapitalize}"
-            autocomplete="${this.autocomplete}"
+            autocapitalize="${ifDefined(this.autocapitalize || undefined)}"
+            autocomplete="${ifDefined(this.autocomplete || undefined)}"
             autocorrect="${this.autocorrect ? 'on' : 'off'}"
             ?autofocus="${this.autofocus}"
             ?disabled="${this.disabled}"

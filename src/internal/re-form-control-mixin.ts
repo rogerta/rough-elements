@@ -3,6 +3,8 @@
 import type { LitElement } from 'lit'
 import { property } from 'lit/decorators.js'
 
+import { omitEmptyString } from './re-common.ts'
+
 // Typescript requires mixin ctors to use exactly one argument of type
 // `any[]`, so ignore this error from deno lint.
 // deno-lint-ignore no-explicit-any
@@ -47,13 +49,7 @@ export const FormControlMixin = <T extends Constructor<LitElement>>(
      * element from that attribute.  An empty name is not reflected so that
      * unnamed elements don't carry a `name` attribute.
      */
-    @property({
-      reflect: true,
-      converter: {
-        toAttribute: (value: unknown): string | null =>
-          typeof value === 'string' && value !== '' ? value : null,
-      },
-    })
+    @property({ reflect: true, converter: omitEmptyString })
     accessor name = ''
 
     private internals_?: ElementInternals
