@@ -12,9 +12,8 @@ import { sleep } from './internal/re-common.ts'
 import { LitElementWithStylesArray } from './internal/re-element.ts'
 
 import './re-button.ts'
-import './re-menu.ts'
-import type { ItemElement } from './re-item.ts'
-import { NO_ITEM } from './re-menu.ts'
+import { type ItemRecord, NO_ITEM } from './re-menu.ts'
+export { type ItemRecord, NO_ITEM } from './re-menu.ts'
 
 /**
  * Dropdowns expose a menu of actions that the user can perform.
@@ -112,13 +111,7 @@ export class DropdownElement extends LitElementWithStylesArray {
    * @returns An object with two properties: index and item.  If no item
    *    is found index is -1 and item is `null`.  Otherwise
    */
-  protected async findItemByValue_(value: string): Promise<{
-    index: number
-    item: null
-  } | {
-    index: number
-    item: ItemElement
-  }> {
+  protected async findItemByValue_(value: string): Promise<ItemRecord> {
     const menu = this.renderRoot.querySelector('re-menu')
 
     // If this methods happens to be called early in dropdown creation, like

@@ -18,6 +18,11 @@ import { ReElement } from './internal/re-element.ts'
 import { getItemFromEvent, ItemElement } from './re-item.ts'
 import { MenuItemElement } from './re-menu-item.ts'
 
+export interface ItemRecord {
+  index: number
+  item: ItemElement | null
+}
+
 // Return value of findItemByValue() when an item cannot be found.
 export const NO_ITEM = {
   index: -1,
@@ -190,10 +195,7 @@ export class MenuElement extends MenuElementBase {
    * @returns An object with two properties: index and item.  If no item
    *    is found index is -1 and item is `null`.  Otherwise
    */
-  findItemByValue(value: string): {
-    index: number
-    item: ItemElement | null
-  } {
+  findItemByValue(value: string): ItemRecord {
     if (!value) {
       return structuredClone(NO_ITEM)
     }
