@@ -170,7 +170,7 @@ describe('re-button', () => {
   it('submits the form when type is "submit"', async () => {
     const form = document.createElement('form')
     // Prevent actual navigation on submit.
-    form.addEventListener('submit', (e) => e.preventDefault())
+    form.addEventListener('submit', e => e.preventDefault())
     document.body.appendChild(form)
 
     const btn = document.createElement('re-button') as ButtonElement
@@ -212,7 +212,7 @@ describe('re-button', () => {
 
     // Intercept clicks on the inner <a> so the browser does not navigate,
     // and count how many times the outer <re-button> receives a click event.
-    link?.addEventListener('click', (e) => e.preventDefault())
+    link?.addEventListener('click', e => e.preventDefault())
 
     const clickSpy = vi.fn()
     btn.addEventListener('click', clickSpy)

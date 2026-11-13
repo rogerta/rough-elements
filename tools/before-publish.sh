@@ -24,8 +24,9 @@ cd "$(dirname "$0")/.."
 
 BUMP="${1:-patch}"
 
-# The working tree must be clean so that the amend only picks up jsr.json.
-if [ -n "$(git status --porcelain)" ]; then
+# There must be no modifications to tracked files, staged or unstaged, so that
+# the amend only picks up jsr.json.  Untracked files are ok.
+if ! git diff --quiet || ! git diff --cached --quiet; then
     echo "error: working tree is not clean.  Commit or stash first." >&2
     exit 1
 fi

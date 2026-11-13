@@ -101,7 +101,9 @@ describe('re-item', () => {
 
     const append = (slot: string | null, text: string) => {
       const span = document.createElement('span')
-      if (slot) span.setAttribute('slot', slot)
+      if (slot) {
+        span.setAttribute('slot', slot)
+      }
       span.textContent = text
       span.id = `${text.toLowerCase().replace(/\s+/g, '-')}-id`
       item.appendChild(span)
@@ -170,7 +172,9 @@ describe('re-item', () => {
 
       const append = (slot: string | null, text: string) => {
         const span = document.createElement('span')
-        if (slot) span.setAttribute('slot', slot)
+        if (slot) {
+          span.setAttribute('slot', slot)
+        }
         span.textContent = text
         item.appendChild(span)
       }

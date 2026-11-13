@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import '../src/re-dropdown.ts'
-import type { DropdownElement } from '../src/re-dropdown.ts'
 import type { ButtonElement } from '../src/re-button.ts'
+import type { DropdownElement } from '../src/re-dropdown.ts'
 import '../src/re-item.ts'
 
 describe('re-dropdown', () => {

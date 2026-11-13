@@ -187,7 +187,7 @@ describe('re-select', () => {
     }
 
     it('initially selects only the first item in multiple mode', async () => {
-      const { select, items, } = await createMultiSelect()
+      const { select, items } = await createMultiSelect()
 
       expect(select.value).toBe('opt1')
       expect(select.selectedOptions.length).toBe(1)
@@ -198,7 +198,7 @@ describe('re-select', () => {
     })
 
     it('ctrl+click toggles the selected state of the clicked item', async () => {
-      const { select, items, } = await createMultiSelect()
+      const { select, items } = await createMultiSelect()
       const [item1, item2, item3] = items
 
       // Initially only the first item is selected.

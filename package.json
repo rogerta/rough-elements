@@ -31,7 +31,8 @@
     "pub": "npx jsr publish",
     "test": "vitest run",
     "test:watch": "vitest",
-    "type-check": "tsc --noEmit -p tests/tsconfig.json"
+    "type-check": "tsc --noEmit -p tests/tsconfig.json",
+    "prepare": "husky"
   },
   "keywords": [
     "webcomponent",
@@ -56,10 +57,15 @@
     "@rogerta/cem-plugin-litelement-slots": "1.0.1",
     "dprint": "^0.56.0",
     "happy-dom": "github:rogerta-contribs/happy-dom-temp-build",
+    "husky": "^9.1.7",
     "marked": "18.0.5",
     "typescript": "7.0.2",
     "vite": "8.2.2",
     "vitest": "^5.0.3"
   },
-  "customElements": "dist/custom-elements.json"
+  "customElements": "dist/custom-elements.json",
+  "allowScripts": {
+    "dprint@0.56.0": true,
+    "rs-module-lexer@2.8.0": true
+  }
 }

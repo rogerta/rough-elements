@@ -1,0 +1,53 @@
+#!/usr/bin/env sh
+#
+# Block pushes to main unless the most recent commit is a version bump commit
+# created by tools/before-publish.sh, i.e. the commit:
+#   - changes only package.json, package-lock.json and/or jsr.json
+#     (both package.json and jsr.json must be among them), and
+#   - has a tag whose message matches the version in package.json.
+#
+# Pushes of other branches are not checked.  To push an ordinary commit to
+# main, use `git push --no-verify ...`.
+
+# Each line of stdin is:
+#   <local ref> <local sha> <remote ref> <remote sha>
+while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
+    [ "$LOCAL_REF" = "refs/heads/main" ] || continue
+
+    FAIL=""
+
+    FILES=$(git diff-tree --no-commit-id --name-only -r "$LOCAL_SHA")
+
+    # The commit must only touch version bump files.
+    for FILE in $FILES; do
+        case "$FILE" in
+        package.json | package-lock.json | jsr.json) ;;
+        *) FAIL="commit also changes '$FILE'" ;;
+        esac
+    done
+
+    # tools/before-publish.sh always updates package.json and jsr.json.
+    if [ -z "$FAIL" ]; then
+        echo "$FILES" | grep -qx "package.json" ||
+            FAIL="commit does not change package.json"
+    fi
+    if [ -z "$FAIL" ]; then
+        echo "$FILES" | grep -qx "jsr.json" ||
+            FAIL="commit does not change jsr.json"
+    fi
+
+    # There must be a tag on the commit whose message is the new version.
+    if [ -z "$FAIL" ]; then
+        VERSION=$(node -p "require('./package.json').version")
+        git for-each-ref refs/tags --points-at "$LOCAL_SHA" \
+            --format='%(contents:subject)' | grep -qx "$VERSION" ||
+            FAIL="no tag message matches version $VERSION in package.json"
+    fi
+
+    if [ -n "$FAIL" ]; then
+        echo "error: push to main rejected: $FAIL." >&2
+        echo "Run ./tools/before-publish.sh to create a version bump commit." >&2
+        echo "To push an ordinary commit, use: git push --no-verify" >&2
+        exit 1
+    fi
+done

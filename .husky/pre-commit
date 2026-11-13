@@ -1,0 +1,23 @@
+# Verify staged files are formatted correctly, without reformatting them.
+# Run `npm run fmt` to fix any problems, then try again.
+#
+# Only files staged for this commit are checked, so pre-existing formatting
+# drift in files not being committed does not block the commit.
+
+# File extensions handled by the plugins in dprint.json.
+FILES=""
+for FILE in $(git diff --cached --name-only --diff-filter=ACMR); do
+    case "$FILE" in
+    *.cjs | *.html | *.htm | *.js | *.json | *.jsonc | *.jsx | *.md | *.mdx | *.mjs | *.njk | *.svg | *.ts | *.tsx)
+        FILES="$FILES $FILE"
+        ;;
+    esac
+done
+
+# dprint with no file arguments checks the whole project, so only run it when
+# something staged actually needs checking.  --allow-no-files covers the case
+# where every staged file is excluded by dprint.json (e.g. package-lock.json).
+if [ -n "$FILES" ]; then
+    npx dprint check $FILES --allow-no-files
+fi
+
