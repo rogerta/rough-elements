@@ -1,8 +1,9 @@
 # Dockerfile.vibe
 #
 # Build using this command: docker build -t mistral-vibe-sandbox -f Dockerfile.vibe .
+# or this command: podman build -t mistral-vibe-sandbox -f Dockerfile.vibe .
 
-FROM ubuntu:24.04
+FROM docker.io/library/ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
