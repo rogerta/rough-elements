@@ -55,13 +55,13 @@
     "@rogerta/cem-plugin-isolated-mixins": "1.0.0",
     "@rogerta/cem-plugin-litelement-parts": "1.0.1",
     "@rogerta/cem-plugin-litelement-slots": "1.0.1",
-    "dprint": "^0.56.0",
+    "dprint": "0.56.0",
     "happy-dom": "github:rogerta-contribs/happy-dom-temp-build",
     "husky": "^9.1.7",
     "marked": "18.0.5",
     "typescript": "7.0.2",
     "vite": "8.2.2",
-    "vitest": "^5.0.3"
+    "vitest": "5.0.3"
   },
   "customElements": "dist/custom-elements.json",
   "allowScripts": {
