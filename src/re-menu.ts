@@ -7,7 +7,7 @@
 
 import { css, CSSResult, html, type PropertyValues,
   type TemplateResult } from 'lit'
-import { customElement } from 'lit/decorators.js'
+import { customElement, property } from 'lit/decorators.js'
 
 import { BackgroundMixin,
   type BackgroundMixinInterface } from './internal/re-background-mixin.ts'
@@ -36,57 +36,65 @@ let menuStack: MenuElement[] = []
 // is created when the menu is shown up and discarded once the user makes a
 // selection or dismisses the menu.
 class KeyboardNavState {
-  assignedElements: Element[]
-  currentIndex: number
-  currentItem?: ItemElement // Must be valid if currentIndex !== -1.
+  assignedItems: ItemElement[]
+  currentIndex: number = -1
+  currentItem?: ItemElement = undefined // Must be valid if currentIndex !== -1.
 
-  constructor(
-    assignedElements: Element[],
-    currentIndex: number,
-    currentItem?: ItemElement,
-  ) {
-    this.assignedElements = assignedElements
-    this.currentIndex = currentIndex
-    this.currentItem = currentItem
-
-    // Update the current fields with the selected item, if any.
-    this.assignedElements.forEach((el, index) => {
-      if (el instanceof ItemElement) {
-        if (el.selected) {
-          this.currentIndex = index
-          this.currentItem = el
-        }
-      }
-    })
+  constructor(assignedItems: ItemElement[]) {
+    this.assignedItems = assignedItems
+    this.initialize_()
   }
 
-  move(up: boolean) {
+  click(onlySelect: boolean) {
+    if (!this.currentItem) {
+      return
+    }
+
+    const item = this.currentItem
+
+    if (onlySelect) {
+      item.selected = !item.selected
+    } else {
+      item.click()
+    }
+  }
+
+  move(up: boolean, clearAllSelectFirst: boolean, selectFollowsHighlight: boolean) {
+    // If there is no current item, then the user has not yet navigated the menu
+    // with the keyboard.  In this case, highlight the current item.  If
+    // currentIndex is -1 the menu is empty.  nextIndex below will be -1 and
+    // nothing happens.
+    if (!this.currentItem && this.currentIndex !== -1) {
+      this.currentItem = this.assignedItems[this.currentIndex]
+      this.highlightItem_(this.currentItem, selectFollowsHighlight)
+      return
+    }
+
     const nextIndex = up
       ? this.findPrev_(this.currentIndex)
       : this.findNext_(this.currentIndex)
     if (nextIndex === -1) {
-      return false
+      return
     }
 
-    if (this.currentIndex !== -1) {
-      this.currentItem!.selected = false
+    if (clearAllSelectFirst) {
+      this.assignedItems.forEach(item => item.selected = false)
     }
+
+    this.currentItem!.highlighted = false
 
     // If nextIndex !== -1, then it is guaranteed that the element at that
     // index is an ItemElement.
     this.currentIndex = nextIndex
-    this.currentItem = this.assignedElements[this.currentIndex] as ItemElement
-    this.currentItem!.selected = true
-    this.currentItem.scrollIntoView({
-      behavior: 'smooth',
-      block: 'nearest',
-    })
+    this.currentItem = this.assignedItems[this.currentIndex]
+
+    this.highlightItem_(this.currentItem, selectFollowsHighlight)
   }
 
   private findPrev_(index: number) {
     for (--index; index >= 0; --index) {
-      const el = this.assignedElements[index]
-      if (el instanceof ItemElement && !el.disabled) {
+      const el = this.assignedItems[index]
+      if (!el.disabled) {
         return index
       }
     }
@@ -95,14 +103,78 @@ class KeyboardNavState {
   }
 
   private findNext_(index: number) {
-    for (++index; index < this.assignedElements.length; ++index) {
-      const el = this.assignedElements[index]
-      if (el instanceof ItemElement && !el.disabled) {
+    for (++index; index < this.assignedItems.length; ++index) {
+      const el = this.assignedItems[index]
+      if (!el.disabled) {
         return index
       }
     }
 
     return -1
+  }
+
+  private highlightItem_(item: ItemElement, selectFollowsHighlight: boolean) {
+    item.highlighted = true
+    if (selectFollowsHighlight) {
+      item.selected = true
+    }
+
+    item.scrollIntoView({
+      behavior: 'smooth',
+      block: 'nearest',
+    })
+  }
+
+  // Initialize currentIndex always and currentItem conditionally.
+  //
+  // currentItem is either the first selected or highlighted item, or the first
+  // item in the menu.  If there are no items in the menu, currentIndex will be
+  // -1.
+  //
+  // If at least one item is selected or highlighted, currentItem will be
+  // initialized as well.  This makes the internal state consistent with the
+  // visible UI.
+  private initialize_() {
+    this.currentIndex = this.assignedItems.findIndex(el => el.highlighted)
+    if (this.currentIndex === -1) {
+      this.currentIndex = this.assignedItems.findIndex(el => el.selected)
+    }
+    if (this.currentIndex === -1 && this.assignedItems.length > 0) {
+      this.currentIndex = 0
+
+      // This scrollIntoView() is for a specific edge case.  If the number of
+      // items is large, the menu uses scroll bars, and the user clicks an item
+      // far down in the list, the next time the menu pops up it will be
+      // scrolled to the clicked item.  The line above sets the current index
+      // to 0 and that item is not visible.  If scrollIntoView() is not done
+      // here, the next time the user clicks an arrow key, the list will scroll
+      // the to correct item, but that feels weird.
+      this.assignedItems[0].scrollIntoView({
+        behavior: 'instant',
+        block: 'nearest',
+      })
+
+      // currentItem will be initialized when a keyboard action is taken.
+      // This is to avoid highlighting an item if the user never interacts with
+      // the keyboard.
+    } else {
+      // An item is either already selected or highlighted, so set the current
+      // item right away.  That way if the user presses a key, the appropriate
+      // action is taken.
+      this.currentItem = this.assignedItems[this.currentIndex]
+      this.currentItem.highlighted = true
+    }
+  }
+
+  unhighlightAllItemsExcept(id: string): void {
+    this.assignedItems.forEach(item => {
+      item.highlighted = item.id === id
+    })
+
+    if (id === '') {
+      this.currentItem = undefined
+      this.initialize_()
+    }
   }
 }
 
@@ -115,6 +187,8 @@ export const MenuElementBase:
  * Menus show a list of user selectable options as often seen in a dropdown or
  * context menu.  Children of the menu are usually `<re-item>`,
  * `<re-menu-item>` or `<re-divider>` elements but any content can be used.
+ * `<re-item>`s must have a non-empty and unique `id` attribute or some
+ * functionality will not work as expected.
  *
  * The most common use of menus is as follows:
  * ```html
@@ -152,6 +226,17 @@ export const MenuElementBase:
 export class MenuElement extends MenuElementBase {
   private kbNavState_?: KeyboardNavState
 
+  /**
+   * Indicates that the menu is part of a dropdown control.  This mostly
+   * affects the styling of the contanined menu items as well as how keyboard
+   * navigation is handled.
+   *
+   * This is generally meant for internal use of the rough-elements library and
+   * is not normally set by users.
+   */
+  @property({ type: Number })
+  accessor dropdownmode: 0 | 1 | 2 = 0
+
   static styles: CSSResult[] = [
     ...super.styles,
     css`
@@ -188,50 +273,28 @@ export class MenuElement extends MenuElementBase {
     `,
   ]
 
-  /**
-   * Find the item in the drop down list whose `id` matches `value`.
-   *
-   * @param value The value to match an item's ID.
-   * @returns An object with two properties: index and item.  If no item
-   *    is found index is -1 and item is `null`.  Otherwise
-   */
-  findItemByValue(value: string): ItemRecord {
-    if (!value) {
-      return structuredClone(NO_ITEM)
-    }
+  private get assignedItems(): ItemElement[] {
     const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
     if (!slot) {
-      return structuredClone(NO_ITEM)
+      return []
     }
 
-    const assignedElements = slot.assignedElements({ flatten: true })
-    if (assignedElements.length === 0) {
-      return structuredClone(NO_ITEM)
-    }
-
-    // TODO: filter out things that are not <re-item>s.
-
-    const index = assignedElements.findIndex(node => {
-      return node instanceof ItemElement && node.id === value
-    })
-
-    return index === -1
-      ? structuredClone(NO_ITEM)
-      : { index, item: assignedElements[index] as ItemElement }
+    return slot.assignedElements({ flatten: true })
+        .filter((el): el is ItemElement => el instanceof ItemElement)
   }
 
   /**
-   * Unselect all items in the menu.
+   * Unselect and unhighlights all items in the menu except the one with the
+   * specified ID.  Using an empty string for `id` will unselect and
+   * unhighlights all items.
+   *
+   * @param id The `id` of the item to keep selected.
    */
-  unselectAllItems(): void {
-    const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
-    if (slot) {
-      slot.assignedElements({ flatten: true }).forEach(item => {
-        if (item instanceof ItemElement) {
-          item.selected = false
-        }
-      })
-    }
+  unselectAllItemsExcept(id: string): void {
+    this.assignedItems.forEach(item => {
+      item.selected = item.id === id
+      item.highlighted = item.id === id
+    })
   }
 
   handleEvent(e: Event): void {
@@ -241,8 +304,15 @@ export class MenuElement extends MenuElementBase {
         // matches() then hidePopover() is used instead of togglePopover(false)
         // because the latter throws an error if this menu does not have the
         // popover attribute.
-        if (this.matches(':popover-open') && getItemFromEvent(e)) {
-          this.hidePopover()
+        //
+        // Note: the click event is never received for an <re-menu-item> with a
+        // submenu because the event's propagation is stopped to manage the
+        // submenu.
+        if (getItemFromEvent(e)) {
+          this.kbNavState_?.unhighlightAllItemsExcept('')
+          if (this.matches(':popover-open')) {
+            this.hidePopover()
+          }
         }
         break
 
@@ -266,12 +336,7 @@ export class MenuElement extends MenuElementBase {
         break
       }
       case 'focus': {
-        const slot = this.renderRoot.querySelector<HTMLSlotElement>('slot')
-        this.kbNavState_ = new KeyboardNavState(
-          slot?.assignedElements({ flatten: true }) ?? [],
-          -1,
-          undefined,
-        )
+        this.kbNavState_ = new KeyboardNavState(this.assignedItems)
         break
       }
       case 'keyup': {
@@ -304,20 +369,25 @@ export class MenuElement extends MenuElementBase {
       }
       case 'keydown': {
         const ke = e as KeyboardEvent
+        const isCtrl = ke.ctrlKey
+        const isShift = ke.shiftKey
+        const selectFollowsHighlight = this.dropdownmode === 2 && (isShift || !isCtrl)
+        const clearAllSelectFirst = this.dropdownmode === 2 && !isCtrl && !isShift
+
         switch (ke.key) {
           case 'ArrowDown':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
-            this.kbNavState_?.move(false)
+            this.kbNavState_?.move(false, clearAllSelectFirst, selectFollowsHighlight)
             break
           case 'ArrowUp':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
-            this.kbNavState_?.move(true)
+            this.kbNavState_?.move(true, clearAllSelectFirst, selectFollowsHighlight)
             break
           case 'ArrowLeft':
             // Prevent the default otherwise the page may scroll.
@@ -342,7 +412,7 @@ export class MenuElement extends MenuElementBase {
             ke.preventDefault()
             ke.stopPropagation()
             if (this.kbNavState_?.currentItem) {
-              this.kbNavState_.currentItem.click()
+              this.kbNavState_.click(this.dropdownmode === 2)
             }
             break
           case 'Enter':
@@ -351,7 +421,7 @@ export class MenuElement extends MenuElementBase {
             ke.preventDefault()
             ke.stopPropagation()
 
-            if (this.kbNavState_?.currentItem) {
+            if (this.dropdownmode !== 2 && this.kbNavState_?.currentItem) {
               this.kbNavState_.currentItem.click()
             }
             break

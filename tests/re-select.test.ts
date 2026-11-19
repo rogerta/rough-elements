@@ -5,6 +5,35 @@ import '../src/re-item.ts'
 import type { ItemElement } from '../src/re-item.ts'
 
 describe('re-select', () => {
+  // Waits for the select's asynchronous update cycle to settle.  Clicking an
+  // item toggles its `selected` attribute; a mutation observer then updates
+  // `value`, re-sends the form value, and fires `change`, all from microtask
+  // and update chains.
+  const settle = async (select: SelectElement) => {
+    for (let i = 0; i < 4; i++) {
+      await new Promise(resolve => setTimeout(resolve, 0))
+      await select.updateComplete
+    }
+  }
+
+  // Dispatches a click on an item as if it bubbled from the select's menu
+  // panel, then waits for the select's asynchronous update cycle to settle.
+  const clickItem = async (
+    select: SelectElement,
+    item: ItemElement,
+    ctrlKey = false,
+  ) => {
+    const menu = select.shadowRoot?.querySelector('re-menu')
+    const clickEvent = new MouseEvent('click', {
+      bubbles: true,
+      composed: true,
+      ctrlKey,
+    })
+    Object.defineProperty(clickEvent, 'target', { value: item })
+    menu?.dispatchEvent(clickEvent)
+    await settle(select)
+  }
+
   it('registers custom element', () => {
     expect(customElements.get('re-select')).toBeDefined()
   })
@@ -112,16 +141,14 @@ describe('re-select', () => {
     const changeSpy = vi.fn()
     select.addEventListener('change', changeSpy)
 
-    const menu = select.shadowRoot?.querySelector('re-menu')
-    const clickEvent = new MouseEvent('click', { bubbles: true,
-      composed: true })
-    Object.defineProperty(clickEvent, 'target', { value: item2 })
-    menu?.dispatchEvent(clickEvent)
-    await select.updateComplete
+    await clickItem(select, item2)
 
     expect(changeSpy).toHaveBeenCalledTimes(1)
+    expect(changeSpy.mock.lastCall?.[0].target).toBe(select)
     expect(select.value).toBe('opt2')
     expect(select.selectedIndex).toBe(1)
+    expect(item1.selected).toBe(false)
+    expect(item2.selected).toBe(true)
 
     select.remove()
   })
@@ -160,30 +187,6 @@ describe('re-select', () => {
       await select.updateComplete
 
       return { select, items }
-    }
-
-    // Dispatches a click on an item as if it bubbled from the select's menu
-    // panel, then waits for the select's asynchronous update cycle to settle.
-    const clickItem = async (
-      select: SelectElement,
-      item: ItemElement,
-      ctrlKey = false,
-    ) => {
-      const menu = select.shadowRoot?.querySelector('re-menu')
-      const clickEvent = new MouseEvent('click', {
-        bubbles: true,
-        composed: true,
-        ctrlKey,
-      })
-      Object.defineProperty(clickEvent, 'target', { value: item })
-      menu?.dispatchEvent(clickEvent)
-
-      // The click handler updates the value from microtask chains, so flush
-      // them before awaiting the select's update.
-      await new Promise(resolve => setTimeout(resolve, 0))
-      await select.updateComplete
-      await new Promise(resolve => setTimeout(resolve, 0))
-      await select.updateComplete
     }
 
     it('initially selects only the first item in multiple mode', async () => {
@@ -249,18 +252,36 @@ describe('re-select', () => {
       select.remove()
     })
 
-    it('fires a change event on each ctrl+click', async () => {
+    it('fires a change event when the first selected item changes', async () => {
       const { select, items } = await createMultiSelect()
-      const [, item2] = items
+      const [item1, item2] = items
 
       const changeSpy = vi.fn()
       select.addEventListener('change', changeSpy)
 
+      // Ctrl+clicking another item keeps the first selected item, so the
+      // value does not change and no change event is fired.
       await clickItem(select, item2, true)
+      expect(select.value).toBe('opt1')
+      expect(changeSpy).not.toHaveBeenCalled()
+
+      // Deselecting the first selected item promotes the next one in DOM
+      // order and fires a change event.
+      await clickItem(select, item1, true)
+      expect(select.value).toBe('opt2')
       expect(changeSpy).toHaveBeenCalledTimes(1)
       expect(changeSpy.mock.lastCall?.[0].target).toBe(select)
 
+      // Selecting the first item again changes the value back, firing
+      // another change event.
+      await clickItem(select, item1, true)
+      expect(select.value).toBe('opt1')
+      expect(changeSpy).toHaveBeenCalledTimes(2)
+
+      // Deselecting a non-first item does not change the value, so no
+      // change event is fired.
       await clickItem(select, item2, true)
+      expect(select.value).toBe('opt1')
       expect(changeSpy).toHaveBeenCalledTimes(2)
 
       select.remove()
@@ -268,24 +289,142 @@ describe('re-select', () => {
 
     it('click without ctrl behaves like single selection', async () => {
       const { select, items } = await createMultiSelect()
-      const [item1, , item3] = items
+      const [item1, item2, item3] = items
 
       // Ctrl+select a couple of items first.
       await clickItem(select, item3, true)
       expect(select.selectedOptions.length).toBe(2)
 
-      // A plain click picks just the clicked item.
-      await clickItem(select, item3)
-      expect(select.value).toBe('opt3')
-      expect(Array.from(select.selectedOptions)).toEqual([item3])
+      // A plain click on an unselected item picks just that item.
+      await clickItem(select, item2)
+      expect(select.value).toBe('opt2')
+      expect(Array.from(select.selectedOptions)).toEqual([item2])
       expect(item1.selected).toBe(false)
+      expect(item3.selected).toBe(false)
 
       // A plain click on the selected item clears the selection, exactly as
       // it does when `multiple` is false.
-      await clickItem(select, item3)
+      await clickItem(select, item2)
       expect(select.value).toBe('')
       expect(select.selectedOptions.length).toBe(0)
-      expect(item3.selected).toBe(false)
+      expect(item2.selected).toBe(false)
+
+      select.remove()
+    })
+
+    it('submits one form entry per selected item', async () => {
+      const select = document.createElement('re-select') as SelectElement
+      select.multiple = true
+      select.name = 'options'
+      const items = ['opt1', 'opt2', 'opt3'].map((id, index) => {
+        const item = document.createElement('re-item') as ItemElement
+        item.id = id
+        item.textContent = `Option ${index + 1}`
+        select.appendChild(item)
+        return item
+      })
+      const setFormValueSpy = vi.spyOn(select, 'setFormValue')
+
+      document.body.appendChild(select)
+      await settle(select)
+
+      // The first item is selected by default, and the submitted value and
+      // state are a FormData with one entry per selected item, all with the
+      // same name, exactly like the standard HTML `<select multiple>`.
+      let state = setFormValueSpy.mock.lastCall?.[1]
+      expect(state).toBeInstanceOf(FormData)
+      expect([...(state as FormData)]).toEqual([['options', 'opt1']])
+      expect(setFormValueSpy.mock.lastCall?.[0]).toBe(state)
+
+      const [item1, item2, item3] = items
+
+      // Ctrl+clicking more items does not change `value`, which is still the
+      // first selected item, so the form value is not re-sent.
+      await clickItem(select, item2, true)
+      await clickItem(select, item3, true)
+      expect(setFormValueSpy).toHaveBeenCalledTimes(1)
+
+      // Deselecting the first item changes the value, so the form value is
+      // re-sent with one entry per remaining selected item.
+      await clickItem(select, item1, true)
+      state = setFormValueSpy.mock.lastCall?.[1]
+      expect(state).toBeInstanceOf(FormData)
+      expect([...(state as FormData)]).toEqual([
+        ['options', 'opt2'],
+        ['options', 'opt3'],
+      ])
+
+      // Deselecting another item removes its entry from the submitted data.
+      await clickItem(select, item2, true)
+      state = setFormValueSpy.mock.lastCall?.[1]
+      expect([...(state as FormData)]).toEqual([['options', 'opt3']])
+
+      // Deselecting every item removes the field from the submitted data.
+      await clickItem(select, item3, true)
+      expect(setFormValueSpy.mock.lastCall?.[0]).toBeNull()
+
+      select.remove()
+    })
+
+    it('keeps and resets every item selected with the attribute', async () => {
+      const select = document.createElement('re-select') as SelectElement
+      select.multiple = true
+      const [item1, item2, item3] = ['opt1', 'opt2', 'opt3'].map(
+        (id, index) => {
+          const item = document.createElement('re-item') as ItemElement
+          item.id = id
+          item.textContent = `Option ${index + 1}`
+          if (id !== 'opt1') {
+            item.selected = true
+          }
+          select.appendChild(item)
+          return item
+        },
+      )
+
+      document.body.appendChild(select)
+      await select.updateComplete
+
+      // Every item with the `selected` attribute stays selected, and the
+      // value is the id of the first of them.
+      expect(item2.selected).toBe(true)
+      expect(item3.selected).toBe(true)
+      expect(item1.selected).toBe(false)
+      expect(select.value).toBe('opt2')
+
+      // Change the selection manually so that resetting it tests the
+      // restoration of the initial selection.
+      await clickItem(select, item2, true)
+      await clickItem(select, item1, true)
+      expect(item1.selected).toBe(true)
+      expect(item2.selected).toBe(false)
+
+      select.formResetCallback()
+      await select.updateComplete
+      expect(item1.selected).toBe(false)
+      expect(item2.selected).toBe(true)
+      expect(item3.selected).toBe(true)
+      expect(select.value).toBe('opt2')
+      expect(select.selectedOptions.length).toBe(2)
+
+      select.remove()
+    })
+
+    it('restores every selected item from the form state', async () => {
+      const { select, items } = await createMultiSelect()
+      select.name = 'options'
+      const [item1, , item3] = items
+
+      const state = new FormData()
+      state.append('options', 'opt2')
+      state.append('options', 'opt3')
+      select.formStateRestoreCallback(state, 'restore')
+      await select.updateComplete
+
+      expect(select.value).toBe('opt2')
+      expect(select.selectedOptions.length).toBe(2)
+      expect(item1.selected).toBe(false)
+      expect(item3.selected).toBe(true)
 
       select.remove()
     })

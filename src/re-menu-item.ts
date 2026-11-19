@@ -183,6 +183,10 @@ export class MenuItemElement extends ItemElement {
           break
         }
 
+        // Set the item's highlighted state to true so that focus has be
+        // returned to this menu item if the user closes the popover.
+        this.highlighted = true
+
         submenu.togglePopover()
         break
       }

@@ -12,7 +12,6 @@ import { sleep } from './internal/re-common.ts'
 import { LitElementWithStylesArray } from './internal/re-element.ts'
 
 import './re-button.ts'
-import { type ItemRecord, NO_ITEM } from './re-menu.ts'
 export { type ItemRecord, NO_ITEM } from './re-menu.ts'
 
 /**
@@ -24,7 +23,8 @@ export { type ItemRecord, NO_ITEM } from './re-menu.ts'
  *
  * Any children not assigned to a slot are placed in the popover menu panel.
  * These are usually `<re-item>`, `<re-menu-item>` or `<re-divider>` elements,
- * but any content can be placed there.
+ * but any content can be placed there.  `<re-item>`s must have a non-empty
+ * and unique `id` attribute or some functionality will not work as expected.
  *
  * A common use of a dropdown is as follows:
  * ```
@@ -79,6 +79,17 @@ export class DropdownElement extends LitElementWithStylesArray {
   @property({})
   accessor enableDebugging: string | undefined = undefined
 
+  /**
+   * Indicates that the menu is part of a dropdown control.  This mostly
+   * affects the styling of the contanined menu items as well as how keyboard
+   * navigation is handled.
+   *
+   * This is generally meant for internal use of the rough-elements library and
+   * is not normally set by users.
+   */
+  @property({ type: Number })
+  accessor dropdownmode: 1 | 2 = 1
+
   static styles: CSSResult[] = [
     css`
       :host {
@@ -104,26 +115,7 @@ export class DropdownElement extends LitElementWithStylesArray {
     `,
   ]
 
-  /**
-   * Find the item in the drop down list whose `id` matches `value`.
-   *
-   * @param value The value to match an item's ID.
-   * @returns An object with two properties: index and item.  If no item
-   *    is found index is -1 and item is `null`.  Otherwise
-   */
-  protected async findItemByValue_(value: string): Promise<ItemRecord> {
-    const menu = this.renderRoot.querySelector('re-menu')
-
-    // If this methods happens to be called early in dropdown creation, like
-    // at firstUpdated() time, it's possible for the menu to not be finished
-    // its own update cycle.  Wait for it to compelete before looking for
-    // the item.
-    await menu?.updateComplete
-
-    return menu?.findItemByValue(value) ?? NO_ITEM
-  }
-
-  protected async unselectAllItems_(): Promise<void | undefined> {
+  protected async unselectAllItemsExcept_(id: string): Promise<void | undefined> {
     const menu = this.renderRoot.querySelector('re-menu')
 
     // If this methods happens to be called early in dropdown creation, like
@@ -132,7 +124,7 @@ export class DropdownElement extends LitElementWithStylesArray {
     // items.
     await menu?.updateComplete
 
-    return menu?.unselectAllItems()
+    return menu?.unselectAllItemsExcept(id)
   }
 
   handleEvent(e: Event): void {
@@ -151,7 +143,7 @@ export class DropdownElement extends LitElementWithStylesArray {
   override firstUpdated(_: PropertyValues): void {
     // Make the element focusable, unless the author already set the `tabindex`
     // attribute explicitly in the HTML.
-    if (!this.hasAttribute('tabindex')) {
+    if (!this.hasAttribute('tabindex') && !this.disabled) {
       this.setAttribute('tabindex', '0')
     }
   }
@@ -167,6 +159,7 @@ export class DropdownElement extends LitElementWithStylesArray {
       <!-- The \`<re-menu>\` that implements the popover panel. -->
       <re-menu id="panel" popover part="panel" tabindex="-1" autofocus
           .enableDebugging="${this.enableDebugging}"
+          dropdownmode="${this.dropdownmode}"
           @toggle="${this}">
         <!-- Unslotted children elements appear in the menu panel. -->
         <slot></slot>

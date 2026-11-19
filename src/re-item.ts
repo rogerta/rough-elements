@@ -8,6 +8,7 @@ import { css, CSSResult, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-icon.ts'
+import { STYLES } from './internal/re-common.ts';
 
 /**
  * Items define elements that are used inside containers such as
@@ -50,6 +51,12 @@ export class ItemElement extends LitElement {
   accessor selected = false
 
   /**
+   * True if the item should be rendered to inficate it has the keyboard focus.
+   */
+  @property({ type: Boolean, reflect: true })
+  accessor highlighted = false
+
+  /**
    * If true the button is disabled and does not respond to user actions.
    */
   @property({ type: Boolean, reflect: true })
@@ -66,18 +73,25 @@ export class ItemElement extends LitElement {
   }
 
   static styles: CSSResult[] = [
+    STYLES,
     css`
       :host {
         display: inline-flex;
         flex-direction: row;
         align-items: center;
         justify-content: stretch;
+        border: solid transparent 0.125rem;  /* Small border for focus indication */
         padding: 0 0.25rem;
         user-select: none;
         cursor: pointer;
+        color: var(--color);
+      }
+      :host([highlighted]:not([disabled])) {
+        border-color: var(--border-color);
       }
       :host([selected]) {
-        background: rgb(from var(--color) R G B / 0.1);
+        color: var(--background-color);
+        background: var(--primary-color);
       }
       :host([disabled]) {
         opacity: 0.5;
@@ -94,7 +108,6 @@ export class ItemElement extends LitElement {
         display: inline-block;
         flex: 1 1;
         margin: 0;
-        color: var(--color);
       }
 
       @media (hover: hover) {
@@ -201,7 +214,7 @@ export class ItemElement extends LitElement {
  *    located inside an `<re-menu>` or `<re-select>` element.
  *
  * @returns The <re-item>, or null if something other than an <re-item> was
- *    clicked.
+ *    clicked or the <re-item> is disabled.
  */
 export function getItemFromEvent(e: Event): ItemElement | null {
   let target = e.target instanceof HTMLElement ? e.target : null

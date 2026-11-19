@@ -27,40 +27,16 @@ describe('re-menu', () => {
     menu.remove()
   })
 
-  it('finds items by value and returns NO_ITEM for nonexistent values', async () => {
-    const menu = document.createElement('re-menu') as MenuElement
-    const item1 = document.createElement('re-item') as ItemElement
-    item1.id = 'opt1'
-    const item2 = document.createElement('re-item') as ItemElement
-    item2.id = 'opt2'
-
-    menu.appendChild(item1)
-    menu.appendChild(item2)
-    document.body.appendChild(menu)
-    await menu.updateComplete
-
-    const res1 = menu.findItemByValue('opt1')
-    expect(res1.index).toBe(0)
-    expect(res1.item).toBe(item1)
-
-    const res2 = menu.findItemByValue('opt2')
-    expect(res2.index).toBe(1)
-    expect(res2.item).toBe(item2)
-
-    const missing = menu.findItemByValue('nonexistent')
-    expect(missing).toEqual(NO_ITEM)
-
-    const empty = menu.findItemByValue('')
-    expect(empty).toEqual(NO_ITEM)
-
-    menu.remove()
+  it('exports NO_ITEM as the record returned when no item is found', () => {
+    expect(NO_ITEM).toEqual({ index: -1, item: null })
   })
 
-  it('unselectAllItems sets selected to false on all child items', async () => {
+  it('unselectAllItemsExcept keeps only the item with the given id selected', async () => {
     const menu = document.createElement('re-menu') as MenuElement
     const item1 = document.createElement('re-item') as ItemElement
     item1.id = 'opt1'
     item1.selected = true
+    item1.highlighted = true
     const item2 = document.createElement('re-item') as ItemElement
     item2.id = 'opt2'
     item2.selected = true
@@ -73,15 +49,26 @@ describe('re-menu', () => {
     expect(item1.selected).toBe(true)
     expect(item2.selected).toBe(true)
 
-    menu.unselectAllItems()
+    // Only the item with the given id stays selected and highlighted.
+    menu.unselectAllItemsExcept('opt2')
+
+    expect(item1.selected).toBe(false)
+    expect(item1.highlighted).toBe(false)
+    expect(item2.selected).toBe(true)
+    expect(item2.highlighted).toBe(true)
+
+    // An empty id unselects and unhighlights all items.
+    menu.unselectAllItemsExcept('')
 
     expect(item1.selected).toBe(false)
     expect(item2.selected).toBe(false)
+    expect(item1.highlighted).toBe(false)
+    expect(item2.highlighted).toBe(false)
 
     menu.remove()
   })
 
-  it('navigates items with arrow keys and activates on Enter/Space', async () => {
+  it('moves the highlight with arrow keys and clicks the item on Enter/Space', async () => {
     const menu = document.createElement('re-menu') as MenuElement
     const item1 = document.createElement('re-item') as ItemElement
     item1.id = 'opt1'
@@ -100,46 +87,104 @@ describe('re-menu', () => {
 
     menu.dispatchEvent(new Event('focus'))
 
-    // Arrow down moves to item1
-    menu.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
-    )
-    expect(item1.selected).toBe(true)
-    expect(item2.selected).toBe(false)
+    const key = (k: string) =>
+      menu.dispatchEvent(
+        new KeyboardEvent('keydown', { key: k, bubbles: true }),
+      )
 
-    // Arrow down moves to item2
-    menu.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
-    )
+    // In a plain menu (dropdownmode 0) the arrow keys move the highlight
+    // without changing the selection.
+    key('ArrowDown')
+    expect(item1.highlighted).toBe(true)
     expect(item1.selected).toBe(false)
-    expect(item2.selected).toBe(true)
 
-    // Arrow down skips disabled item3; remains at item2
-    menu.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }),
-    )
-    expect(item2.selected).toBe(true)
+    key('ArrowDown')
+    expect(item1.highlighted).toBe(false)
+    expect(item2.highlighted).toBe(true)
 
-    // Arrow up moves back to item1
-    menu.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'ArrowUp', bubbles: true }),
-    )
-    expect(item1.selected).toBe(true)
-    expect(item2.selected).toBe(false)
+    // Arrow down skips the disabled item3 and remains at item2.
+    key('ArrowDown')
+    expect(item2.highlighted).toBe(true)
 
-    // Enter clicks active item
+    // Arrow up moves back to item1.
+    key('ArrowUp')
+    expect(item1.highlighted).toBe(true)
+    expect(item2.highlighted).toBe(false)
+
+    // Enter clicks the highlighted item.
     const clickSpy = vi.fn()
     item1.addEventListener('click', clickSpy)
-    menu.dispatchEvent(
-      new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
-    )
+    key('Enter')
     expect(clickSpy).toHaveBeenCalledTimes(1)
 
-    // Space clicks active item
-    menu.dispatchEvent(
-      new KeyboardEvent('keydown', { key: ' ', bubbles: true }),
-    )
+    // Clicking an item resets the keyboard navigation state, so move the
+    // highlight again before pressing Space.
+    key('ArrowDown')
+    key(' ')
     expect(clickSpy).toHaveBeenCalledTimes(2)
+
+    menu.remove()
+  })
+
+  it('makes the selection follow the highlight in dropdownmode 2', async () => {
+    const menu = document.createElement('re-menu') as MenuElement
+    menu.dropdownmode = 2
+    const item1 = document.createElement('re-item') as ItemElement
+    item1.id = 'opt1'
+    const item2 = document.createElement('re-item') as ItemElement
+    item2.id = 'opt2'
+    const item3 = document.createElement('re-item') as ItemElement
+    item3.id = 'opt3'
+    item3.disabled = true
+
+    menu.appendChild(item1)
+    menu.appendChild(item2)
+    menu.appendChild(item3)
+
+    document.body.appendChild(menu)
+    await menu.updateComplete
+
+    menu.dispatchEvent(new Event('focus'))
+
+    const key = (k: string, init: KeyboardEventInit = {}) =>
+      menu.dispatchEvent(
+        new KeyboardEvent('keydown', { key: k, bubbles: true, ...init }),
+      )
+
+    // Without ctrl or shift, moving the highlight clears the previous
+    // selections and selects the highlighted item, like a <select>.
+    key('ArrowDown')
+    expect(item1.highlighted).toBe(true)
+    expect(item1.selected).toBe(true)
+    expect(item2.selected).toBe(false)
+
+    key('ArrowDown')
+    expect(item1.highlighted).toBe(false)
+    expect(item1.selected).toBe(false)
+    expect(item2.highlighted).toBe(true)
+    expect(item2.selected).toBe(true)
+
+    // Arrow down skips the disabled item3 and remains at item2.
+    key('ArrowDown')
+    expect(item2.selected).toBe(true)
+
+    // Arrow up moves back to item1.
+    key('ArrowUp')
+    expect(item1.highlighted).toBe(true)
+    expect(item1.selected).toBe(true)
+    expect(item2.selected).toBe(false)
+
+    // Enter does not click the highlighted item in dropdownmode 2.
+    const clickSpy = vi.fn()
+    item1.addEventListener('click', clickSpy)
+    key('Enter')
+    expect(clickSpy).not.toHaveBeenCalled()
+
+    // Space toggles the selected state of the highlighted item instead of
+    // clicking it.
+    key(' ')
+    expect(item1.selected).toBe(false)
+    expect(clickSpy).not.toHaveBeenCalled()
 
     menu.remove()
   })

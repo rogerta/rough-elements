@@ -18,7 +18,7 @@ export const STYLES: CSSResult = css`
     --re-help-font-family: var(--font-sans-family);
     --re-label-font-family: var(--font-sans-family);
 
-    --color: var(--foreground-color, ButtonText);
+    --color: var(currentcolor, ButtonText);
     --re-input-background-color: var(--background-color, ButtonFace);
   }
 `

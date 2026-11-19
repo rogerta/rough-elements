@@ -12,12 +12,17 @@ import { FormControlMixin,
   type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
 import { fire } from './internal/re-element.ts'
-import { DropdownElement } from './re-dropdown.ts'
-import { getItemFromEvent, type ItemElement } from './re-item.ts'
+import { DropdownElement, type ItemRecord,  NO_ITEM } from './re-dropdown.ts'
+import { getItemFromEvent, ItemElement } from './re-item.ts'
 
 export const SelectElementBase:
   & (new(...args: any[]) => FormControlMixinInterface)
   & typeof DropdownElement = FormControlMixin(DropdownElement)
+
+// The default of the value and of the initially selected item captured on
+// first render must always be the same.  Note that `firstUpdated()` usually
+// changes the value right away by auto-selecting an item.
+const DEFAULT_VALUE = ''
 
 /**
  * Selects expose a menu of options from which the user can choose one or many.
@@ -30,7 +35,8 @@ export const SelectElementBase:
  *
  * Any children not assigned to a slot are placed in the popover menu panel.
  * These are usually `<re-item>`, `<re-menu-item>` or `<re-divider>` elements,
- * but any content can be placed there.
+ * but any content can be placed there.  `<re-item>`s must have a non-empty
+ * and unique `id` attribute or some functionality will not work as expected.
  *
  * If `<re-menu-item>`s are used, their children will be flattened with the
  * other children of `re-select`.  This will make the `selectedIndex` property
@@ -78,11 +84,6 @@ export const SelectElementBase:
  *    user. Unlike the input event, the change event is not necessarily fired
  *    for each alteration to an element's value.
  */
-// The default of the value and of the initially selected item captured on
-// first render must always be the same.  Note that `firstUpdated()` usually
-// changes the value right away by auto-selecting an item.
-const DEFAULT_VALUE = ''
-
 @customElement('re-select')
 export class SelectElement extends SelectElementBase {
   static formAssociated = true
@@ -108,52 +109,163 @@ export class SelectElement extends SelectElementBase {
   accessor selectedIndex: number = -1
 
   /**
-   * A non-live `NodeList` of currently selected `<re-items>`(s), if any.
-   * An `<re-items>` is selected if it has the `selected` attribute.
-   */
-  get selectedOptions(): NodeListOf<Element> {
-    return this.querySelectorAll('re-item[selected]')
-  }
-
-  /**
-   * A promise that resolves when all items of the `re-select` are unselected.
-   * When callers wait on `this.updateComplete`, then will also wait for this
-   * promise to resolve.
-   */
-  private allItemsUnselectedComplete_: Promise<void> = Promise.resolve()
-
-  /**
    * If true, an option must be selected before its form can be submitted.
    */
   @property({ type: Boolean, reflect: true })
   accessor required = false
 
+  @property({ type: Array, state: true })
+  private accessor labelNodes_: Node[] = []
+
   /**
-   * The `id` of the item that is currently selected.
+   * A mutation observer to watch for changes to the select's children
+   * <re-item>s.  <re-select> listens for added and removed items as well
+   * as changes to their `selected` attribute.
+   */
+  private observer_?: MutationObserver
+
+  constructor() {
+    super()
+
+    this.observer_ = new MutationObserver(async entries => {
+      const old = this.value
+
+      if (this.multiple) {
+        // See if the value property needs to be updated.  By definition `value`
+        // is the first selected item in DOM order.
+        this.value_ = this.selectedOptions.at(0)?.id ?? ''
+        if (old !== this.value) {
+          this.requestUpdate('value', old)
+        }
+      } else {
+        // If multiple items are selected in entries, the last one in the list
+        // is the one that is considered selected.  This is assumed to be the
+        // last one the user clicked on.  If the user clicks on the selected
+        // item, it will be unselected and the <re-select> will have no value.
+        let lastValue = ''
+        for (const entry of entries) {
+          if (entry.type === 'attributes') {
+            if (entry.attributeName === 'selected') {
+              if (entry.target instanceof ItemElement && entry.target.selected) {
+                lastValue = entry.target.id
+              }
+            }
+          }
+        }
+        if (lastValue === '') {
+          // If no item was selected, the value is the first selected item in
+          // the list, if any.  This handles the case where the item was
+          // unselected in the value setter.
+          lastValue = this.selectedOptions.at(0)?.id ?? ''
+        }
+
+        if (old !== lastValue) {
+          this.value = lastValue
+        }
+      }
+
+      if (old !== this.value) {
+        this.updateComplete.then(
+          () => fire(this, 'change', { bubbles: true }),
+        )
+      }
+    })
+  }
+
+  disconnectedCallback(): void {
+    super.disconnectedCallback()
+    this.observer_?.disconnect()
+  }
+
+  /**
+   * An array of `<re-item>` children, if any.
+   */
+  get options(): ReadonlyArray<ItemElement> {
+    const slot = this.renderRoot.querySelector<HTMLSlotElement>('re-menu slot')
+    const els = slot?.assignedElements({ flatten: true }) ?? []
+    return els.reduce((items, el) => {
+      if (el.tagName === 'RE-ITEM') {
+        items.push(el as ItemElement)
+      }
+      return items.concat([...el.querySelectorAll('re-item')])
+    }, [] as ItemElement[])
+  }
+
+  /**
+   * An array of currently selected `<re-item>` children, if any.
+   * An `<re-item>` is selected if it has the `selected` attribute.
+   */
+  get selectedOptions(): ReadonlyArray<ItemElement> {
+    return this.options.filter(item => item.selected)
+  }
+
+  /**
+   * A promise that resolves when all items of the `re-select` are unselected.
+   * When callers wait on `this.updateComplete`, they will also wait for this
+   * promise to resolve.
+   */
+  private allItemsUnselectedComplete_ = Promise.resolve()
+
+  /**
+   * A promise that resolves when the `selectedIndex` and `labelNodes_`
+   * properties are updated.  When `value` changes, these two properties are
+   * updated asynchronously.
+   *
+   * When callers wait on `this.updateComplete`, they will also wait for this
+   * promise to resolve.
+   */
+  private indexAndLabelsComplete_ = Promise.resolve<ItemRecord>(NO_ITEM)
+
+  /**
+   * Gets the `id` of the item that is currently selected.
    */
   get value(): string {
     return this.value_
   }
 
-  set value(v: string) {
-    this.value_ = v
-    this.allItemsUnselectedComplete_ = this.unselectAllItems_()
-    this.requestUpdate('value')
+  /**
+   * Sets the `id` of the item that is currently selected.  This will set
+   * the `selected` property to the item with the matching `id`, and remove
+   * the `selected` attribute from all other items.  If no item has a matching
+   * `id`, all items are unselected.
+   *
+   * A requestUpdate() is triggered for the `value` property.
+   *
+   * @param id The `id` of the item to select.
+   */
+  set value(id: string) {
+    const old = this.value
+    const item = this.options.find(item => item.id === id)
+    if (item) {
+      item.selected = true
+    } else {
+      if (id !== '') {
+        console.warn(
+          `re-select: no item with id "${id}" found.  Unselecting all items.`,
+        )
+      }
+
+      // Treat unknown IDs as if the user specfied '', which means unselect
+      // all items.
+      id = ''
+    }
+
+    this.value_ = id
+    this.allItemsUnselectedComplete_ = this.unselectAllItemsExcept_(id)
+    this.requestUpdate('value', old)
   }
 
   private value_: string = DEFAULT_VALUE
 
-  protected async getUpdateComplete(): Promise<boolean> {
-    const ret = await super.getUpdateComplete()
-    await this.allItemsUnselectedComplete_
-    return ret
-  }
-
-  @property({ type: Array, state: true })
-  private accessor labelNodes_: Node[] = []
-
   /** The `id` of the selected item when the element was first rendered. */
   private initialValue_ = DEFAULT_VALUE
+
+  /**
+   * The ids of all the selected items when the element was first rendered,
+   * in list order.  Used by the form reset lifecycle callback to restore
+   * the initial selections when multiple options can be selected.
+   */
+  private initialSelectedIds_: string[] = []
 
   static styles: CSSResult[] = [
     ...super.styles,
@@ -165,6 +277,18 @@ export class SelectElement extends SelectElementBase {
       }
     `,
   ]
+
+  protected override async getUpdateComplete(): Promise<boolean> {
+    // NOTE: It's important to wait for the super class's updateComplete first
+    // so that `indexAndLabelsComplete_` will be set before waiting on it here.
+    const ret = await super.getUpdateComplete()
+
+    await Promise.all([
+      this.allItemsUnselectedComplete_,
+      this.indexAndLabelsComplete_,
+    ])
+    return ret
+  }
 
   private validate_() {
     const validity: ValidityStateFlags = {}
@@ -185,62 +309,153 @@ export class SelectElement extends SelectElementBase {
     this.setValidity(validity, message, anchor ?? undefined)
   }
 
+  /**
+   * Returns the ids of all the selected items, in list order.
+   */
+  private getSelectedIds_(): string[] {
+    return this.selectedOptions.map(item => item.id)
+  }
+
+  /**
+   * Gives the browser the current submission value and state of this
+   * element.
+   *
+   * When only one option can be selected, the value is the `id` of the
+   * selected item, like the value of the standard HTML `<select>`.  When
+   * multiple options can be selected, the browser is instead given a
+   * `FormData` with one entry per selected item, like the standard HTML
+   * `<select multiple>` which submits one entry per selected option, all
+   * with the same name.  The FormData is used as both the submission value
+   * and the state saved by the browser for the form restore lifecycle
+   * callback.
+   */
+  private updateFormValue_(): void {
+    if (!this.multiple) {
+      this.setFormValue(this.value_)
+      return
+    }
+
+    const ids = this.getSelectedIds_()
+    if (ids.length === 0) {
+      this.setFormValue(null)
+      return
+    }
+
+    const data = new FormData()
+    ids.forEach(id => data.append(this.name, id))
+    this.setFormValue(data, data)
+  }
+
+  /**
+   * Selects exactly the items whose id appears in the given list, unselects
+   * all the others, and restores the value and the form value of this
+   * element accordingly.
+   */
+  private restoreSelectionByIds_(ids: string[]): void {
+    const selectedIds = new Set(ids)
+    this.options.forEach(
+      item => item.selected = selectedIds.has(item.id),
+    )
+
+    // Set `value_` directly, and not with the `value` setter, so that the
+    // items selected above are not unselected.
+    const old = this.value_
+    this.value_ = ids.at(0) ?? ''
+    this.requestUpdate('value', old)
+  }
+
+  protected override onFormReset_(): void {
+    if (this.multiple) {
+      this.restoreSelectionByIds_(this.initialSelectedIds_)
+    } else {
+      this.value = this.initialValue_
+    }
+  }
+
+  protected override onFormStateRestore_(
+    state: FormData | File | string | null,
+  ): void {
+    // The value submitted by this element is the `id` of the selected item,
+    // or, when multiple options can be selected, a FormData with one entry
+    // per selected item, as passed to setFormValue() by updateFormValue_().
+    if (state instanceof FormData) {
+      const ids = [...state].map(([, value]) => String(value))
+      this.restoreSelectionByIds_(ids)
+    } else if (typeof state === 'string') {
+      this.value = state
+    }
+  }
+
   override firstUpdated(props: PropertyValues): void {
     super.firstUpdated(props)
 
     const menu = this.renderRoot.querySelector('re-menu')
     menu?.addEventListener('click', this)
 
+    this.observer_?.observe(this, {
+      subtree: true,
+      childList: true,
+      attributeFilter: ['selected'],
+    })
+
     // The initially selected item is chosen as follows, in decreasing order
     // of precedence:
     // - if there is an item with an `id` that matches the `value` property,
     //   that item is selected
-    // - if an item has the selected attribute, that item is selected
+    // - if an item has the selected attribute, that item is selected.  When
+    //   multiple options can be selected, all of the items with the selected
+    //   attribute are kept selected, like the `selected` attribute of the
+    //   options of the standard HTML `<select multiple>`
     // - otherise, the first item in the list is selected
     //
     // To handle this, if the `value` is not set but an item has the
-    // `selected` attribute, set the `value` to that item's `id`.
+    // `selected` attribute, set the `value` to the `id` of that item, or of
+    // the first item when none has the attribute.
     if (!this.value) {
-      const item = this.querySelector<ItemElement>('re-item[selected]')
-        ?? this.querySelector<ItemElement>('re-item')
+      const item = this.selectedOptions.at(0) ?? this.options.at(0)
       if (item) {
-        this.value = item.id
+        // This will request an asynchronous update on the item if it was not
+        // already selected.  Setting `initialSelectedIds_` below may not take
+        // this item into account, but that's OK because it was not initially
+        // selected anyway.
+        item.selected = true
+
+        if (this.multiple) {
+          const old = this.value
+          // Set `value_` directly, and not with the `value` setter, so that
+          // other selected items are not unselected.
+          this.value_ = item.id
+          this.requestUpdate('value', old)
+        } else {
+          this.value = item.id
+        }
       }
     }
 
-    // Capture the initially selected item before the selection can change,
-    // so the form reset lifecycle callback can restore it later.
+    // Capture the ids of the items initially selected and the value, before
+    // the selection can change, so the form reset lifecycle callback can
+    // restore them later.
     this.initialValue_ = this.value
+    this.initialSelectedIds_ = this.getSelectedIds_()
   }
 
-  protected override onFormReset_(): void {
-    this.value = this.initialValue_
-  }
-
-  protected override onFormStateRestore_(
-    state: FormData | File | string | null,
-  ): void {
-    // The value submitted by this element is the `id` of the selected item.
-    if (typeof state === 'string') {
-      this.value = state
-    }
-  }
-
-  override async updated(props: PropertyValues): Promise<void> {
+  override updated(props: PropertyValues): void {
     super.updated(props)
 
     // TODO: handle `selectedIndex` changes.
 
     if (props.has('value')) {
-      this.setFormValue(this.value_)
+      this.updateFormValue_()
 
-      const { index, item } = await this.findItemByValue_(this.value_)
-      if (index !== -1) {
-        item!.selected = true
+      const index = this.options.findIndex(item => item.id === this.value)
+      const item = index !== -1 ? this.options.at(index) : null
+
+      if (index !== this.selectedIndex) {
         this.selectedIndex = index
-        this.labelNodes_ = item!.getLabelNodes()
+      }
+      if (item) {
+        this.labelNodes_ = item.getLabelNodes()
       } else {
-        this.selectedIndex = -1
         this.labelNodes_ = [document.createTextNode('-- Nothing selected --')]
       }
 
@@ -248,12 +463,14 @@ export class SelectElement extends SelectElementBase {
     }
 
     if (props.has('multiple')) {
+      this.dropdownmode = this.multiple ? 2 : 1
+
       const button = this.renderRoot.querySelector('re-button')
       const panel = this.renderRoot.querySelector('re-menu')
 
       button?.updateComplete.then(() => {
         if (this.multiple) {
-          button.setAttribute('disabled', '')
+          button.setAttribute('disabled', 'disabled')
         } else {
           button.removeAttribute('disabled')
         }
@@ -271,33 +488,20 @@ export class SelectElement extends SelectElementBase {
     }
   }
 
-  handleEvent(e: Event): void {
+  override handleEvent(e: Event): void {
     super.handleEvent(e)
 
     switch (e.type) {
       case 'click': {
-        const me = e as MouseEvent
         const item = getItemFromEvent(e)
         if (item) {
-          if (this.multiple && me.ctrlKey) {
-            item.selected = !item.selected
-            item.updateComplete.then(() => {
-              const first = this.querySelector('re-item[selected]')
-
-              // Set `value_` directly to avoid unselecting all the items.
-              const old = this.value_
-              this.value_ = first ? first.id : ''
-              this.requestUpdate('value', old)
-              this.updateComplete.then(
-                () => fire(this, 'change', { bubbles: true }),
-              )
-            })
-          } else {
-            this.value = item.id !== this.value ? item.id : ''
-            this.updateComplete.then(
-              () => fire(this, 'change', { bubbles: true }),
-            )
+          const me = e as MouseEvent
+          if (this.multiple && !me.ctrlKey) {
+            this.value = item.selected ? '' : item.id
+            break
           }
+
+          item.selected = !item.selected
         }
         break
       }
@@ -308,3 +512,4 @@ export class SelectElement extends SelectElementBase {
     return this.labelNodes_
   }
 }
+
