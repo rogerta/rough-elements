@@ -85,7 +85,7 @@ export class LitElementWithStylesArray extends LitElement {
  */
 export class ReElement extends LitElementWithStylesArray {
   @query('svg#rough')
-  private accessor svg_: SVGSVGElement | undefined = undefined
+  private accessor svg_: SVGSVGElement | null = null
 
   /**
    * Enables debugging in elements when the string is not undefined and not
@@ -99,7 +99,7 @@ export class ReElement extends LitElementWithStylesArray {
   private rough_?: RoughSVG
   private options_: Options = { seed: rough.newSeed() }
 
-  protected get svg(): SVGSVGElement | undefined {
+  protected get svg(): SVGSVGElement | null {
     return this.svg_
   }
   protected get rough(): RoughSVG {
@@ -201,17 +201,22 @@ export class ReElement extends LitElementWithStylesArray {
         box-sizing: border-box;
       }
 
-      /* The svg element is positioned to covers the padding box of the host
-       * element. Overflow is visible so the rough border (SVG sub-elements)
+      /* Normally setting width/height to 100% would make an element cover
+       * its parent's content box.  However, for the special case of an
+       * absolutely positioned element inside a relatively positioned element,
+       * 100% means the padding box.  So the svg element is positioned to cover
+       * the padding box of the host element.
+       *
+       * It's important to set the width and height even though inset is set
+       * because svg elements are replaced elements with a predefined size
+       * that won't change simply because of the inset.
+       *
+       * Overflow is made visible so the rough border (SVG sub-elements)
        * will can placed in the host's border box, which is outside the
-       * padding box.  BY default, the svg is placed underneath the other
+       * padding box.  By default, the svg is placed underneath the other
        * child elements using z-index. */
       #rough {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
         width: 100%;
         height: 100%;
         inset: 0;

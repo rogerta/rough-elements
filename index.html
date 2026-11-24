@@ -383,6 +383,9 @@
     </style>
   </head>
   <body class="noto-sans-400 xbackissue-bb xhb-pencil xbic-muted">
+        <button>Button</button>
+        <input type="text">
+        <textarea></textarea>
         <select id="formselectX" required name="selectX">
           <option value="formitem0">Menu item 0</option>
           <option value="formitem1">Menu item 1</option>
@@ -1393,12 +1396,18 @@
       })
 
     document.querySelectorAll('re-select:not([multiple])').forEach(select => {
+      select.addEventListener('input', e => {
+        console.log(`changed re-select e.target.value="${e.target.value}"`)
+      })
       select.addEventListener('change', e => {
         console.log(`changed re-select e.target.value="${e.target.value}"`)
       })
     })
 
     document.querySelectorAll('re-select[multiple]').forEach(select => {
+      select.addEventListener('input', e => {
+        console.log(`changed re-select e.target.value="${e.target.value}"`)
+      })
       select.addEventListener('change', e => {
         const ids = Array.from(e.target.selectedOptions).map(n => n.id)
         console.log(`changed re-select e.target.selectedOptions="${ids}"`)

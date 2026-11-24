@@ -74,7 +74,7 @@ export class ButtonBaseElement extends ButtonBaseElementBase {
     button?.addEventListener('blur', this)
     // Make the element focusable, unless the author already set the `tabindex`
     // attribute explicitly in the HTML.
-    if (!this.hasAttribute('tabindex')) {
+    if (!this.hasAttribute('tabindex') && !this.disabled) {
       this.setAttribute('tabindex', '0')
     }
   }
@@ -117,6 +117,11 @@ export class ButtonBaseElement extends ButtonBaseElementBase {
       }
       :host([disabled]) {
         opacity: 0.5;
+      }
+      :host([disabled]),
+      :host([disabled]) * {
+        cursor: not-allowed;
+        pointer-events: none;
       }
 
       slot#main {

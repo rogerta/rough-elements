@@ -68,7 +68,7 @@ export const BorderMixin = <T extends Constructor<ReElement>>(
         }
 
         /* Styling for the outline of shapes.  Anything that affects the stroke
-        * of an SVG element can be used here.  Fill is always 'none'. */
+         * of an SVG element can be used here.  Fill is always 'none'. */
         #rough .border .outline {
           fill: none;
           stroke: var(--re-border-color, var(--border-color));

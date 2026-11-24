@@ -113,7 +113,7 @@ export const BackgroundMixin = <T extends Constructor<ReElement>>(
         }
 
         /* Styling for the solid fill of shapes.  Anything that affects the fill
-        * of an SVG element can be used here.  Stroke is always 'none'. */
+         * of an SVG element can be used here.  Stroke is always 'none'. */
         #rough .background .solid-fill {
           stroke: none;
           fill: var(--re-background-color, var(--background-color));
@@ -122,7 +122,7 @@ export const BackgroundMixin = <T extends Constructor<ReElement>>(
         }
 
         /* Styling for the pattern fill of shapes.  Anything that affects the
-        * stroke of an SVG element can be used here.  Fill is always 'none'. */
+         * stroke of an SVG element can be used here.  Fill is always 'none'. */
         #rough .background .pattern-fill {
           fill: none;
           stroke: var(--re-background-color, var(--background-color));
