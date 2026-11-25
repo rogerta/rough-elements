@@ -12,7 +12,7 @@ import { FormControlMixin,
   type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
 import { fire } from './internal/re-element.ts'
-import { DropdownElement, type ItemRecord,  NO_ITEM } from './re-dropdown.ts'
+import { DropdownElement, type ItemRecord, NO_ITEM } from './re-dropdown.ts'
 import { getItemFromEvent, ItemElement } from './re-item.ts'
 
 export const SelectElementBase:
@@ -146,7 +146,8 @@ export class SelectElement extends SelectElementBase {
         for (const entry of entries) {
           if (entry.type === 'attributes') {
             if (entry.attributeName === 'selected') {
-              if (entry.target instanceof ItemElement && entry.target.selected) {
+              if (entry.target instanceof ItemElement
+                && entry.target.selected) {
                 lastValue = entry.target.id
               }
             }
@@ -512,4 +513,3 @@ export class SelectElement extends SelectElementBase {
     return this.labelNodes_
   }
 }
-

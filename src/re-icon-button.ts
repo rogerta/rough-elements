@@ -121,7 +121,9 @@ export class IconButtonElement extends LitElement {
 
   protected render(): TemplateResult<1> {
     return html`
-      <re-button ?autofocus="${this.autofocus}" ?disabled="${ifDefined(this.disabled)}"
+      <re-button ?autofocus="${this.autofocus}" ?disabled="${
+      ifDefined(this.disabled)
+    }"
           variant="text" circle exportparts="button">
         <re-icon name="${this.name}"></re-icon>
       </re-button>

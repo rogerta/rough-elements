@@ -59,7 +59,8 @@ class KeyboardNavState {
     }
   }
 
-  move(up: boolean, clearAllSelectFirst: boolean, selectFollowsHighlight: boolean) {
+  move(up: boolean, clearAllSelectFirst: boolean,
+    selectFollowsHighlight: boolean) {
     // If there is no current item, then the user has not yet navigated the menu
     // with the keyboard.  In this case, highlight the current item.  If
     // currentIndex is -1 the menu is empty.  nextIndex below will be -1 and
@@ -280,7 +281,7 @@ export class MenuElement extends MenuElementBase {
     }
 
     return slot.assignedElements({ flatten: true })
-        .filter((el): el is ItemElement => el instanceof ItemElement)
+      .filter((el): el is ItemElement => el instanceof ItemElement)
   }
 
   /**
@@ -371,8 +372,10 @@ export class MenuElement extends MenuElementBase {
         const ke = e as KeyboardEvent
         const isCtrl = ke.ctrlKey
         const isShift = ke.shiftKey
-        const selectFollowsHighlight = this.dropdownmode === 2 && (isShift || !isCtrl)
-        const clearAllSelectFirst = this.dropdownmode === 2 && !isCtrl && !isShift
+        const selectFollowsHighlight = this.dropdownmode === 2
+          && (isShift || !isCtrl)
+        const clearAllSelectFirst = this.dropdownmode === 2 && !isCtrl
+          && !isShift
 
         switch (ke.key) {
           case 'ArrowDown':
@@ -380,14 +383,16 @@ export class MenuElement extends MenuElementBase {
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
-            this.kbNavState_?.move(false, clearAllSelectFirst, selectFollowsHighlight)
+            this.kbNavState_?.move(false, clearAllSelectFirst,
+              selectFollowsHighlight)
             break
           case 'ArrowUp':
             // Prevent the default otherwise the page may scroll.
             // Prevent bubbling in case this is a nested submenu.
             ke.preventDefault()
             ke.stopPropagation()
-            this.kbNavState_?.move(true, clearAllSelectFirst, selectFollowsHighlight)
+            this.kbNavState_?.move(true, clearAllSelectFirst,
+              selectFollowsHighlight)
             break
           case 'ArrowLeft':
             // Prevent the default otherwise the page may scroll.

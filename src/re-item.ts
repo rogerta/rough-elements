@@ -8,7 +8,7 @@ import { css, CSSResult, html, LitElement } from 'lit'
 import { customElement, property } from 'lit/decorators.js'
 
 import './re-icon.ts'
-import { STYLES } from './internal/re-common.ts';
+import { STYLES } from './internal/re-common.ts'
 
 /**
  * Items define elements that are used inside containers such as

@@ -115,7 +115,9 @@ export class DropdownElement extends LitElementWithStylesArray {
     `,
   ]
 
-  protected async unselectAllItemsExcept_(id: string): Promise<void | undefined> {
+  protected async unselectAllItemsExcept_(
+    id: string,
+  ): Promise<void | undefined> {
     const menu = this.renderRoot.querySelector('re-menu')
 
     // If this methods happens to be called early in dropdown creation, like
