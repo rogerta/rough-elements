@@ -7,6 +7,7 @@ on:
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
   contents: read
+  actions: read
   pages: write
   id-token: write
 
@@ -43,6 +44,27 @@ jobs:
         uses: actions/upload-pages-artifact@v5
         with:
           path: 'dist/docs' # Points to your 11ty output directory
+
+      # deploy-pages looks the artifact up immediately after the upload, but
+      # the artifact listing can lag behind the upload (actions/deploy-pages#451),
+      # which fails the deploy with "No artifacts named github-pages".  Wait
+      # until the artifact is visible before deploying.
+      - name: Wait for artifact to be listed
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          url="https://api.github.com/repos/${{ github.repository }}/actions/runs/${{ github.run_id }}/artifacts?name=github-pages&per_page=100"
+          for i in $(seq 1 40); do
+            count=$(curl -sS -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "$url" | jq -r '.total_count // 0')
+            echo "attempt $i: found $count 'github-pages' artifact(s)"
+            if [ "$count" -ge 1 ]; then
+              sleep 5
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::github-pages artifact not visible after ~2 minutes"
+          exit 1
 
       - name: Deploy to GitHub Pages
         id: deployment
