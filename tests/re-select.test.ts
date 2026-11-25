@@ -252,37 +252,48 @@ describe('re-select', () => {
       select.remove()
     })
 
-    it('fires a change event when the first selected item changes', async () => {
+    it('fires input and change events whenever the selection changes', async () => {
       const { select, items } = await createMultiSelect()
       const [item1, item2] = items
 
+      // Let the events fired by the initial auto-selection settle before
+      // attaching the spies.
+      await settle(select)
+
       const changeSpy = vi.fn()
+      const inputSpy = vi.fn()
       select.addEventListener('change', changeSpy)
+      select.addEventListener('input', inputSpy)
 
       // Ctrl+clicking another item keeps the first selected item, so the
-      // value does not change and no change event is fired.
+      // value does not change, but the selection did change, so input and
+      // change are fired.
       await clickItem(select, item2, true)
       expect(select.value).toBe('opt1')
-      expect(changeSpy).not.toHaveBeenCalled()
-
-      // Deselecting the first selected item promotes the next one in DOM
-      // order and fires a change event.
-      await clickItem(select, item1, true)
-      expect(select.value).toBe('opt2')
       expect(changeSpy).toHaveBeenCalledTimes(1)
       expect(changeSpy.mock.lastCall?.[0].target).toBe(select)
+      expect(inputSpy).toHaveBeenCalledTimes(1)
+
+      // Deselecting the first selected item promotes the next one in DOM
+      // order and fires the events again.
+      await clickItem(select, item1, true)
+      expect(select.value).toBe('opt2')
+      expect(changeSpy).toHaveBeenCalledTimes(2)
+      expect(inputSpy).toHaveBeenCalledTimes(2)
 
       // Selecting the first item again changes the value back, firing
-      // another change event.
+      // another pair of events.
       await clickItem(select, item1, true)
       expect(select.value).toBe('opt1')
-      expect(changeSpy).toHaveBeenCalledTimes(2)
+      expect(changeSpy).toHaveBeenCalledTimes(3)
+      expect(inputSpy).toHaveBeenCalledTimes(3)
 
-      // Deselecting a non-first item does not change the value, so no
-      // change event is fired.
+      // Deselecting a non-first item does not change the value, but the
+      // selection changed, so the events are fired again.
       await clickItem(select, item2, true)
       expect(select.value).toBe('opt1')
-      expect(changeSpy).toHaveBeenCalledTimes(2)
+      expect(changeSpy).toHaveBeenCalledTimes(4)
+      expect(inputSpy).toHaveBeenCalledTimes(4)
 
       select.remove()
     })
@@ -337,18 +348,35 @@ describe('re-select', () => {
       expect(setFormValueSpy.mock.lastCall?.[0]).toBe(state)
 
       const [item1, item2, item3] = items
+      setFormValueSpy.mockClear()
 
-      // Ctrl+clicking more items does not change `value`, which is still the
-      // first selected item, so the form value is not re-sent.
+      // Every change to the selection re-sends the form value with one entry
+      // per selected item, even when `value`, which is still the first
+      // selected item, does not change.
       await clickItem(select, item2, true)
-      await clickItem(select, item3, true)
       expect(setFormValueSpy).toHaveBeenCalledTimes(1)
+      state = setFormValueSpy.mock.lastCall?.[1]
+      expect(state).toBeInstanceOf(FormData)
+      expect([...(state as FormData)]).toEqual([
+        ['options', 'opt1'],
+        ['options', 'opt2'],
+      ])
+
+      await clickItem(select, item3, true)
+      expect(setFormValueSpy).toHaveBeenCalledTimes(2)
+      state = setFormValueSpy.mock.lastCall?.[1]
+      expect([...(state as FormData)]).toEqual([
+        ['options', 'opt1'],
+        ['options', 'opt2'],
+        ['options', 'opt3'],
+      ])
 
       // Deselecting the first item changes the value, so the form value is
       // re-sent with one entry per remaining selected item.
       await clickItem(select, item1, true)
+      expect(select.value).toBe('opt2')
+      expect(setFormValueSpy).toHaveBeenCalledTimes(3)
       state = setFormValueSpy.mock.lastCall?.[1]
-      expect(state).toBeInstanceOf(FormData)
       expect([...(state as FormData)]).toEqual([
         ['options', 'opt2'],
         ['options', 'opt3'],
@@ -356,11 +384,13 @@ describe('re-select', () => {
 
       // Deselecting another item removes its entry from the submitted data.
       await clickItem(select, item2, true)
+      expect(setFormValueSpy).toHaveBeenCalledTimes(4)
       state = setFormValueSpy.mock.lastCall?.[1]
       expect([...(state as FormData)]).toEqual([['options', 'opt3']])
 
       // Deselecting every item removes the field from the submitted data.
       await clickItem(select, item3, true)
+      expect(setFormValueSpy).toHaveBeenCalledTimes(5)
       expect(setFormValueSpy.mock.lastCall?.[0]).toBeNull()
 
       select.remove()

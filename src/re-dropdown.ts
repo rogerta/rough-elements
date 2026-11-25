@@ -115,20 +115,6 @@ export class DropdownElement extends LitElementWithStylesArray {
     `,
   ]
 
-  protected async unselectAllItemsExcept_(
-    id: string,
-  ): Promise<void | undefined> {
-    const menu = this.renderRoot.querySelector('re-menu')
-
-    // If this methods happens to be called early in dropdown creation, like
-    // at firstUpdated() time, it's possible for the menu to not be finished
-    // its own update cycle.  Wait for it to compelete before unselecting all
-    // items.
-    await menu?.updateComplete
-
-    return menu?.unselectAllItemsExcept(id)
-  }
-
   handleEvent(e: Event): void {
     switch (e.type) {
       case 'toggle': {

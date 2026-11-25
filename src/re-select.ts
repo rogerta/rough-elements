@@ -128,15 +128,14 @@ export class SelectElement extends SelectElementBase {
     super()
 
     this.observer_ = new MutationObserver(async entries => {
-      const old = this.value
+      let fireEvents = false
 
       if (this.multiple) {
         // See if the value property needs to be updated.  By definition `value`
         // is the first selected item in DOM order.
         this.value_ = this.selectedOptions.at(0)?.id ?? ''
-        if (old !== this.value) {
-          this.requestUpdate('value', old)
-        }
+        this.requestUpdate('value')
+        fireEvents = true
       } else {
         // If multiple items are selected in entries, the last one in the list
         // is the one that is considered selected.  This is assumed to be the
@@ -160,14 +159,18 @@ export class SelectElement extends SelectElementBase {
           lastValue = this.selectedOptions.at(0)?.id ?? ''
         }
 
-        if (old !== lastValue) {
+        if (this.value !== lastValue) {
           this.value = lastValue
+          fireEvents = true
         }
       }
 
-      if (old !== this.value) {
+      if (fireEvents) {
         this.updateComplete.then(
-          () => fire(this, 'change', { bubbles: true }),
+          () => {
+            fire(this, 'input', { bubbles: true, composed: true })
+            fire(this, 'change', { bubbles: true })
+          },
         )
       }
     })
@@ -205,7 +208,7 @@ export class SelectElement extends SelectElementBase {
    * When callers wait on `this.updateComplete`, they will also wait for this
    * promise to resolve.
    */
-  private allItemsUnselectedComplete_ = Promise.resolve()
+  //private allItemsUnselectedComplete_ = Promise.resolve()
 
   /**
    * A promise that resolves when the `selectedIndex` and `labelNodes_`
@@ -252,7 +255,8 @@ export class SelectElement extends SelectElementBase {
     }
 
     this.value_ = id
-    this.allItemsUnselectedComplete_ = this.unselectAllItemsExcept_(id)
+    //this.allItemsUnselectedComplete_ = this.unselectAllItemsExcept_(id)
+    this.unselectAllItemsExcept_(id)
     this.requestUpdate('value', old)
   }
 
@@ -279,13 +283,30 @@ export class SelectElement extends SelectElementBase {
     `,
   ]
 
+  private unhighlightAllItemsExcept_(id: string) {
+    this.options.forEach(item => {
+      if (item.id !== id) {
+        item.highlighted = false
+      }
+    })
+  }
+
+  private unselectAllItemsExcept_(id: string) {
+    this.options.forEach(item => {
+      if (item.id !== id) {
+        item.selected = false
+        item.highlighted = false
+      }
+    })
+  }
+
   protected override async getUpdateComplete(): Promise<boolean> {
     // NOTE: It's important to wait for the super class's updateComplete first
     // so that `indexAndLabelsComplete_` will be set before waiting on it here.
     const ret = await super.getUpdateComplete()
 
     await Promise.all([
-      this.allItemsUnselectedComplete_,
+      //this.allItemsUnselectedComplete_,
       this.indexAndLabelsComplete_,
     ])
     return ret
@@ -498,11 +519,15 @@ export class SelectElement extends SelectElementBase {
         if (item) {
           const me = e as MouseEvent
           if (this.multiple && !me.ctrlKey) {
-            this.value = item.selected ? '' : item.id
-            break
+            // this.value = item.selected ? '' : item.id
+            // break
+            this.unselectAllItemsExcept_(item.id)
+          } else {
+            this.unhighlightAllItemsExcept_(item.id)
           }
 
           item.selected = !item.selected
+          item.highlighted = true
         }
         break
       }
