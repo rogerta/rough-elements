@@ -1397,7 +1397,7 @@
 
     document.querySelectorAll('re-select:not([multiple])').forEach(select => {
       select.addEventListener('input', e => {
-        console.log(`changed re-select e.target.value="${e.target.value}"`)
+        console.log(`input re-select e.target.value="${e.target.value}"`)
       })
       select.addEventListener('change', e => {
         console.log(`changed re-select e.target.value="${e.target.value}"`)
@@ -1406,7 +1406,7 @@
 
     document.querySelectorAll('re-select[multiple]').forEach(select => {
       select.addEventListener('input', e => {
-        console.log(`changed re-select e.target.value="${e.target.value}"`)
+        console.log(`input re-select e.target.value="${e.target.value}"`)
       })
       select.addEventListener('change', e => {
         const ids = Array.from(e.target.selectedOptions).map(n => n.id)
