@@ -480,4 +480,35 @@ describe('re-select', () => {
 
     select.remove()
   })
+
+  it('keeps trigger button disabled when the select is disabled', async () => {
+    const select = document.createElement('re-select') as SelectElement
+    select.setAttribute('disabled', '')
+    const item1 = document.createElement('re-item') as ItemElement
+    item1.id = 'opt1'
+    item1.textContent = 'Option 1'
+    select.appendChild(item1)
+    document.body.appendChild(select)
+    await settle(select)
+
+    expect(select.disabled).toBe(true)
+
+    const button = select.shadowRoot?.querySelector('re-button')
+    await button?.updateComplete
+    await settle(select)
+
+    expect(button?.hasAttribute('disabled')).toBe(true)
+    expect((button as any)?.disabled).toBe(true)
+
+    // Toggling disabled off and on must keep the trigger button in sync.
+    select.disabled = false
+    await settle(select)
+    expect(button?.hasAttribute('disabled')).toBe(false)
+
+    select.disabled = true
+    await settle(select)
+    expect(button?.hasAttribute('disabled')).toBe(true)
+
+    select.remove()
+  })
 })

@@ -491,11 +491,7 @@ export class SelectElement extends SelectElementBase {
       const panel = this.renderRoot.querySelector('re-menu')
 
       button?.updateComplete.then(() => {
-        if (this.multiple) {
-          button.setAttribute('disabled', 'disabled')
-        } else {
-          button.removeAttribute('disabled')
-        }
+        button.disabled = this.multiple || this.disabled
       })
 
       panel?.updateComplete.then(() => {
