@@ -204,13 +204,6 @@ export class SelectElement extends SelectElementBase {
   }
 
   /**
-   * A promise that resolves when all items of the `re-select` are unselected.
-   * When callers wait on `this.updateComplete`, they will also wait for this
-   * promise to resolve.
-   */
-  //private allItemsUnselectedComplete_ = Promise.resolve()
-
-  /**
    * A promise that resolves when the `selectedIndex` and `labelNodes_`
    * properties are updated.  When `value` changes, these two properties are
    * updated asynchronously.
@@ -255,7 +248,6 @@ export class SelectElement extends SelectElementBase {
     }
 
     this.value_ = id
-    //this.allItemsUnselectedComplete_ = this.unselectAllItemsExcept_(id)
     this.unselectAllItemsExcept_(id)
     this.requestUpdate('value', old)
   }
@@ -306,7 +298,6 @@ export class SelectElement extends SelectElementBase {
     const ret = await super.getUpdateComplete()
 
     await Promise.all([
-      //this.allItemsUnselectedComplete_,
       this.indexAndLabelsComplete_,
     ])
     return ret
