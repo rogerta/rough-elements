@@ -18,17 +18,6 @@ import { ReElement } from './internal/re-element.ts'
 import { getItemFromEvent, ItemElement } from './re-item.ts'
 import { MenuItemElement } from './re-menu-item.ts'
 
-export interface ItemRecord {
-  index: number
-  item: ItemElement | null
-}
-
-// Return value of findItemByValue() when an item cannot be found.
-export const NO_ITEM = {
-  index: -1,
-  item: null,
-} as const
-
 // Stack of open <re-menu>s used to restore focus when they close.
 let menuStack: MenuElement[] = []
 

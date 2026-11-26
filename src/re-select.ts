@@ -12,7 +12,7 @@ import { FormControlMixin,
   type FormControlMixinInterface } from './internal/re-form-control-mixin.ts'
 
 import { fire } from './internal/re-element.ts'
-import { DropdownElement, type ItemRecord, NO_ITEM } from './re-dropdown.ts'
+import { DropdownElement } from './re-dropdown.ts'
 import { getItemFromEvent, ItemElement } from './re-item.ts'
 
 export const SelectElementBase:
@@ -44,11 +44,16 @@ const DEFAULT_VALUE = ''
  * properties will be more useful.  Make sure that all children, even those
  * nested inside `<re-menu-item>`s, have unique IDs.
  *
+ * Set the initially selected `<re-item>` by giving it the `selected` attribute
+ * and not by setting the `value` property or `<re-select>`.  In the exmaple
+ * below, the second item will be selected when the `<re-select>` is initially
+ * rendered.
+ *
  * A typical use of select is as follows:
  * ```
  * <re-select id="sel1"@change="${onChanged}">
  *   <re-item id="item1">...</re-item>
- *   <re-item id="item2">...</re-item>
+ *   <re-item id="item2" selected>...</re-item>
  *   <re-divider></re-divider>
  *   <re-item id="item3">...</re-item>
  *   <re-menu-item id="item4">
@@ -124,6 +129,11 @@ export class SelectElement extends SelectElementBase {
    */
   private observer_?: MutationObserver
 
+  private value_: string = DEFAULT_VALUE
+
+  /** The `id` of the selected item when the element was first rendered. */
+  private initialValue_ = DEFAULT_VALUE
+
   constructor() {
     super()
 
@@ -185,7 +195,7 @@ export class SelectElement extends SelectElementBase {
    * An array of `<re-item>` children, if any.
    */
   get options(): ReadonlyArray<ItemElement> {
-    const slot = this.renderRoot.querySelector<HTMLSlotElement>('re-menu slot')
+    const slot = this.renderRoot?.querySelector<HTMLSlotElement>('re-menu slot')
     const els = slot?.assignedElements({ flatten: true }) ?? []
     return els.reduce((items, el) => {
       if (el.tagName === 'RE-ITEM') {
@@ -204,16 +214,6 @@ export class SelectElement extends SelectElementBase {
   }
 
   /**
-   * A promise that resolves when the `selectedIndex` and `labelNodes_`
-   * properties are updated.  When `value` changes, these two properties are
-   * updated asynchronously.
-   *
-   * When callers wait on `this.updateComplete`, they will also wait for this
-   * promise to resolve.
-   */
-  private indexAndLabelsComplete_ = Promise.resolve<ItemRecord>(NO_ITEM)
-
-  /**
    * Gets the `id` of the item that is currently selected.
    */
   get value(): string {
@@ -230,32 +230,23 @@ export class SelectElement extends SelectElementBase {
    *
    * @param id The `id` of the item to select.
    */
+  @property({})
   set value(id: string) {
     const old = this.value
+
+    // If the value is set before the first update, options will be empty.
+    // This can happen if the user sets the value attribute on the element
+    // in the html.  In this case the value is ignored.  Setting a default
+    // item should be done via the 'selected' property of <re-item>.
     const item = this.options.find(item => item.id === id)
     if (item) {
       item.selected = true
-    } else {
-      if (id !== '') {
-        console.warn(
-          `re-select: no item with id "${id}" found.  Unselecting all items.`,
-        )
-      }
-
-      // Treat unknown IDs as if the user specfied '', which means unselect
-      // all items.
-      id = ''
     }
 
     this.value_ = id
     this.unselectAllItemsExcept_(id)
     this.requestUpdate('value', old)
   }
-
-  private value_: string = DEFAULT_VALUE
-
-  /** The `id` of the selected item when the element was first rendered. */
-  private initialValue_ = DEFAULT_VALUE
 
   /**
    * The ids of all the selected items when the element was first rendered,
@@ -290,17 +281,6 @@ export class SelectElement extends SelectElementBase {
         item.highlighted = false
       }
     })
-  }
-
-  protected override async getUpdateComplete(): Promise<boolean> {
-    // NOTE: It's important to wait for the super class's updateComplete first
-    // so that `indexAndLabelsComplete_` will be set before waiting on it here.
-    const ret = await super.getUpdateComplete()
-
-    await Promise.all([
-      this.indexAndLabelsComplete_,
-    ])
-    return ret
   }
 
   private validate_() {
@@ -411,20 +391,15 @@ export class SelectElement extends SelectElementBase {
       attributeFilter: ['selected'],
     })
 
-    // The initially selected item is chosen as follows, in decreasing order
-    // of precedence:
-    // - if there is an item with an `id` that matches the `value` property,
-    //   that item is selected
-    // - if an item has the selected attribute, that item is selected.  When
-    //   multiple options can be selected, all of the items with the selected
-    //   attribute are kept selected, like the `selected` attribute of the
-    //   options of the standard HTML `<select multiple>`
-    // - otherise, the first item in the list is selected
+    // For the non-multiple case, an initially selected item is chosen as
+    // follows, in decreasing order of precedence:
+    // - if an item has the selected attribute, that item is selected
+    // - otherwise, the first item in the list is selected
     //
-    // To handle this, if the `value` is not set but an item has the
-    // `selected` attribute, set the `value` to the `id` of that item, or of
-    // the first item when none has the attribute.
-    if (!this.value) {
+    // In multiple mode nothing is auto-selected, like the standard HTML
+    // `<select multiple>`, but the value is still the id of the first item
+    // with the `selected` attribute, if any.
+    if (!this.multiple) {
       const item = this.selectedOptions.at(0) ?? this.options.at(0)
       if (item) {
         // This will request an asynchronous update on the item if it was not
@@ -433,16 +408,10 @@ export class SelectElement extends SelectElementBase {
         // selected anyway.
         item.selected = true
 
-        if (this.multiple) {
-          const old = this.value
-          // Set `value_` directly, and not with the `value` setter, so that
-          // other selected items are not unselected.
-          this.value_ = item.id
-          this.requestUpdate('value', old)
-        } else {
-          this.value = item.id
-        }
+        this.value_ = item.id
       }
+    } else {
+      this.value_ = this.selectedOptions.at(0)?.id ?? ''
     }
 
     // Capture the ids of the items initially selected and the value, before

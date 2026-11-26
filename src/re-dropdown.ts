@@ -12,7 +12,7 @@ import { sleep } from './internal/re-common.ts'
 import { LitElementWithStylesArray } from './internal/re-element.ts'
 
 import './re-button.ts'
-export { type ItemRecord, NO_ITEM } from './re-menu.ts'
+import './re-menu.ts'
 
 /**
  * Dropdowns expose a menu of actions that the user can perform.

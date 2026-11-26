@@ -388,7 +388,7 @@
     <textarea></textarea>
     <select id="formselectX" required name="selectX">
       <option value="formitem0">Menu item 0</option>
-      <option value="formitem1">Menu item 1</option>
+      <option value="formitem1" selected>Menu item 1</option>
       <option value="formitem2">Menu item 2</option>
       <option value="formitem3">Menu item 3</option>
       <option value="formitem4">Menu item 4</option>
@@ -645,11 +645,11 @@
 
     <div class="demo">
       <h1>re-select</h1>
-      <re-select value="item1">
-        <re-item id="item0" selected>
+      <re-select>
+        <re-item id="item0">
           This is a really long menu item to test flexbox
         </re-item>
-        <re-item id="item1">
+        <re-item id="item1" selected>
           <re-icon slot="prefix" name="check"></re-icon>
           Menu item 1
           <re-icon slot="suffix" name="close"></re-icon>
@@ -661,27 +661,30 @@
         <re-item id="item3">Menu item 3</re-item>
       </re-select>
 
-      <re-select disabled value="item1">
-        <re-item id="item1">Menu item 1</re-item>
+      <re-select disabled>
+        <re-item id="item0">Menu item 0</re-item>
+        <re-item id="item1" selected>Menu item 1</re-item>
         <re-item id="item2">Menu item 2</re-item>
         <re-item id="item3">Menu item 3</re-item>
       </re-select>
 
       Mutiple
-      <re-select multiple value="item2">
+      <re-select multiple>
+        <re-item id="item0">Menu item 0</re-item>
         <re-item id="item1">Menu item 1</re-item>
-        <re-item id="item2">Menu item 2</re-item>
-        <re-item id="item3">Menu item 3</re-item>
+        <re-item id="item2" selected>Menu item 2</re-item>
+        <re-item id="item3" selected>Menu item 3</re-item>
         <re-item id="item4">Menu item 4</re-item>
         <re-item id="item5">Menu item 5</re-item>
         <re-item id="item6">Menu item 6</re-item>
         <re-item id="item7">Menu item 7</re-item>
         <re-item id="item8">Menu item 8</re-item>
-        <re-item id="item9">Menu item 9</re-item>
+        <re-item id="item9" selected>Menu item 9</re-item>
       </re-select>
 
-      Mutiple
-      <re-select multiple value="item2">
+      Mutiple (no initial selection)
+      <re-select multiple>
+        <re-item id="item0">Menu item 0</re-item>
         <re-item id="item1">Menu item 1</re-item>
         <re-item id="item2">Menu item 2</re-item>
         <re-item id="item3">Menu item 3</re-item>
@@ -948,9 +951,9 @@
           <re-range id="dialogrange" required name="range"></re-range>
           <re-rating id="dialograting" required name="rating"></re-rating>
           <re-select id="dialogselect" required name="select">
+            <re-item id="dialogitem0">Menu item 0</re-item>
             <re-item id="dialogitem1">Menu item 1</re-item>
             <re-item id="dialogitem2">Menu item 2</re-item>
-            <re-item id="dialogitem3">Menu item 3</re-item>
           </re-select>
           <re-textarea id="formtextarea" required name="textarea"></re-textarea>
         </div>

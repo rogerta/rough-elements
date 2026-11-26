@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import '../src/re-menu.ts'
-import { MenuElement, NO_ITEM } from '../src/re-menu.ts'
+import { MenuElement } from '../src/re-menu.ts'
 import '../src/re-item.ts'
 import type { ItemElement } from '../src/re-item.ts'
 
@@ -25,10 +25,6 @@ describe('re-menu', () => {
     expect(slot).not.toBeNull()
 
     menu.remove()
-  })
-
-  it('exports NO_ITEM as the record returned when no item is found', () => {
-    expect(NO_ITEM).toEqual({ index: -1, item: null })
   })
 
   it('unselectAllItemsExcept keeps only the item with the given id selected', async () => {
